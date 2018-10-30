@@ -1,0 +1,16 @@
+@import './_variables';
+
+.loader-background{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color: $theme-background-color;
+  border-radius: inherit;
+  z-index: $loader-z-index;
+  transition-duration: $theme-fade-in-out-time;
+}

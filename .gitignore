@@ -1,0 +1,4 @@
+build
+node_modules
+old
+**/.DS_Store

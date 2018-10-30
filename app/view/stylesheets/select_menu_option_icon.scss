@@ -1,0 +1,18 @@
+@import './_variables';
+
+.icon-container{
+  box-sizing: border-box;
+  width: 30px;
+  padding: 0 5px 0 10px;
+  border: 0;
+  text-align: center;
+}
+
+.icon-container.border{
+  border-right: 1px solid $theme-light-gray;
+}
+
+.icon.fa-sort-desc{
+  font-size: 16px;
+  transform: translateY(-2px);
+}
