@@ -1,0 +1,17 @@
+[
+  {"name":"All Sites",        "labelIsIndented":false, "count":63},
+  {"name":"New 2017 Sites",   "labelIsIndented":false, "count":31},
+  {"name":"Fossil Fuels",     "labelIsIndented":false, "count":36},
+  {"name":"Coal",             "labelIsIndented":true,  "count":15},
+  {"name":"Natural Gas",      "labelIsIndented":true,  "count":4},
+  {"name":"Oil",              "labelIsIndented":true,  "count":18},
+  {"name":"Nuclear Energy",   "labelIsIndented":false, "count":13},
+  {"name":"Renewables",       "labelIsIndented":false, "count":9},
+  {"name":"Bioenergy",        "labelIsIndented":true,  "count":3},
+  {"name":"Hydroelectricity", "labelIsIndented":true,  "count":6},
+  {"name":"Mining",           "labelIsIndented":false, "count":25},
+  {"name":"Refining",         "labelIsIndented":false, "count":9},
+  {"name":"Power Plants",     "labelIsIndented":false, "count":14},
+  {"name":"Consumption",      "labelIsIndented":false, "count":4},
+  {"name":"Energy Poverty",   "labelIsIndented":false, "count":1}
+]

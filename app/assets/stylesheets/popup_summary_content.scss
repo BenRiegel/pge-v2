@@ -1,0 +1,50 @@
+@import './_variables';
+
+$content-width: 380px;
+$arrow-width: 14px;
+
+.summary-content{
+  width: $content-width;
+  position:relative;
+  border-radius: inherit;
+  z-index: 3;
+  height: 150px;
+  font-size: 12px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.summary-close-button{
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  cursor:pointer;
+  z-index: 1;
+}
+
+.project-title{
+  margin-top: 7px;
+  font-size: $theme-font-size;
+  margin-right: 20px;
+}
+
+.project-author{
+  margin: 4px 0;
+}
+
+.project-image{
+  margin-top: 4px;
+  float:left;
+  padding-right:10px;
+}
+
+.project-text{
+  line-height:18px;
+}
+
+.read-more-text{
+  text-decoration: underline;
+  cursor:pointer;
+}

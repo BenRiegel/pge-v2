@@ -1,0 +1,13 @@
+@import './_variables';
+
+.popup-container{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: $popup-margin;
+  right: $popup-margin;
+  top: $popup-margin;
+  bottom: $popup-margin;
+  border-radius: $theme-border-radius;
+}

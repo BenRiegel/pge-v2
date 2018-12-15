@@ -1,0 +1,6 @@
+@import './_variables';
+
+.graphics-layer{
+  position: relative;
+  z-index: $graphics-layer-z-index;
+}
