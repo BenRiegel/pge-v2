@@ -6,7 +6,8 @@
   line-height: $option-height;
   opacity: 0;
   visibility: hidden;
-  transition: opacity $select-menu-total-animation-time / 2;
+  animation-duration: $select-menu-total-animation-time / 2;
+  /*transition: opacity $select-menu-total-animation-time / 2;*/
 }
 
 .option:hover{

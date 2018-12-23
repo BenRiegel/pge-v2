@@ -1,16 +1,15 @@
 //imports ----------------------------------------------------------------------
 
+import dispatcher from '../services/Dispatcher.js';
 import loader from '../views/LoaderView.js';
-import appState from '../models/AppState.js';
 
 
 //module code block ------------------------------------------------------------
 
-appState.loadingStatus.addListener('loader', async currentValue => {
-  if (currentValue === 'starting'){
-    loader.show();
-  }
-  if (currentValue === 'finished'){
-    await loader.hide( {fadeOut:true} );
-  }
+dispatcher.addListener('loader', 'startLoading', () => {
+  loader.show();
+});
+
+dispatcher.addListener('loader', 'finishLoading', async () => {
+  await loader.fadeOutAndHide();
 });

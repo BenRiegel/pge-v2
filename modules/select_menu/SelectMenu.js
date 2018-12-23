@@ -1,72 +1,54 @@
 //imports ----------------------------------------------------------------------
 
-import ObservedVar from '../../lib/ObservedVar.js';
-import IsOpenProp from './models/IsOpenProp.js';
-import NewContainerView from './views/ContainerView.js';
-import NewOptionContainerView from './views/OptionContainerView.js';
-import NewIconContainerView from './views/IconContainerView.js';
-import NewIconView from './views/IconView.js';
-import NewLabelContainerView from './views/LabelContainerView.js';
-import NewLabelNameView from './views/LabelNameView.js';
-import NewLabelCountView from './views/LabelCountView.js';
-import NewDomController from './controllers/DomController.js';
-import NewContainerController from './controllers/ContainerController.js';
-import NewEventsController from './controllers/EventsController.js';
-import NewOptionsController from './controllers/OptionsController.js';
+import NewOption from '../select_menu_option/SelectMenuOption.js';
+import SelectMenuState from './state/SelectMenuState.js';
+import SelectMenuEmitter from './services/SelectMenuEmitter.js';
+import SelectMenuView from './view/SelectMenuView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function NewSelectMenu(){
+export default function SelectMenu(){
 
   //private code block ---------------------------------------------------------
 
-  var state = {
-    isEnabled: undefined,
-    isOpen: new IsOpenProp(),
-    selectedOptionKey: new ObservedVar(),
-  }
+  var state = new SelectMenuState({
+    isEnabled: true,
+    isOpen: false,
+    isTransitioning: false,
+    selectedOptionKey: null,
+  });
 
-  var view = {
-    container: NewContainerView(),
-    options: {},
-  }
+  var eventsEmitter = new SelectMenuEmitter(state);
 
-  var controller = {
-    dom: NewDomController(view.container),
-    events: NewEventsController(state, view.container),
-    container: NewContainerController(state, view.container),
-    options: NewOptionsController(state, view.options),
-  }
+  var view = new SelectMenuView(state);
+
+  view.render()
 
   //public api -----------------------------------------------------------------
 
-  return {
-    rootNode: view.container.node,
-    addListener: controller.events.addListener,
-    addNewOption: function( {key, name, count, labelIsIndented} ){
-      var option = {
-        container: NewOptionContainerView(key),
-        iconContainer: NewIconContainerView(),
-        icon: NewIconView(),
-        labelContainer: NewLabelContainerView(labelIsIndented),
-        labelCount: NewLabelCountView(count),
-        labelName: NewLabelNameView(name),
-      }
-      view.options[key] = option;
-      controller.dom.addOption(option);
-    },
-    enable: function(){
-      state.isEnabled = true;
-    },
-    disable: function(){
-      state.isEnabled = false;
-    },
-    close: async function(){
-      await state.isOpen.set(false);
-    },
-    setSelectedOption: async function(newOptionKey){
-      state.selectedOptionKey.set(newOptionKey);
-    }
+  this.rootNode = view.rootNode;
+
+  this.addListener = eventsEmitter.addListener;
+
+  this.addNewOption = function(optionProps){
+    var option = NewOption(optionProps, state);
+    view.addOption(option.rootNode);
+  };
+
+  this.enable = function(){
+    state.set('isEnabled', true);
+  };
+
+  this.disable = function(){
+    state.set('isEnabled', false);
+  };
+
+  this.close = async function(){
+    await state.set('isOpen', false);
+  };
+
+  this.setSelectedOption = async function(newOptionKey){
+    state.set('selectedOptionKey', newOptionKey);
   };
 }

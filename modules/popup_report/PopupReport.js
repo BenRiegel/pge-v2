@@ -1,18 +1,20 @@
 //imports ----------------------------------------------------------------------
 
-import NewLoader from '../loader/Loader.js';
-import NewContainerView from './views/ContainerView.js';
-import NewContentContainerView from './views/ContentContainerView.js';
-import NewIframeView from './views/IframeView.js';
-import NewCloseButton from '../close_button/CloseButton.js';
-import NewContractButton from '../contract_button/ContractButton.js';
+import Loader from '../loader/Loader.js';
+import ContainerNode from './view/nodes/ContainerNode.js';
+import ContentContainerNode from './view/nodes/ContentContainerNode.js';
+import IframeNode from './view/nodes/IframeNode.js';
+
+import PopupButton from '../popup_button/PopupButton.js';
+import CloseButton from '../close_button/CloseButton.js';
+import ContractButton from '../contract_button/ContractButton.js';
 import NewDomController from './controllers/DomController.js';
 import NewEventsController from './controllers/EventsController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function NewPopupReport(){
+export default function PopupReport(){
 
   //private code block ---------------------------------------------------------
 
@@ -23,12 +25,16 @@ export default function NewPopupReport(){
   }
 
   var view = {
-    container: NewContainerView(),
-    loader: NewLoader(),
-    contentContainer: NewContentContainerView(),
-    closeButton: NewCloseButton(),
-    contractButton: NewContractButton(),
-    iframe: NewIframeView(),
+    container: new ContainerNode(),
+    loader: new Loader(),
+    contentContainer: new ContentContainerNode(),
+    closeButton: new PopupButton({
+      containerClassName: 'summary-close-button',
+      iconClassName: 'fa-times'}),
+    contractButton: new PopupButton({
+      containerClassName: 'report-contract-button',
+      iconClassName: 'fa-compress'}),
+    iframe: new IframeNode(),
   };
 
   var controller = {

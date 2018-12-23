@@ -1,38 +1,33 @@
 //imports ----------------------------------------------------------------------
 
-import NewContainerView from './views/ContainerView.js';
-import NewEventsController from './controllers/EventsController.js';
+import ComponentState from '../../lib/ComponentState.js';
+import ZoomControlsView from './view/ZoomControlsView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function NewZoomControls(){
+export default function ZoomControls(){
 
   //private code block ---------------------------------------------------------
 
-  var state = {
-    isEnabled: undefined,
-  }
+  var state = new ComponentState({
+    isEnabled: true,
+  });
 
-  var view = {
-    container: NewContainerView(),
-  }
-
-  var controller = {
-    events: NewEventsController(state, view),
-  }
+  var view = new ZoomControlsView(state);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    rootNode: view.container.node,
-    addListener: controller.events.addListener,
-    enable(){
-      state.isEnabled = true;
-    },
-    disable(){
-      state.isEnabled = false;
-    },
+  this.rootNode = view.rootNode;
+
+  this.addListener = view.addListener;
+
+  this.enable = function(){
+    state.set('isEnabled', true);
+  }
+
+  this.disable = function(){
+    state.set('isEnabled', false);
   }
 
 }

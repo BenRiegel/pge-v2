@@ -1,4 +1,7 @@
 @import './_variables';
+@import './fade_in_out';
+
+$loader-fade-in-out-time: 0.75s;
 
 .loader-background{
   display: flex;
@@ -12,4 +15,5 @@
   background-color: $theme-background-color;
   border-radius: inherit;
   z-index: $loader-z-index;
+  animation-duration: $loader-fade-in-out-time;
 }

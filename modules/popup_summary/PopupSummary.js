@@ -2,17 +2,18 @@
 
 import { waitAtLeast } from '../../lib/Utils.js';
 import Deferred from '../../lib/Deferred.js';
-import NewLoader from '../loader/Loader.js';
-import NewContainerView from './views/ContainerView.js';
-import NewArrowView from './views/ArrowView.js';
-import NewBodyView from './views/BodyView.js';
-import NewContentContainerView from './views/ContentContainerView.js';
-import NewAuthorView from './views/AuthorView.js';
-import NewTitleView from './views/TitleView.js';
-import NewImageView from './views/ImageView.js';
-import NewTextView from './views/TextView.js';
-import NewReadMoreTextView from './views/ReadMoreTextView.js';
-import NewCloseButton from '../close_button/CloseButton.js';
+import Loader from '../loader/Loader.js';
+import ContainerNode from './view/nodes/ContainerNode.js';
+import ArrowNode from './view/nodes/ArrowNode.js';
+import BodyNode from './view/nodes/BodyNode.js';
+import ContentContainerNode from './view/nodes/ContentContainerNode.js';
+import AuthorNode from './view/nodes/AuthorNode.js';
+import TitleNode from './view/nodes/TitleNode.js';
+import ImageNode from './view/nodes/ImageNode.js';
+import TextNode from './view/nodes/TextNode.js';
+import ReadMoreTextNode from './view/nodes/ReadMoreTextNode.js';
+
+import PopupButton from '../popup_button/PopupButton.js';
 import NewEventsController from './controllers/EventsController.js';
 import NewDomController from './controllers/DomController.js';
 import NewContentController from './controllers/ContentController.js';
@@ -20,7 +21,7 @@ import NewContentController from './controllers/ContentController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function NewPopupSummary(){
+export default function PopupSummary(){
 
   //private code block ---------------------------------------------------------
 
@@ -32,17 +33,19 @@ export default function NewPopupSummary(){
   }
 
   var view = {
-    container: NewContainerView(),
-    arrow: NewArrowView(),
-    body: NewBodyView(),
-    loader: NewLoader(),
-    contentContainer: NewContentContainerView(),
-    closeButton: NewCloseButton(),
-    author: NewAuthorView(),
-    title: NewTitleView(),
-    image: NewImageView(),
-    text: NewTextView(),
-    readMoreText: NewReadMoreTextView(),
+    container: new ContainerNode(),
+    arrow: new ArrowNode(),
+    body: new BodyNode(),
+    loader: new Loader(),
+    contentContainer: new ContentContainerNode(),
+    closeButton: new PopupButton({
+          containerClassName: 'summary-close-button',
+          iconClassName: 'fa-times'}),
+    author: new AuthorNode(),
+    title: new TitleNode(),
+    image: new ImageNode(),
+    text: new TextNode(),
+    readMoreText: new ReadMoreTextNode(),
   };
 
   var controller = {

@@ -1,13 +1,12 @@
 //imports ----------------------------------------------------------------------
 
-import appState from '../models/AppState.js';
+import dispatcher from '../services/Dispatcher.js';
+import { pointSelect } from './DispatcherController.js';
 import zoomControls from '../views/ZoomControlsView.js';
 
 
 //module code block ------------------------------------------------------------
 
-appState.loadingStatus.addListener('zoomControls', async currentValue => {
-  if (currentValue === 'inProgress'){
-    zoomControls.enable();
-  }
+dispatcher.addListener('zoomControls', 'load', () => {
+  zoomControls.addListener('home', 'buttonUp', pointSelect);
 });

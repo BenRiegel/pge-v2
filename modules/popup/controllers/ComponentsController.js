@@ -1,6 +1,6 @@
 export default function NewComponentsController(state, view){
 
-  state.expandedState.addListener('container', async (currentState, previousState) => {
+  state.expandedState.addListener('components', 'updateOnChange', async (currentState, previousState) => {
     if (currentState === 'closed'){
       view.report.close();
       view.summary.close();
@@ -28,7 +28,7 @@ export default function NewComponentsController(state, view){
     }
   });
 
-  state.projectData.addListener('components', projectData => {
+  state.projectData.addListener('components', 'updateOnChange', projectData => {
     view.summary.loadNewProjectData(projectData);
     view.report.setProjectUrl(projectData.url);
   });

@@ -1,5 +1,5 @@
 @import './_variables';
-
+@import './_mixins';
 
 .zoom-controls-container{
   position: absolute;
@@ -15,6 +15,7 @@
 }
 
 .zoom-button{
+  @include user-select(none);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,22 +25,26 @@
   border-radius: inherit;
 }
 
+.zoom-button.active{
+  background-color: rgba(134,38,51, 0.85);
+}
+
 .zoom-button:hover{
   box-shadow: $inner-box-shadow;
 }
 
-[data-zoom-type="home"] {
+.zoom-button.zoom-home{
   border-radius: inherit;
 }
 
-[data-zoom-type="in"] {
+.zoom-button.zoom-in{
   margin-top: 12px;
   border-bottom: 1px solid $theme-light-gray;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-[data-zoom-type="out"] {
+.zoom-button.zoom-out{
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }

@@ -42,9 +42,6 @@ export default function NewGraphicsLayer(){
     disable: function(){
       state.isEnabled = false;
     },
-    removeGraphics(){
-      state.locations.empty();
-    },
     addGraphic: function( {key, worldCoords} ){
       state.locations.add( {key, worldCoords} );
       //state.locations[key] = NewLocationState(worldCoords, tags);

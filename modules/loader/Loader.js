@@ -1,46 +1,40 @@
 //imports ----------------------------------------------------------------------
 
-import IsVisibleProp from './models/IsVisibleProp';
-import NewBackgroundView from './views/BackgroundView.js';
-import NewSpinnerView from './views/SpinnerView.js';
-import NewDomController from './controllers/DomController.js';
-import NewBackgroundController from './controllers/BackgroundController.js';
-import NewSpinnerController from './controllers/SpinnerController.js';
+import LoaderState from './state/LoaderState.js';
+import LoaderView from './view/LoaderView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function NewLoader(){
+export default function Loader(){
 
   //private code block ---------------------------------------------------------
 
-  var state = {
-    fadeOut: undefined,
-    isVisible: new IsVisibleProp(),
-  };
+  var state = new LoaderState({
+    isFadingOut: false,
+    isVisible: false,
+  });
 
-  var view = {
-    background: NewBackgroundView(),
-    spinner: NewSpinnerView(),
-  };
+  var view = new LoaderView(state);
 
-  var controller = {
-    dom: NewDomController(view),
-    background: NewBackgroundController(state, view.background),
-    spinner: NewSpinnerController(state, view.spinner),
-  };
+  view.render();
 
   //public api -----------------------------------------------------------------
 
-  return {
-    rootNode: view.background.node,
-    show: function(){
-      state.isVisible.set(true);
-    },
-    hide: async function( {fadeOut} ){
-      state.fadeOut = fadeOut;
-      await state.isVisible.set(false);
-    },
+  this.rootNode = view.rootNode;
+
+  this.show = function(){
+    state.set('isVisible', true);
+  };
+
+  this.hide = function(){
+    state.set('isFadingOut', false);
+    state.set('isVisible', false);
+  };
+
+  this.fadeOutAndHide = async function(){
+    state.set('isFadingOut', true);
+    await state.set('isVisible', false);
   }
 
 }

@@ -1,9 +1,10 @@
 //imports ----------------------------------------------------------------------
 
 import ObservedVar from '../../lib/ObservedVar.js';
-import NewContainerView from './views/ContainerView.js';
-import NewPopupSummary from '../popup_summary/PopupSummary.js';
-import NewPopupReport from '../popup_report/PopupReport.js';
+import PopupView from './view/PopupView.js';
+import ContainerNode from './view/nodes/ContainerNode.js';
+import PopupSummary from '../popup_summary/PopupSummary.js';
+import PopupReport from '../popup_report/PopupReport.js';
 import NewEventsController from './controllers/EventsController.js';
 import NewComponentsController from './controllers/ComponentsController.js';
 import NewDomController from './controllers/DomController.js';
@@ -11,7 +12,7 @@ import NewDomController from './controllers/DomController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function NewPopup(){
+export default function Popup(){
 
   //private code block ---------------------------------------------------------
 
@@ -20,10 +21,12 @@ export default function NewPopup(){
     projectData: new ObservedVar(),
   }
 
+  var view = new PopupView();
+
   var view = {
-    container: NewContainerView(),
-    summary: NewPopupSummary(),
-    report: NewPopupReport(),
+    container: new ContainerNode(),
+    summary: new PopupSummary(),
+    report: new PopupReport(),
   }
 
   var controller = {

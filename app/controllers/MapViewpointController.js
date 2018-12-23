@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import { latLonToWebMercator } from '../services/WebMercator.js';
-import viewpoint from '../models/MapViewpoint.js';
+import { latLonToWebMercator } from '../../lib/WebMercator.js';
+import viewpoint from '../stores/MapViewpoint.js';
 
 
 //module code block ------------------------------------------------------------
