@@ -19,19 +19,11 @@ export default function ContainerNode(controlsState, buttonState, className){
     this.removeClass('active');
   }
 
-  //define event handlers ------------------------------------------------------
+  container.setEventListener('mousedown', buttonState.updateOnMouseDown);
 
-  var mouseDownEventHandler = function(evt){
-    buttonState.updateOnMouseDown();
-  }
+  container.setEventListener('mouseup', buttonState.updateOnMouseUp);
 
-  var mouseUpEventHandler = function(evt){
-    buttonState.updateOnMouseUp();
-  }
-
-  var mouseOutEventHandler = function(evt){
-    buttonState.updateOnMouseOut();
-  }
+  container.setEventListener('mouseout', buttonState.updateOnMouseOut);
 
   //define state change reactions ----------------------------------------------
 
@@ -45,13 +37,9 @@ export default function ContainerNode(controlsState, buttonState, className){
 
   var updateListeners = function(){
     if (controlsState.isEnabled){
-      container.addEventListener('mousedown', mouseDownEventHandler);
-      container.addEventListener('mouseup', mouseUpEventHandler);
-      container.addEventListener('mouseout', mouseOutEventHandler);
+      container.enableListeners();
     } else {
-      container.removeEventListener('mousedown', mouseDownEventHandler);
-      container.removeEventListener('mouseup', mouseUpEventHandler);
-      container.removeEventListener('mouseout', mouseOutEventHandler);
+      container.disableListeners();
     }
   }
 
@@ -65,6 +53,7 @@ export default function ContainerNode(controlsState, buttonState, className){
   this.node = container.node;
 
   this.render = function(){
+    updateActiveStyle();
     updateListeners();
   }
 

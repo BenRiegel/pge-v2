@@ -1,59 +1,105 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
-import { getDimensions, transitionSetStyle } from '../../../../lib/ViewUtils.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode(){
+export default function ContainerNode(popupState, summaryState){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
-  var node = document.createElement('div');
-  node.className = 'summary-window';
+  var container = new DomElement('div', 'summary-window');
+
+  container.saveCurrentDimensions = function(){
+    container.contractedDimensions = container.getDimensions();
+  }
+
+  container.unsetDimensions = function(){
+    container.unsetStyle('left');
+    container.unsetStyle('width');
+    container.unsetStyle('height');
+  }
+
+  container.animateExpand = async function(){
+    var fromLeft = `${container.contractedDimensions.left}px`;
+    var fromWidth = `${container.contractedDimensions.width}px`;
+    var fromHeight = `${container.contractedDimensions.height}px`;
+    var toLeft = '0px';
+    var toWidth = container.getComputedStyle('max-width');
+    var toHeight = container.getComputedStyle('max-height');
+    var pl = container.transitionSetStyle('left', fromLeft, toLeft);
+    var pw = container.transitionSetStyle('width', fromWidth, toWidth);
+    var ph = container.transitionSetStyle('height', fromHeight, toHeight);
+    await Promise.all( [pl, pw, ph] );
+  };
+
+  container.animateContract = async function(){
+    var fromLeft = container.getStyle('left');
+    var fromWidth = container.getStyle('width');
+    var fromHeight = container.getStyle('height');
+    var toLeft = `${container.contractedDimensions.left}px`;
+    var toWidth = `${container.contractedDimensions.width}px`;
+    var toHeight = `${container.contractedDimensions.height}px`;
+    var pl = container.transitionSetStyle('left', fromLeft, toLeft);
+    var pw = container.transitionSetStyle('width', fromWidth, toWidth);
+    var ph = container.transitionSetStyle('height', fromHeight, toHeight);
+    await Promise.all( [pl, pw, ph] );
+  };
+
+  container.setExpandedZIndex = function(){
+    container.addClass('expanded');
+  };
+
+  container.setContractedZIndex = function(){
+    container.removeClass('expanded');
+  };
+
+  //define state change reactions ----------------------------------------------
+
+  var updateVisibility = function(){
+    if (summaryState.isVisible){
+      container.setVisibility('visible');
+    } else {
+      container.setVisibility('hidden');
+    }
+  }
+
+  var updateDimensions = async function(){
+    if (summaryState.isExpanded){
+      container.saveCurrentDimensions();
+      console.log('animate expand')
+      await container.animateExpand();
+    } else {
+      if (popupState.isOpen){
+        await container.animateContract();
+      }
+      container.unsetDimensions();
+    }
+  }
+
+  var updateZIndex = function(){
+    if (summaryState.isExpanded){
+      container.setExpandedZIndex();
+    } else {
+      container.setContractedZIndex();
+    }
+  }
+
+  //load reactions -------------------------------------------------------------
+
+  summaryState.addListener('isVisible', 'container', 'visibility', updateVisibility);
+  summaryState.addListener('isExpanded', 'container', 'dimensions', updateDimensions);
+  summaryState.addListener('isExpanded', 'container', 'zIndex', updateZIndex);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    node,
-    show: function(){
-      node.style.visibility = 'visible';
-    },
-    hide: function(){
-      node.style.visibility = 'hidden';
-    },
-    setExpandedZIndex: function(){
-      node.classList.add('expanded');
-    },
-    setContractedZIndex: function(){
-      node.classList.remove('expanded');
-    },
-    getDimensions: function(){
-      return getDimensions(node);
-    },
-    setCurrentDimensions: function(currentDimensions){
-      node.style.left = `${currentDimensions.left}px`;
-      node.style.width = `${currentDimensions.width}px`;
-      node.style.height = `${currentDimensions.height}px`;
-    },
-    resetDimensions: async function(){
-      node.style.left = '';
-      node.style.height = '';
-      node.style.width = '';
-    },
-    animateContract: async function(currentDimensions){
-      var pl = transitionSetStyle(node, 'left', `${currentDimensions.left}px`);
-      var pw = transitionSetStyle(node, 'width', `${currentDimensions.width}px`);
-      var ph = transitionSetStyle(node, 'height', `${currentDimensions.height}px`);
-      await Promise.all( [pl, pw, ph] );
-    },
-    animateExpand: async function(parentDimensions){
-      var pl = transitionSetStyle(node, 'left', `0px`);
-      var pw = transitionSetStyle(node, 'width', `${parentDimensions.width}px`);
-      var ph = transitionSetStyle(node, 'height', `${parentDimensions.height}px`);
-      await Promise.all( [pl, pw, ph] );
-    },
+  this.node = container.node;
+
+  this.render = function(){
+    updateVisibility();
+    updateDimensions();
+    updateZIndex();
   }
 
 }

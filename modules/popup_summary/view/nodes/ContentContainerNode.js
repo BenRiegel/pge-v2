@@ -6,46 +6,53 @@ import { transitionSetStyle } from '../../../../lib/ViewUtils.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContentContainerNode(){
+export default function ContentContainerNode(summaryState){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
-  var node = document.createElement('div');
-  node.className = 'summary-content';
+  var contentContainer = new DomElement('div', 'summary-content');
+
+  //define state change reactions ----------------------------------------------
+
+  var updateHeight = async function(){
+    if (summaryState.isVisible){
+      var offsetHeight = contentContainer.getNodeProp('clientHeight');
+      var scrollHeight = contentContainer.getNodeProp('scrollHeight');
+      var deltaHeight = scrollHeight - offsetHeight;
+      var transitionTime = Math.abs(3 * deltaHeight);
+      contentContainer.setStyle('transition', `height ${transitionTime}ms`);
+      await contentContainer.transitionSetStyle('height', `${offsetHeight}px`, `${scrollHeight}px`);
+      contentContainer.setStyle('transition', '');
+    } else {
+      contentContainer.setStyle('height', '');
+    }
+  }
+
+  var updateOpacity = async function(){
+    if (summaryState.isVisible){
+      if (summaryState.isExpanded){
+        await contentContainer.animateOpacity('transparent');
+      } else {
+        await contentContainer.animateOpacity('opaque');
+      }
+    } else {
+      contentContainer.setOpacity('transparent');
+    }
+  }
+
+  //load reactions -------------------------------------------------------------
+
+  summaryState.addListener('isVisible', 'contentContainer', 'opacity', updateOpacity);
+  summaryState.addListener('isExpanded', 'contentContainer', 'opacity', updateOpacity);
+  summaryState.addListener('isVisible', 'contentContainer', 'height', updateHeight);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    node,
-    setTransparent: function(){
-      node.style.opacity = '0';
-    },
-    setOpaque: function(){
-      node.style.opacity = '1';
-    },
-    fadeOut: async function(){
-      node.style.transition = 'opacity 0.5s';
-      await transitionSetStyle(node, 'opacity', '0');
-      node.style.transition = '';
-    },
-    fadeIn: async function(){
-      node.style.transition = 'opacity 0.5s';
-      await transitionSetStyle(node, 'opacity', '1');
-      node.style.transition = '';
-    },
-    expandHeight: async function(){
-      var offsetHeight = node.clientHeight;
-      var scrollHeight = node.scrollHeight;
-      var deltaHeight = scrollHeight - offsetHeight;
-      var transitionTime = 3 * deltaHeight;
-      node.style.height = `${offsetHeight}px`;
-      node.style.transition = `height ${transitionTime}ms`;
-      await transitionSetStyle(node, 'height', `${scrollHeight}px`);
-      node.style.transition = '';
-    },
-    resetHeight: function(){
-      node.style.height = '';
-    },
+  this.node = contentContainer.node;
+
+  this.render = function(){
+    updateOpacity();
+    updateHeight();
   }
 
 }

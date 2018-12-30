@@ -25,9 +25,9 @@ export default function IconNode(menuState, optionState){
 
   var updateVisibility = function(){
     if (optionState.isSelected){
-      icon.show();
+      icon.setVisibility('visible');
     } else {
-      icon.hide();
+      icon.setVisibility('hidden');
     }
   };
 

@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../lib/Emitter.js';
 import PopupButtonView from './view/PopupButtonView.js';
 
 
@@ -10,15 +9,10 @@ export default function PopupButton(buttonProps){
 
   //private code block ---------------------------------------------------------
 
-  var eventsEmitter = new Emitter();
-
-  var view = new PopupButtonView(buttonProps, eventsEmitter);
+  var view = new PopupButtonView(buttonProps);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
-
-  this.addListener = eventsEmitter.addListener;
-
 
 }

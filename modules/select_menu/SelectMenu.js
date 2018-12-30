@@ -12,18 +12,9 @@ export default function SelectMenu(){
 
   //private code block ---------------------------------------------------------
 
-  var state = new SelectMenuState({
-    isEnabled: true,
-    isOpen: false,
-    isTransitioning: false,
-    selectedOptionKey: null,
-  });
-
+  var state = new SelectMenuState();
   var eventsEmitter = new SelectMenuEmitter(state);
-
   var view = new SelectMenuView(state);
-
-  view.render()
 
   //public api -----------------------------------------------------------------
 
@@ -33,7 +24,7 @@ export default function SelectMenu(){
 
   this.addNewOption = function(optionProps){
     var option = NewOption(optionProps, state);
-    view.addOption(option.rootNode);
+    view.addOptionNode(option.rootNode);
   };
 
   this.enable = function(){
@@ -45,10 +36,12 @@ export default function SelectMenu(){
   };
 
   this.close = async function(){
+    state.set('isAnimating', true);
     await state.set('isOpen', false);
   };
 
-  this.setSelectedOption = async function(newOptionKey){
+  this.setSelectedOption = function(newOptionKey){
+    state.set('isAnimating', false);
     state.set('selectedOptionKey', newOptionKey);
   };
 }

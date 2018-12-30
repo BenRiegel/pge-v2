@@ -6,11 +6,11 @@ import IconNode from './nodes/IconNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupButtonView(buttonProps, eventsEmitter){
+export default function PopupButtonView(buttonProps){
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode(buttonProps.containerClassName, eventsEmitter);
+  var container = new ContainerNode(buttonProps);
   var icon = new IconNode(buttonProps.iconClassName);
 
   //configure dom --------------------------------------------------------------
@@ -20,5 +20,10 @@ export default function PopupButtonView(buttonProps, eventsEmitter){
   //public api -----------------------------------------------------------------
 
   this.rootNode = container.node;
+
+  this.hasRendered = new Promise(resolve => {
+    container.render();
+    resolve();
+  });
 
 }

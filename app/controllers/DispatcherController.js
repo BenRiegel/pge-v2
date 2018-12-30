@@ -10,7 +10,7 @@ export async function initApp(){
   await dispatcher.broadcast('all', 'startLoading');
   await dispatcher.broadcast('all', 'load');
   await new Promise(resolve => {
-    setTimeout(resolve, 2000);
+    setTimeout(resolve, 1000);
   });
   await dispatcher.broadcast('all', 'finishLoading');
 };

@@ -10,31 +10,23 @@ export default function Loader(){
 
   //private code block ---------------------------------------------------------
 
-  var state = new LoaderState({
-    isFadingOut: false,
-    isVisible: false,
-  });
-
+  var state = new LoaderState();
   var view = new LoaderView(state);
-
-  view.render();
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
+  this.hasRendered = view.hasRendered;
+
   this.show = function(){
+    state.set('isAnimating', false);
     state.set('isVisible', true);
   };
 
-  this.hide = function(){
-    state.set('isFadingOut', false);
-    state.set('isVisible', false);
-  };
-
-  this.fadeOutAndHide = async function(){
-    state.set('isFadingOut', true);
+  this.hide = async function( {fadeOutOnHide} ){
+    state.set('isAnimating', fadeOutOnHide);
     await state.set('isVisible', false);
-  }
+  };
 
 }

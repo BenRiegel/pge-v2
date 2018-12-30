@@ -12,96 +12,92 @@ export default function ContainerNode(menuState, optionState, key){
   var container = new DomElement('div', 'option');
   container.dataset = { key };
 
-  container.setRoundedBorder = function(){
-    this.addClass('rounded');
-  };
+  container.setBorderStyle = function(value){
+    if (value === 'rounded'){
+      this.addClass('rounded');
+    } else if (value === 'default'){
+      this.removeClass('rounded');
+    }
+  }
 
-  container.setDefaultBorder = function(){
-    this.removeClass('rounded');
-  };
+  container.setHeight = function(value){
+    if (value === 'expanded'){
+      this.addClass('expanded');
+    } else if (value === 'contracted'){
+      this.removeClass('expanded');
+    }
+  }
 
-  container.setExpanded = function(){
-    this.addClass('expanded');
-  };
-
-  container.setContracted = function(){
-    this.removeClass('expanded');
-  };
-
-  container.animateExpand = async function(){
-    await this.animateAddClass('animate-expand');
-  };
-
-  container.animateContract = async function(){
-    await this.animateAddClass('animate-contract');
-  };
+  container.animateHeight = async function(value){
+    if (value === 'expanded'){
+      this.addClass('expanded');
+      await this.animateAddClass('animate-expand');
+    } else if (value === 'contracted'){
+      this.removeClass('expanded');
+      await this.animateAddClass('animate-contract');
+    }
+  }
 
   //define state change reactions ----------------------------------------------
 
   var updateVisibility = function(){
     if (menuState.isOpen || optionState.isSelected){
-      container.show();
+      container.setVisibility('visible');
     } else {
-      container.hide();
+      container.setVisibility('hidden');
     }
   };
 
   var updateBorderRadius = function(){
     if (!menuState.isOpen && optionState.isSelected){
-      container.setRoundedBorder();
+      container.setBorderStyle('rounded');
     } else {
-      container.setDefaultBorder();
+      container.setBorderStyle('default');
     }
   };
 
-  var updateHeight = async function(isAnimating){
+  var updateHeight = async function(){
     if (menuState.isOpen || optionState.isSelected){
-      container.setExpanded();
-      if (isAnimating && !optionState.isSelected){
-        await container.animateExpand();
+      if (optionState.isAnimating){
+        await container.animateHeight('expanded');
+      } else {
+        container.setHeight('expanded');
       }
     } else {
-      container.setContracted();
-      if (isAnimating && !optionState.isSelected){
-        await container.animateContract();
+      if (optionState.isAnimating){
+        await container.animateHeight('contracted');
+      } else {
+        container.setHeight('contracted');
       }
     }
   };
 
-  var updateOpacity = async function(isAnimating){
+  var updateOpacity = async function(){
     if (menuState.isOpen || optionState.isSelected){
-      container.setOpaque();
-      if (isAnimating && !optionState.isSelected){
-        await container.fadeIn();
+      if (optionState.isAnimating){
+        await container.animateOpacity('opaque');
+      } else {
+        container.setOpacity('opaque');
       }
     } else {
-      container.setTransparent();
-      if (isAnimating && !optionState.isSelected){
-        await container.fadeOut();
+      if (optionState.isAnimating){
+        await container.animateOpacity('transparent');
+      } else {
+        container.setOpacity('transparent');
       }
     }
   };
 
   //load reactions -------------------------------------------------------------
 
-  optionState.addListener('isSelected', 'optionContainer', 'allProps', () => {
-    updateVisibility();
-    updateBorderRadius();
-    updateHeight(false);
-    updateOpacity(false);
-  });
-
+  optionState.addListener('isSelected', 'optionContainer', 'visibility', updateVisibility);
+  optionState.addListener('isSelected', 'optionContainer', 'borderRadius', updateBorderRadius);
+  optionState.addListener('isSelected', 'optionContainer', 'height', updateHeight);
+  optionState.addListener('isSelected', 'optionContainer', 'opacity', updateOpacity);
   menuState.addListener('isOpen', 'optionContainer', 'visibility', updateVisibility);
-
   menuState.addListener('isOpen', 'optionContainer', 'borderRadius', updateBorderRadius);
-
-  menuState.addListener('isOpen', 'optionContainer', 'height', async () => {
-    await updateHeight(true);
-  });
-
-  menuState.addListener('isOpen', 'optionContainer', 'opacity', async () => {
-    await updateOpacity(true);
-  });
+  menuState.addListener('isOpen', 'optionContainer', 'height', updateHeight);
+  menuState.addListener('isOpen', 'optionContainer', 'opacity', updateOpacity);
 
   //public api -----------------------------------------------------------------
 
@@ -110,7 +106,7 @@ export default function ContainerNode(menuState, optionState, key){
   this.render = function(){
     updateVisibility();
     updateBorderRadius();
-    updateHeight(false);
-    updateOpacity(false);
+    updateHeight();
+    updateOpacity();
   }
 }

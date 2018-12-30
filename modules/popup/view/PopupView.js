@@ -12,8 +12,8 @@ export default function PopupView(state){
   //create nodes ---------------------------------------------------------------
 
   var container = new ContainerNode();
-  var summaryWindow = new SummaryWindow();
-  var reportWindow = new ReportWindow();
+  var summaryWindow = new SummaryWindow(state);
+  var reportWindow = new ReportWindow(state);
 
   //configure dom --------------------------------------------------------------
 

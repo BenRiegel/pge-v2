@@ -11,15 +11,9 @@ export default function ZoomButton(buttonProps, controlsState){
 
   //private code block ---------------------------------------------------------
 
-  var buttonState = new ZoomButtonState({
-    isActive: false,
-  });
-
+  var buttonState = new ZoomButtonState();
   var eventsEmitter = new ZoomButtonEmitter(buttonState);
-
   var view = new ZoomButtonView(controlsState, buttonState, buttonProps);
-
-  view.render();
 
   //public api -----------------------------------------------------------------
 

@@ -20,10 +20,11 @@ export default function LoaderView(state){
   //public api -----------------------------------------------------------------
 
   this.rootNode = background.node;
-  
-  this.render = function(){
-    background.render();
+
+  this.hasRendered = new Promise(async resolve => {
     spinner.render();
-  }
+    await background.render();
+    resolve();
+  });
 
 }

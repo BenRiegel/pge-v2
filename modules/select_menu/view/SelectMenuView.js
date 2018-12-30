@@ -15,12 +15,13 @@ export default function SelectMenuView(state){
 
   this.rootNode = container.node;
 
-  this.addOption = function(optionRootNode){
-    container.node.appendChild(optionRootNode);
-  }
-
-  this.render = function(){
+  this.hasRendered = new Promise(resolve => {
     container.render();
+    resolve();
+  });
+
+  this.addOptionNode = function(optionRootNode){
+    container.node.appendChild(optionRootNode);
   }
 
 }

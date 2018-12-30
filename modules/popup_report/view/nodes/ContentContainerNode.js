@@ -6,32 +6,36 @@ import { transitionSetStyle } from '../../../../lib/ViewUtils.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContentContainerNode(){
+export default function ContentContainerNode(popupState, reportState){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
-  var node = document.createElement('div');
-  node.className = 'report-content';
+  var contentContainer = new DomElement('div', 'report-content');
+
+  //define state change reactions ----------------------------------------------
+
+  var updateOpacity = async function(){
+    if (reportState.isVisible){
+      await contentContainer.animateOpacity('opaque');
+    } else {
+      if (popupState.isOpen){
+        await contentContainer.animateOpacity('transparent');
+      } else {
+        contentContainer.setOpacity('transparent');
+      }
+    }
+  }
+
+  //load reactions -------------------------------------------------------------
+
+  reportState.addListener('isVisible', 'contentContainer', 'opacity', updateOpacity);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    node,
-    setOpaque: function(){
-      node.style.opacity = '1';
-    },
-    setTransparent: function(){
-      node.style.opacity = '0';
-    },
-    fadeIn: async function(){
-      node.style.transition = 'opacity 0.5s';
-      await transitionSetStyle(node, 'opacity', '1');
-      node.style.transition = '';
-    },
-    fadeOut: async function(){
-      node.style.transition = 'opacity 0.5s';
-      await transitionSetStyle(node, 'opacity', '0');
-      node.style.transition = '';
-    },
+  this.node = contentContainer.node;
+
+  this.render = function(){
+    updateOpacity();
   }
+
 }

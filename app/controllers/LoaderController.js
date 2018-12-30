@@ -11,5 +11,5 @@ dispatcher.addListener('loader', 'startLoading', () => {
 });
 
 dispatcher.addListener('loader', 'finishLoading', async () => {
-  await loader.fadeOutAndHide();
+  await loader.hide( {fadeOutOnHide:true} );
 });

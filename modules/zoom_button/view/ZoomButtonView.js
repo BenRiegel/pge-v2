@@ -21,7 +21,9 @@ export default function ZoomButtonView(controlsState, buttonState, buttonProps){
 
   this.rootNode = container.node;
 
-  this.render = function(){
+  this.hasRendered = new Promise(resolve => {
     container.render();
-  }
+    resolve();
+  });
+  
 }

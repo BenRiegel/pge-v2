@@ -5,11 +5,13 @@ import ComponentState from '../../../lib/ComponentState.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ZoomButtonState(props){
+export default function ZoomButtonState(){
 
   //create state var -----------------------------------------------------------
 
-  var state = new ComponentState(props);
+  var state = new ComponentState({
+    isActive: false,
+  });
 
   state.updateOnMouseDown = function(){
     state.set('isActive', true);

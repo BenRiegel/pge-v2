@@ -22,32 +22,38 @@ var calculateRescaledDimensions = function( {naturalWidth, naturalHeight} ){
 
 //exports ----------------------------------------------------------------------
 
-export default function ImageNode(){
+export default function ImageNode(popupState, summaryState){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
-  var node = document.createElement('img');
-  node.className = 'project-image';
+  var image = new DomElement('img', 'project-image');
+
+  image.resize = function(){
+    var [width, height] = calculateRescaledDimensions(this.node);
+    this.setStyle('width', `${width}px`);
+    this.setStyle('height', `${height}px`);
+  }
+
+  //define state change reactions ----------------------------------------------
+
+  var updateContent = async function(){
+    await new Promise(resolve => {
+      var contentLoaded = evt => {
+        image.removeEventListener('load', contentLoaded);
+        image.resize();
+        resolve();
+      }
+      image.addEventListener('load', contentLoaded);
+      image.src = popupState.projectData.introImageUrl;
+    });
+  };
+
+  //load reactions -------------------------------------------------------------
+
+  popupState.addListener('projectData', 'image', 'content', updateContent);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    node,
-    load: async function(imageUrl){
-      await new Promise( resolve => {
-        var contentLoaded = evt => {
-          node.removeEventListener('load', contentLoaded);
-          resolve();
-        }
-        node.addEventListener('load', contentLoaded);
-        node.src = imageUrl;
-      });
-    },
-    resize: function(){
-      var [width, height] = calculateRescaledDimensions(node);
-      node.style.height = `${height}px`;
-      node.style.width = `${width}px`;
-    },
-  }
+  this.node = image.node;
 
 }

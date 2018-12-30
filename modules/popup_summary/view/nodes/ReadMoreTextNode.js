@@ -1,31 +1,20 @@
 //imports ----------------------------------------------------------------------
 
-import NewEmitter from '../../../../lib/Emitter.js';
 import DomElement from '../../../../lib/DomElement.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ReadMoreTextNode(){
+export default function ReadMoreTextNode(popupState){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
-  var emitter = NewEmitter();
-
-  var clickEventHandler = function(){
-    emitter.broadcast('click');
-  }
-
-  var node = document.createElement('span');
-  node.className = 'read-more-text';
-  node.innerHTML = 'Read more';
-  node.addEventListener('click', clickEventHandler);
+  var readMoreText = new DomElement('span', 'read-more-text');
+  readMoreText.innerHTML = 'Read more';
+  readMoreText.addEventListener('click', popupState.onExpandAction.bind(popupState));
 
   //public api -----------------------------------------------------------------
 
-  return {
-    node,
-    addListener: emitter.addListener,
-  }
+  this.node = readMoreText.node;
 
 }

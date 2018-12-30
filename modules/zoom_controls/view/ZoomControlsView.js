@@ -1,13 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-//import ZoomHomeButton from '../../zoom_home_button/ZoomHomeButton.js';
-//import ZoomInButton from '../../zoom_in_button/ZoomInButton.js';
-//import ZoomOutButton from '../../zoom_out_button/ZoomOutButton.js';
-
 import ZoomButton from '../../zoom_button/ZoomButton.js';
-
-
-
 import ContainerNode from './nodes/ContainerNode.js';
 import ButtonContainerNode from './nodes/ButtonContainerNode.js';
 

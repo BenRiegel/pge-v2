@@ -15,9 +15,9 @@ export default function SpinnerNode(state){
 
   var updateVisibility = function(){
     if (state.isVisible){
-      spinner.show();
+      spinner.setVisibility('visible');
     } else {
-      spinner.hide();
+      spinner.setVisibility('hidden');
     }
   };
 

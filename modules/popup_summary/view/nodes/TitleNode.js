@@ -5,7 +5,7 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function TitleNode(){
+export default function TitleNode(popupState){
 
   //create dom element ---------------------------------------------------------
 
@@ -19,18 +19,10 @@ export default function TitleNode(){
 
   //load reactions -------------------------------------------------------------
 
-  // popupState.addListener('projectData', 'title', 'content', updateContent)
+   popupState.addListener('projectData', 'title', 'content', updateContent)
 
   //public api -----------------------------------------------------------------
 
   this.node = title.node;
-
-  this.setContent = function(titleText){
-    title.innerHTML = titleText;
-  }
-
-  this.render = function(){
-    updateContent();
-  };
 
 }

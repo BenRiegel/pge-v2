@@ -1,7 +1,19 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
-import { getParentNodeProperty } from '../../../../lib/ViewUtils.js';
+
+
+//module code block ------------------------------------------------------------
+
+export function getParentNodeProperty(node, className, prop){
+  while (node){
+    if (node.classList && node.classList.contains(className)){
+      return node.dataset[prop];
+    }
+    node = node.parentNode;
+  }
+  return null;
+};
 
 
 //exports ----------------------------------------------------------------------
@@ -20,12 +32,12 @@ export default function ContainerNode(state){
     this.removeClass('rounded');
   };
 
-  //define event handler -------------------------------------------------------
-
-  var clickEventHandler = async function(evt){
+  container.setEventListener('click', function(evt){
     var optionClicked = getParentNodeProperty(evt.target, 'option', 'key');
-    state.updateOnOptionClick(optionClicked);
-  }
+    if (optionClicked){
+      state.updateOnOptionClick(optionClicked);
+    }
+  });
 
   //define state change reactions ----------------------------------------------
 
@@ -38,18 +50,18 @@ export default function ContainerNode(state){
   };
 
   var updateListener = function(){
-    if (state.isEnabled && !state.isTransitioning){
-      container.addEventListener('click', clickEventHandler);
+    if (state.isEnabled && !state.eventInProgress){
+      container.enableListeners();
     } else {
-      container.removeEventListener('click', clickEventHandler);
+      container.disableListeners();
     }
   }
 
   //load reactions -------------------------------------------------------------
 
   state.addListener('isOpen', 'menuContainer', 'borderRadius', updateBorderRadius);
+  state.addListener('eventInProgress', 'menuContainer', 'listener', updateListener);
   state.addListener('isEnabled', 'menuContainer', 'listener', updateListener);
-  state.addListener('isTransitioning', 'menuContainer', 'listener', updateListener);
 
   //public api -----------------------------------------------------------------
 

@@ -15,20 +15,21 @@ export default function BackgroundNode(state){
 
   var updateOpacity = async function(){
     if (state.isVisible){
-      background.setOpaque();
+      background.setOpacity('opaque');
     } else {
-      background.setTransparent();
-      if (state.isFadingOut){
-        await background.fadeOut();
+      if (state.isAnimating){
+        await background.animateOpacity('transparent');
+      } else {
+        background.setOpacity('transparent');
       }
     }
   }
 
   var updateVisibility = async function(){
     if (state.isVisible){
-      background.show();
+      background.setVisibility('visible');
     } else {
-      background.hide();
+      background.setVisibility('hidden');
     }
   };
 
@@ -42,7 +43,7 @@ export default function BackgroundNode(state){
   this.node = background.node;
 
   this.render = async function(){
-    updateOpacity();
+    await updateOpacity();
     updateVisibility();
   };
 

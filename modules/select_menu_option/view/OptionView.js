@@ -34,11 +34,12 @@ export default function OptionView(menuState, optionState, optionProps){
 
   this.rootNode = container.node;
 
-  this.render = function(){
+  this.hasRendered = new Promise(resolve => {
     container.render();
     iconContainer.render();
     icon.render();
     labelContainer.render();
-  }
+    resolve();
+  });
 
 }

@@ -5,22 +5,35 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode(className, eventsEmitter){
+export default function ContainerNode( {containerClassName, onButtonClick, popupState} ){
 
   //create dom element ---------------------------------------------------------
 
-  var container = new DomElement('div', className);
+  var container = new DomElement('div', containerClassName);
 
-  //define event handlers ------------------------------------------------------
+  container.setEventListener('click', onButtonClick);
 
-  var clickEventHandler = function(){
-    eventsEmitter.broadcast('click');
-  };
+  //define state change reactions ----------------------------------------------
 
-  container.node.addEventListener('click', clickEventHandler);
+  var updateListener = function(){
+    if (popupState.isEnabled  && !popupState.eventInProgress){
+      container.enableListeners();
+    } else {
+      container.disableListeners();
+    }
+  }
+
+  //load reactions -------------------------------------------------------------
+
+  popupState.addListener('isEnabled', 'menuContainer', 'listener', updateListener);
+  popupState.addListener('eventInProgress', 'menuContainer', 'listener', updateListener);
 
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
+
+  this.render = function(){
+    updateListener();
+  }
 
 }

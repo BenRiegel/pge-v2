@@ -5,26 +5,34 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function IframeNode(){
+export default function IframeNode(popupState, reportState){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
-  var node = document.createElement('iframe');
-  node.className = 'project-iframe';
+  var iframe = new DomElement('iframe', 'project-iframe');
+
+  //define state change reactions ----------------------------------------------
+
+  var updateContent = async function(){
+    if (reportState.isVisible && !reportState.contentIsLoaded){
+      await new Promise( resolve => {
+        var contentLoaded = evt => {
+          iframe.node.removeEventListener('load', contentLoaded);
+          reportState.onContentIsLoaded();
+          resolve();
+        }
+        iframe.node.addEventListener('load', contentLoaded);
+        iframe.node.src = popupState.projectData.url;
+      });
+    };
+  }
+
+  //load reactions -------------------------------------------------------------
+
+  reportState.addListener('isVisible', 'iframe', 'content', updateContent);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    node,
-    loadContent: async function(url){
-      await new Promise( resolve => {
-        var contentLoaded = evt => {
-          node.removeEventListener('load', contentLoaded);
-          resolve();
-        }
-        node.addEventListener('load', contentLoaded);
-        node.src = url;
-      });
-    },
-  }
+  this.node = iframe.node;
+
 }

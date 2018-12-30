@@ -1,7 +1,6 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
-import { getDimensions } from '../../../../lib/ViewUtils.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -16,7 +15,4 @@ export default function ContainerNode(){
 
   this.node = container.node;
 
-  this.getDimensions = function(){
-    return getDimensions(this.node);
-  };
 }

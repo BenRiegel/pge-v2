@@ -5,7 +5,7 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function TextNode(){
+export default function TextNode(popupState){
 
   //create dom element ---------------------------------------------------------
 
@@ -19,18 +19,10 @@ export default function TextNode(){
 
   //load reactions -------------------------------------------------------------
 
-  // popupState.addListener('projectData', 'text', 'content', updateContent)
+  popupState.addListener('projectData', 'text', 'content', updateContent)
 
   //public api -----------------------------------------------------------------
 
   this.node = text.node;
-
-  this.setContent = function(projectText){
-    text.innerHTML = projectText;
-  }
-
-  this.render = function(){
-    updateContent();
-  };
 
 }
