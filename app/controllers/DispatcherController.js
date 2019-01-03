@@ -2,6 +2,7 @@
 
 import dispatcher from '../services/Dispatcher.js';
 import { getProjectData } from '../stores/ProjectsModel.js';
+import { wait } from '../../lib/Utils.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -15,11 +16,11 @@ export async function initApp(){
   await dispatcher.broadcast('all', 'finishLoading');
 };
 
-export async function pointSelect(id){
-  var id = Math.floor(Math.random() * 5);
+export async function pointSelect(id, worldCoords){
   var projectData = await getProjectData(id);
+  await dispatcher.broadcast('mapMoveAnimator', 'panTo', worldCoords);
+  await wait(200);
   dispatcher.broadcast('popup', 'loadProjectData', projectData);
-  //dispatcher.broadcast('')  //move viewpoint
   dispatcher.broadcast('popup', 'open');
 };
 
@@ -27,6 +28,13 @@ export async function clusterSelect(worldCoords){
 }
 
 export function setNewSelectedTag(selectedTag){
-  //console.log(selectedTag);
-  //dispatcher.broadcast('graphicsLayer', 'filterGraphics', selectedTag);
+  dispatcher.broadcast('graphicsLayer', 'filterGraphics', selectedTag);
+}
+
+export function zoomStartRequest(dir){
+  dispatcher.broadcast('zoomController', 'zoomStartRequest', dir);
+}
+
+export function zoomStopRequest(){
+  dispatcher.broadcast('zoomController', 'zoomStopRequest')
 }

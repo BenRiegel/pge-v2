@@ -1,58 +1,47 @@
 //imports ----------------------------------------------------------------------
 
-//import NewLocationState from './models/LocationState.js';
-import NewContainerView from './views/ContainerView.js';
-import NewGraphicView from './views/GraphicView.js';
-import NewDomController from './controllers/DomController.js';
-import NewEventsController from './controllers/EventsController.js';
-import NewGraphicsController from './controllers/GraphicsController.js';
+import GraphicsLayerEmitter from './services/GraphicsLayerEmitter.js';
+import GraphicsLayerState from './state/GraphicsLayerState.js';
+import GraphicState from './state/GraphicState.js';
+import GraphicsLayerView from './view/GraphicsLayerView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function NewGraphicsLayer(){
+export default function NewGraphicsLayer(mapState, mapProperties){
 
   //private code block ---------------------------------------------------------
 
-  var state = {
-    isEnabled: undefined,
-    locations: {},
-    graphics: [],
-  }
-
-  var view = {
-    container: NewContainerView(),
-    graphics: [],
-  }
-
-  var controller = {
-    dom: NewDomController(view.container),
-    events: NewEventsController(state, view.container),
-    graphics: NewGraphicsController(state, view),
-  }
+  var state = new GraphicsLayerState(mapState, mapProperties);
+  var eventsEmitter = new GraphicsLayerEmitter(state);
+  var view = new GraphicsLayerView(state, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    rootNode: view.container.node,
-    addListener: controller.events.addListener,
-    enable: function(){
-      state.isEnabled = true;
-    },
-    disable: function(){
-      state.isEnabled = false;
-    },
-    addGraphic: function( {key, worldCoords} ){
-      state.locations.add( {key, worldCoords} );
-      //state.locations[key] = NewLocationState(worldCoords, tags);
-      //var graphicView = NewGraphicView();
-      //view.graphics[key] = graphicView;
-      //controller.dom.addGraphic(graphicView);
-    },
-    renderGraphics: function({pixelSize, pixelNum, leftMapCoord, topMapCoord}){
-    //  controller.graphics.combine();
-    //  controller.graphics.render();
-    },
+  this.rootNode = view.rootNode;
+
+  this.addListener = eventsEmitter.addListener,
+
+  this.enable = function(){
+    state.set('isEnabled', true);
+  };
+
+  this.disable = function(){
+    state.set('isEnabled', false);
+  };
+
+  this.addGraphics = function(graphicsInfoArray){
+    var graphicStates = [];
+    for (var graphicInfo of graphicsInfoArray){
+      var graphicState = new GraphicState(graphicInfo, mapProperties, state);
+      graphicStates.push(graphicState);
+      view.newGraphicNode(graphicInfo, graphicState);
+    }
+    state.setGraphics(graphicStates);
+  };
+
+  this.filterGraphics = function(selectedTag){
+    state.filterGraphics(selectedTag);
   }
 
 }

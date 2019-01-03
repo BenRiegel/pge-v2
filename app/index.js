@@ -1,13 +1,13 @@
 //imports ----------------------------------------------------------------------
 
 import { initApp } from './controllers/DispatcherController.js';
-import './controllers/RootController.js';
-import './controllers/LoaderController.js';
-import './controllers/ZoomControlsController.js';
-import './controllers/SelectMenuController.js';
-import './controllers/PopupController.js';
-import './controllers/GraphicsLayerController.js';
-import './controllers/MapViewpointController.js';
+import './views/GraphicsLayerView.js';
+import './views/SelectMenuView.js';
+import './views/LoaderView.js';
+import './views/PopupView.js';
+import './views/ZoomControlsView.js';
+import './services/ZoomController.js';
+import './services/MapMoveAnimator.js';
 import './assets/stylesheets/index.scss';
 
 
