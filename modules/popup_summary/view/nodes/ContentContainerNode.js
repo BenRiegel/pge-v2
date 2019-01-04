@@ -1,7 +1,6 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
-import { transitionSetStyle } from '../../../../lib/ViewUtils.js';
 
 
 //exports ----------------------------------------------------------------------

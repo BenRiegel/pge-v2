@@ -6,6 +6,7 @@ import zoomControls from './ZoomControlsView.js';
 import selectMenu from './SelectMenuView.js';
 import popup from './PopupView.js';
 import graphicsLayer from './GraphicsLayerView.js';
+import basemapLayer from './BasemapLayerView.js';
 import '../assets/stylesheets/root.scss';
 
 
@@ -22,6 +23,7 @@ dispatcher.addListener('root', 'load', () => {
   rootNode.appendChild(selectMenu.rootNode);
   rootNode.appendChild(popup.rootNode);
   rootNode.appendChild(graphicsLayer.rootNode);
+  rootNode.appendChild(basemapLayer.rootNode);
 });
 
 

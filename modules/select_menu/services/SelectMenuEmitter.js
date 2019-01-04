@@ -32,9 +32,9 @@ export default function SelectMenuEmitter(state){
 
   var broadcast = function(eventInProgress){
     if (eventInProgress){
-      emitter.broadcast('eventInProgress');
+      emitter.broadcast('eventStart');
     } else {
-      emitter.broadcast('eventFinished');
+      emitter.broadcast('eventEnd');
       broadcastEventMessages();
     }
   }

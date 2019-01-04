@@ -2,9 +2,20 @@ import { latLonToWebMercator } from '../../../lib/WebMercator.js';
 
 
 
-export default function GraphicState(props, mapProperties, layerState){
+
+
+export default function GraphicState(props, mapViewpoint, mapProperties, layerState){
 
   var worldCoords = latLonToWebMercator(props.geoCoords);
+
+  var listeners = {};
+
+  var broadcast = function(eventName, ...args){
+    var listener = listeners[eventName];
+    if (listener){
+      listener(...args);
+    }
+  }
 
   var state = {
     type: 'point',
@@ -12,13 +23,16 @@ export default function GraphicState(props, mapProperties, layerState){
     isSelected: true,
     parentGraphic: null,
     combinedGraphics: null,
-    worldCoords,
+    worldCoords: {x:worldCoords.x, y:worldCoords.y},
     screenCoords: {x:undefined, y:undefined},
     get isCombined(){
       return this.parentGraphic;
     },
     get num(){
       return this.combinedGraphics.length;
+    },
+    get isVisible(){
+      return (this.isSelected && !this.isCombined)
     }
   }
 
@@ -29,20 +43,13 @@ export default function GraphicState(props, mapProperties, layerState){
     this.radius = 8.5;
     this.parentGraphic = null,
     this.combinedGraphics = [this];
-    this.worldCoords = worldCoords;
+    this.worldCoords = {x:worldCoords.x, y:worldCoords.y};
+    this.updateScreenCoords();
   }
 
-  state.onUpdate = null;
-
-  state.update = function(){
-    if (state.onUpdate){
-      state.onUpdate();
-    }
+  state.addListener = function(eventName, listener){
+    listeners[eventName] = listener;
   }
-
-  var updateIsSelected = function(selectedTag){
-    state.isSelected = props.tags.includes(selectedTag);
-  };
 
   state.updateScreenCoords = function(){
     var { pixelSize, pixelNum, leftMapCoord, topMapCoord } = mapProperties;
@@ -52,16 +59,24 @@ export default function GraphicState(props, mapProperties, layerState){
     this.screenCoords.y = this.worldCoords.y / pixelSize - topMapCoord;
   };
 
-  state.panScreenCoords = function( {deltaXPx, deltaYPx, numPixels} ){
-    this.screenCoords.x -= deltaXPx;
-    this.screenCoords.x += (this.screenCoords.x < 0) ? numPixels : 0;
-    this.screenCoords.x -= (this.screenCoords.x > numPixels) ? numPixels : 0;
-    this.screenCoords.y -= deltaYPx;
-    this.screenCoords.y += (this.screenCoords.y < 0) ? numPixels : 0;
-    this.screenCoords.y -= (this.screenCoords.y > numPixels) ? numPixels : 0;
+  var updateIsSelected = function(selectedTag){
+    state.isSelected = props.tags.includes(selectedTag);
+  };
+
+  var panScreenCoords = function( {deltaXPx, deltaYPx} ){
+    var pixelNum = mapProperties.pixelNum;
+    state.screenCoords.x -= deltaXPx;
+    state.screenCoords.x += (state.screenCoords.x < 0) ? pixelNum : 0;
+    state.screenCoords.x -= (state.screenCoords.x > pixelNum) ? pixelNum : 0;
+    state.screenCoords.y -= deltaYPx;
+    state.screenCoords.y += (state.screenCoords.y < 0) ? pixelNum : 0;
+    state.screenCoords.y -= (state.screenCoords.y > pixelNum) ? pixelNum : 0;
+    broadcast('view - updateScreenCoords');
   }
 
   state.updateScreenCoords();
+
+  mapViewpoint.addListener('graphic - updateOnPan', panScreenCoords);
 
   layerState.addListener('selectedTag', 'graphicState', 'isSelected', updateIsSelected);
 

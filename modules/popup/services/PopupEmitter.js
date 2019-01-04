@@ -15,9 +15,9 @@ export default function PopupEmitter(state){
 
   var broadcast = function(){
     if (state.eventInProgress){
-      emitter.broadcast('processingStart');
+      emitter.broadcast('eventStart');
     } else {
-      emitter.broadcast('processingEnd');
+      emitter.broadcast('eventEnd');
     };
   }
 

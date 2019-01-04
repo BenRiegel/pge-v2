@@ -5,36 +5,37 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContentContainerNode(popupState, reportState){
+export default function ContainerNode(state, eventsEmitter){
 
   //create dom element ---------------------------------------------------------
 
-  var contentContainer = new DomElement('div', 'report-content');
+  var container = new DomElement('div', 'basemap-layer');
+
+  /*container.setEventListener('click', evt => {
+    var graphicId = evt.target.dataset.id;
+    eventsEmitter.onGraphicClick(graphicId);
+  });*/
 
   //define state change reactions ----------------------------------------------
 
-  var updateOpacity = async function(){
-    if (reportState.isVisible){
-      await contentContainer.animateOpacity('opaque');
+  /*var updateListener = function(){
+    if (state.isEnabled){
+      container.enableListeners();
     } else {
-      if (popupState.isOpen){
-        await contentContainer.animateOpacity('transparent');
-      } else {
-        contentContainer.setOpacity('transparent');
-      }
+      container.disableListeners();
     }
-  }
+  }*/
 
   //load reactions -------------------------------------------------------------
 
-  reportState.addListener('isVisible', 'contentContainer', 'opacity', updateOpacity);
+  //state.addListener('isEnabled', 'basemapLayerContainer', 'listener', updateListener);
 
   //public api -----------------------------------------------------------------
 
-  this.node = contentContainer.node;
+  this.node = container.node;
 
   this.render = function(){
-    updateOpacity();
-  }
+    //updateListener();
+  };
 
 }

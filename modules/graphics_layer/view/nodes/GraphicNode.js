@@ -5,15 +5,15 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicNode(id, graphicState){
+export default function GraphicNode(id, layerState, graphicState){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
   var graphic = new DomElement('div', 'graphic');
   graphic.dataset = { id };
 
   var updateVisibility = function(){
-    if (graphicState.isSelected && !graphicState.isCombined){
+    if (graphicState.isVisible){
       graphic.setVisibility('visible');
     } else {
       graphic.setVisibility('hidden');
@@ -35,12 +35,14 @@ export default function GraphicNode(id, graphicState){
     graphic.innerHTML = graphicState.num;
   }
 
-  graphicState.onUpdate = function(){
+  graphicState.addListener('view - updateScreenCoords', updateScreenCoords);
+
+  layerState.addListener('graphicNode - updateOnClusteringComplete', () => {
     updateVisibility();
     updateDimensions();
     updateScreenCoords();
     updateNum();
-  }
+  });
 
   //public api -----------------------------------------------------------------
 

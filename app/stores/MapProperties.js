@@ -1,8 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import mapViewpoint from './MapViewpoint.js';
-import { getPixelSize } from '../../lib/WebMapScale.js';
-import { getPixelNum } from '../../lib/WebMercator.js';
+import { getPixelSize, getPixelNum } from '../../lib/WebMapScale.js';
 import { mapDimensions } from '../views/RootView.js';
 
 
@@ -21,16 +20,18 @@ var calculatePixelProperties = function(){
 }
 
 var calculateViewportProperties = function(){
-  mapProperties.leftMapCoord = mapViewpoint.coords.x / mapProperties.pixelSize - mapDimensions.width * 0.5;   //change this in case of negative?
+  mapProperties.leftMapCoord = mapViewpoint.coords.x / mapProperties.pixelSize - mapDimensions.width * 0.5;
   mapProperties.topMapCoord = mapViewpoint.coords.y / mapProperties.pixelSize - mapDimensions.height * 0.5;
 }
 
 calculatePixelProperties();
 calculateViewportProperties();
 
-mapViewpoint.addListener('mapProperties', 'updatePixelProps', calculatePixelProperties);
-mapViewpoint.addListener('mapProperties', 'updateViewportProps', calculateViewportProperties);
-
+mapViewpoint.addListener('mapProperties - updateOnZoom', () => {
+  calculatePixelProperties();
+  calculateViewportProperties();
+});
+mapViewpoint.addListener('mapProperties - updateOnPan', calculateViewportProperties);
 
 
 //exports ----------------------------------------------------------------------

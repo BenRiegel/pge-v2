@@ -1,7 +1,11 @@
+//imports ----------------------------------------------------------------------
+
 import ComponentState from '../../../lib/ComponentState.js';
+import Emitter from '../../../lib/Emitter.js';
 import { clamp } from '../../../lib/Utils.js';
 
 
+//put these elsewhere
 
 var getDistance = function(c1, c2){
   return Math.sqrt( (c2.x - c1.x) * (c2.x - c1.x) + (c2.y - c1.y) * (c2.y - c1.y) );
@@ -23,31 +27,27 @@ export default function GraphicsLayerState(mapViewpoint, mapProperties){
 
   //create state var -----------------------------------------------------------
 
+  var emitter = new Emitter();
+
   var state = new ComponentState({
     selectedTag: null,
     isEnabled: true,
     graphicsList: [],
   });
 
+  state.addListener = emitter.addListener;
+
   state.setGraphics = function(graphicsList){
     this.set('graphicsList', graphicsList);
-    combineGraphics();
-    renderGraphics();
+    clusterGraphics();
   }
 
   state.filterGraphics = function(selectedTag){
     state.set('selectedTag', selectedTag);
-    combineGraphics();
-    renderGraphics();
+    clusterGraphics();
   }
 
-  var renderGraphics = function(){
-    for (var graphicState of state.graphicsList){
-      graphicState.update();
-    }
-  }
-
-  var combineGraphics = function(){
+  var clusterGraphics = function(){
     for (var graphic of state.graphicsList){
       graphic.reset();
     }
@@ -90,22 +90,10 @@ export default function GraphicsLayerState(mapViewpoint, mapProperties){
         done = !clusterFound;
       }
     }
+    emitter.broadcast('graphicNode - updateOnClusteringComplete');
   };
 
-  mapViewpoint.addListener('graphicsLayer', 'update', updateProps => {
-    if (updateProps.zHasChanged){
-      for (var graphicState of state.graphicsList){
-        graphicState.updateScreenCoords();
-      }
-      combineGraphics();
-      renderGraphics();
-    } else {
-      for (var graphicState of state.graphicsList){
-        graphicState.panScreenCoords(updateProps);
-        graphicState.update();
-      }
-    }
-  })
+  mapViewpoint.addListener('graphicsLayer - updateOnZoom', clusterGraphics);
 
   //public api -----------------------------------------------------------------
 

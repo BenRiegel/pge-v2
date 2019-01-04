@@ -34,9 +34,7 @@ export default function Popup(){
   };
 
   this.open = async function(){
-    state.set('eventInProgress', true);
     await state.set('isOpen', true);
-    state.set('eventInProgress', false);
   };
 
   this.close = async function(){

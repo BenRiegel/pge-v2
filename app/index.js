@@ -2,6 +2,7 @@
 
 import { initApp } from './controllers/DispatcherController.js';
 import './views/GraphicsLayerView.js';
+import './views/BasemapLayerView.js';
 import './views/SelectMenuView.js';
 import './views/LoaderView.js';
 import './views/PopupView.js';

@@ -7,7 +7,7 @@ import DomElement from '../../../../lib/DomElement.js';
 
 export default function ContainerNode(state, eventsEmitter){
 
-  //private code block ---------------------------------------------------------
+  //create dom element ---------------------------------------------------------
 
   var container = new DomElement('div', 'graphics-layer');
 
@@ -28,7 +28,7 @@ export default function ContainerNode(state, eventsEmitter){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('isEnabled', 'menuContainer', 'listener', updateListener);
+  state.addListener('isEnabled', 'graphicsLayerContainer', 'listener', updateListener);
 
   //public api -----------------------------------------------------------------
 

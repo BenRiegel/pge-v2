@@ -33,7 +33,7 @@ export default function NewGraphicsLayer(mapState, mapProperties){
   this.addGraphics = function(graphicsInfoArray){
     var graphicStates = [];
     for (var graphicInfo of graphicsInfoArray){
-      var graphicState = new GraphicState(graphicInfo, mapProperties, state);
+      var graphicState = new GraphicState(graphicInfo, mapState, mapProperties, state);
       graphicStates.push(graphicState);
       view.newGraphicNode(graphicInfo, graphicState);
     }

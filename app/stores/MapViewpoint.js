@@ -1,8 +1,8 @@
 //imports ----------------------------------------------------------------------
 
-import Dispatcher from '../../lib/Dispatcher.js';
 import * as webMercator from '../../lib/WebMercator.js';
-import { getMinScale, getPixelSize } from '../../lib/WebMapScale.js';
+import { getMinScale, getPixelSize, getPixelNum } from '../../lib/WebMapScale.js';
+import Emitter from '../../lib/Emitter.js';
 import { ESRI_MAX_SCALE_LEVEL } from '../config/Config.js';
 import { mapDimensions } from '../views/RootView.js';
 import { clamp } from '../../lib/Utils.js';
@@ -14,9 +14,10 @@ const MIN_SCALE_LEVEL = getMinScale(mapDimensions);
 const INIT_COORDS = webMercator.latLonToWebMercator( {lon:-5, lat:28} );
 const INIT_SCALE_LEVEL = MIN_SCALE_LEVEL;
 const ZOOM_IN_OUT_INCREMENT = 0.05;
+const ZOOM_TO_TOTAL_CHANGE = 2;
 
 
-var dispatcher = new Dispatcher();
+var emitter = new Emitter();
 
 var coords = {
   x: INIT_COORDS.x,
@@ -30,8 +31,12 @@ var calculateXChanges = function(eventType, eventInfo){
     case 'zoom-out':
       var newX = coords.x;
       break;
+    case 'zoomTo':
     case 'panTo':
       var newX = eventInfo.x;
+      break;
+    case 'zoomHome':
+      var newX = INIT_COORDS.x;
       break;
     default:
       break;
@@ -51,8 +56,12 @@ var calculateYChanges = function(eventType, eventInfo){
     case 'zoom-out':
       var newY = coords.y;
       break;
+    case 'zoomTo':
     case 'panTo':
       var newY = eventInfo.y;
+      break;
+    case 'zoomHome':
+      var newY = INIT_COORDS.y;
       break;
     default:
       break;
@@ -69,13 +78,19 @@ var calculateYChanges = function(eventType, eventInfo){
 var calculateZChanges = function(eventType, eventInfo){
   switch (eventType){
     case 'zoom-in':
-      var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT * eventInfo.percent, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
     case 'zoom-out':
-      var newZ = clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      var newZ = clamp(coords.z - ZOOM_IN_OUT_INCREMENT * eventInfo.percent, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
     case 'panTo':
       var newZ = coords.z;
+      break;
+    case 'zoomTo':
+      var newZ = clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      break;
+    case 'zoomHome':
+      var newZ = INIT_SCALE_LEVEL;
       break;
     default:
       break;
@@ -97,7 +112,51 @@ var setX = function(newX){
   return deltaX;
 }
 
-var setY = function(newY){
+
+//exports ----------------------------------------------------------------------
+
+export default {
+  coords,
+
+  addListener: emitter.addListener,
+
+  calculateCoordChanges: function(eventType, eventInfo){
+    return {
+      x: calculateXChanges(eventType, eventInfo),
+      y: calculateYChanges(eventType, eventInfo),
+      z: calculateZChanges(eventType, eventInfo)
+    }
+  },
+
+  pan: async function(newX, newY, deltaXPx, deltaYPx){
+    setX(newX);
+    coords.y = newY;
+    emitter.broadcast('mapProperties - updateOnPan');
+    emitter.broadcast('graphic - updateOnPan', {deltaXPx, deltaYPx} );
+    //broadcast to basemap tiles
+  },
+
+  zoom: async function(newZ){
+    coords.z = newZ;
+    emitter.broadcast('mapProperties - updateOnZoom');
+    emitter.broadcast('graphicsLayer - updateOnZoom');
+    //broadcast to basemap tiles or basemap layer
+  },
+
+  panAndZoom: async function(newX, newY, newZ){
+    setX(newX);
+    coords.y = newY;
+    coords.z = newZ;
+    emitter.broadcast('mapProperties - updateOnZoom');
+    emitter.broadcast('graphicsLayer - updateOnZoom');
+    //broadcast to basemap tiles or basemap layer
+  },
+
+}
+
+
+
+/*var setY = function(newY){
   var oldY = coords.y;
   var newRectifiedY = webMercator.calculateNewY(newY);
   var deltaY = newRectifiedY - oldY;
@@ -111,44 +170,29 @@ var setZ = function(newZ){
   var deltaZ = newRectifiedZ - oldZ;
   coords.z = newRectifiedZ;
   return deltaZ;
-}
+}*/
 
 
-//exports ----------------------------------------------------------------------
+/*setCoords: async function(newX, newY, newZ){
+  var xHasChanged = setX(newX);
+  var yHasChanged = setY(newY);
+  var zHasChanged = setZ(newZ);
 
-export default {
-  coords,
-  addListener: dispatcher.addListener,
-  calculateCoordChanges: function(eventType, eventInfo){
-    return {
-      x: calculateXChanges(eventType, eventInfo),
-      y: calculateYChanges(eventType, eventInfo),
-      z: calculateZChanges(eventType, eventInfo)
+  if (xHasChanged || yHasChanged || zHasChanged){
+    if (zHasChanged){
+      await dispatcher.broadcast('mapProperties', 'updatePixelProps');
+      var updateProps = {zHasChanged}
+    } else {
+      var pixelSize = getPixelSize(this.coords.z);
+      var deltaXPx = xHasChanged / pixelSize;
+      var deltaYPx = yHasChanged / pixelSize;
+      var numPixels = getPixelNum(pixelSize);
+      var updateProps = {zHasChanged, deltaXPx, deltaYPx, numPixels};
     }
-  },
-  setCoords: async function(newX, newY, newZ){
-    var xHasChanged = setX(newX);
-    var yHasChanged = setY(newY);
-    var zHasChanged = setZ(newZ);
-
-    if (xHasChanged || yHasChanged || zHasChanged){
-      if (zHasChanged){
-        await dispatcher.broadcast('mapProperties', 'updatePixelProps');
-        var updateProps = {zHasChanged}
-      } else {
-        var pixelSize = getPixelSize(this.coords.z);
-        var deltaXPx = xHasChanged / pixelSize;
-        var deltaYPx = yHasChanged / pixelSize;
-        var numPixels = webMercator.getPixelNum(pixelSize);
-        var updateProps = {zHasChanged, deltaXPx, deltaYPx, numPixels};
-      }
-      await dispatcher.broadcast('mapProperties', 'updateViewportProps');
-      await dispatcher.broadcast('graphicsLayer', 'update', updateProps);
-    }
-  },
-}
-
-
+    await dispatcher.broadcast('mapProperties', 'updateViewportProps');
+    await dispatcher.broadcast('graphicsLayer', 'update', updateProps);
+  }
+},*/
 
 /*calculateViewpointProps: function( y = this.yCoord.value, z = this.zCoord.value){
   var pixelSize = getPixelSize(z);
