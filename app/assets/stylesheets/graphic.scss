@@ -7,8 +7,6 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 20px;
-  height: 20px;
   background-color: rgba(134,38,51, 0.85);
   box-shadow: $outer-box-shadow;
   border-radius: 50%;
@@ -22,6 +20,6 @@
   background-color: #483D8B;
 }
 
-.site-point.prev-cluster{
+.graphic.highlight{
   background-color: #483D8B;
 }

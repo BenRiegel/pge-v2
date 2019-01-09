@@ -2,7 +2,7 @@
 
 import ZoomControls from '../../modules/zoom_controls/ZoomControls.js';
 import dispatcher from '../services/Dispatcher.js';
-import { zoomStartRequest, zoomStopRequest, zoomHome } from '../controllers/DispatcherController.js';
+import { zoom, zoomHome } from '../controllers/DispatcherController.js';
 import '../assets/stylesheets/zoom_controls.scss';
 
 
@@ -11,15 +11,9 @@ import '../assets/stylesheets/zoom_controls.scss';
 var zoomControls = new ZoomControls();
 
 dispatcher.addListener('zoomControls', 'load', () => {
-  zoomControls.addListener('in', 'buttonDown', () => {
-    zoomStartRequest('in');
-  });
-  zoomControls.addListener('out', 'buttonDown', () => {
-    zoomStartRequest('out');
-  })
-  zoomControls.addListener('in', 'buttonUp', zoomStopRequest);
-  zoomControls.addListener('out', 'buttonUp', zoomStopRequest);
-  zoomControls.addListener('home', 'buttonUp', zoomHome);
+  zoomControls.addClickListener('in', zoom);
+  zoomControls.addClickListener('out', zoom);
+  zoomControls.addClickListener('home', zoomHome);
 });
 
 dispatcher.addListener('zoomControls', 'enable', () => {

@@ -7,13 +7,12 @@ import ZoomButtonView from './view/ZoomButtonView.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ZoomButton(buttonProps, controlsState){
+export default function ZoomButton(props, controlsState){
 
   //private code block ---------------------------------------------------------
 
-  var buttonState = new ZoomButtonState();
-  var eventsEmitter = new ZoomButtonEmitter(buttonState);
-  var view = new ZoomButtonView(controlsState, buttonState, buttonProps);
+  var eventsEmitter = new ZoomButtonEmitter(props);
+  var view = new ZoomButtonView(props, controlsState, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 

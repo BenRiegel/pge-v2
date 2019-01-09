@@ -5,18 +5,17 @@ import NewEmitter from '../../../lib/Emitter.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerEmitter(state){
+export default function GraphicsLayerEmitter(){
 
   //creat emitter --------------------------------------------------------------
 
   var emitter = NewEmitter();
 
-  emitter.onGraphicClick = function(id){
-    var graphic = state.graphicsList[id];
-    if (graphic.type === 'point'){
-      emitter.broadcast('pointSelected', id, graphic.worldCoords);
+  emitter.onGraphicClick = function(id, type, worldCoords){
+    if (type === 'point'){
+      emitter.broadcast('pointSelected', id, worldCoords);
     } else {
-      emitter.broadcast('clusterSelected', graphic.worldCoords);
+      emitter.broadcast('clusterSelected', id, worldCoords);
     }
   }
 

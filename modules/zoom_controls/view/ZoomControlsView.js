@@ -30,16 +30,16 @@ export default function ZoomControlsView(state){
 
   this.rootNode = container.node;
 
-  this.addListener = function(buttonName, eventName, cb){
+  this.addClickListener = function(buttonName, cb){
     switch (buttonName){
       case 'home':
-        zoomHomeButton.addListener(eventName, cb);
+        zoomHomeButton.addListener('click', cb);
         break;
       case 'in':
-        zoomInButton.addListener(eventName, cb);
+        zoomInButton.addListener('click', cb);
         break;
       case 'out':
-        zoomOutButton.addListener(eventName, cb);
+        zoomOutButton.addListener('click', cb);
         break;
       default:
         break;

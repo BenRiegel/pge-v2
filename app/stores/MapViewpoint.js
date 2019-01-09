@@ -10,11 +10,11 @@ import { clamp } from '../../lib/Utils.js';
 
 //module code block ------------------------------------------------------------
 
-const MIN_SCALE_LEVEL = getMinScale(mapDimensions);
+const MIN_SCALE_LEVEL = 2;
 const INIT_COORDS = webMercator.latLonToWebMercator( {lon:-5, lat:28} );
 const INIT_SCALE_LEVEL = MIN_SCALE_LEVEL;
-const ZOOM_IN_OUT_INCREMENT = 0.05;
-const ZOOM_TO_TOTAL_CHANGE = 2;
+const ZOOM_IN_OUT_INCREMENT = 1;
+const ZOOM_TO_TOTAL_CHANGE = 1;
 
 
 var emitter = new Emitter();
@@ -25,17 +25,19 @@ var coords = {
   z: INIT_SCALE_LEVEL,
 }
 
-var calculateXChanges = function(eventType, eventInfo){
-  switch (eventType){
+var eventStartZ;
+
+var calculateXChanges = function(eventInfo){
+  switch (eventInfo.type){
     case 'zoom-in':
     case 'zoom-out':
       var newX = coords.x;
       break;
-    case 'zoomTo':
+    case 'zoom-to':
     case 'panTo':
-      var newX = eventInfo.x;
+      var newX = eventInfo.worldCoords.x;
       break;
-    case 'zoomHome':
+    case 'zoom-home':
       var newX = INIT_COORDS.x;
       break;
     default:
@@ -50,17 +52,17 @@ var calculateXChanges = function(eventType, eventInfo){
   }
 }
 
-var calculateYChanges = function(eventType, eventInfo){
-  switch (eventType){
+var calculateYChanges = function(eventInfo){
+  switch (eventInfo.type){
     case 'zoom-in':
     case 'zoom-out':
       var newY = coords.y;
       break;
-    case 'zoomTo':
+    case 'zoom-to':
     case 'panTo':
-      var newY = eventInfo.y;
+      var newY = eventInfo.worldCoords.y;
       break;
-    case 'zoomHome':
+    case 'zoom-home':
       var newY = INIT_COORDS.y;
       break;
     default:
@@ -75,21 +77,21 @@ var calculateYChanges = function(eventType, eventInfo){
   }
 }
 
-var calculateZChanges = function(eventType, eventInfo){
-  switch (eventType){
+var calculateZChanges = function(eventInfo){
+  switch (eventInfo.type){
     case 'zoom-in':
-      var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT * eventInfo.percent, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
     case 'zoom-out':
-      var newZ = clamp(coords.z - ZOOM_IN_OUT_INCREMENT * eventInfo.percent, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      var newZ = clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
     case 'panTo':
       var newZ = coords.z;
       break;
-    case 'zoomTo':
+    case 'zoom-to':
       var newZ = clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
-    case 'zoomHome':
+    case 'zoom-home':
       var newZ = INIT_SCALE_LEVEL;
       break;
     default:
@@ -116,15 +118,24 @@ var setX = function(newX){
 //exports ----------------------------------------------------------------------
 
 export default {
+
   coords,
+
+  get eventStartZ(){
+    return eventStartZ;
+  },
+
+  setEventStartZ: function(){
+    eventStartZ = this.coords.z;
+  },
 
   addListener: emitter.addListener,
 
-  calculateCoordChanges: function(eventType, eventInfo){
+  calculateCoordChanges: function(eventInfo){
     return {
-      x: calculateXChanges(eventType, eventInfo),
-      y: calculateYChanges(eventType, eventInfo),
-      z: calculateZChanges(eventType, eventInfo)
+      x: calculateXChanges(eventInfo),
+      y: calculateYChanges(eventInfo),
+      z: calculateZChanges(eventInfo)
     }
   },
 
@@ -139,7 +150,7 @@ export default {
   zoom: async function(newZ){
     coords.z = newZ;
     emitter.broadcast('mapProperties - updateOnZoom');
-    emitter.broadcast('graphicsLayer - updateOnZoom');
+    emitter.broadcast('graphic - updateOnZoom');
     //broadcast to basemap tiles or basemap layer
   },
 
@@ -148,7 +159,7 @@ export default {
     coords.y = newY;
     coords.z = newZ;
     emitter.broadcast('mapProperties - updateOnZoom');
-    emitter.broadcast('graphicsLayer - updateOnZoom');
+    emitter.broadcast('graphic - updateOnZoom');
     //broadcast to basemap tiles or basemap layer
   },
 

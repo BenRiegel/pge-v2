@@ -20,7 +20,9 @@ export default function ZoomControls(){
 
   this.rootNode = view.rootNode;
 
-  this.addListener = view.addListener;
+  this.addClickListener = function(buttonName, cb){
+    view.addClickListener(buttonName, cb);
+  }
 
   this.enable = function(){
     state.set('isEnabled', true);

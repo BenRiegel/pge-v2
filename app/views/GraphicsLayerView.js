@@ -35,6 +35,20 @@ dispatcher.addListener('graphicsLayer', 'disable', () => {
   graphicsLayer.disable();
 });
 
+dispatcher.addListener('graphicsLayer', 'highlightCluster', id => {
+  graphicsLayer.highlightCluster(id);
+});
+
+dispatcher.addListener('graphicsLayer', 'unhighlightCluster', () => {
+  graphicsLayer.unhighlightCluster();
+});
+
+dispatcher.addListener('graphicsLayer', 'clusterGraphics', () => {
+  graphicsLayer.clusterGraphics();
+});
+
+
+
 //exports ----------------------------------------------------------------------
 
 export default graphicsLayer;

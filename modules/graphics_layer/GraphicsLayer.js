@@ -2,19 +2,18 @@
 
 import GraphicsLayerEmitter from './services/GraphicsLayerEmitter.js';
 import GraphicsLayerState from './state/GraphicsLayerState.js';
-import GraphicState from './state/GraphicState.js';
 import GraphicsLayerView from './view/GraphicsLayerView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function NewGraphicsLayer(mapState, mapProperties){
+export default function GraphicsLayer(mapViewpoint, mapProperties){
 
   //private code block ---------------------------------------------------------
 
-  var state = new GraphicsLayerState(mapState, mapProperties);
-  var eventsEmitter = new GraphicsLayerEmitter(state);
-  var view = new GraphicsLayerView(state, eventsEmitter);
+  var state = new GraphicsLayerState();
+  var eventsEmitter = new GraphicsLayerEmitter();
+  var view = new GraphicsLayerView(mapViewpoint, mapProperties, state, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 
@@ -31,17 +30,25 @@ export default function NewGraphicsLayer(mapState, mapProperties){
   };
 
   this.addGraphics = function(graphicsInfoArray){
-    var graphicStates = [];
     for (var graphicInfo of graphicsInfoArray){
-      var graphicState = new GraphicState(graphicInfo, mapState, mapProperties, state);
-      graphicStates.push(graphicState);
-      view.newGraphicNode(graphicInfo, graphicState);
+      view.addNewGraphic(graphicInfo);
     }
-    state.setGraphics(graphicStates);
   };
 
+  this.clusterGraphics = function(){
+    view.clusterGraphics();
+  }
+
   this.filterGraphics = function(selectedTag){
-    state.filterGraphics(selectedTag);
+    state.set('selectedTag', selectedTag);
+  }
+
+  this.highlightCluster = function(id){
+    state.set('highlightedGraphicId', id);
+  }
+
+  this.unhighlightCluster = function(id){
+    state.set('highlightedGraphicId', null);
   }
 
 }
