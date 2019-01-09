@@ -5,13 +5,15 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode( {containerClassName, onButtonClick, popupState} ){
+export default function ContainerNode(className, popupState, eventsEmitter){
 
   //create dom element ---------------------------------------------------------
 
-  var container = new DomElement('div', containerClassName);
+  var container = new DomElement('div', className);
 
-  container.setEventListener('click', onButtonClick);
+  container.setEventListener('click', () => {
+    eventsEmitter.broadcast('click');
+  });
 
   //define state change reactions ----------------------------------------------
 

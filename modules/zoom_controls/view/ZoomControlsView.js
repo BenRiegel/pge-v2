@@ -12,38 +12,31 @@ export default function ZoomControlsView(state){
   //create nodes ---------------------------------------------------------------
 
   var container = new ContainerNode();
-  var zoomButtonContainer = new ButtonContainerNode();
-  var zoomHomeButton = new ZoomButton({containerClassName:'zoom-home', iconClassName:'fa-home'}, state);
-  var zoomInOutButtonContainer = new ButtonContainerNode();
-  var zoomInButton = new ZoomButton({containerClassName:'zoom-in', iconClassName:'fa-plus'}, state);
-  var zoomOutButton = new ZoomButton({containerClassName:'zoom-out', iconClassName:'fa-minus'}, state);
+  var homeButtonContainer = new ButtonContainerNode();
+  var inOutButtonContainer = new ButtonContainerNode();
+
+  //create subcomponents -------------------------------------------------------
+
+  var buttons = {
+    home: new ZoomButton('zoom-home', 'fa-home', state),
+    in: new ZoomButton('zoom-in', 'fa-plus', state),
+    out: new ZoomButton('zoom-out', 'fa-minus', state),
+  }
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(zoomButtonContainer.node);
-  container.node.appendChild(zoomInOutButtonContainer.node);
-  zoomButtonContainer.node.appendChild(zoomHomeButton.rootNode);
-  zoomInOutButtonContainer.node.appendChild(zoomInButton.rootNode);
-  zoomInOutButtonContainer.node.appendChild(zoomOutButton.rootNode);
+  container.node.appendChild(homeButtonContainer.node);
+  container.node.appendChild(inOutButtonContainer.node);
+  homeButtonContainer.node.appendChild(buttons.home.rootNode);
+  inOutButtonContainer.node.appendChild(buttons.in.rootNode);
+  inOutButtonContainer.node.appendChild(buttons.out.rootNode);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = container.node;
 
   this.addClickListener = function(buttonName, cb){
-    switch (buttonName){
-      case 'home':
-        zoomHomeButton.addListener('click', cb);
-        break;
-      case 'in':
-        zoomInButton.addListener('click', cb);
-        break;
-      case 'out':
-        zoomOutButton.addListener('click', cb);
-        break;
-      default:
-        break;
-    }
+    buttons[buttonName].addClickListener(cb);
   }
 
 }

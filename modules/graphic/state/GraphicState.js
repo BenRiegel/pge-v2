@@ -115,7 +115,7 @@ export default function GraphicState(props, mapViewpoint, mapProperties, layerSt
     updateScale();
   });
   layerState.addListener('selectedTag', 'graphic', 'isMapped', updateIsMapped);
-  layerState.addListener('highlightedGraphicId', 'graphic', 'isHighlighted', updateIsHighlighted)
+  layerState.addListener('highlightedGraphicId', 'graphic', 'isHighlighted', updateIsHighlighted);
 
 
   //public api -----------------------------------------------------------------

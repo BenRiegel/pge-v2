@@ -5,14 +5,14 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode( {containerClassName}, controlsState, emitter){
+export default function ContainerNode(className, controlsState, eventsEmitter){
 
   //create dom element ---------------------------------------------------------
 
-  var container = new DomElement('div', `zoom-button ${containerClassName}`);
+  var container = new DomElement('div', `zoom-button ${className}`);
 
   container.setEventListener('click', () => {
-    emitter.onButtonClick();
+    eventsEmitter.broadcast('click');
   });
 
   //define state change reactions ----------------------------------------------

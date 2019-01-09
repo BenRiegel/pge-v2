@@ -19,8 +19,8 @@ dispatcher.addListener('graphicsLayer', 'load', async () => {
   var projects = await projectsReceived;
   graphicsLayer.addGraphics(projects);
   graphicsLayer.filterGraphics(INIT_SELECTED_TAG);
-  graphicsLayer.addListener('pointSelected', pointSelect);
-  graphicsLayer.addListener('clusterSelected', clusterSelect);
+  graphicsLayer.addClickListener('point', pointSelect);
+  graphicsLayer.addClickListener('cluster', clusterSelect);
 });
 
 dispatcher.addListener('graphicsLayer', 'filterGraphics', selectedTag => {

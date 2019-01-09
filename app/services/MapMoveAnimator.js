@@ -5,6 +5,7 @@ import mapViewpoint from '../stores/MapViewpoint.js';
 import mapProperties from '../stores/MapProperties.js';
 import { getScale, calculateScaleLevel } from '../../lib/WebMapScale.js';
 import { onNewAnimationFrame } from '../../lib/Animation.js';
+import { capitalizeString } from '../../lib/Utils.js';
 
 
 //module code block ------------------------------------------------------------
@@ -33,7 +34,7 @@ var easeInOutQuad = function(t,b,c,d){
 
 
 var panTo = async function(worldCoords){
-  var coordChanges = mapViewpoint.calculateCoordChanges( {type:'panTo', worldCoords} );
+  var coordChanges = mapViewpoint.calculateCoordChanges('panTo', worldCoords);
   var numFrames = getPanToAnimationTime(coordChanges.x.delta, coordChanges.y.delta);
   if (numFrames === 0){
     return;
@@ -67,8 +68,9 @@ var panTo = async function(worldCoords){
 }
 
 
-var zoom = async function(zoomInfo){
-  var coordChanges = mapViewpoint.calculateCoordChanges(zoomInfo);
+var zoom = async function(type, worldCoords){
+  var zoomType = 'zoom' + capitalizeString(type);
+  var coordChanges = mapViewpoint.calculateCoordChanges(zoomType, worldCoords);
   if (coordChanges.z.hasChanged){
     var numFrames = getZoomAnimationTime(coordChanges.z.delta);
   } else {
@@ -101,17 +103,10 @@ dispatcher.addListener('mapMoveAnimator', 'panTo', async worldCoords => {
   await panTo(worldCoords);
 });
 
-dispatcher.addListener('mapMoveAnimator', 'zoomTo', async worldCoords => {
-  await zoom( {type:'zoom-to', worldCoords});
+dispatcher.addListener('mapMoveAnimator', 'zoom', async (type, worldCoords) => {
+  await zoom(type, worldCoords);
 });
 
-dispatcher.addListener('mapMoveAnimator', 'zoom', async dir =>{
-  await zoom( {type:dir} );
-});
-
-dispatcher.addListener('mapMoveAnimator', 'zoomHome', async () => {
-  await zoom( {type:'zoom-home'} );
-});
 
 
 

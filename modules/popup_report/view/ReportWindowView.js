@@ -17,6 +17,9 @@ export default function ReportWindowView(popupState, reportState){
   var container = new ContainerNode(reportState);
   var contentContainer = new ContentContainerNode(popupState, reportState);
   var iframe = new IframeNode(popupState, reportState);
+
+  //create subcomponents -------------------------------------------------------
+
   var closeButton = new CloseButton(popupState);
   var contractButton = new ContractButton(popupState);
   var loader = new Loader(popupState, reportState);

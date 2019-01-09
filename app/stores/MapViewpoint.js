@@ -27,17 +27,17 @@ var coords = {
 
 var eventStartZ;
 
-var calculateXChanges = function(eventInfo){
-  switch (eventInfo.type){
-    case 'zoom-in':
-    case 'zoom-out':
+var calculateXChanges = function(eventName, worldCoords){
+  switch (eventName){
+    case 'zoomIn':
+    case 'zoomOut':
       var newX = coords.x;
       break;
-    case 'zoom-to':
+    case 'zoomTo':
     case 'panTo':
-      var newX = eventInfo.worldCoords.x;
+      var newX = worldCoords.x;
       break;
-    case 'zoom-home':
+    case 'zoomHome':
       var newX = INIT_COORDS.x;
       break;
     default:
@@ -52,17 +52,17 @@ var calculateXChanges = function(eventInfo){
   }
 }
 
-var calculateYChanges = function(eventInfo){
-  switch (eventInfo.type){
-    case 'zoom-in':
-    case 'zoom-out':
+var calculateYChanges = function(eventName, worldCoords){
+  switch (eventName){
+    case 'zoomIn':
+    case 'zoomOut':
       var newY = coords.y;
       break;
-    case 'zoom-to':
+    case 'zoomTo':
     case 'panTo':
-      var newY = eventInfo.worldCoords.y;
+      var newY = worldCoords.y;
       break;
-    case 'zoom-home':
+    case 'zoomHome':
       var newY = INIT_COORDS.y;
       break;
     default:
@@ -77,21 +77,21 @@ var calculateYChanges = function(eventInfo){
   }
 }
 
-var calculateZChanges = function(eventInfo){
-  switch (eventInfo.type){
-    case 'zoom-in':
+var calculateZChanges = function(eventName){
+  switch (eventName){
+    case 'zoomIn':
       var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
-    case 'zoom-out':
+    case 'zoomOut':
       var newZ = clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
     case 'panTo':
       var newZ = coords.z;
       break;
-    case 'zoom-to':
+    case 'zoomTo':
       var newZ = clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
-    case 'zoom-home':
+    case 'zoomHome':
       var newZ = INIT_SCALE_LEVEL;
       break;
     default:
@@ -131,11 +131,11 @@ export default {
 
   addListener: emitter.addListener,
 
-  calculateCoordChanges: function(eventInfo){
+  calculateCoordChanges: function(eventName, worldCoords){
     return {
-      x: calculateXChanges(eventInfo),
-      y: calculateYChanges(eventInfo),
-      z: calculateZChanges(eventInfo)
+      x: calculateXChanges(eventName, worldCoords),
+      y: calculateYChanges(eventName, worldCoords),
+      z: calculateZChanges(eventName)
     }
   },
 
@@ -222,10 +222,10 @@ var setZ = function(newZ){
   var deltaYWorld = deltaYPx * pixelSize;
   await setCoords(xCoord.value + deltaXWorld, yCoord.value + deltaYWorld, zCoord.value);
 },
-zoom-in: async function(){
+zoomIn: async function(){
  await setCoords(xCoord.value, yCoord.value, zCoord.value + ZOOM_IN_OUT_INCREMENT);
 },
-zoom-out: async function(){
+zoomOut: async function(){
  await setCoords(xCoord.value, yCoord.value, zCoord.value - ZOOM_IN_OUT_INCREMENT);
 },
 animatePanTo: async function(newX, newY){

@@ -13,10 +13,12 @@ export default function ContainerNode(state, eventsEmitter){
 
   container.setEventListener('click', evt => {
     var graphicId = Number(evt.target.dataset.id);
-    var x = Number(evt.target.dataset.x);
-    var y = Number(evt.target.dataset.y);
-    var type = evt.target.dataset.type;
-    eventsEmitter.onGraphicClick(graphicId, type, {x,y});
+    var graphicType = evt.target.dataset.type;
+    var worldCoords = {
+      x: Number(evt.target.dataset.x),
+      y: Number(evt.target.dataset.y)
+    };
+    eventsEmitter.broadcast(graphicType, graphicId, worldCoords);
   });
 
   //define state change reactions ----------------------------------------------

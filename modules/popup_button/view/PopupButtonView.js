@@ -6,12 +6,12 @@ import IconNode from './nodes/IconNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupButtonView(buttonProps){
+export default function PopupButtonView(containerClassName, iconClassName, popupState, eventsEmitter){
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode(buttonProps);
-  var icon = new IconNode(buttonProps.iconClassName);
+  var container = new ContainerNode(containerClassName, popupState, eventsEmitter);
+  var icon = new IconNode(iconClassName);
 
   //configure dom --------------------------------------------------------------
 

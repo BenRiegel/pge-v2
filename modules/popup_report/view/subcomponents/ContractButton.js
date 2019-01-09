@@ -9,11 +9,10 @@ export default function ContractButton(popupState){
 
   //create subcomponent --------------------------------------------------------
 
-  var contractButton = new PopupButton({
-    containerClassName: 'report-contract-button',
-    iconClassName: 'fa-compress',
-    onButtonClick: popupState.onContractAction.bind(popupState),
-    popupState,
+  var contractButton = new PopupButton('report-contract-button', 'fa-compress', popupState);
+
+  contractButton.addClickListener( () => {
+    popupState.onContractAction();
   });
 
   //public api -----------------------------------------------------------------

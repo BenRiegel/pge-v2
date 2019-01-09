@@ -6,12 +6,12 @@ import IconNode from './nodes/IconNode';
 
 //exports ----------------------------------------------------------------------
 
-export default function ZoomButtonView(buttonProps, controlsState, emitter){
+export default function ZoomButtonView(containerClassName, iconClassName, controlsState, eventsEmitter){
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode(buttonProps, controlsState, emitter);
-  var icon = new IconNode(buttonProps);
+  var container = new ContainerNode(containerClassName, controlsState, eventsEmitter);
+  var icon = new IconNode(iconClassName);
 
   //configure dom --------------------------------------------------------------
 

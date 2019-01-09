@@ -38,6 +38,7 @@ export default function GraphicNode(id, graphicState){
     }
   }
 
+  // do something about this
   var updateSize = function(){
     if (graphicState.numPts > 1){
       if (graphicState.radius < 10){

@@ -9,14 +9,14 @@ export default function ReportLoader(popupState, reportState){
 
   //create subcomponent --------------------------------------------------------
 
-  var loader = new Loader( {fadeOutOnHide:false} );
+  var loader = new Loader();
 
   //define state change reactions ----------------------------------------------
 
   var activate = function(){
     loader.show();
   }
-  
+
   var terminate = function(){
     loader.hide( {fadeOutOnHide:false} );
   }

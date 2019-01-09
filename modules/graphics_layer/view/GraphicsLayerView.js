@@ -2,7 +2,7 @@
 
 import ContainerNode from './nodes/ContainerNode.js';
 import Graphic from '../../graphic/Graphic.js';
-import { clamp, getDistance } from '../../../lib/Utils.js';
+import { getDistance } from '../../../lib/Utils.js';
 
 
 //exports ----------------------------------------------------------------------

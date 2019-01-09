@@ -1,15 +1,15 @@
 //imports ----------------------------------------------------------------------
 
-import NewEmitter from '../../../lib/Emitter.js';
+import Emitter from '../../../lib/Emitter.js';
 
 
 //exports ----------------------------------------------------------------------
 
 export default function SelectMenuEmitter(state){
 
-  //creat emitter --------------------------------------------------------------
+  //create emitter -------------------------------------------------------------
 
-  var emitter = NewEmitter();
+  var emitter = new Emitter();
 
   //helper variable ------------------------------------------------------------
 

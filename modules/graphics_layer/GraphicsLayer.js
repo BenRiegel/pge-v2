@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import GraphicsLayerEmitter from './services/GraphicsLayerEmitter.js';
+import Emitter from '../../lib/Emitter.js';
 import GraphicsLayerState from './state/GraphicsLayerState.js';
 import GraphicsLayerView from './view/GraphicsLayerView.js';
 
@@ -12,14 +12,16 @@ export default function GraphicsLayer(mapViewpoint, mapProperties){
   //private code block ---------------------------------------------------------
 
   var state = new GraphicsLayerState();
-  var eventsEmitter = new GraphicsLayerEmitter();
+  var eventsEmitter = new Emitter();
   var view = new GraphicsLayerView(mapViewpoint, mapProperties, state, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
-  this.addListener = eventsEmitter.addListener,
+  this.addClickListener = function(graphicType, cb){
+    eventsEmitter.addListener(graphicType, cb);
+  };
 
   this.enable = function(){
     state.set('isEnabled', true);

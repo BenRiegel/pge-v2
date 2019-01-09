@@ -22,14 +22,17 @@ export default function PopupSummaryView(popupState, summaryState){
   var container = new ContainerNode(popupState, summaryState);
   var arrow = new ArrowNode(summaryState);
   var body = new BodyNode();
-  var loader = new Loader(popupState, summaryState);
   var contentContainer = new ContentContainerNode(summaryState);
-  var closeButton = new CloseButton(popupState);
   var author = new AuthorNode(popupState);
   var title = new TitleNode(popupState);
   var image = new ImageNode(popupState, summaryState);
   var text = new TextNode(popupState);
   var readMoreText = new ReadMoreTextNode(popupState);
+
+  //create subcomponents -------------------------------------------------------
+
+  var loader = new Loader(popupState, summaryState);
+  var closeButton = new CloseButton(popupState);
 
   //configure dom --------------------------------------------------------------
 

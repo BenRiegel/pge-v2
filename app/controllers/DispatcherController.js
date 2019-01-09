@@ -43,7 +43,7 @@ export async function clusterSelect(id, worldCoords){
   dispatcher.broadcast('selectMenu', 'disable');
   dispatcher.broadcast('selectMenu', 'close');
   dispatcher.broadcast('graphicsLayer', 'highlightCluster', id);
-  await dispatcher.broadcast('mapMoveAnimator', 'zoomTo', worldCoords);
+  await dispatcher.broadcast('mapMoveAnimator', 'zoom', 'to', worldCoords);
   await wait(300);
   dispatcher.broadcast('graphicsLayer', 'unhighlightCluster');
   dispatcher.broadcast('graphicsLayer', 'clusterGraphics');
@@ -51,7 +51,6 @@ export async function clusterSelect(id, worldCoords){
   dispatcher.broadcast('zoomControls', 'enable');
   dispatcher.broadcast('selectMenu', 'enable');
 }
-
 
 export function selectMenuEventStart(){
   dispatcher.broadcast('zoomControls', 'disable');
@@ -85,12 +84,6 @@ export function popupEventEnd(){
 
 export async function zoom(type){
   await dispatcher.broadcast('mapMoveAnimator', 'zoom', type);
-  await wait(300);
-  dispatcher.broadcast('graphicsLayer', 'clusterGraphics');
-}
-
-export async function zoomHome(){
-  await dispatcher.broadcast('mapMoveAnimator', 'zoomHome');
   await wait(300);
   dispatcher.broadcast('graphicsLayer', 'clusterGraphics');
 }

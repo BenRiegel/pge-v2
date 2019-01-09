@@ -5,11 +5,11 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function IconNode( {iconClassName} ){
+export default function IconNode(className){
 
   //create dom element ---------------------------------------------------------
 
-  var icon = new DomElement('span', `fa ${iconClassName}`);
+  var icon = new DomElement('span', `fa ${className}`);
 
   //public api -----------------------------------------------------------------
 

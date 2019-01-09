@@ -9,7 +9,7 @@ export default function SummaryLoader(popupState, summaryState){
 
   //create subcomponent --------------------------------------------------------
 
-  var loader = new Loader( {fadeOutOnHide:false} );
+  var loader = new Loader();
 
   //define state change reactions ----------------------------------------------
 

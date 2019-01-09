@@ -1,23 +1,24 @@
 //imports ----------------------------------------------------------------------
 
-import ZoomButtonState from './state/ZoomButtonState.js';
-import ZoomButtonEmitter from './services/ZoomButtonEmitter.js';
+import Emitter from '../../lib/Emitter.js';
 import ZoomButtonView from './view/ZoomButtonView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ZoomButton(props, controlsState){
+export default function ZoomButton(containerClassName, iconClassName, controlsState){
 
   //private code block ---------------------------------------------------------
 
-  var eventsEmitter = new ZoomButtonEmitter(props);
-  var view = new ZoomButtonView(props, controlsState, eventsEmitter);
+  var eventsEmitter = new Emitter();
+  var view = new ZoomButtonView(containerClassName, iconClassName, controlsState, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
-  this.addListener = eventsEmitter.addListener;
+  this.addClickListener = function(cb){
+    eventsEmitter.addListener('click', cb);
+  }
 
 }
