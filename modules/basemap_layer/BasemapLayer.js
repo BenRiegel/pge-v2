@@ -1,45 +1,29 @@
 //imports ----------------------------------------------------------------------
 
-//import GraphicsLayerEmitter from './services/GraphicsLayerEmitter.js';
-//import GraphicsLayerState from './state/GraphicsLayerState.js';
-//import GraphicState from './state/GraphicState.js';
+import Emitter from '../../lib/Emitter.js';
+import BasemapLayerState from './state/BasemapLayerState.js';
 import BasemapLayerView from './view/BasemapLayerView.js';
-
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayer(mapDimensions){
-
+export default function BasemapLayer(mapViewpoint, mapProperties){
 
   //private code block ---------------------------------------------------------
 
-  var view = new BasemapLayerView();
-  //view -----------------------------------------------------------------------
-
-  /*var clickEventHandler = function(evt){
-  };
-
-  var container = new NodeInstance('div');
-  container.className = 'basemap-layer';
-  container.onClick = clickEventHandler;
-  var numTilesWidth = calculateTilesNeeded(webMapWidth);
-  var numTilesHeight = calculateTilesNeeded(webMapHeight);
-
-  var tiles = [];
-  for (var i = 0; i < numTilesWidth; i++){
-    for (var j = 0; j < numTilesHeight; j++){
-      var tile = NewBasemapTile(i, j);
-      tiles.push(tile);
-    }
-  }
-  addChildrenTo(container, tiles);*/
+  var state = new BasemapLayerState(mapViewpoint, mapProperties);
+  var eventsEmitter = new Emitter();
+  var view = new BasemapLayerView(mapViewpoint, mapProperties, state, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
-  //this.addListener = eventsEmitter.addListener,
+  this.hasRendered = view.hadRendered;
+
+  this.addListener = function(eventName, cb){
+    eventsEmitter.addListener(eventName, cb);
+  };
 
   this.enable = function(){
     state.set('isEnabled', true);

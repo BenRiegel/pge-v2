@@ -44,9 +44,7 @@ export async function clusterSelect(id, worldCoords){
   dispatcher.broadcast('selectMenu', 'close');
   dispatcher.broadcast('graphicsLayer', 'highlightCluster', id);
   await dispatcher.broadcast('mapMoveAnimator', 'zoom', 'to', worldCoords);
-  await wait(300);
-  dispatcher.broadcast('graphicsLayer', 'unhighlightCluster');
-  dispatcher.broadcast('graphicsLayer', 'clusterGraphics');
+  //dispatcher.broadcast('graphicsLayer', 'unhighlightCluster');
   dispatcher.broadcast('popup', 'enable');
   dispatcher.broadcast('zoomControls', 'enable');
   dispatcher.broadcast('selectMenu', 'enable');
@@ -84,6 +82,4 @@ export function popupEventEnd(){
 
 export async function zoom(type){
   await dispatcher.broadcast('mapMoveAnimator', 'zoom', type);
-  await wait(300);
-  dispatcher.broadcast('graphicsLayer', 'clusterGraphics');
 }

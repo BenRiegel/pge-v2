@@ -2,3 +2,17 @@
 
 .basemap-layer{
 }
+
+
+.tile-container{
+  position:relative;
+  animation-duration: 0.4s;
+}
+
+.tile-container:first-child{
+  z-index:1;
+}
+
+.tile-container:last-child{
+  z-index:0;
+}

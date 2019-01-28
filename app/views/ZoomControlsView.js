@@ -2,6 +2,7 @@
 
 import ZoomControls from '../../modules/zoom_controls/ZoomControls.js';
 import dispatcher from '../services/Dispatcher.js';
+import rootNode from './RootView.js';
 import { zoom } from '../controllers/DispatcherController.js';
 import '../assets/stylesheets/zoom_controls.scss';
 
@@ -20,6 +21,7 @@ dispatcher.addListener('zoomControls', 'load', () => {
   zoomControls.addClickListener('home', () => {
     zoom('home');
   });
+  rootNode.appendChild(zoomControls.rootNode);
 });
 
 dispatcher.addListener('zoomControls', 'enable', () => {

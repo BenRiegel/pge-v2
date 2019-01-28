@@ -1,38 +1,61 @@
 //imports ----------------------------------------------------------------------
 
 import ContainerNode from './nodes/ContainerNode.js';
-//import GraphicNode from './nodes/GraphicNode';
-
-
-//module code block ------------------------------------------------------------
-
-var calculateTilesNeeded = function(dimensionPx){
-  var baseTilesNeeded = Math.trunc(dimensionPx / 256);
-  var remainder = dimensionPx % 256;
-  return (remainder > 1) ? baseTilesNeeded + 2 : baseTilesNeeded + 1;
-};
+import TileContainerNode from './nodes/TileContainerNode.js';
+import TileNode from './nodes/BasemapTileNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerView(){
+export default function BasemapLayerView(mapViewpoint, mapProperties, layerState, eventsEmitter){
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode();
+  var container = new ContainerNode(layerState, eventsEmitter);
+  var tileContainer = new TileContainerNode();
+  var tileContainerCopy = new TileContainerNode();
+  var tileNodes = [];
+  for (var tileState of layerState.tiles){
+    var tileNode = new TileNode(tileState, mapViewpoint, mapProperties);
+    tileNodes.push(tileNode);
+  }
+
+  //configure dom --------------------------------------------------------------
+
+  container.node.appendChild(tileContainerCopy.node);
+  container.node.appendChild(tileContainer.node);
+  tileContainer.addChildNodes(tileNodes);
+
+  //helper function ------------------------------------------------------------
+
+  var renderTiles = async function(){
+    var promises = [];
+    for (var tileNode of tileNodes){
+      var p = tileNode.render();
+      promises.push(p);
+    }
+    await Promise.all(promises);
+  }
+
+  mapViewpoint.addListener('basemapLayer - copyTiles', () => {
+    for (var childNode of tileContainer.node.childNodes){
+      var childCopy = childNode.cloneNode(true);
+      tileContainerCopy.node.appendChild(childCopy);
+    }
+  });
+
+  mapViewpoint.addListener('basemapLayer - revealNewTiles', async () => {
+    await tileContainerCopy.fadeOut();
+    tileContainerCopy.reset();
+  });
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = container.node;
 
-  this.newGraphicNode = function(graphicInfo, graphicState){
-    var graphicNode = new GraphicNode(graphicInfo.id, graphicState);
-    graphicNode.render();
-    container.node.appendChild(graphicNode.node);
-  }
-
   this.hasRendered = new Promise(async resolve => {
     container.render();
+    await renderTiles();
     resolve();
   });
 

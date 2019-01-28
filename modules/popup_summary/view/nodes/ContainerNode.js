@@ -68,7 +68,6 @@ export default function ContainerNode(popupState, summaryState){
   var updateDimensions = async function(){
     if (summaryState.isExpanded){
       container.saveCurrentDimensions();
-      console.log('animate expand')
       await container.animateExpand();
     } else {
       if (popupState.isOpen){

@@ -2,6 +2,7 @@
 
 import GraphicsLayer from '../../modules/graphics_layer/GraphicsLayer.js';
 import dispatcher from '../services/Dispatcher.js';
+import rootNode from './RootView.js';
 import { pointSelect, clusterSelect } from '../controllers/DispatcherController.js';
 import { INIT_SELECTED_TAG } from '../config/Config.js';
 import { projectsReceived } from '../stores/ProjectsModel.js';
@@ -21,6 +22,7 @@ dispatcher.addListener('graphicsLayer', 'load', async () => {
   graphicsLayer.filterGraphics(INIT_SELECTED_TAG);
   graphicsLayer.addClickListener('point', pointSelect);
   graphicsLayer.addClickListener('cluster', clusterSelect);
+  rootNode.appendChild(graphicsLayer.rootNode);
 });
 
 dispatcher.addListener('graphicsLayer', 'filterGraphics', selectedTag => {
@@ -42,12 +44,6 @@ dispatcher.addListener('graphicsLayer', 'highlightCluster', id => {
 dispatcher.addListener('graphicsLayer', 'unhighlightCluster', () => {
   graphicsLayer.unhighlightCluster();
 });
-
-dispatcher.addListener('graphicsLayer', 'clusterGraphics', () => {
-  graphicsLayer.clusterGraphics();
-});
-
-
 
 //exports ----------------------------------------------------------------------
 

@@ -1,10 +1,8 @@
 //imports ----------------------------------------------------------------------
 
 import * as webMercator from '../../lib/WebMercator.js';
-import { getMinScale, getPixelSize, getPixelNum } from '../../lib/WebMapScale.js';
 import Emitter from '../../lib/Emitter.js';
 import { ESRI_MAX_SCALE_LEVEL } from '../config/Config.js';
-import { mapDimensions } from '../views/RootView.js';
 import { clamp } from '../../lib/Utils.js';
 
 
@@ -25,60 +23,117 @@ var coords = {
   z: INIT_SCALE_LEVEL,
 }
 
-var eventStartZ;
-
-var calculateXChanges = function(eventName, worldCoords){
-  switch (eventName){
-    case 'zoomIn':
-    case 'zoomOut':
-      var newX = coords.x;
-      break;
-    case 'zoomTo':
-    case 'panTo':
-      var newX = worldCoords.x;
-      break;
-    case 'zoomHome':
-      var newX = INIT_COORDS.x;
-      break;
-    default:
-      break;
-  }
-  var deltaX = webMercator.calculateDeltaX(newX, coords.x);
-  return{
+var calculateXChanges = function(eventName, worldCoords = {x:0,y:0} ){
+  var newXLookup = {
+    zoomIn: coords.x,
+    zoomOut: coords.x,
+    zoomTo: worldCoords.x,
+    panTo: worldCoords.x,
+    zoomHome: INIT_COORDS.x,
+  };
+  var newX = newXLookup[eventName];
+  return {
     init: coords.x,
     new: newX,
-    delta: deltaX,
+    delta: webMercator.calculateDeltaX(newX, coords.x),
     hasChanged: (newX !== coords.x),
   }
 }
 
-var calculateYChanges = function(eventName, worldCoords){
-  switch (eventName){
-    case 'zoomIn':
-    case 'zoomOut':
-      var newY = coords.y;
-      break;
-    case 'zoomTo':
-    case 'panTo':
-      var newY = worldCoords.y;
-      break;
-    case 'zoomHome':
-      var newY = INIT_COORDS.y;
-      break;
-    default:
-      break;
-  }
-  var deltaY = newY - coords.y;
-  return{
+var calculateYChanges = function(eventName, worldCoords = {x:0, y:0}){
+  var newYLookup = {
+    zoomIn: coords.y,
+    zoomOut: coords.y,
+    zoomTo: worldCoords.y,
+    panTo: worldCoords.y,
+    zoomHome: INIT_COORDS.y,
+  };
+  var newY = newYLookup[eventName];
+  return {
     init: coords.y,
     new: newY,
-    delta: deltaY,
+    delta: newY - coords.y,
     hasChanged: (newY !== coords.y),
   }
 }
 
 var calculateZChanges = function(eventName){
-  switch (eventName){
+  var newZLookup = {
+    zoomIn: clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL),
+    zoomOut: clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL),
+    panTo: coords.z,
+    zoomTo: clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL),
+    zoomHome: INIT_SCALE_LEVEL,
+  }
+  var newZ = newZLookup[eventName];
+  return {
+    init: coords.z,
+    new: newZ,
+    delta: newZ - coords.z,
+    hasChanged: (newZ !== coords.z),
+  }
+}
+
+
+//exports ----------------------------------------------------------------------
+
+export default {
+  coords,
+  moveType: null,
+  addListener: emitter.addListener,
+  //don't like this
+  calculateCoordChanges: function(eventName, worldCoords){
+    return {
+      x: calculateXChanges(eventName, worldCoords),
+      y: calculateYChanges(eventName, worldCoords),
+      z: calculateZChanges(eventName)
+    }
+  },
+  startMovement: function(moveType){
+    this.moveType = moveType;
+    emitter.broadcast('mapProperties - startMovement');
+  },
+  endMovement: async function(){
+    coords.x = webMercator.calculateNewX(coords.x);
+    emitter.broadcast('mapProperties - endMovement');
+    if (this.moveType === 'zoom'){
+      emitter.broadcast('basemapLayer - copyTiles');
+    }
+    emitter.broadcast('basemapTile - reset');
+    await emitter.asyncBroadcast('basemapTile - render');
+    if (this.moveType === 'zoom'){
+      emitter.broadcast('graphicsLayer - clusterGraphics');
+      await emitter.asyncBroadcast('basemapLayer - revealNewTiles');
+    }
+
+  },
+  pan: function(newX, newY, deltaXPx, deltaYPx){
+    coords.x = newX;
+    coords.y = newY;
+    emitter.broadcast('graphic - updateOnPan', {deltaXPx, deltaYPx} );
+    emitter.broadcast('basemapTile - updateOnPan', {deltaXPx, deltaYPx});
+  },
+  panAndZoom: function(newX, newY, newZ){
+    coords.x = newX;
+    coords.y = newY;
+    coords.z = newZ;
+    emitter.broadcast('mapProperties - updateOnZoom');
+    emitter.broadcast('graphic - updateOnZoom');
+    emitter.broadcast('basemapTile - updateOnZoom');
+  },
+
+}
+
+
+
+/*var setX = function(newX){
+  var oldX = coords.x;
+  var newRectifiedX = webMercator.calculateNewX(newX);
+  var deltaX = webMercator.calculateDeltaX(newRectifiedX, oldX);
+  coords.x = newRectifiedX;
+  return deltaX;
+}*/
+  /*switch (eventName){
     case 'zoomIn':
       var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
       break;
@@ -96,75 +151,81 @@ var calculateZChanges = function(eventName){
       break;
     default:
       break;
-  }
-  var deltaZ = newZ - coords.z;
-  return{
-    init: coords.z,
-    new: newZ,
-    delta: deltaZ,
-    hasChanged: (newZ !== coords.z),
-  }
-}
-
-var setX = function(newX){
-  var oldX = coords.x;
-  var newRectifiedX = webMercator.calculateNewX(newX);
-  var deltaX = webMercator.calculateDeltaX(newRectifiedX, oldX);
-  coords.x = newRectifiedX;
-  return deltaX;
-}
+  }*/
 
 
-//exports ----------------------------------------------------------------------
+/*  switch (eventName){
+    case 'zoomIn':
+    case 'zoomOut':
+      var newY = coords.y;
+      break;
+    case 'zoomTo':
+    case 'panTo':
+      var newY = worldCoords.y;
+      break;
+    case 'zoomHome':
+      var newY = INIT_COORDS.y;
+      break;
+    default:
+      break;
+  }*/
 
-export default {
 
-  coords,
+/*  switch (eventName){
+    case 'zoomIn':
+    case 'zoomOut':
+      var newX = coords.x;
+      break;
+    case 'zoomTo':
+    case 'panTo':
+      var newX = worldCoords.x;
+      break;
+    case 'zoomHome':
+      var newX = INIT_COORDS.x;
+      break;
+    default:
+      break;
+  }*/
 
-  get eventStartZ(){
-    return eventStartZ;
-  },
 
-  setEventStartZ: function(){
-    eventStartZ = this.coords.z;
-  },
 
-  addListener: emitter.addListener,
 
-  calculateCoordChanges: function(eventName, worldCoords){
-    return {
-      x: calculateXChanges(eventName, worldCoords),
-      y: calculateYChanges(eventName, worldCoords),
-      z: calculateZChanges(eventName)
-    }
-  },
+/*  panAndZoom: async function(newX, newY, newZ){
 
-  pan: async function(newX, newY, deltaXPx, deltaYPx){
-    setX(newX);
-    coords.y = newY;
-    emitter.broadcast('mapProperties - updateOnPan');
-    emitter.broadcast('graphic - updateOnPan', {deltaXPx, deltaYPx} );
-    //broadcast to basemap tiles
-  },
+    await new Promise( resolve => {
+      requestAnimationFrame( () => {
+        //setX(newX);
+        coords.x = newX;
+        coords.y = newY;
+        coords.z = newZ;
+        emitter.broadcast('mapProperties - updateOnZoom');
+        emitter.broadcast('graphic - updateOnZoom');
+        //emitter.broadcast('basemapTile - updateOnZoom');
+        //emitter.asyncBroadcast('basemapTile - renderOnZoom');
+        emitter.broadcast('graphic - renderOnZoom');
+        resolve();
+      });
+    });
+  },*/
 
-  zoom: async function(newZ){
-    coords.z = newZ;
-    emitter.broadcast('mapProperties - updateOnZoom');
-    emitter.broadcast('graphic - updateOnZoom');
-    //broadcast to basemap tiles or basemap layer
-  },
+/*pan: async function(newX, newY, deltaXPx, deltaYPx){
+  await new Promise( resolve => {
+    requestAnimationFrame( () => {
+      //setX(newX);
+      coords.x = newX;
+      var newRectifiedX = webMercator.calculateNewX(newX);
+      console.log(newX, newRectifiedX);
 
-  panAndZoom: async function(newX, newY, newZ){
-    setX(newX);
-    coords.y = newY;
-    coords.z = newZ;
-    emitter.broadcast('mapProperties - updateOnZoom');
-    emitter.broadcast('graphic - updateOnZoom');
-    //broadcast to basemap tiles or basemap layer
-  },
-
-}
-
+      coords.y = newY;
+      emitter.broadcast('mapProperties - updateOnPan');
+      emitter.broadcast('graphic - updateOnPan', {deltaXPx, deltaYPx} );
+      //emitter.broadcast('basemapTile - updateOnPan', {deltaXPx, deltaYPx});
+      //emitter.broadcast('basemapTile - renderOnPan');
+      emitter.broadcast('graphic - renderOnPan');
+      resolve();
+    });
+  });
+},*/
 
 
 /*var setY = function(newY){

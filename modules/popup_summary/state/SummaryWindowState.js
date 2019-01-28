@@ -32,6 +32,7 @@ export default function PopupSummaryState(popupState){
   });
 
   state.setOnChange('isVisible', async function(currentValue){
+    this.requestUpdate('arrow', 'display');
     this.requestUpdate('container', 'visibility');
     if (currentValue === true){
       if (!popupState.propHasUpdated('projectData')){

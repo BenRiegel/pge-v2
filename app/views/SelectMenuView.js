@@ -7,6 +7,7 @@ import { selectMenuEventStart } from '../controllers/DispatcherController.js';
 import { selectMenuEventEnd } from '../controllers/DispatcherController.js';
 import { INIT_SELECTED_TAG } from '../config/Config.js';
 import { tagsReceived } from '../stores/TagsModel.js';
+import rootNode from './RootView.js';
 import '../assets/stylesheets/select_menu.scss';
 import '../assets/stylesheets/select_menu_option_container.scss';
 import '../assets/stylesheets/select_menu_option_icon.scss';
@@ -31,6 +32,7 @@ dispatcher.addListener('selectMenu', 'load', async () => {
   selectMenu.addListener('newSelectedOption', setNewSelectedTag);
   selectMenu.addListener('eventStart', selectMenuEventStart);
   selectMenu.addListener('eventEnd', selectMenuEventEnd);
+  rootNode.appendChild(selectMenu.rootNode);
 });
 
 dispatcher.addListener('selectMenu', 'enable', () => {

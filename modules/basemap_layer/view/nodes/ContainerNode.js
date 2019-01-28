@@ -11,31 +11,29 @@ export default function ContainerNode(state, eventsEmitter){
 
   var container = new DomElement('div', 'basemap-layer');
 
-  /*container.setEventListener('click', evt => {
-    var graphicId = evt.target.dataset.id;
-    eventsEmitter.onGraphicClick(graphicId);
-  });*/
+  container.setEventListener('click', evt => {
+  });
 
   //define state change reactions ----------------------------------------------
 
-  /*var updateListener = function(){
+  var updateListener = function(){
     if (state.isEnabled){
       container.enableListeners();
     } else {
       container.disableListeners();
     }
-  }*/
+  }
 
   //load reactions -------------------------------------------------------------
 
-  //state.addListener('isEnabled', 'basemapLayerContainer', 'listener', updateListener);
+  state.addListener('isEnabled', 'basemapLayerContainer', 'listener', updateListener);
 
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
 
   this.render = function(){
-    //updateListener();
+    updateListener();
   };
 
 }

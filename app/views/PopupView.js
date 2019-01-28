@@ -2,6 +2,7 @@
 import dispatcher from '../services/Dispatcher.js';
 import { popupEventStart, popupEventEnd } from '../controllers/DispatcherController.js';
 import Popup from '../../modules/popup/Popup.js';
+import rootNode from './RootView.js';
 import '../assets/stylesheets/popup_container.scss';
 import '../assets/stylesheets/popup_report_container.scss';
 import '../assets/stylesheets/popup_report_content.scss';
@@ -18,6 +19,7 @@ dispatcher.addListener('popup', 'load', () => {
   popup.enable();
   popup.addListener('eventStart', popupEventStart);
   popup.addListener('eventEnd', popupEventEnd);
+  rootNode.appendChild(popup.rootNode);
 });
 
 dispatcher.addListener('popup', 'loadProjectData', projectData => {

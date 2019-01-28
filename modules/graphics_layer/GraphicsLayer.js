@@ -2,6 +2,8 @@
 
 import Emitter from '../../lib/Emitter.js';
 import GraphicsLayerState from './state/GraphicsLayerState.js';
+import GraphicState from './state/GraphicState.js';
+import LocationState from './state/LocationState.js';
 import GraphicsLayerView from './view/GraphicsLayerView.js';
 
 
@@ -11,9 +13,9 @@ export default function GraphicsLayer(mapViewpoint, mapProperties){
 
   //private code block ---------------------------------------------------------
 
-  var state = new GraphicsLayerState();
+  var layerState = new GraphicsLayerState(mapViewpoint, mapProperties);
   var eventsEmitter = new Emitter();
-  var view = new GraphicsLayerView(mapViewpoint, mapProperties, state, eventsEmitter);
+  var view = new GraphicsLayerView(layerState, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 
@@ -24,33 +26,33 @@ export default function GraphicsLayer(mapViewpoint, mapProperties){
   };
 
   this.enable = function(){
-    state.set('isEnabled', true);
+    layerState.set('isEnabled', true);
   };
 
   this.disable = function(){
-    state.set('isEnabled', false);
+    layerState.set('isEnabled', false);
   };
 
   this.addGraphics = function(graphicsInfoArray){
     for (var graphicInfo of graphicsInfoArray){
-      view.addNewGraphic(graphicInfo);
+      var locationState = new LocationState(graphicInfo, layerState);
+      layerState.addNewLocationState(locationState);
+      var graphicState = new GraphicState(graphicInfo, mapViewpoint, mapProperties, layerState);
+      layerState.addNewGraphicState(graphicState);
+      view.addNewGraphicNode(graphicInfo.id, graphicState);
     }
   };
 
-  this.clusterGraphics = function(){
-    view.clusterGraphics();
-  }
-
   this.filterGraphics = function(selectedTag){
-    state.set('selectedTag', selectedTag);
+    layerState.set('selectedTag', selectedTag);
   }
 
   this.highlightCluster = function(id){
-    state.set('highlightedGraphicId', id);
+    layerState.set('highlightedGraphicId', id);
   }
 
   this.unhighlightCluster = function(id){
-    state.set('highlightedGraphicId', null);
+    layerState.set('highlightedGraphicId', null);
   }
 
 }

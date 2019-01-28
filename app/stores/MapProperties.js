@@ -3,15 +3,50 @@
 import mapViewpoint from './MapViewpoint.js';
 import { getPixelSize, getPixelNum } from '../../lib/WebMapScale.js';
 import { mapDimensions } from '../views/RootView.js';
+import { calculateDeltaX } from '../../lib/WebMercator.js';
 
 
 //module code block ------------------------------------------------------------
 
+const BUFFER_SIZE = 2;
+
+var calculateTilesNeeded = function(dimensionPx){
+  var tilesNeeded = Math.trunc(dimensionPx*2 / 256);
+  var remainder = dimensionPx % 256;
+  return (remainder > 1) ? tilesNeeded + 2 : tilesNeeded + 1;
+};
+
+var { width, height } = mapDimensions;
+var numTilesWidth = calculateTilesNeeded(width);
+var numTilesHeight = calculateTilesNeeded(height);
+
+var numTilesWidth = 15;
+var numTilesHeight = 7;
+
 var mapProperties = {
+  halfMapHeightPx: mapDimensions.height * 0.5,
+  halfMapWidthPx: mapDimensions.width * 0.5,
+  numTilesWidth,
+  numTilesHeight,
   pixelSize: undefined,
   pixelNum: undefined,
-  leftMapCoord: undefined,
-  topMapCoord: undefined,
+  imageTileLevel: undefined,
+  tileSize: undefined,
+  tileSizeWorld: undefined,
+  numBasemapTiles: undefined,
+  centerTileWorldX: undefined,
+  centerTileWorldY: undefined,
+  minScreenCoordX: undefined,
+  maxScreenCoordX: undefined,
+}
+
+var calculateMinScreenCoords = function(){
+  mapProperties.minScreenCoordX = mapDimensions.width * 0.5 - mapProperties.numTilesWidth*mapProperties.tileSize;
+  mapProperties.minScreenCoordY = mapDimensions.height * 0.5 - mapProperties.numTilesHeight*mapProperties.tileSize;
+}
+
+var setImageTileLevel = function(){
+  mapProperties.imageTileLevel = Math.round(mapViewpoint.coords.z);
 }
 
 var calculatePixelProperties = function(){
@@ -19,64 +54,50 @@ var calculatePixelProperties = function(){
   mapProperties.pixelNum = getPixelNum(mapProperties.pixelSize);
 }
 
-var calculateViewportProperties = function(){
-  mapProperties.leftMapCoord = mapViewpoint.coords.x / mapProperties.pixelSize - mapDimensions.width * 0.5;
-  mapProperties.topMapCoord = mapViewpoint.coords.y / mapProperties.pixelSize - mapDimensions.height * 0.5;
+var calculateTileProperties = function(){
+  mapProperties.scaleFactor = Math.pow(2, mapViewpoint.coords.z - mapProperties.imageTileLevel);
+  mapProperties.tileSize = mapProperties.scaleFactor * 256;
+  mapProperties.tileSizeWorld = mapProperties.tileSize * mapProperties.pixelSize;
+  mapProperties.numBasemapTiles = Math.round(mapProperties.pixelNum / mapProperties.tileSize);
 }
 
+var calculateCenterTileProperties = function(){
+  var centerTileX = Math.floor(mapViewpoint.coords.x / mapProperties.tileSizeWorld);
+  var centerTileY = Math.floor(mapViewpoint.coords.y / mapProperties.tileSizeWorld);
+  mapProperties.centerTileWorldX = centerTileX * mapProperties.tileSizeWorld;
+  mapProperties.centerTileWorldY = centerTileY * mapProperties.tileSizeWorld;
+}
+
+setImageTileLevel();
 calculatePixelProperties();
-calculateViewportProperties();
+calculateTileProperties();
+calculateCenterTileProperties();
+calculateMinScreenCoords();
+
 
 mapViewpoint.addListener('mapProperties - updateOnZoom', () => {
   calculatePixelProperties();
-  calculateViewportProperties();
+  calculateTileProperties();
 });
-mapViewpoint.addListener('mapProperties - updateOnPan', calculateViewportProperties);
+
+mapViewpoint.addListener('mapProperties - updateOnPan', () => {
+  //calculateCenterTileProperties();
+  //delete this?
+});
+
+mapViewpoint.addListener('mapProperties - startMovement', () => {
+  setImageTileLevel();
+  calculateTileProperties();
+  calculateCenterTileProperties();
+});
+
+mapViewpoint.addListener('mapProperties - endMovement', () => {
+  setImageTileLevel();
+  calculateTileProperties();
+  calculateCenterTileProperties();
+});
 
 
 //exports ----------------------------------------------------------------------
 
 export default mapProperties;
-
-
-
-
-
-/*var calculateMapProperties = function(){
-  var pixelSize = getPixelSize(state.z.value);
-  var pixelNum = getPixelNum(pixelSize);
-  var leftMapCoord = state.x.value / pixelSize - width * 0.5;   //change this in case of negative?
-  var topMapCoord = state.y.value / pixelSize - height * 0.5;
-  var imageTileLevel = Math.floor(state.z.value);
-  var scaleFactor = Math.pow(2, state.z.value - imageTileLevel);
-  var tileSize = scaleFactor * 256;
-  var numBasemapTiles = Math.round(pixelNum / tileSize);
-  var leftTileCoord = Math.floor(leftMapCoord / tileSize);
-  var topTileCoord = Math.floor(topMapCoord / tileSize);
-  //var expansionDistance = (tileSize - 256) / 2;              //don't need?
-  var leftMapOffset = leftMapCoord % tileSize;
-  leftMapOffset += (leftMapOffset < 0) ? tileSize : 0;
-  var topMapOffset = topMapCoord % tileSize;
-  topMapOffset += (topMapOffset < 0) ? tileSize : 0;
-  return {
-    pixelSize,
-    pixelNum,
-    leftMapCoord,
-    topMapCoord,
-    imageTileLevel,
-  //  scaleFactor,
-    leftTileCoord,
-    topTileCoord,
-    numBasemapTiles,
-    //expansionDistance,
-    tileSize,
-    leftMapOffset,
-    topMapOffset,
-  };
-}*/
-/*add: function(deltaX, deltaY, deltaZ){
-  var newX = x.value + deltaX;
-  var newY = y.value + deltaY;
-  var newZ = z.value + deltaZ;
-  this.set(newX, newY, newZ);
-},*/
