@@ -1,4 +1,7 @@
+@import './_mixins';
+
 .basemap-tile{
   position:absolute;
   border:0;
+  @include user-select(none);
 }

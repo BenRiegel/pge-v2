@@ -27,49 +27,71 @@ export default function BasemapTileNode(state, mapViewpoint, mapProperties){
     });
   }
 
-  var updateDimensions = function(){
-    if (state.isVisible){
-      tile.setStyle('width', `${Math.ceil(mapProperties.tileSize)}px`);
-      tile.setStyle('height', `${Math.ceil(mapProperties.tileSize)}px`);
+  var updateVisibility = function(){
+    if (state.yValidIndex && state.isVisible){
+      tile.setStyle('opacity', 1);
+    } else {
+      tile.setStyle('opacity', 0);
     }
+  }
+
+  var updateDimensions = function(){
+    tile.setStyle('width', `${Math.ceil(state.size)}px`);
+    tile.setStyle('height', `${Math.ceil(state.size)}px`);
   };
 
   var updateScreenCoords = function(){
-    //if (state.isVisible){
-      var x = Math.floor(state.screenCoords.x);
-      var y = Math.floor(state.screenCoords.y);
-      tile.setStyle('transform', `translate(${x}px, ${y}px)`);
-  //  } else {
-  //    tile.setStyle('transform', `translate(${-500}px, ${-500}px)`);
-  //  }
+    var x = Math.floor(state.screenCoords.x);
+    var y = Math.floor(state.screenCoords.y);
+    tile.setStyle('transform', `translate(${x}px, ${y}px)`);
   }
 
   var updateSrc = function(){
-    var x = state.tileIndices.x;
-    var y = state.tileIndices.y;
-    var z = mapProperties.imageTileLevel;
-    tile.src = basemapURLString + `/${z}/${y}/${x}`;
+    if (state.yValidIndex){
+      var x = state.tileIndices.x;
+      var y = state.tileIndices.y;
+      var z = mapProperties.imageTileLevel;
+      tile.src = basemapURLString + `/${z}/${y}/${x}`;
+    }
   }
 
   var asyncUpdateSrc = async function(){
-    var x = state.tileIndices.x;
-    var y = state.tileIndices.y;
-    var z = mapProperties.imageTileLevel;
-    await load(basemapURLString + `/${z}/${y}/${x}`);
+    if (state.yValidIndex){
+      var x = state.tileIndices.x;
+      var y = state.tileIndices.y;
+      var z = mapProperties.imageTileLevel;
+      await load(basemapURLString + `/${z}/${y}/${x}`);
+    }
   }
 
-  state.onIndicesChange = updateSrc;
+  state.addListener('screenCoords', 'node', 'screenCoords', () => {
+    if (state.yValidIndex && state.isVisible){
+      updateScreenCoords();
+    }
+  });
 
-  state.onScreenCoordsChange = updateScreenCoords;
+  state.addListener('yValidIndex', 'node', 'screenCoords', () => {
+    if (state.yValidIndex && state.isVisible){
+      updateScreenCoords();
+    }
+  });
 
-  state.onSizeChange = updateDimensions;
+  state.addListener('size', 'node', 'dimensions', () => {
+    if (state.yValidIndex && state.isVisible){
+      updateDimensions();
+    }
+  });
+
+  state.addListener('tileIndices', 'node', 'src', updateSrc);
+  state.addListener('isVisible', 'node', 'visibility', updateVisibility);
+  state.addListener('yValidIndex', 'node', 'visibility', updateVisibility);
 
   mapViewpoint.addListener('basemapTile - render', async () => {
     updateScreenCoords();
     updateDimensions();
+    updateVisibility();
     await asyncUpdateSrc();
   });
-
 
   //public api -----------------------------------------------------------------
 
@@ -78,6 +100,7 @@ export default function BasemapTileNode(state, mapViewpoint, mapProperties){
   this.render = async function(){
     updateDimensions();
     updateScreenCoords();
+    updateVisibility();
     await asyncUpdateSrc();
   }
 

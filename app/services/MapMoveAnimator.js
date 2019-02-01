@@ -78,6 +78,11 @@ var zoom = async function(type, worldCoords){
   var coordChanges = mapViewpoint.calculateCoordChanges(zoomType, worldCoords);
   if (coordChanges.z.hasChanged){
     var numFrames = getZoomAnimationTime(coordChanges.z.delta);
+    if (zoomType === 'zoomHome'){
+      if (!mapViewpoint.canZoomHome)
+      await mapViewpoint.setHome();
+      return;
+    }
   } else {
     var numFrames = getPanToAnimationTime(coordChanges.x.delta, coordChanges.y.delta);
   }

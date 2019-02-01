@@ -8,6 +8,7 @@ import './views/LoaderView.js';
 import './views/PopupView.js';
 import './views/ZoomControlsView.js';
 import './services/MapMoveAnimator.js';
+import './services/PanController.js';
 import './assets/stylesheets/index.scss';
 
 

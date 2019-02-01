@@ -5,7 +5,7 @@ import DomElement from '../../../../lib/DomElement.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode(state, eventsEmitter){
+export default function ContainerNode(mapViewpoint, state, eventsEmitter){
 
   //create dom element ---------------------------------------------------------
 
@@ -34,6 +34,15 @@ export default function ContainerNode(state, eventsEmitter){
   //load reactions -------------------------------------------------------------
 
   state.addListener('isEnabled', 'graphicsLayerContainer', 'listener', updateListener);
+
+  mapViewpoint.addListener('graphicsLayer - fadeDown', async () => {
+    await container.animateOpacity('transparent');
+  });
+
+  mapViewpoint.addListener('graphicsLayer - fadeUp', async () => {
+    await container.animateOpacity('opaque');
+  });
+
 
   //public api -----------------------------------------------------------------
 

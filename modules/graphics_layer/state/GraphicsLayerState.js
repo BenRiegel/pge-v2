@@ -42,7 +42,12 @@ export default function GraphicsLayerState(mapViewpoint, mapProperties){
 
   //define state change reactions ----------------------------------------------
 
-  var clusterGraphics = async function(){
+  var unhighlightCluster = function(){
+    state.set('highlightedGraphicId', null);
+  }
+
+
+  var clusterGraphics = function(){
     var graphicsInfo = [];
     for (var location of locations){
       var graphicInfo = {
@@ -50,7 +55,6 @@ export default function GraphicsLayerState(mapViewpoint, mapProperties){
         worldCoords: {x:location.worldCoords.x, y:location.worldCoords.y},
         numLocations: 1,
         diameter: 0,
-        isHighlighted: false,
       };
       graphicsInfo.push(graphicInfo);
     }
@@ -107,6 +111,7 @@ export default function GraphicsLayerState(mapViewpoint, mapProperties){
 
   state.addListener('selectedTag', 'self', 'clusterGraphics', clusterGraphics);
   mapViewpoint.addListener('graphicsLayer - clusterGraphics', clusterGraphics);
+  mapViewpoint.addListener('graphicsLayer - unhighlightCluster', unhighlightCluster);
 
   //public api -----------------------------------------------------------------
 

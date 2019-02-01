@@ -11,7 +11,7 @@ export default function BasemapLayerView(mapViewpoint, mapProperties, layerState
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode(layerState, eventsEmitter);
+  var container = new ContainerNode(mapViewpoint, layerState, eventsEmitter);
   var tileContainer = new TileContainerNode();
   var tileContainerCopy = new TileContainerNode();
   var tileNodes = [];

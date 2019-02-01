@@ -3,7 +3,7 @@
 import * as webMercator from '../../lib/WebMercator.js';
 import Emitter from '../../lib/Emitter.js';
 import { ESRI_MAX_SCALE_LEVEL } from '../config/Config.js';
-import { clamp } from '../../lib/Utils.js';
+import { clamp, wait } from '../../lib/Utils.js';
 
 
 //module code block ------------------------------------------------------------
@@ -81,7 +81,10 @@ export default {
   coords,
   moveType: null,
   addListener: emitter.addListener,
-  //don't like this
+  get canZoomHome(){
+    var deltaZ = coords.z - INIT_SCALE_LEVEL;
+    return (deltaZ < 2);
+  },
   calculateCoordChanges: function(eventName, worldCoords){
     return {
       x: calculateXChanges(eventName, worldCoords),
@@ -93,17 +96,37 @@ export default {
     this.moveType = moveType;
     emitter.broadcast('mapProperties - startMovement');
   },
+  setHome: async function(){
+    coords.x = INIT_COORDS.x;
+    coords.y = INIT_COORDS.y;
+    coords.z = INIT_SCALE_LEVEL;
+    emitter.broadcast('mapProperties - updateOnZoom');
+    emitter.broadcast('mapProperties - endMovement');
+    var p1 = emitter.asyncBroadcast('basemapLayer - fadeDown');
+    var p2 = emitter.asyncBroadcast('graphicsLayer - fadeDown');
+    await Promise.all([p1, p2]);
+    emitter.broadcast('basemapTile - reset');
+    await emitter.asyncBroadcast('basemapTile - render');
+    emitter.broadcast('graphicsLayer - unhighlightCluster');
+    emitter.broadcast('graphicsLayer - clusterGraphics');
+    await wait(300);
+    p1 = emitter.asyncBroadcast('basemapLayer - fadeUp');
+    p2 = emitter.asyncBroadcast('graphicsLayer - fadeUp');
+    await Promise.all([p1,p2]);
+  },
   endMovement: async function(){
     coords.x = webMercator.calculateNewX(coords.x);
     emitter.broadcast('mapProperties - endMovement');
+
     if (this.moveType === 'zoom'){
       emitter.broadcast('basemapLayer - copyTiles');
-    }
-    emitter.broadcast('basemapTile - reset');
-    await emitter.asyncBroadcast('basemapTile - render');
-    if (this.moveType === 'zoom'){
+      emitter.broadcast('basemapTile - reset');
+      await emitter.asyncBroadcast('basemapTile - render');
+      emitter.broadcast('graphicsLayer - unhighlightCluster');
       emitter.broadcast('graphicsLayer - clusterGraphics');
       await emitter.asyncBroadcast('basemapLayer - revealNewTiles');
+    } else {
+      emitter.broadcast('basemapTile - reset');
     }
 
   },

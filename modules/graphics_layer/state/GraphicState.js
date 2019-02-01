@@ -23,7 +23,6 @@ export default function GraphicState(props, mapViewpoint, mapProperties, layerSt
     this.set('numLocations', stateInfo.numLocations);
     this.set('worldCoords', stateInfo.worldCoords);
     this.set('diameter', stateInfo.diameter);
-    this.set('isHighlighted', stateInfo.isHighlighted);
     updateScreenCoords();
     updateRenderedDiameter();
   }

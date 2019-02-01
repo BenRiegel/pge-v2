@@ -1,8 +1,10 @@
 @import './_variables';
+@import './_mixins';
 
 .basemap-layer{
+  @include user-select(none);
+  animation-duration: 0.5s;
 }
-
 
 .tile-container{
   position:relative;

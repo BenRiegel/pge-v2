@@ -41,8 +41,13 @@ var mapProperties = {
 }
 
 var calculateMinScreenCoords = function(){
-  mapProperties.minScreenCoordX = mapDimensions.width * 0.5 - mapProperties.numTilesWidth*mapProperties.tileSize;
-  mapProperties.minScreenCoordY = mapDimensions.height * 0.5 - mapProperties.numTilesHeight*mapProperties.tileSize;
+  mapProperties.minScreenCoordX = mapDimensions.width * 0.5 - Math.ceil(numTilesWidth/2)*mapProperties.tileSize;
+  mapProperties.minScreenCoordY = mapDimensions.height * 0.5 - Math.ceil(numTilesHeight/2)*mapProperties.tileSize;
+}
+
+var calculateMaxScreenCoords = function(){
+  mapProperties.maxScreenCoordX = mapDimensions.width * 0.5 + Math.ceil(numTilesWidth/2)*mapProperties.tileSize;
+  mapProperties.maxScreenCoordY = mapDimensions.height * 0.5 + Math.ceil(numTilesHeight/2)*mapProperties.tileSize;
 }
 
 var setImageTileLevel = function(){
@@ -73,6 +78,7 @@ calculatePixelProperties();
 calculateTileProperties();
 calculateCenterTileProperties();
 calculateMinScreenCoords();
+calculateMaxScreenCoords();
 
 
 mapViewpoint.addListener('mapProperties - updateOnZoom', () => {

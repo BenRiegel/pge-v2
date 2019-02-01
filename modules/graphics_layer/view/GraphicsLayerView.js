@@ -6,11 +6,11 @@ import GraphicNode from './nodes/GraphicNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerView(layerState, eventsEmitter){
+export default function GraphicsLayerView(mapViewpoint, layerState, eventsEmitter){
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode(layerState, eventsEmitter);
+  var container = new ContainerNode(mapViewpoint, layerState, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 

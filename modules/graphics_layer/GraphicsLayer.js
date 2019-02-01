@@ -15,7 +15,7 @@ export default function GraphicsLayer(mapViewpoint, mapProperties){
 
   var layerState = new GraphicsLayerState(mapViewpoint, mapProperties);
   var eventsEmitter = new Emitter();
-  var view = new GraphicsLayerView(layerState, eventsEmitter);
+  var view = new GraphicsLayerView(mapViewpoint, layerState, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 

@@ -83,3 +83,15 @@ export function popupEventEnd(){
 export async function zoom(type){
   await dispatcher.broadcast('mapMoveAnimator', 'zoom', type);
 }
+
+export function panStart(){
+  dispatcher.broadcast('panController', 'panStartRequest');
+}
+
+export function panEnd(){
+  dispatcher.broadcast('panController', 'panEndRequest');
+}
+
+export function pan(deltaPx){
+  dispatcher.broadcast('panController', 'panRequest', deltaPx);
+}
