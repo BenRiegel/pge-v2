@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import Loader from '../../modules/loader/Loader.js';
+import Loader from '../modules/loader/Loader.js';
 import dispatcher from '../services/Dispatcher.js';
 import rootNode from './RootView.js';
 import '../assets/stylesheets/loader_spinner.scss';
@@ -11,12 +11,12 @@ import '../assets/stylesheets/loader_background.scss';
 
 var loader = new Loader();
 
-dispatcher.addListener('loader', 'startLoading', () => {
+dispatcher.addListener('startLoading', () => {
   loader.show();
   rootNode.appendChild(loader.rootNode);
 });
 
-dispatcher.addListener('loader', 'finishLoading', async () => {
+dispatcher.addListener('finishLoading', async () => {
   await loader.hide( {fadeOutOnHide:true} );
 });
 

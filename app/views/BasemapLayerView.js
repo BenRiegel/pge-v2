@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import { panStart, panEnd, pan } from '../controllers/DispatcherController.js';
-import BasemapLayer from '../../modules/basemap_layer/BasemapLayer.js';
+import { panStart, panEnd, pan } from '../services/Dispatcher.js';
+import BasemapLayer from '../modules/basemap_layer/BasemapLayer.js';
 import dispatcher from '../services/Dispatcher.js';
 import rootNode from './RootView.js';
 import mapViewpoint from '../stores/MapViewpoint.js';
@@ -14,7 +14,7 @@ import '../assets/stylesheets/basemap_tile.scss';
 
 var basemapLayer = new BasemapLayer(mapViewpoint, mapProperties);
 
-dispatcher.addListener('basemapLayer', 'load', async () => {
+dispatcher.addListener('load', async () => {
   basemapLayer.addListener('userPanStartRequest', panStart);
   basemapLayer.addListener('userPanEndRequest', panEnd);
   basemapLayer.addListener('userPanRequest', pan);

@@ -1,9 +1,9 @@
 //imports ----------------------------------------------------------------------
 
-import * as webMercator from '../../lib/WebMercator.js';
-import Emitter from '../../lib/Emitter.js';
+import * as webMercator from '../lib/WebMercator.js';
+import Emitter from '../lib/Emitter.js';
 import { ESRI_MAX_SCALE_LEVEL } from '../config/Config.js';
-import { clamp, wait } from '../../lib/Utils.js';
+import { clamp, wait } from '../lib/Utils.js';
 
 
 //module code block ------------------------------------------------------------
@@ -49,6 +49,7 @@ var calculateYChanges = function(eventName, worldCoords = {x:0, y:0}){
     zoomHome: INIT_COORDS.y,
   };
   var newY = newYLookup[eventName];
+  newY = clamp(newY, 0, webMercator.circumference);
   return {
     init: coords.y,
     new: newY,

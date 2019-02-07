@@ -1,9 +1,9 @@
 //imports ----------------------------------------------------------------------
 
 import mapViewpoint from './MapViewpoint.js';
-import { getPixelSize, getPixelNum } from '../../lib/WebMapScale.js';
+import { getPixelSize, getPixelNum } from '../lib/WebMapScale.js';
 import { mapDimensions } from '../views/RootView.js';
-import { calculateDeltaX } from '../../lib/WebMercator.js';
+import { calculateDeltaX } from '../lib/WebMercator.js';
 
 
 //module code block ------------------------------------------------------------

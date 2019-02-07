@@ -1,9 +1,9 @@
 //imports ----------------------------------------------------------------------
 
-import ZoomControls from '../../modules/zoom_controls/ZoomControls.js';
+import ZoomControls from '../modules/zoom_controls/ZoomControls.js';
 import dispatcher from '../services/Dispatcher.js';
 import rootNode from './RootView.js';
-import { zoom } from '../controllers/DispatcherController.js';
+import { zoom } from '../services/Dispatcher.js';
 import '../assets/stylesheets/zoom_controls.scss';
 
 
@@ -11,7 +11,7 @@ import '../assets/stylesheets/zoom_controls.scss';
 
 var zoomControls = new ZoomControls();
 
-dispatcher.addListener('zoomControls', 'load', () => {
+dispatcher.addListener('load', () => {
   zoomControls.addClickListener('in', () => {
     zoom('in');
   });
@@ -24,11 +24,11 @@ dispatcher.addListener('zoomControls', 'load', () => {
   rootNode.appendChild(zoomControls.rootNode);
 });
 
-dispatcher.addListener('zoomControls', 'enable', () => {
+dispatcher.addListener('zoomControls - enable', () => {
   zoomControls.enable();
 });
 
-dispatcher.addListener('zoomControls', 'disable', () => {
+dispatcher.addListener('zoomControls - disable', () => {
   zoomControls.disable();
 });
 
