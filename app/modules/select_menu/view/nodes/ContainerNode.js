@@ -1,6 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
+import '../stylesheets/select_menu.scss';
 
 
 //module code block ------------------------------------------------------------

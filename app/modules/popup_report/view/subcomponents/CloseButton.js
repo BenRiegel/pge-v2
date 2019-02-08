@@ -1,7 +1,8 @@
 //imports ----------------------------------------------------------------------
 
 import PopupButton from '../../../popup_button/PopupButton.js';
-
+import '../stylesheets/popup_report_close_button.scss';
+import '../stylesheets/popup_report_close_button_icon.scss';
 
 //exports ----------------------------------------------------------------------
 

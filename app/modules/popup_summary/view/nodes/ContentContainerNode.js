@@ -1,6 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
+import '../stylesheets/content_container.scss';
 
 
 //exports ----------------------------------------------------------------------

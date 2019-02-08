@@ -1,18 +1,5 @@
-@import './_variables';
-@import './_mixins';
-
-.zoom-controls-container{
-  position: absolute;
-  top: $web-map-widget-padding;
-  right: $web-map-widget-padding;
-  z-index: $zoom-controls-z-index;
-}
-
-.zoom-button-container{
-  box-shadow: $outer-box-shadow;
-  border-radius: $theme-border-radius;
-  background-color: $theme-background-color;
-}
+@import '../../../../assets/stylesheets/variables';
+@import '../../../../assets/stylesheets/mixins';
 
 .zoom-button{
   @include user-select(none);
@@ -47,12 +34,4 @@
 .zoom-button.zoom-out{
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-
-.fa-plus, .fa-minus{
-  font-size: 15px;
-}
-
-.fa-home{
-  font-size: 18px;
 }

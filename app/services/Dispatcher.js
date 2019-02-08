@@ -49,7 +49,6 @@ export async function clusterSelect(id, worldCoords){
   dispatcher.broadcast('selectMenu - close');
   dispatcher.broadcast('graphicsLayer - highlightCluster', id);
   await dispatcher.asyncBroadcast('mapMoveAnimator - zoom', 'to', worldCoords);
-  //dispatcher.broadcast('graphicsLayer', 'unhighlightCluster');
   dispatcher.broadcast('popup - enable');
   dispatcher.broadcast('zoomControls - enable');
   dispatcher.broadcast('selectMenu - enable');
@@ -100,25 +99,3 @@ export function panEnd(){
 export function pan(deltaPx){
   dispatcher.broadcast('panController - panRequest', deltaPx);
 }
-
-
-
-
-
-/*{
-  broadcast: async function(target, request, ...args){
-    var promises = [];
-    for (var listener of listeners){
-      if (target === 'all' || target === listener.source){
-        if (request === listener.request){
-          var p = listener.cb(...args);
-          promises.push(p);
-        }
-      }
-    }
-    await Promise.all(promises);
-  },
-  addListener: function(source, request, cb){
-    listeners.push( {source, request, cb} );
-  },
-}*/

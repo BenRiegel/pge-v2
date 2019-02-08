@@ -8,10 +8,6 @@ import { selectMenuEventEnd } from '../services/Dispatcher.js';
 import { INIT_SELECTED_TAG } from '../config/Config.js';
 import { tagsReceived } from '../services/Tags.js';
 import rootNode from './RootView.js';
-import '../assets/stylesheets/select_menu.scss';
-import '../assets/stylesheets/select_menu_option_container.scss';
-import '../assets/stylesheets/select_menu_option_icon.scss';
-import '../assets/stylesheets/select_menu_option_label.scss';
 
 
 //module code block ------------------------------------------------------------

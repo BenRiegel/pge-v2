@@ -1,0 +1,8 @@
+@import '../../../../assets/stylesheets/variables';
+
+.zoom-controls-container{
+  position: absolute;
+  top: $web-map-widget-padding;
+  right: $web-map-widget-padding;
+  z-index: $zoom-controls-z-index;
+}

@@ -8,18 +8,6 @@ import { calculateDeltaX } from '../lib/WebMercator.js';
 
 //module code block ------------------------------------------------------------
 
-const BUFFER_SIZE = 2;
-
-var calculateTilesNeeded = function(dimensionPx){
-  var tilesNeeded = Math.trunc(dimensionPx*2 / 256);
-  var remainder = dimensionPx % 256;
-  return (remainder > 1) ? tilesNeeded + 2 : tilesNeeded + 1;
-};
-
-var { width, height } = mapDimensions;
-var numTilesWidth = calculateTilesNeeded(width);
-var numTilesHeight = calculateTilesNeeded(height);
-
 var numTilesWidth = 15;
 var numTilesHeight = 7;
 
@@ -80,15 +68,9 @@ calculateCenterTileProperties();
 calculateMinScreenCoords();
 calculateMaxScreenCoords();
 
-
 mapViewpoint.addListener('mapProperties - updateOnZoom', () => {
   calculatePixelProperties();
   calculateTileProperties();
-});
-
-mapViewpoint.addListener('mapProperties - updateOnPan', () => {
-  //calculateCenterTileProperties();
-  //delete this?
 });
 
 mapViewpoint.addListener('mapProperties - startMovement', () => {

@@ -1,4 +1,4 @@
-@import './_variables';
+@import '../../../../assets/stylesheets/variables';
 
 .icon-container{
   box-sizing: border-box;
@@ -10,10 +10,4 @@
 
 .icon-container.border{
   border-right: 1px solid $theme-light-gray;
-}
-
-.icon.fa-sort-desc{
-  position: relative;
-  top: -2px;
-  font-size: 16px;
 }

@@ -6,8 +6,6 @@ import dispatcher from '../services/Dispatcher.js';
 import rootNode from './RootView.js';
 import mapViewpoint from '../stores/MapViewpoint.js';
 import mapProperties from '../stores/MapProperties.js';
-import '../assets/stylesheets/basemap_layer.scss';
-import '../assets/stylesheets/basemap_tile.scss';
 
 
 //module code block ------------------------------------------------------------

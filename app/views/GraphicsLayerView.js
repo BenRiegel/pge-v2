@@ -8,8 +8,6 @@ import { INIT_SELECTED_TAG } from '../config/Config.js';
 import { projectsReceived } from '../services/Projects.js';
 import viewpointState from '../stores/MapViewpoint.js';
 import mapProperties from '../stores/MapProperties.js';
-import '../assets/stylesheets/graphics_layer.scss';
-import '../assets/stylesheets/graphic.scss';
 
 
 //module code block ------------------------------------------------------------

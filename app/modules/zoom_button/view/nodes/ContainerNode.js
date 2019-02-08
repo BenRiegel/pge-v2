@@ -1,6 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
+import '../stylesheets/zoom_button_container.scss';
 
 
 //exports ----------------------------------------------------------------------

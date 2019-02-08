@@ -3,7 +3,6 @@
 import DomElement from '../../../../lib/DomElement.js';
 
 
-
 //exports ----------------------------------------------------------------------
 
 export default function ContainerNode(className, popupState, eventsEmitter){

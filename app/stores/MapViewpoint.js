@@ -2,14 +2,14 @@
 
 import * as webMercator from '../lib/WebMercator.js';
 import Emitter from '../lib/Emitter.js';
-import { ESRI_MAX_SCALE_LEVEL } from '../config/Config.js';
 import { clamp, wait } from '../lib/Utils.js';
 
 
 //module code block ------------------------------------------------------------
 
-const MIN_SCALE_LEVEL = 2;
 const INIT_COORDS = webMercator.latLonToWebMercator( {lon:-5, lat:28} );
+const MIN_SCALE_LEVEL = 2;
+const MAX_SCALE_LEVEL = 12;
 const INIT_SCALE_LEVEL = MIN_SCALE_LEVEL;
 const ZOOM_IN_OUT_INCREMENT = 1;
 const ZOOM_TO_TOTAL_CHANGE = 1;
@@ -60,10 +60,10 @@ var calculateYChanges = function(eventName, worldCoords = {x:0, y:0}){
 
 var calculateZChanges = function(eventName){
   var newZLookup = {
-    zoomIn: clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL),
-    zoomOut: clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL),
+    zoomIn: clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, MAX_SCALE_LEVEL),
+    zoomOut: clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, MAX_SCALE_LEVEL),
     panTo: coords.z,
-    zoomTo: clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL),
+    zoomTo: clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, MAX_SCALE_LEVEL),
     zoomHome: INIT_SCALE_LEVEL,
   }
   var newZ = newZLookup[eventName];
@@ -159,16 +159,16 @@ export default {
 }*/
   /*switch (eventName){
     case 'zoomIn':
-      var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      var newZ = clamp(coords.z + ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, MAX_SCALE_LEVEL);
       break;
     case 'zoomOut':
-      var newZ = clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      var newZ = clamp(coords.z - ZOOM_IN_OUT_INCREMENT, MIN_SCALE_LEVEL, MAX_SCALE_LEVEL);
       break;
     case 'panTo':
       var newZ = coords.z;
       break;
     case 'zoomTo':
-      var newZ = clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, ESRI_MAX_SCALE_LEVEL);
+      var newZ = clamp(coords.z + ZOOM_TO_TOTAL_CHANGE, MIN_SCALE_LEVEL, MAX_SCALE_LEVEL);
       break;
     case 'zoomHome':
       var newZ = INIT_SCALE_LEVEL;
@@ -262,7 +262,7 @@ export default {
 
 var setZ = function(newZ){
   var oldZ = coords.z;
-  var newRectifiedZ = clamp(newZ, MIN_SCALE_LEVEL,  ESRI_MAX_SCALE_LEVEL);
+  var newRectifiedZ = clamp(newZ, MIN_SCALE_LEVEL,  MAX_SCALE_LEVEL);
   var deltaZ = newRectifiedZ - oldZ;
   coords.z = newRectifiedZ;
   return deltaZ;

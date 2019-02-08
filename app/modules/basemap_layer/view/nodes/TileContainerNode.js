@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomElement from '../../../../lib/DomElement.js';
-
+import '../stylesheets/basemap_tile_container.scss';
 
 
 //exports ----------------------------------------------------------------------
