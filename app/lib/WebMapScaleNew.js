@@ -1,9 +1,3 @@
-//imports ----------------------------------------------------------------------
-
-import { WORLD_CIRCUMFERENCE } from './WebMercator.js';
-import { clamp } from './Utils.js';
-
-
 //module code block ------------------------------------------------------------
 
 //see https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/
@@ -12,17 +6,8 @@ const PIXELS_PER_METER = 3779.52;
 const MAX_SCALE = 5.91657527591555E8 / PIXELS_PER_METER;
 const LOG2_MAX_SCALE = Math.log2(MAX_SCALE);
 
-const MIN_VIEWPOINT_SCALE_LEVEL = 2;
-const MAX_VIEWPOINT_SCALE_LEVEL = 12;
-const MAX_VIEWPOINT_SCALE = levelToValue(MIN_VIEWPOINT_SCALE_LEVEL);
-const MIN_VIEWPOINT_SCALE = levelToValue(MAX_VIEWPOINT_SCALE_LEVEL);
-
 
 //exports ----------------------------------------------------------------------
-
-export function getPixelNum(pixelSize){
-  return WORLD_CIRCUMFERENCE / pixelSize;
-}
 
 export function levelToValue(scaleLevel){
   return Math.pow(2, LOG2_MAX_SCALE - scaleLevel);
@@ -32,9 +17,16 @@ export function valueToLevel(scaleValue){
   return LOG2_MAX_SCALE - Math.log2(scaleValue);
 }
 
-export function rectifyScaleValue(scaleValue){
-  return clamp(scaleValue, MIN_VIEWPOINT_SCALE, MAX_VIEWPOINT_SCALE);
-}
+
+
+//export function rectifyScaleValue(scaleValue){
+//  return clamp(scaleValue, MIN_VIEWPOINT_SCALE, MAX_VIEWPOINT_SCALE);
+//}
+
+/*const MIN_VIEWPOINT_SCALE_LEVEL = 2;
+const MAX_VIEWPOINT_SCALE_LEVEL = 12;
+const MAX_VIEWPOINT_SCALE = levelToValue(MIN_VIEWPOINT_SCALE_LEVEL);
+const MIN_VIEWPOINT_SCALE = levelToValue(MAX_VIEWPOINT_SCALE_LEVEL);*/
 
 
 
@@ -43,7 +35,7 @@ export function rectifyScaleValue(scaleValue){
 //}
 /*export function getMinScale( {width, height} ){
   var maxDimensionPx = Math.max(height, width);
-  var minScale = PIXELS_PER_METER * WORLD_CIRCUMFERENCE / maxDimensionPx;
+  var minScale = PIXELS_PER_METER * CIRCUMFERENCE / maxDimensionPx;
   var minZ = LOG2_MAX_SCALE - Math.log2(minScale);
   return minZ;
 }*/

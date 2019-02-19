@@ -1,7 +1,6 @@
 //imports ----------------------------------------------------------------------
 
 import ContainerNode from './nodes/ContainerNode.js';
-import GraphicNode from './nodes/GraphicNode.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -12,15 +11,16 @@ export default function GraphicsLayerView(mapViewpoint, layerState, eventsEmitte
 
   var container = new ContainerNode(mapViewpoint, layerState, eventsEmitter);
 
+  layerState.addListener('graphics', 'layerView', 'graphics', () => {
+    container.emptyChildren();
+    for (var graphic of layerState.graphics){
+      container.node.appendChild(graphic.rootNode);
+    }
+  });
+
   //public api -----------------------------------------------------------------
 
   this.rootNode = container.node;
-
-  this.addNewGraphicNode = function(id, graphicState){
-    var graphicNode = new GraphicNode(id, graphicState);
-    graphicNode.render();
-    container.node.appendChild(graphicNode.node);
-  }
 
   this.hasRendered = new Promise(async resolve => {
     container.render();

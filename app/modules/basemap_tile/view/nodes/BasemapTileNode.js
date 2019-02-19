@@ -11,13 +11,14 @@ const basemapURLString = "https://services.arcgisonline.com/arcgis/rest/services
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTileNode(state, mapViewpoint, mapProperties){
+export default function BasemapTileNode(layerState, state, mapMovement){
 
   //create dom element ---------------------------------------------------------
 
   var tile = new DomElement('img', 'basemap-tile');
   tile.node.draggable = false;
 
+  //put this elsewhere
   var load = function(src){
     return new Promise(resolve => {
       var contentLoaded = evt => {
@@ -30,7 +31,7 @@ export default function BasemapTileNode(state, mapViewpoint, mapProperties){
   }
 
   var updateVisibility = function(){
-    if (state.yValidIndex && state.isVisible){
+    if (state.yValidIndex){
       tile.setStyle('opacity', 1);
     } else {
       tile.setStyle('opacity', 0);
@@ -52,7 +53,7 @@ export default function BasemapTileNode(state, mapViewpoint, mapProperties){
     if (state.yValidIndex){
       var x = state.tileIndices.x;
       var y = state.tileIndices.y;
-      var z = mapProperties.imageTileLevel;
+      var z = layerState.imageTileLevel;
       tile.src = basemapURLString + `/${z}/${y}/${x}`;
     }
   }
@@ -61,37 +62,37 @@ export default function BasemapTileNode(state, mapViewpoint, mapProperties){
     if (state.yValidIndex){
       var x = state.tileIndices.x;
       var y = state.tileIndices.y;
-      var z = mapProperties.imageTileLevel;
+      var z = layerState.imageTileLevel;
       await load(basemapURLString + `/${z}/${y}/${x}`);
     }
   }
 
   state.addListener('screenCoords', 'node', 'screenCoords', () => {
-    if (state.yValidIndex && state.isVisible){
+  //  if (state.yValidIndex){
       updateScreenCoords();
-    }
+    //}
   });
 
-  state.addListener('yValidIndex', 'node', 'screenCoords', () => {
-    if (state.yValidIndex && state.isVisible){
-      updateScreenCoords();
-    }
-  });
+  //state.addListener('yValidIndex', 'node', 'screenCoords', () => {
+  //  if (state.yValidIndex){
+    //  updateScreenCoords();
+    //}
+  //});
 
   state.addListener('size', 'node', 'dimensions', () => {
-    if (state.yValidIndex && state.isVisible){
+  //  if (state.yValidIndex){
       updateDimensions();
-    }
+    //}
   });
 
   state.addListener('tileIndices', 'node', 'src', updateSrc);
-  state.addListener('isVisible', 'node', 'visibility', updateVisibility);
-  state.addListener('yValidIndex', 'node', 'visibility', updateVisibility);
+  //state.addListener('isVisible', 'node', 'visibility', updateVisibility);
+  //state.addListener('yValidIndex', 'node', 'visibility', updateVisibility);
 
-  mapViewpoint.addListener('basemapTile - render', async () => {
+  mapMovement.addListener('type', 'basemapTile', 'render', async () => {
     updateScreenCoords();
     updateDimensions();
-    updateVisibility();
+    //updateVisibility();
     await asyncUpdateSrc();
   });
 
@@ -102,7 +103,7 @@ export default function BasemapTileNode(state, mapViewpoint, mapProperties){
   this.render = async function(){
     updateDimensions();
     updateScreenCoords();
-    updateVisibility();
+    //updateVisibility();
     await asyncUpdateSrc();
   }
 

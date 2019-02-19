@@ -1,20 +1,11 @@
 //imports ----------------------------------------------------------------------
 
 import ComponentState from '../../../lib/ComponentState.js';
-import { getDistance } from '../../../lib/Utils.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerState(mapViewpoint, mapProperties){
-
-  //helper variable ------------------------------------------------------------
-
-  const MIN_RADIUS = 10;
-  const MAX_RADIUS = 20;
-
-  var locations = [];
-  var graphics = [];
+export default function GraphicsLayerState(mapViewpoint, mapMovement, createGraphics){
 
   //create state var -----------------------------------------------------------
 
@@ -22,99 +13,79 @@ export default function GraphicsLayerState(mapViewpoint, mapProperties){
     isEnabled: true,
     selectedTag: null,
     highlightedGraphicId: null,
-    minDiameter: MIN_RADIUS * 2,
+    graphics: [],
   });
 
-  //modify behavior of selectedTag prop ----------------------------------------
+  //modify behavior of locations prop ------------------------------------------
 
-  state.setOnChange('selectedTag', function(){
-    this.requestUpdate('location', 'isMapped');
-    this.requestUpdate('self', 'clusterGraphics');
+  state.setOnChange('selectedTag', async function(){
+    this.requestUpdate('self', 'updateGraphics');
   });
 
-  state.addNewGraphicState = function(graphicState){
-    graphics.push(graphicState);
-  }
-
-  state.addNewLocationState = function(locationState){
-    locations.push(locationState);
-  }
+  state.setOnChange('highlightedGraphicId', function(){
+    this.requestUpdate('self', 'updateIsHighlighted');
+  });
 
   //define state change reactions ----------------------------------------------
 
-  var unhighlightCluster = function(){
-    state.set('highlightedGraphicId', null);
+  var updateGraphics = async function(){
+    var graphics = await createGraphics(state.selectedTag, mapViewpoint, mapMovement);
+    state.set('graphics', graphics);
   }
 
-
-  var clusterGraphics = function(){
-    var graphicsInfo = [];
-    for (var location of locations){
-      var graphicInfo = {
-        isVisible: false,
-        worldCoords: {x:location.worldCoords.x, y:location.worldCoords.y},
-        numLocations: 1,
-        diameter: 0,
-      };
-      graphicsInfo.push(graphicInfo);
+  var updateRenderedDiameter = function(){
+    for (var graphic of state.graphics){
+      graphic.updateRenderedDiameter(mapMovement.zoomScaleFactor);
     }
+  }
 
-    var mappedLocations = locations.filter( location => location.isMapped );
-    var location = mappedLocations.shift();
-    while (location){
-      var id = location.id;
-      var graphicInfo = graphicsInfo[id];
-      graphicInfo.isVisible = true;
-      var sumX = location.worldCoords.x;
-      var sumY = location.worldCoords.y;
-      var points = [location.worldCoords];
-      var renderedRadius = MIN_RADIUS;
-      var done = false;
-
-      while (!done){
-        var clusterFound = false;
-        var index = 0;
-        for (var compareLocation of mappedLocations){
-          var thresholdDistance = (renderedRadius + MIN_RADIUS) * mapProperties.pixelSize;
-          var distance = getDistance(graphicInfo.worldCoords, compareLocation.worldCoords);
-          if (distance < thresholdDistance){
-            clusterFound = true;
-            points.push(compareLocation.worldCoords);
-            graphicInfo.numLocations += 1;
-            sumX += compareLocation.worldCoords.x;
-            sumY += compareLocation.worldCoords.y;
-            graphicInfo.worldCoords.x = sumX / graphicInfo.numLocations;
-            graphicInfo.worldCoords.y = sumY / graphicInfo.numLocations;
-            for (var point of points){
-              var pointRadius = getDistance(graphicInfo.worldCoords, point) / mapProperties.pixelSize;
-              graphicInfo.diameter = Math.max(graphicInfo.diameter, pointRadius * 2);
-              renderedRadius = Math.max(renderedRadius, pointRadius);
-            }
-            graphicInfo.diameter = Math.min(graphicInfo.diameter, MAX_RADIUS * 2);
-            renderedRadius = Math.min(renderedRadius, MAX_RADIUS);
-            mappedLocations.splice(index, 1);
-            break;
-          }
-          index += 1;
-        }
-        done = !clusterFound;
-      }
-      location = mappedLocations.shift();
+  var updateMapCoords = function(){
+    for (var graphic of state.graphics){
+      graphic.updateMapCoords();
     }
+  }
 
-    graphics.forEach( (graphic, i) => {
-      graphic.update(graphicsInfo[i]);
-    });
+  var updateScreenCoords = function(){
+    for (var graphic of state.graphics){
+      graphic.updateScreenCoords();
+    }
+  }
+
+  var updateIsHighlighted = function(){
+    for (var graphic of state.graphics){
+      graphic.updateIsHighlighted(state.highlightedGraphicId);
+    }
   }
 
   //load state change reactions ------------------------------------------------
 
-  state.addListener('selectedTag', 'self', 'clusterGraphics', clusterGraphics);
-  mapViewpoint.addListener('graphicsLayer - clusterGraphics', clusterGraphics);
-  mapViewpoint.addListener('graphicsLayer - unhighlightCluster', unhighlightCluster);
+  state.addListener('selectedTag', 'self', 'updateGraphics', async () => {
+    await updateGraphics();
+  });
+
+  state.addListener('highlightedGraphicId', 'self', 'updateIsHighlighted', updateIsHighlighted);
+
+  mapMovement.addListener('type', 'graphicsLayer', 'updateGraphics', async () => {
+    await updateGraphics();
+  });
+
+  mapViewpoint.addListener('graphicsLayer', () => {
+    var scaleHasChanged = mapViewpoint.propHasChanged('scale');
+    if (scaleHasChanged){
+      updateMapCoords();
+      updateRenderedDiameter();
+    }
+    updateScreenCoords();
+  });
 
   //public api -----------------------------------------------------------------
 
   return state;
 
 }
+
+
+//don't like this here
+//var unhighlightCluster = function(){
+//  state.set('highlightedGraphicId', null);
+//}

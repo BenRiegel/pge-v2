@@ -53,4 +53,10 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
     updateListener();
   };
 
+  this.emptyChildren = function(){
+    while (container.node.firstChild) {
+      container.node.removeChild(container.node.firstChild);
+    }
+  }
+
 }

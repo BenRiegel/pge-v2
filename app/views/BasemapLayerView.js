@@ -5,12 +5,12 @@ import BasemapLayer from '../modules/basemap_layer/BasemapLayer.js';
 import dispatcher from '../services/Dispatcher.js';
 import rootNode from './RootView.js';
 import mapViewpoint from '../stores/MapViewpoint.js';
-import mapProperties from '../stores/MapProperties.js';
+import mapMovement from '../stores/MapMovement.js';
 
 
 //module code block ------------------------------------------------------------
 
-var basemapLayer = new BasemapLayer(mapViewpoint, mapProperties);
+var basemapLayer = new BasemapLayer(mapViewpoint, mapMovement);
 
 dispatcher.addListener('load', async () => {
   basemapLayer.addListener('userPanStartRequest', panStart);

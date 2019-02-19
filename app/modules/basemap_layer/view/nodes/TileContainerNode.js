@@ -19,7 +19,7 @@ export default function TileContainerNode(){
   this.addChildNodes = function(childNodes){
     var docFragment = document.createDocumentFragment();
     for (var childNode of childNodes){
-      docFragment.appendChild(childNode.node);
+      docFragment.appendChild(childNode);
     }
     container.node.appendChild(docFragment);
   }

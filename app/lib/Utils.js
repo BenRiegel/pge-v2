@@ -19,3 +19,9 @@ export function getDistance(p1, p2){
 export function capitalizeString(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function easeInOut(frameNum, numFrames){
+  var rad = frameNum / numFrames * Math.PI;
+  var percent = (1 - Math.cos(rad)) / 2;
+  return percent;
+}

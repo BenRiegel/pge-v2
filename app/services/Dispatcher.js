@@ -15,7 +15,7 @@ var dispatcher = new Emitter();
 export default dispatcher;
 
 export async function initApp(){
-  await dispatcher.asyncBroadcast('startLoading');
+  dispatcher.broadcast('startLoading');
   await dispatcher.asyncBroadcast('load');
   await new Promise(resolve => {
     setTimeout(resolve, 1000);
@@ -29,10 +29,11 @@ export async function pointSelect(id, worldCoords){
   dispatcher.broadcast('popup - close');
   dispatcher.broadcast('selectMenu - disable');
   dispatcher.broadcast('selectMenu - close');
-  dispatcher.broadcast('graphicsLayer - highlightCluster', id);
+  
+  dispatcher.broadcast('graphicsLayer - highlightGraphic', id);
   await dispatcher.asyncBroadcast('mapMoveAnimator - panTo', worldCoords);
   await wait(200);
-  dispatcher.broadcast('graphicsLayer - unhighlightCluster');
+  dispatcher.broadcast('graphicsLayer - unhighlightGraphic');
   var projectData = await getProjectData(id);
   dispatcher.broadcast('popup - loadProjectData', projectData);
   await dispatcher.asyncBroadcast('popup - open');
@@ -47,7 +48,7 @@ export async function clusterSelect(id, worldCoords){
   dispatcher.broadcast('popup - close');
   dispatcher.broadcast('selectMenu - disable');
   dispatcher.broadcast('selectMenu - close');
-  dispatcher.broadcast('graphicsLayer - highlightCluster', id);
+  dispatcher.broadcast('graphicsLayer - highlightGraphic', id);
   await dispatcher.asyncBroadcast('mapMoveAnimator - zoom', 'to', worldCoords);
   dispatcher.broadcast('popup - enable');
   dispatcher.broadcast('zoomControls - enable');

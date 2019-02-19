@@ -2,20 +2,18 @@
 
 import Emitter from '../../lib/Emitter.js';
 import GraphicsLayerState from './state/GraphicsLayerState.js';
-import GraphicState from './state/GraphicState.js';
-import LocationState from './state/LocationState.js';
 import GraphicsLayerView from './view/GraphicsLayerView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayer(mapViewpoint, mapProperties){
+export default function GraphicsLayer(mapViewpoint, mapMovement, createGraphics){
 
   //private code block ---------------------------------------------------------
 
-  var layerState = new GraphicsLayerState(mapViewpoint, mapProperties);
+  var state = new GraphicsLayerState(mapViewpoint, mapMovement, createGraphics);
   var eventsEmitter = new Emitter();
-  var view = new GraphicsLayerView(mapViewpoint, layerState, eventsEmitter);
+  var view = new GraphicsLayerView(mapViewpoint, state, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 
@@ -26,33 +24,23 @@ export default function GraphicsLayer(mapViewpoint, mapProperties){
   };
 
   this.enable = function(){
-    layerState.set('isEnabled', true);
+    state.set('isEnabled', true);
   };
 
   this.disable = function(){
-    layerState.set('isEnabled', false);
+    state.set('isEnabled', false);
   };
 
-  this.addGraphics = function(graphicsInfoArray){
-    for (var graphicInfo of graphicsInfoArray){
-      var locationState = new LocationState(graphicInfo, layerState);
-      layerState.addNewLocationState(locationState);
-      var graphicState = new GraphicState(graphicInfo, mapViewpoint, mapProperties, layerState);
-      layerState.addNewGraphicState(graphicState);
-      view.addNewGraphicNode(graphicInfo.id, graphicState);
-    }
-  };
-
-  this.filterGraphics = function(selectedTag){
-    layerState.set('selectedTag', selectedTag);
+  this.updateGraphics = async function(selectedTag){
+    await state.set('selectedTag', selectedTag);
   }
 
-  this.highlightCluster = function(id){
-    layerState.set('highlightedGraphicId', id);
+  this.setNewGraphics = function(graphics){
+    state.set('graphics', graphics);
   }
 
-  this.unhighlightCluster = function(id){
-    layerState.set('highlightedGraphicId', null);
+  this.highlightGraphic = function(id){
+    state.set('highlightedGraphicId', id);
   }
 
 }

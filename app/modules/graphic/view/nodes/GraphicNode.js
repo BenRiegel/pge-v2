@@ -6,30 +6,17 @@ import '../stylesheets/graphic.scss';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicNode(id, graphicState){
+export default function GraphicNode(props, graphicState){
 
   //create dom element ---------------------------------------------------------
 
   var graphic = new DomElement('div', 'graphic');
-  graphic.dataset = { id };
+  graphic.dataset = { id: props.id };
+  graphic.dataset = {x: props.worldCoords.x};
+  graphic.dataset = {y: props.worldCoords.y};
+  graphic.dataset = {type: props.type};
+  graphic.innerHTML = props.numLocations;
 
-  var updateDataType = function(){
-    var type = graphicState.numLocations > 1 ? 'cluster' : 'point';
-    graphic.dataset = {type};
-  }
-
-  var updateDataWorldXY = function(){
-    graphic.dataset = {x: graphicState.worldCoords.x};
-    graphic.dataset = {y: graphicState.worldCoords.y};
-  }
-
-  var updateVisibility = function(){
-    if (graphicState.isVisible){
-      graphic.setVisibility('visible');
-    } else {
-      graphic.setVisibility('hidden');
-    }
-  }
 
   var updateHighlight = function(){
     if (graphicState.isHighlighted){
@@ -50,17 +37,9 @@ export default function GraphicNode(id, graphicState){
     graphic.setStyle('transform', str);
   }
 
-  var updateInnerHTML = function(){
-    graphic.innerHTML = graphicState.numLocations;
-  }
-
   //load state reactions -------------------------------------------------------
 
-  graphicState.addListener('worldCoords', 'node', 'worldCoords', updateDataWorldXY);
   graphicState.addListener('isHighlighted', 'node', 'highlight', updateHighlight);
-  graphicState.addListener('isVisible', 'node', 'visibility', updateVisibility);
-  graphicState.addListener('numLocations', 'node', 'type', updateDataType);
-  graphicState.addListener('numLocations', 'node', 'innerHTML', updateInnerHTML);
   graphicState.addListener('renderedDiameter', 'node', 'size', updateSize);
   graphicState.addListener('screenCoords', 'node', 'location', updateScreenCoords);
 
@@ -69,13 +48,9 @@ export default function GraphicNode(id, graphicState){
   this.node = graphic.node;
 
   this.render = function(){
-    updateDataType();
-    updateDataWorldXY();
-    updateVisibility();
     updateHighlight();
     updateSize();
     updateScreenCoords();
-    updateInnerHTML();
   }
 
 }

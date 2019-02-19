@@ -27,6 +27,9 @@ export default function ComponentState(obj){
     setOnChange(propName, cb){
       props[propName].onChange = cb;
     },
+    setOnChangeQuick(propName, cb){
+      props[propName].onChangeQuick = cb;
+    },
     propHasChanged(propName){
       return props[propName].hasChanged;
     },

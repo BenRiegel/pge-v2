@@ -25,7 +25,6 @@ export default class ObservedVar{
       }
     }
   }
-
   async onChange(currentValue, previousValue){
     await this.requestUpdate('all', 'all', currentValue, previousValue);
   }
