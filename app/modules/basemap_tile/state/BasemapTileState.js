@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState.js';
+import ComponentState from '../lib/ComponentState.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -9,61 +9,52 @@ export default function BasemapTileState(xPosition, yPosition, mapViewpoint, lay
 
   //create state var -----------------------------------------------------------
 
-  //need something new for this
   var state = new ComponentState({
-    screenCoords: {x:undefined, y:undefined},
+    screenCoords: undefined,
     tileIndices: {x:undefined, y:undefined},
-    yValidIndex: undefined,
-    size: undefined,           //get rid of this
-    isVisible: undefined,
+    yIndexIsValid: undefined,
   });
 
   //define state change reactions ----------------------------------------------
 
-  var calculateIsVisible = function(){
-    return mapViewpoint.tileIsVisible(state.screenCoords, layerState.tileSize);
+  var updateScreenCoords = function(){
+    var screenX = layerState.centerTileScreenCoords.x + (layerState.tileSize * xPosition);
+    var screenY = layerState.centerTileScreenCoords.y + (layerState.tileSize * yPosition);
+    state.set('screenCoords', {x:screenX, y:screenY});
   }
 
-  var calculateYValidIndex = function(indices){
-    return (indices.y >= 0 && indices.y < layerState.numBasemapTiles);
-  }
-
-  var calculateScreenCoords = function(){
-    var x = layerState.centerScreenCoords.x + (layerState.tileSize * xPosition);
-    var y = layerState.centerScreenCoords.y + (layerState.tileSize * yPosition);
-    return {x, y};
-  }
-
-  var calculateIndices = function(){
-    //move this out
-    var centerTileX = Math.floor(mapViewpoint.x / (layerState.tileSize * mapViewpoint.scale));
-    var xIndex = (centerTileX + xPosition) % layerState.numBasemapTiles;
+  var updateIndices = async function(){
+    var xIndex = (layerState.centerTileIndices.x + xPosition) % layerState.numBasemapTiles;
     if (xIndex < 0){
       xIndex += layerState.numBasemapTiles;
     }
-    var centerTileY = Math.floor(mapViewpoint.y / (layerState.tileSize * mapViewpoint.scale));
-    var yIndex = centerTileY + yPosition;
-    return {x:xIndex, y:yIndex};
+    var yIndex = layerState.centerTileIndices.y + yPosition;
+    var tileIndices = {x:xIndex, y:yIndex};
+    var yIndexIsValid = (yIndex >= 0 && yIndex < layerState.numBasemapTiles);
+    state.set('yIndexIsValid', yIndexIsValid);
+    if (layerState.isWaiting){
+      await state.setTileIndices(tileIndices);
+    } else {
+      state.setTileIndices(tileIndices);
+    }
   }
 
-  state.update = function(){
-    var screenCoords = calculateScreenCoords();
-    var indices = calculateIndices();
-    var size = layerState.tileSize;
-    var yValidIndex = calculateYValidIndex(indices);
-    var isVisible = mapViewpoint.tileIsVisible(screenCoords, size);
+  //load state change reactions ------------------------------------------------
 
-    state.setQuick('isVisible', isVisible);
-    state.setQuick('yValidIndex', yValidIndex)
-    state.setQuick('screenCoords', screenCoords);
-    state.setQuick('tileIndices', indices);
-    state.setQuick('size', size);   //get rid of this eventually
-  }
+  layerState.addListener('centerTileScreenCoords', updateScreenCoords);
 
-  //init code ------------------------------------------------------------------
+  layerState.addListener('centerTileIndices', async () => {
+    if (layerState.isWaiting){
+      await updateIndices();
+    } else {
+      updateIndices();
+    }
+  });
 
-  state.update();
+  //init state -----------------------------------------------------------------
 
+  updateScreenCoords();
+  updateIndices();
 
   //public api -----------------------------------------------------------------
 

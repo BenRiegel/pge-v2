@@ -17,7 +17,7 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
     var graphicType = evt.target.dataset.type;
     var worldCoords = {
       x: Number(evt.target.dataset.x),
-      y: Number(evt.target.dataset.y)
+      y: Number(evt.target.dataset.y),
     };
     eventsEmitter.broadcast(graphicType, graphicId, worldCoords);
   });
@@ -34,13 +34,13 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('isEnabled', 'graphicsLayerContainer', 'listener', updateListener);
+  state.addListener('isEnabled', updateListener);
 
-  mapViewpoint.addListener('graphicsLayer - fadeDown', async () => {
+  mapViewpoint.addListener('zoomHomeStart', async () => {
     await container.animateOpacity('transparent');
   });
 
-  mapViewpoint.addListener('graphicsLayer - fadeUp', async () => {
+  mapViewpoint.addListener('zoomHomeEnd', async () => {
     await container.animateOpacity('opaque');
   });
 
@@ -53,10 +53,12 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
     updateListener();
   };
 
-  this.emptyChildren = function(){
-    while (container.node.firstChild) {
-      container.node.removeChild(container.node.firstChild);
-    }
-  }
+  this.removeAllChildren = function(){
+    container.removeAllChildren();
+  };
+
+  this.addChildren = function(childNodes){
+    container.addChildren(childNodes);
+  };
 
 }

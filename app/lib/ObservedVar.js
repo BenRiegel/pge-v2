@@ -8,6 +8,9 @@ export default class ObservedVar{
   addListener(source, propName, cb){
     this.listeners.push( {source, propName, cb} );
   }
+  removeListeners(){
+    this.listeners = [];
+  }
   async requestUpdate(target, propName, ...args){
     var promises = [];
     for (var listener of this.listeners){

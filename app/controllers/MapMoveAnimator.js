@@ -2,7 +2,6 @@
 
 import dispatcher from '../services/Dispatcher.js';
 import mapViewpoint from '../stores/MapViewpoint.js';
-import mapMovement from '../stores/MapMovement.js';
 import { capitalizeString, easeInOut } from '../lib/Utils.js';
 import { INIT_COORDS_WM, INIT_SCALE } from '../config/Config.js';
 
@@ -84,6 +83,20 @@ var calculateCoordChanges = function(moveType, location){
 var move = async function(requestedMoveType, worldCoords){
 
   var changeSummary = calculateCoordChanges(requestedMoveType, worldCoords);
+
+  if (requestedMoveType === 'zoomHome'){
+    var deltaScaleLevel = Math.abs(changeSummary.scale.deltaLevel);
+    if (deltaScaleLevel > 1){
+      await mapViewpoint.startNewAction('zoomHome');
+      var newX = changeSummary.x.new;
+      var newY = changeSummary.y.new;
+      var newScale = changeSummary.scale.new;
+      await mapViewpoint.set(newX, newY, newScale);
+      await mapViewpoint.terminateAction();
+      return;
+    }
+  }
+
   var numFrames = calculateNumFrames(changeSummary);
   if (numFrames === 0){
     return;
@@ -93,7 +106,7 @@ var move = async function(requestedMoveType, worldCoords){
   var differences = [];
   var previousTime = new Date().getTime();
 
-  mapMovement.setType(moveType);
+  mapViewpoint.startNewAction(moveType);
 
   await new Promise(resolve => {
     var frameNum = 0;
@@ -120,8 +133,7 @@ var move = async function(requestedMoveType, worldCoords){
     addNewFrame();
   });
 
-  mapMovement.setType(null);
-  //mapViewpoint.viewpoint.set('currentMovement', null);
+  await mapViewpoint.terminateAction();
   console.log(differences);
 }
 

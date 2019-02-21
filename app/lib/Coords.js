@@ -2,9 +2,15 @@
 
 import * as webMercator from './WebMercator.js';
 import * as webMapScale from './WebMapScale.js';
+import { clamp } from './Utils.js';
 
 
 //module code block ------------------------------------------------------------
+
+const MIN_VIEWPOINT_SCALE_LEVEL = 2;
+const MAX_VIEWPOINT_SCALE_LEVEL = 12;
+const MAX_VIEWPOINT_SCALE = webMapScale.levelToValue(MIN_VIEWPOINT_SCALE_LEVEL);
+const MIN_VIEWPOINT_SCALE = webMapScale.levelToValue(MAX_VIEWPOINT_SCALE_LEVEL);
 
 class Coord{
   constructor(initValue){
@@ -72,6 +78,21 @@ export class Scale extends Coord{
     super(initValue);
   }
   rectifyNewValue(newValue){
-    return webMapScale.rectifyScaleValue(newValue);
+    return clamp(newValue, MIN_VIEWPOINT_SCALE, MAX_VIEWPOINT_SCALE);
+  }
+  getChangeSummary(newValue){
+    var previousValue = this.value;
+    var rectifiedNewValue = this.rectifyNewValue(newValue);
+    var deltaValue = this.calculateDeltaValue(rectifiedNewValue, previousValue);
+    var previousLevel = webMapScale.valueToLevel(previousValue);
+    var newLevel = webMapScale.valueToLevel(rectifiedNewValue);
+    var hasChanged = Boolean(deltaValue);
+    return {
+      init: this.value,
+      new: rectifiedNewValue,
+      delta: deltaValue,
+      deltaLevel: newLevel - previousLevel,
+      hasChanged,
+    }
   }
 }

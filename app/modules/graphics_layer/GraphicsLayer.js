@@ -2,16 +2,18 @@
 
 import Emitter from '../../lib/Emitter.js';
 import GraphicsLayerState from './state/GraphicsLayerState.js';
+import GraphicsService from './services/GraphicsService.js';
 import GraphicsLayerView from './view/GraphicsLayerView.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayer(mapViewpoint, mapMovement, createGraphics){
+export default function GraphicsLayer(mapDimensions, mapViewpoint){
 
   //private code block ---------------------------------------------------------
 
-  var state = new GraphicsLayerState(mapViewpoint, mapMovement, createGraphics);
+  var graphicsService = new GraphicsService(mapViewpoint);
+  var state = new GraphicsLayerState(mapDimensions, mapViewpoint, graphicsService);
   var eventsEmitter = new Emitter();
   var view = new GraphicsLayerView(mapViewpoint, state, eventsEmitter);
 
@@ -31,12 +33,12 @@ export default function GraphicsLayer(mapViewpoint, mapMovement, createGraphics)
     state.set('isEnabled', false);
   };
 
-  this.updateGraphics = async function(selectedTag){
-    await state.set('selectedTag', selectedTag);
+  this.loadLocations = function(locations){
+    graphicsService.loadLocations(locations);
   }
 
-  this.setNewGraphics = function(graphics){
-    state.set('graphics', graphics);
+  this.filterGraphics = function(selectedTag){
+    state.set('selectedTag', selectedTag)
   }
 
   this.highlightGraphic = function(id){

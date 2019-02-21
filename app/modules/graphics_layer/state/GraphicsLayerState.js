@@ -1,91 +1,116 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState.js';
+import ComponentState from '../lib/ComponentState.js';
+import { WORLD_CIRCUMFERENCE } from '../../../lib/WebMercator.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerState(mapViewpoint, mapMovement, createGraphics){
+export default function GraphicsLayerState(mapDimensions, mapViewpoint, graphicsService){
 
   //create state var -----------------------------------------------------------
 
   var state = new ComponentState({
     isEnabled: true,
     selectedTag: null,
+    graphics: null,
+    pixelNum: undefined,
+    baselineScale: undefined,
+    zoomScaleFactor: undefined,
     highlightedGraphicId: null,
-    graphics: [],
+    viewpointCenterMap: undefined,
   });
 
-  //modify behavior of locations prop ------------------------------------------
+  state.calculateMapCoords = function(worldCoords){
+    return {
+      x: worldCoords.x / mapViewpoint.scale,
+      y: worldCoords.y / mapViewpoint.scale,
+    }
+  }
 
-  state.setOnChange('selectedTag', async function(){
-    this.requestUpdate('self', 'updateGraphics');
-  });
-
-  state.setOnChange('highlightedGraphicId', function(){
-    this.requestUpdate('self', 'updateIsHighlighted');
-  });
+  state.calculateScreenCoords = function(mapCoords){
+    var screenX = mapCoords.x - state.viewpointCenterMap.x + mapDimensions.width / 2;
+    if (screenX < 0){
+      screenX += state.pixelNum;
+    }
+    if (screenX > state.pixelNum){
+      screenX -= state.pixelNum;
+    }
+    var screenY = mapCoords.y - state.viewpointCenterMap.y + mapDimensions.height / 2;
+    return {
+      x: screenX,
+      y: screenY,
+    }
+  }
 
   //define state change reactions ----------------------------------------------
 
-  var updateGraphics = async function(){
-    var graphics = await createGraphics(state.selectedTag, mapViewpoint, mapMovement);
-    state.set('graphics', graphics);
+  var updatePixelNum = function(){
+    var pixelNum = WORLD_CIRCUMFERENCE / mapViewpoint.scale;
+    state.set('pixelNum', pixelNum, false);
   }
 
-  var updateRenderedDiameter = function(){
-    for (var graphic of state.graphics){
-      graphic.updateRenderedDiameter(mapMovement.zoomScaleFactor);
-    }
+  var updateViewpointCenterMap = function(){
+    var x = mapViewpoint.x / mapViewpoint.scale;
+    var y = mapViewpoint.y / mapViewpoint.scale;
+    state.set('viewpointCenterMap', {x, y});
   }
 
-  var updateMapCoords = function(){
-    for (var graphic of state.graphics){
-      graphic.updateMapCoords();
-    }
+  var updateBaselineScale = function(){
+    state.set('baselineScale', mapViewpoint.scale, false);
   }
 
-  var updateScreenCoords = function(){
-    for (var graphic of state.graphics){
-      graphic.updateScreenCoords();
-    }
+  var updateZoomScaleFactor = function(){
+    var scaleFactor = state.baselineScale / mapViewpoint.scale;
+    state.set('zoomScaleFactor', scaleFactor);
   }
 
-  var updateIsHighlighted = function(){
-    for (var graphic of state.graphics){
-      graphic.updateIsHighlighted(state.highlightedGraphicId);
-    }
+  var loadNewGraphics = function(){
+    state.removeListeners('highlightedGraphicId');
+    state.removeListeners('viewpointCenterMap');
+    state.removeListeners('zoomScaleFactor');
+    var newGraphics = graphicsService.createNewGraphics(state.selectedTag, state);
+    state.set('graphics', newGraphics);
   }
 
   //load state change reactions ------------------------------------------------
 
-  state.addListener('selectedTag', 'self', 'updateGraphics', async () => {
-    await updateGraphics();
+  state.addListener('selectedTag', loadNewGraphics);
+
+  mapViewpoint.addListener('zoomEnd - graphicsLayerReset', () => {
+    updateBaselineScale();
+    updateZoomScaleFactor();
+    loadNewGraphics();
+    state.set('highlightedGraphicId', null);
   });
 
-  state.addListener('highlightedGraphicId', 'self', 'updateIsHighlighted', updateIsHighlighted);
-
-  mapMovement.addListener('type', 'graphicsLayer', 'updateGraphics', async () => {
-    await updateGraphics();
+  mapViewpoint.addListener('zoomAction', () => {
+    updatePixelNum();
+    updateZoomScaleFactor();
+    updateViewpointCenterMap();
   });
 
-  mapViewpoint.addListener('graphicsLayer', () => {
-    var scaleHasChanged = mapViewpoint.propHasChanged('scale');
-    if (scaleHasChanged){
-      updateMapCoords();
-      updateRenderedDiameter();
-    }
-    updateScreenCoords();
+  mapViewpoint.addListener('panAction', () => {
+    updateViewpointCenterMap();
   });
+
+  mapViewpoint.addListener('zoomHomeAction', () => {
+    loadNewGraphics();
+    updateBaselineScale();
+    updatePixelNum();
+    updateZoomScaleFactor();
+    updateViewpointCenterMap();
+  });
+
+  //init state -----------------------------------------------------------------
+
+  updatePixelNum();
+  updateBaselineScale();
+  updateZoomScaleFactor();
+  updateViewpointCenterMap();
 
   //public api -----------------------------------------------------------------
 
   return state;
 
 }
-
-
-//don't like this here
-//var unhighlightCluster = function(){
-//  state.set('highlightedGraphicId', null);
-//}

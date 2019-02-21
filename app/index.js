@@ -7,7 +7,7 @@ import './views/SelectMenuView.js';
 import './views/LoaderView.js';
 import './views/PopupView.js';
 import './views/ZoomControlsView.js';
-import './stores/MapMoveAnimator.js';
+import './controllers/MapMoveAnimator.js';
 //import './controllers/PanController.js';
 import './assets/stylesheets/index.scss';
 

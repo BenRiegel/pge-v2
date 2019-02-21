@@ -1,21 +1,33 @@
 //imports ----------------------------------------------------------------------
 
+import BasemapTile from '../../basemap_tile/BasemapTile.js';
 import ContainerNode from './nodes/ContainerNode.js';
 import TileContainerNode from './nodes/TileContainerNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayerView(mapViewpoint, mapMovement, state, eventsEmitter){
+export default function BasemapLayerView(mapViewpoint, state, eventsEmitter){
 
   //create nodes ---------------------------------------------------------------
 
   var container = new ContainerNode(mapViewpoint, state, eventsEmitter);
   var tileContainer = new TileContainerNode();
   var tileContainerCopy = new TileContainerNode();
+
+  var numTilesWidth = 9;
+  var numTilesHeight = 5;
+
+  var tiles = [];
   var tileNodes = [];
-  for (var tile of state.tiles){
-    tileNodes.push(tile.rootNode);
+  for (var i = 0; i < numTilesWidth; i++){
+    for (var j = 0; j < numTilesHeight; j++){
+      var xPos = i - Math.floor(numTilesWidth / 2);
+      var yPos = j - Math.floor(numTilesHeight / 2);
+      var tile = new BasemapTile(xPos, yPos, mapViewpoint, state);
+      tiles.push(tile);
+      tileNodes.push(tile.rootNode);
+    }
   }
 
   //configure dom --------------------------------------------------------------
@@ -26,23 +38,14 @@ export default function BasemapLayerView(mapViewpoint, mapMovement, state, event
 
   //helper function ------------------------------------------------------------
 
-  var renderTiles = async function(){
-    var promises = [];
-    for (var tileNode of tileNodes){
-      var p = tileNode.render();
-      promises.push(p);
-    }
-    await Promise.all(promises);
-  }
-
-  mapMovement.addListener('type', 'basemapLayer', 'copyTiles', () => {
+  mapViewpoint.addListener('basemapLayer - copyTiles', () => {
     for (var childNode of tileContainer.node.childNodes){
       var childCopy = childNode.cloneNode(true);
       tileContainerCopy.node.appendChild(childCopy);
     }
   });
 
-  mapMovement.addListener('type', 'basemapLayer', 'revealNewTiles', async () => {
+  mapViewpoint.addListener('basemapLayer - revealNewTiles', async () => {
     await tileContainerCopy.fadeOut();
     tileContainerCopy.reset();
   });
@@ -53,7 +56,8 @@ export default function BasemapLayerView(mapViewpoint, mapMovement, state, event
 
   this.hasRendered = new Promise(async resolve => {
     container.render();
-    //await renderTiles();  //this needs to be fixed
+    var tileRenderPromises = tiles.map(tile => tile.hasRendered);
+    await tileRenderPromises;
     resolve();
   });
 

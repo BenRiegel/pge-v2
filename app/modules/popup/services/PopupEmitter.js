@@ -21,9 +21,19 @@ export default function PopupEmitter(state){
     };
   }
 
+  var broadcastOnClose = function(){
+    emitter.broadcast('isClosed');
+  }
+
   //load reactions -------------------------------------------------------------
 
   state.addListener('eventInProgress', 'emitter', 'broadcast', broadcast);
+
+  state.addListener('isOpen', 'emitter', 'broadcast', () => {
+    if (!state.isOpen){
+      broadcastOnClose();
+    }
+  });
 
   //public api -----------------------------------------------------------------
 

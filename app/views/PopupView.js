@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import dispatcher from '../services/Dispatcher.js';
-import { popupEventStart, popupEventEnd } from '../services/Dispatcher.js';
+import { popupEventStart, popupEventEnd, popupClose } from '../services/Dispatcher.js';
 import Popup from '../modules/popup/Popup.js';
 import rootNode from './RootView.js';
 
@@ -15,6 +15,7 @@ dispatcher.addListener('load', () => {
   popup.enable();
   popup.addListener('eventStart', popupEventStart);
   popup.addListener('eventEnd', popupEventEnd);
+  popup.addListener('isClosed', popupClose);
   rootNode.appendChild(popup.rootNode);
 });
 

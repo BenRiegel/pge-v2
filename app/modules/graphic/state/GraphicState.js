@@ -1,41 +1,54 @@
 //imports ----------------------------------------------------------------------
 
-import { calculateDeltaX } from '../../../lib/WebMercator.js';
-import ComponentState from '../../../lib/ComponentState.js';
+import ComponentState from '../lib/ComponentState.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicState(props, mapViewpoint, mapMovement){
-
-  var mapCoords;
+export default function GraphicState(props, layerState){
 
   var state = new ComponentState({
-    renderedDiameter: 0,
-    isHighlighted: false,
-    screenCoords: {x:0, y:0},
+    mapCoords: undefined,
+    screenCoords: undefined,
+    renderedDiameter: undefined,
+    isHighlighted: undefined,
   });
 
-  state.updateMapCoords = function(){
-    mapCoords = mapViewpoint.calculateMapCoords(props.worldCoords);
+  //define state change reactions ----------------------------------------------
+
+  var updateMapCoords = function(){
+    var mapCoords = layerState.calculateMapCoords(props.worldCoords);
+    state.set('mapCoords', mapCoords, false);
   }
 
-  state.updateScreenCoords = function(){
-    var screenCoords = mapViewpoint.calculateScreenCoords(mapCoords);
-    this.setQuick('screenCoords', screenCoords);
+  var updateScreenCoords = function(){
+    var screenCoords = layerState.calculateScreenCoords(state.mapCoords);
+    state.set('screenCoords', screenCoords);
   };
 
-  state.updateRenderedDiameter = function(){
-    var newRenderedDiameter = props.diameter * mapMovement.zoomScaleFactor;
+  var updateRenderedDiameter = function(){
+    var newRenderedDiameter = props.diameter * layerState.zoomScaleFactor;
     newRenderedDiameter = Math.max(newRenderedDiameter, props.minDiameter);
-    this.setQuick('renderedDiameter', newRenderedDiameter);
+    state.set('renderedDiameter', newRenderedDiameter);
   }
 
-  //init -----------------------------------------------------------------------
+  var updateIsHighlighted = function(){
+    state.set('isHighlighted', props.id === layerState.highlightedGraphicId);
+  }
 
-  state.updateMapCoords();
-  state.updateScreenCoords();
-  state.updateRenderedDiameter();
+  //load state change reactions ------------------------------------------------
+
+  layerState.addListener('highlightedGraphicId', updateIsHighlighted);
+  layerState.addListener('viewpointCenterMap', updateScreenCoords);
+  layerState.addListener('zoomScaleFactor', updateMapCoords);
+  layerState.addListener('zoomScaleFactor', updateRenderedDiameter);
+
+  //init state -----------------------------------------------------------------
+
+  updateMapCoords();
+  updateScreenCoords();
+  updateRenderedDiameter();
+  updateIsHighlighted();
 
   //public api -----------------------------------------------------------------
 

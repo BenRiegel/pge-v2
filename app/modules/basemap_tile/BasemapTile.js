@@ -6,21 +6,17 @@ import BasemapTileView from './view/BasemapTileView.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTile(xPos, yPos, mapViewpoint, mapMovement, layerState){
+export default function BasemapTile(xPos, yPos, mapViewpoint, layerState){
 
   //private code block ---------------------------------------------------------
 
   var state = new BasemapTileState(xPos, yPos, mapViewpoint, layerState);
-  var view = new BasemapTileView(layerState, state, mapMovement);
+  var view = new BasemapTileView(layerState, state);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
-  this.hasRendered = view.hadRendered;
-
-  this.update = function(){
-    state.update();
-  }
+  this.hasRendered = view.hasRendered;
 
 }

@@ -17,6 +17,7 @@ export default function GraphicNode(props, graphicState){
   graphic.dataset = {type: props.type};
   graphic.innerHTML = props.numLocations;
 
+  //define state change reactions ----------------------------------------------
 
   var updateHighlight = function(){
     if (graphicState.isHighlighted){
@@ -37,11 +38,11 @@ export default function GraphicNode(props, graphicState){
     graphic.setStyle('transform', str);
   }
 
-  //load state reactions -------------------------------------------------------
+  //load state change reactions ------------------------------------------------
 
-  graphicState.addListener('isHighlighted', 'node', 'highlight', updateHighlight);
-  graphicState.addListener('renderedDiameter', 'node', 'size', updateSize);
-  graphicState.addListener('screenCoords', 'node', 'location', updateScreenCoords);
+  graphicState.setOnChange('isHighlighted', updateHighlight);
+  graphicState.setOnChange('renderedDiameter', updateSize);
+  graphicState.setOnChange('screenCoords', updateScreenCoords);
 
   //public api -----------------------------------------------------------------
 

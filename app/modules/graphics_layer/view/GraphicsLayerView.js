@@ -11,11 +11,10 @@ export default function GraphicsLayerView(mapViewpoint, layerState, eventsEmitte
 
   var container = new ContainerNode(mapViewpoint, layerState, eventsEmitter);
 
-  layerState.addListener('graphics', 'layerView', 'graphics', () => {
-    container.emptyChildren();
-    for (var graphic of layerState.graphics){
-      container.node.appendChild(graphic.rootNode);
-    }
+  layerState.addListener('graphics', () => {
+    container.removeAllChildren();
+    var rootNodes = layerState.graphics.map( graphic => graphic.rootNode );
+    container.addChildren(rootNodes); 
   });
 
   //public api -----------------------------------------------------------------

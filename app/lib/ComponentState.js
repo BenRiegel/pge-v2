@@ -38,7 +38,10 @@ export default function ComponentState(obj){
     },
     getPropUpdatePromise(propName){
       return props[propName].updateCompletePromise;
-    }
+    },
+    removeListeners(propName){
+      props[propName].removeListeners();
+    },
   };
 
   for (let key of keys){

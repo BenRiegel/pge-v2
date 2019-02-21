@@ -17,7 +17,7 @@ export function getDistance(p1, p2){
 }
 
 export function capitalizeString(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export function easeInOut(frameNum, numFrames){

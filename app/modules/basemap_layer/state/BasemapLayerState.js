@@ -1,87 +1,101 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState.js';
+import ComponentState from '../lib/ComponentState.js';
 import { valueToLevel } from '../../../lib/WebMapScale.js';
-import BasemapTile from '../../basemap_tile/BasemapTile.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayerState(mapViewpoint, mapMovement){
+export default function BasemapLayerState(mapDimensions, mapViewpoint){
 
-  //create layerState var ------------------------------------------------------
+  const BASELINE_TILE_SIZE = 256;
+
+  //create state var -----------------------------------------------------------
 
   var state = new ComponentState({
     isEnabled: true,
-    tiles: [],
+    baselineScale: undefined,
     imageTileLevel: undefined,
     numBasemapTiles: undefined,
     tileSize: undefined,
-    centerScreenCoords: undefined,
+    centerTileScreenCoords: undefined,
+    centerTileIndices: {x:undefined, y:undefined},
+    isWaiting: false,
   });
 
-  var calculateImageTileLevel = function(){
-    var imageTileLevel = valueToLevel(mapMovement.baselineScale);
-    imageTileLevel = Math.round(imageTileLevel);
-    state.setQuick('imageTileLevel', imageTileLevel);
-    var numBasemapTiles = Math.pow(2, imageTileLevel);
-    state.setQuick('numBasemapTiles', numBasemapTiles);
+  //define state change reactions ----------------------------------------------
+
+  var updateBaselineScale = function(){
+    state.set('baselineScale', mapViewpoint.scale, false);
   }
 
-  var calculateTileSize = function(){
-    var tileSize = mapMovement.zoomScaleFactor * 256;
+  var setImageTileLevel = function(){
+    var imageTileLevel = valueToLevel(state.baselineScale);
+    imageTileLevel = Math.round(imageTileLevel);
+    state.set('imageTileLevel', imageTileLevel, false);
+  }
+
+  var setNumBasemapTiles = function(){
+    var numBasemapTiles = Math.pow(2, state.imageTileLevel);
+    state.set('numBasemapTiles', numBasemapTiles, false);
+  }
+
+  var updateTileSize = function(){
+    var scaleFactor = state.baselineScale / mapViewpoint.scale;
+    var tileSize = scaleFactor * BASELINE_TILE_SIZE;
     state.set('tileSize', tileSize);
   }
 
-  var updateTiles = function(){
-    for (var tile of state.tiles){
-      tile.update();
+  var updateCenterTileProps = async function(isWaiting = false){
+    state.set('isWaiting', isWaiting, false);
+    var viewpointCenterXMap = mapViewpoint.x / mapViewpoint.scale;
+    var viewpointCenterYMap = mapViewpoint.y / mapViewpoint.scale;
+    var centerTileXIndex = Math.floor(viewpointCenterXMap / state.tileSize);
+    var centerTileYIndex = Math.floor(viewpointCenterYMap / state.tileSize);
+    var centerTileIndices = {x:centerTileXIndex, y:centerTileYIndex};
+    var centerTileLeftMap = centerTileXIndex * state.tileSize;
+    var centerTileTopMap = centerTileYIndex * state.tileSize;
+    var centerTileLeftScreen = centerTileLeftMap - viewpointCenterXMap + mapDimensions.width / 2;
+    var centerTileTopScreen = centerTileTopMap - viewpointCenterYMap + mapDimensions.height / 2;
+    var screenCoords = {x:centerTileLeftScreen, y:centerTileTopScreen};
+    state.set('centerTileScreenCoords', screenCoords);
+    if (state.isWaiting){
+      await state.setCenterTileIndicesAsync(centerTileIndices);
+    } else {
+      state.setCenterTileIndices(centerTileIndices);
     }
   }
 
-  var updateCenterTile = function(){
-    var centerTileX = Math.floor(mapViewpoint.x / (state.tileSize * mapViewpoint.scale));
-    var mapX = centerTileX * state.tileSize;
-    var centerTileY = Math.floor(mapViewpoint.y / (state.tileSize * mapViewpoint.scale));
-    var mapY = centerTileY * state.tileSize;
-    var mapCoords = {x:mapX,y:mapY};
-    var screenCoords = mapViewpoint.calculateScreenCoords(mapCoords);
-    state.setQuick('centerScreenCoords', screenCoords);
+  var resetState = async function(){
+    updateBaselineScale();
+    setImageTileLevel();
+    setNumBasemapTiles();
+    updateTileSize();
+    await updateCenterTileProps(true);
   }
 
-  calculateImageTileLevel();
-  calculateTileSize();
-  updateCenterTile();
+  //load state change reactions ------------------------------------------------
 
+  mapViewpoint.addListener('zoomEnd - basemapLayerReset', resetState);
 
-  //create tile states ---------------------------------------------------------
-
-  var numTilesWidth = 9;
-  var numTilesHeight = 5;
-
-  var tiles = [];
-  for (var i = 0; i < numTilesWidth; i++){
-    for (var j = 0; j < numTilesHeight; j++){
-      var xPos = i - Math.floor(numTilesWidth / 2);
-      var yPos = j - Math.floor(numTilesHeight / 2);
-      var tile = new BasemapTile(xPos, yPos, mapViewpoint, mapMovement, state);
-      tiles.push(tile);
-    }
-    state.set('tiles', tiles);
-  }
-
-  mapViewpoint.addListener('basemapLayer', () => {
-    updateCenterTile();
-    updateTiles();
+  mapViewpoint.addListener('zoomAction', () => {
+    updateTileSize();
+    updateCenterTileProps();
   });
 
-  mapMovement.addListener('baselineScale', 'basemapLayer', 'imageTileLayer', calculateImageTileLevel);
-  mapMovement.addListener('zoomScaleFactor', 'basemapLayer', 'tileSize', calculateTileSize);
-  mapMovement.addListener('type', 'basemapLayer', 'reset', () => {
-    updateCenterTile();
-    updateTiles();
+  mapViewpoint.addListener('panAction', () => {
+    updateCenterTileProps();
   });
 
+  mapViewpoint.addListener('zoomHomeAction', resetState);
+
+  //init state -----------------------------------------------------------------
+
+  updateBaselineScale();
+  setImageTileLevel();
+  setNumBasemapTiles();
+  updateTileSize();
+  updateCenterTileProps();
 
   //public api -----------------------------------------------------------------
 

@@ -7,13 +7,13 @@ import BasemapLayerView from './view/BasemapLayerView.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayer(mapViewpoint, mapMovement){
+export default function BasemapLayer(mapDimensions, mapViewpoint){
 
   //private code block ---------------------------------------------------------
 
-  var state = new BasemapLayerState(mapViewpoint, mapMovement);
+  var state = new BasemapLayerState(mapDimensions, mapViewpoint);
   var eventsEmitter = new Emitter();
-  var view = new BasemapLayerView(mapViewpoint, mapMovement, state, eventsEmitter);
+  var view = new BasemapLayerView(mapViewpoint, state, eventsEmitter);
 
   //public api -----------------------------------------------------------------
 

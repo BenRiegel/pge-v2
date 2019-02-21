@@ -62,13 +62,13 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('isEnabled', 'basemapLayerContainer', 'listener', updateListener);
+  state.addListener('isEnabled', updateListener);
 
-  mapViewpoint.addListener('basemapLayer - fadeDown', async () => {
+  mapViewpoint.addListener('zoomHomeStart', async () => {
     await container.animateOpacity('transparent');
   });
 
-  mapViewpoint.addListener('basemapLayer - fadeUp', async () => {
+  mapViewpoint.addListener('zoomHomeEnd', async () => {
     await container.animateOpacity('opaque');
   });
 

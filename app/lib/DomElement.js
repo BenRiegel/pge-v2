@@ -21,6 +21,17 @@ export default class DomElement{
     this.node.src = src;
   }
 
+  asyncSetSrc(src){
+    return new Promise(resolve => {
+      var contentLoaded = evt => {
+        this.node.removeEventListener('load', contentLoaded);
+        resolve();
+      };
+      this.node.addEventListener('load', contentLoaded);
+      this.node.src = src;
+    });
+  }
+
   getNodeProp(propName){
     return this.node[propName];
   }
@@ -139,5 +150,21 @@ export default class DomElement{
       height: rect.height,
     }
   };
+
+  removeAllChildren(){
+    while (this.node.firstChild) {
+      this.node.removeChild(this.node.firstChild);
+    }
+  }
+
+  addChildren(childNodes){
+    var docFragment = document.createDocumentFragment();
+    for (var childNode of childNodes){
+      docFragment.appendChild(childNode);
+    }
+    this.node.appendChild(docFragment);
+  }
+
+
 
 };

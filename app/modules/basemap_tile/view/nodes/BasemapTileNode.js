@@ -11,27 +11,17 @@ const basemapURLString = "https://services.arcgisonline.com/arcgis/rest/services
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTileNode(layerState, state, mapMovement){
+export default function BasemapTileNode(layerState, state){
 
   //create dom element ---------------------------------------------------------
 
   var tile = new DomElement('img', 'basemap-tile');
   tile.node.draggable = false;
 
-  //put this elsewhere
-  var load = function(src){
-    return new Promise(resolve => {
-      var contentLoaded = evt => {
-        tile.removeEventListener('load', contentLoaded);
-        resolve();
-      };
-      tile.addEventListener('load', contentLoaded);
-      tile.src = src;
-    });
-  }
+  //define state change reactions ----------------------------------------------
 
   var updateVisibility = function(){
-    if (state.yValidIndex){
+    if (state.yIndexIsValid){
       tile.setStyle('opacity', 1);
     } else {
       tile.setStyle('opacity', 0);
@@ -39,8 +29,8 @@ export default function BasemapTileNode(layerState, state, mapMovement){
   }
 
   var updateDimensions = function(){
-    tile.setStyle('width', `${Math.ceil(state.size)}px`);
-    tile.setStyle('height', `${Math.ceil(state.size)}px`);
+    tile.setStyle('width', `${Math.ceil(layerState.tileSize)}px`);
+    tile.setStyle('height', `${Math.ceil(layerState.tileSize)}px`);
   };
 
   var updateScreenCoords = function(){
@@ -49,51 +39,22 @@ export default function BasemapTileNode(layerState, state, mapMovement){
     tile.setStyle('transform', `translate(${x}px, ${y}px)`);
   }
 
-  var updateSrc = function(){
-    if (state.yValidIndex){
-      var x = state.tileIndices.x;
-      var y = state.tileIndices.y;
-      var z = layerState.imageTileLevel;
-      tile.src = basemapURLString + `/${z}/${y}/${x}`;
-    }
+  var updateSrc = async function(){
+    var x = state.tileIndices.x;
+    var y = state.tileIndices.y;
+    var z = layerState.imageTileLevel;
+    await tile.asyncSetSrc(basemapURLString + `/${z}/${y}/${x}`);
   }
 
-  var asyncUpdateSrc = async function(){
-    if (state.yValidIndex){
-      var x = state.tileIndices.x;
-      var y = state.tileIndices.y;
-      var z = layerState.imageTileLevel;
-      await load(basemapURLString + `/${z}/${y}/${x}`);
+  //load state change reactions ------------------------------------------------
+
+  layerState.addListener('tileSize', updateDimensions);
+  state.setUpdateFunction('screenCoords', updateScreenCoords);
+  state.setUpdateFunction('yIndexIsValid', updateVisibility);
+  state.setUpdateFunction('tileIndices', async () => {
+    if (state.yIndexIsValid){
+      await updateSrc();
     }
-  }
-
-  state.addListener('screenCoords', 'node', 'screenCoords', () => {
-  //  if (state.yValidIndex){
-      updateScreenCoords();
-    //}
-  });
-
-  //state.addListener('yValidIndex', 'node', 'screenCoords', () => {
-  //  if (state.yValidIndex){
-    //  updateScreenCoords();
-    //}
-  //});
-
-  state.addListener('size', 'node', 'dimensions', () => {
-  //  if (state.yValidIndex){
-      updateDimensions();
-    //}
-  });
-
-  state.addListener('tileIndices', 'node', 'src', updateSrc);
-  //state.addListener('isVisible', 'node', 'visibility', updateVisibility);
-  //state.addListener('yValidIndex', 'node', 'visibility', updateVisibility);
-
-  mapMovement.addListener('type', 'basemapTile', 'render', async () => {
-    updateScreenCoords();
-    updateDimensions();
-    //updateVisibility();
-    await asyncUpdateSrc();
   });
 
   //public api -----------------------------------------------------------------
@@ -101,10 +62,10 @@ export default function BasemapTileNode(layerState, state, mapMovement){
   this.node = tile.node;
 
   this.render = async function(){
+    updateVisibility();
     updateDimensions();
     updateScreenCoords();
-    //updateVisibility();
-    await asyncUpdateSrc();
+    await updateSrc();
   }
 
 }
