@@ -11,14 +11,14 @@ import { zoom } from '../services/Dispatcher.js';
 var zoomControls = new ZoomControls();
 
 dispatcher.addListener('load', () => {
-  zoomControls.addClickListener('in', () => {
-    zoom('in');
+  zoomControls.addClickListener('zoomIn', () => {
+    zoom('zoomIn');
   });
-  zoomControls.addClickListener('out', () => {
-    zoom('out');
+  zoomControls.addClickListener('zoomOut', () => {
+    zoom('zoomOut');
   });
-  zoomControls.addClickListener('home', () => {
-    zoom('home');
+  zoomControls.addClickListener('zoomHome', () => {
+    zoom('zoomHome');
   });
   rootNode.appendChild(zoomControls.rootNode);
 });

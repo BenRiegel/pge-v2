@@ -20,7 +20,7 @@ export default function TitleNode(popupState){
 
   //load reactions -------------------------------------------------------------
 
-   popupState.addListener('projectData', 'title', 'content', updateContent)
+  popupState.addListener('projectData', 'title', 'content', updateContent)
 
   //public api -----------------------------------------------------------------
 

@@ -45,13 +45,13 @@ export default function IconNode(menuState, optionState){
   menuState.addListener('isOpen', 'optionIcon', 'iconChar', updateChar);
   optionState.addListener('isSelected', 'optionIcon', 'visibility', updateVisibility);
 
+  //init dom element -----------------------------------------------------------
+
+  updateVisibility();
+  updateChar();
+
   //public api -----------------------------------------------------------------
 
   this.node = icon.node;
-
-  this.render = function(){
-    updateVisibility();
-    updateChar();
-  };
 
 }

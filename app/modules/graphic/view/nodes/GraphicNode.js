@@ -44,14 +44,14 @@ export default function GraphicNode(props, graphicState){
   graphicState.setOnChange('renderedDiameter', updateSize);
   graphicState.setOnChange('screenCoords', updateScreenCoords);
 
+  //init dom element -----------------------------------------------------------
+
+  updateHighlight();
+  updateSize();
+  updateScreenCoords();
+
   //public api -----------------------------------------------------------------
 
   this.node = graphic.node;
-
-  this.render = function(){
-    updateHighlight();
-    updateSize();
-    updateScreenCoords();
-  }
 
 }

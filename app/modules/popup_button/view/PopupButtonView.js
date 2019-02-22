@@ -21,9 +21,4 @@ export default function PopupButtonView(containerClassName, iconClassName, popup
 
   this.rootNode = container.node;
 
-  this.hasRendered = new Promise(resolve => {
-    container.render();
-    resolve();
-  });
-
 }

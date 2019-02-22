@@ -51,11 +51,4 @@ export default function PopupSummaryView(popupState, summaryState){
 
   this.rootNode = container.node;
 
-  this.hasRendered = new Promise(resolve => {
-    container.render();
-    contentContainer.render();
-    author.render();
-    resolve();
-  });
-
 }

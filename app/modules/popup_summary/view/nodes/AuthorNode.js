@@ -29,12 +29,12 @@ export default function AuthorNode(popupState){
 
   popupState.addListener('projectData', 'author', 'content', updateContent)
 
+  //init dom element -----------------------------------------------------------
+
+  updateContent();
+
   //public api -----------------------------------------------------------------
 
   this.node = author.node;
-
-  this.render = function(){
-    updateContent();
-  };
 
 }

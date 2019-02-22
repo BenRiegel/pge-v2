@@ -10,7 +10,6 @@ import LabelCountNode from './nodes/LabelCountNode.js';
 
 //exports ----------------------------------------------------------------------
 
-
 export default function OptionView(menuState, optionState, optionProps){
 
   //create nodes ---------------------------------------------------------------
@@ -33,13 +32,5 @@ export default function OptionView(menuState, optionState, optionProps){
   //public api -----------------------------------------------------------------
 
   this.rootNode = container.node;
-
-  this.hasRendered = new Promise(resolve => {
-    container.render();
-    iconContainer.render();
-    icon.render();
-    labelContainer.render();
-    resolve();
-  });
 
 }

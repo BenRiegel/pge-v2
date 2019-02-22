@@ -30,12 +30,13 @@ export default function ContentContainerNode(popupState, reportState){
 
   reportState.addListener('isVisible', 'contentContainer', 'opacity', updateOpacity);
 
+  //init dom element -----------------------------------------------------------
+
+  updateOpacity();
+
+
   //public api -----------------------------------------------------------------
 
   this.node = contentContainer.node;
-
-  this.render = function(){
-    updateOpacity();
-  }
 
 }

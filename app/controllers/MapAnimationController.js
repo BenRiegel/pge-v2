@@ -2,7 +2,7 @@
 
 import dispatcher from '../services/Dispatcher.js';
 import mapViewpoint from '../stores/MapViewpoint.js';
-import { capitalizeString, easeInOut } from '../lib/Utils.js';
+import { easeInOut } from '../lib/Utils.js';
 import { INIT_COORDS_WM, INIT_SCALE } from '../config/Config.js';
 
 
@@ -152,60 +152,6 @@ dispatcher.addListener('mapMoveAnimator - panTo', async worldCoords => {
 });
 
 dispatcher.addListener('mapMoveAnimator - zoom', async (type, worldCoords) => {
-  var zoomType = 'zoom' + capitalizeString(type);
-  await move(zoomType, worldCoords);
+  //var zoomType = 'zoom' + capitalizeString(type);
+  await move(type, worldCoords);
 });
-
-/*var zoom = async function(type, worldCoords){
-  var zoomType = 'zoom' + capitalizeString(type);
-  if (zoomType === 'zoomHome'){
-    if (!mapViewpoint.canZoomHome){
-      mapViewpoint.viewpoint.set('currentMovement', 'zoomHome');
-      mapViewpoint.setHome();
-      await mapViewpoint.viewpoint.set('currentMovement', null);
-      return;
-    }
-  }
-  var coordChanges = mapViewpoint.calculateCoordChanges(zoomType, worldCoords);
-  var numFrames = calculateNumFrames(coordChanges);
-  if (numFrames === 0){
-    return;
-  }
-
-  var differences = [];
-  var previousTime = new Date().getTime();
-
-  mapViewpoint.viewpoint.set('currentMovement', 'zoom');
-
-  await new Promise(resolve => {
-
-    var xFrames = getFramesInfo(numFrames, coordChanges.x.init, coordChanges.x.delta);
-    var yFrames = getFramesInfo(numFrames, coordChanges.y.init, coordChanges.y.delta);
-    var zFrames = getFramesInfo(numFrames, coordChanges.z.init, coordChanges.z.delta);
-    var frameNum = 0;
-
-    var addNewFrame = function(){
-      requestAnimationFrame( () => {
-        var newX = xFrames[frameNum];
-        var newY = yFrames[frameNum];
-        var newZ = zFrames[frameNum];
-        mapViewpoint.set(newX, newY, newZ);
-
-        var newTime = new Date().getTime();
-        differences.push(newTime - previousTime);
-        previousTime = newTime;
-
-        frameNum += 1;
-        if (frameNum < numFrames){
-          addNewFrame();
-        } else {
-          resolve();
-        }
-      });
-    }
-    addNewFrame();
-  });
-
-  console.log(differences);
-  await mapViewpoint.viewpoint.set('currentMovement', null);
-}*/

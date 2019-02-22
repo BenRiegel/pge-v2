@@ -26,12 +26,12 @@ export default function SpinnerNode(state){
 
   state.addListener('isVisible', 'spinner', 'visibility', updateVisibility);
 
+  //init dom element -----------------------------------------------------------
+
+  updateVisibility();
+
   //public api -----------------------------------------------------------------
 
-  this.node = spinner.node;
-
-  this.render = function(){
-    updateVisibility();
-  };
+  return spinner;
 
 }

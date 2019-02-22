@@ -18,7 +18,7 @@ export default function ReportLoader(popupState, reportState){
   }
 
   var terminate = function(){
-    loader.hide( {fadeOutOnHide:false} );
+    loader.hide(false);
   }
 
   //load reactions -------------------------------------------------------------

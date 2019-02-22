@@ -14,16 +14,11 @@ export default function GraphicsLayerView(mapViewpoint, layerState, eventsEmitte
   layerState.addListener('graphics', () => {
     container.removeAllChildren();
     var rootNodes = layerState.graphics.map( graphic => graphic.rootNode );
-    container.addChildren(rootNodes); 
+    container.addChildren(rootNodes);
   });
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = container.node;
-
-  this.hasRendered = new Promise(async resolve => {
-    container.render();
-    resolve();
-  });
 
 }

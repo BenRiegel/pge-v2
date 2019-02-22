@@ -38,12 +38,12 @@ export default function NewLabelContainer(menuState, isIndented){
 
   menuState.addListener('isOpen', 'optionLabelContainer', 'indent', updateIndent);
 
+  //init dom element -----------------------------------------------------------
+
+  updateIndent();
+
   //public api -----------------------------------------------------------------
 
   this.node = labelContainer.node;
-
-  this.render = function(){
-    updateIndent();
-  }
 
 }

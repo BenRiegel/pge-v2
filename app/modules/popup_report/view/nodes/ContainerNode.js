@@ -26,12 +26,12 @@ export default function ContainerNode(reportState){
 
   reportState.addListener('isVisible', 'container', 'visibility', updateVisibility);
 
+  //init dom element -----------------------------------------------------------
+
+  updateVisibility();
+
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
-
-  this.render = function(){
-    updateVisibility();
-  }
 
 }

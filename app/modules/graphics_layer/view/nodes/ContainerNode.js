@@ -44,14 +44,13 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
     await container.animateOpacity('opaque');
   });
 
+  //init dom element -----------------------------------------------------------
+
+  updateListener();
 
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
-
-  this.render = function(){
-    updateListener();
-  };
 
   this.removeAllChildren = function(){
     container.removeAllChildren();

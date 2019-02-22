@@ -10,7 +10,6 @@ export default function LoaderState(){
   //create state var -----------------------------------------------------------
 
   var state = new ComponentState({
-    isAnimating: false,
     isVisible: false,
   });
 

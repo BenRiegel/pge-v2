@@ -15,9 +15,4 @@ export default function GraphicsView(props, state){
 
   this.rootNode = graphic.node;
 
-  this.hasRendered = new Promise(resolve => {
-    graphic.render();
-    resolve();
-  });
-
 }

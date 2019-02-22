@@ -41,14 +41,11 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
     eventsEmitter.broadcast('userPanEndRequest');
   });
 
-  /*container.setEventListener('mouseout', evt => {
-    //evt.preventDefault();
-    console.log(evt);
+  container.setEventListener('mouseout', evt => {
     container.setStyle('cursor', 'default');
     container.removeEventListener('mousemove', mouseMoveEventHandler);
     eventsEmitter.broadcast('userPanEndRequest');
-  });*/
-
+  });
 
   //define state change reactions ----------------------------------------------
 

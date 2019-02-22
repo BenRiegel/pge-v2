@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import NewOption from '../select_menu_option/SelectMenuOption.js';
+import Option from '../select_menu_option/SelectMenuOption.js';
 import SelectMenuState from './state/SelectMenuState.js';
 import SelectMenuEmitter from './services/SelectMenuEmitter.js';
 import SelectMenuView from './view/SelectMenuView.js';
@@ -23,7 +23,7 @@ export default function SelectMenu(){
   this.addListener = eventsEmitter.addListener;
 
   this.addNewOption = function(optionProps){
-    var option = NewOption(optionProps, state);
+    var option = new Option(optionProps, state);
     view.addOptionNode(option.rootNode);
   };
 

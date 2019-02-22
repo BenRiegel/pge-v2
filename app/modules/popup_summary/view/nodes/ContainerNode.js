@@ -92,14 +92,14 @@ export default function ContainerNode(popupState, summaryState){
   summaryState.addListener('isExpanded', 'container', 'dimensions', updateDimensions);
   summaryState.addListener('isExpanded', 'container', 'zIndex', updateZIndex);
 
+  //init dom element -----------------------------------------------------------
+
+  updateVisibility();
+  updateDimensions();
+  updateZIndex();
+
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
-
-  this.render = function(){
-    updateVisibility();
-    updateDimensions();
-    updateZIndex();
-  }
 
 }

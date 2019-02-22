@@ -1,13 +1,14 @@
 //imports ----------------------------------------------------------------------
 
 import dispatcher from '../services/Dispatcher.js';
+import { panStart, panEnd } from '../services/Dispatcher.js';
 import mapViewpoint from '../stores/MapViewpoint.js';
-import mapProperties from '../stores/MapProperties.js';
 
 
 //module code block ------------------------------------------------------------
 
-const TOTAL_FADE_FRAMES = 40;
+const TOTAL_FADE_FRAMES = 30;
+const MAX_FRAME_MOVEMENT = 35;
 
 var mouseMoveList = [];
 var panInProgress = false;
@@ -23,28 +24,33 @@ var getChanges = function(){
     totalXPx += mouseMove.x;
     totalYPx += mouseMove.y;
   }
-  totalXPx = Math.min(totalXPx, 30);
-  totalYPx = Math.min(totalYPx, 30);
+  totalXPx = Math.min(totalXPx, MAX_FRAME_MOVEMENT);
+  totalYPx = Math.min(totalYPx, MAX_FRAME_MOVEMENT);
   mouseMoveList = [];
   return {x:totalXPx, y:totalYPx};
+}
+
+var calculateCoordChanges = function(location){
+  return {
+    x: mapViewpoint.getChangeSummary('x', location.x),
+    y: mapViewpoint.getChangeSummary('y', location.y),
+  }
 }
 
 var pan = async function(){
   await new Promise( resolve => {
     requestAnimationFrame( () => {
       var changes = getChanges();
-      var deltaX = changes.x * mapProperties.pixelSize;
-      var deltaY = changes.y * mapProperties.pixelSize;
-      var newX = mapViewpoint.coords.x + deltaX;
-      var newY = mapViewpoint.coords.y + deltaY;
-      var worldCoords = {x:newX, y:newY};
-      var coordChanges = mapViewpoint.calculateCoordChanges('panTo', worldCoords);
-      var panDeltaX = coordChanges.x.delta / mapProperties.pixelSize;
-      var panDeltaY = coordChanges.y.delta / mapProperties.pixelSize;
-      var panX = mapViewpoint.coords.x + coordChanges.x.delta;
-      var panY = mapViewpoint.coords.y + coordChanges.y.delta;
-      mapViewpoint.pan(panX, panY, panDeltaX, panDeltaY);
-      lastMovement = {x:panDeltaX, y:panDeltaY};
+      var deltaXRequest = changes.x * mapViewpoint.scale;
+      var deltaYRequest = changes.y * mapViewpoint.scale;
+      var newXRequest = mapViewpoint.x + deltaXRequest;
+      var newYRequest = mapViewpoint.y + deltaYRequest;
+      var worldCoords = {x:newXRequest, y:newYRequest};
+      var coordChanges = calculateCoordChanges(worldCoords);
+      var newX = mapViewpoint.x + coordChanges.x.delta;
+      var newY = mapViewpoint.y + coordChanges.y.delta;
+      mapViewpoint.set(newX, newY, mapViewpoint.scale);
+      lastMovement = {x:coordChanges.x.delta, y:coordChanges.y.delta};
       resolve();
     });
   });
@@ -56,18 +62,15 @@ var fadePan = async function(){
   var percentFade = 1 - percentDone;
   await new Promise( resolve => {
     requestAnimationFrame( () => {
-    //  console.log(fadeFrameNum, lastMovement)
-      var deltaXPx = fadeMovement.x * percentFade;
-      var deltaYPx = fadeMovement.y * percentFade;
-      var newX = mapViewpoint.coords.x + deltaXPx * mapProperties.pixelSize;
-      var newY = mapViewpoint.coords.y + deltaYPx * mapProperties.pixelSize;
-      var worldCoords = {x:newX, y:newY};
-      var coordChanges = mapViewpoint.calculateCoordChanges('panTo', worldCoords);
-      var panDeltaX = coordChanges.x.delta / mapProperties.pixelSize;
-      var panDeltaY = coordChanges.y.delta / mapProperties.pixelSize;
-      var panX = mapViewpoint.coords.x + coordChanges.x.delta;
-      var panY = mapViewpoint.coords.y + coordChanges.y.delta;
-      mapViewpoint.pan(panX, panY, panDeltaX, panDeltaY);
+      var deltaXRequest = fadeMovement.x * percentFade;
+      var deltaYRequest = fadeMovement.y * percentFade;
+      var newXRequest = mapViewpoint.x + deltaXRequest;
+      var newYRequest = mapViewpoint.y + deltaYRequest;
+      var worldCoords = {x:newXRequest, y:newYRequest};
+      var coordChanges = calculateCoordChanges(worldCoords);
+      var panX = mapViewpoint.x + coordChanges.x.delta;
+      var panY = mapViewpoint.y + coordChanges.y.delta;
+      mapViewpoint.set(panX, panY, mapViewpoint.scale);
       resolve();
     });
   });
@@ -86,7 +89,8 @@ var cycle = async function(){
   if (panInProgress){
     cycle();
   } else {
-    mapViewpoint.endMovement();
+    mapViewpoint.terminateAction();
+    panEnd();
   }
 }
 
@@ -95,7 +99,8 @@ var cycle = async function(){
 dispatcher.addListener('panController - panStartRequest', () => {
   buttonIsDown = true;
   if (!panInProgress){
-    mapViewpoint.startMovement('pan');
+    mapViewpoint.startNewAction('pan');
+    panStart();
     cycle();
   }
 });

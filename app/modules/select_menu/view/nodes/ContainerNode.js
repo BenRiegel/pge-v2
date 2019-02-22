@@ -64,13 +64,13 @@ export default function ContainerNode(state){
   state.addListener('eventInProgress', 'menuContainer', 'listener', updateListener);
   state.addListener('isEnabled', 'menuContainer', 'listener', updateListener);
 
+  //init dom element -----------------------------------------------------------
+
+  updateBorderRadius();
+  updateListener();
+
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
-
-  this.render = function(){
-    updateBorderRadius();
-    updateListener();
-  };
 
 };

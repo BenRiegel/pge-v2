@@ -46,13 +46,13 @@ export default function ContentContainerNode(summaryState){
   summaryState.addListener('isExpanded', 'contentContainer', 'opacity', updateOpacity);
   summaryState.addListener('isVisible', 'contentContainer', 'height', updateHeight);
 
+  //init dom element -----------------------------------------------------------
+
+  updateOpacity();
+  updateHeight();
+
   //public api -----------------------------------------------------------------
 
   this.node = contentContainer.node;
-
-  this.render = function(){
-    updateOpacity();
-    updateHeight();
-  }
 
 }

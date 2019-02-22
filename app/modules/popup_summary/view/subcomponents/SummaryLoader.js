@@ -18,7 +18,7 @@ export default function SummaryLoader(popupState, summaryState){
   }
 
   var terminate = function(){
-    loader.hide( {fadeOutOnHide:false} );
+    loader.hide(false);
   }
 
   //load reactions -------------------------------------------------------------

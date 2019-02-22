@@ -30,12 +30,12 @@ export default function ContainerNode(className, popupState, eventsEmitter){
   popupState.addListener('isEnabled', 'menuContainer', 'listener', updateListener);
   popupState.addListener('eventInProgress', 'menuContainer', 'listener', updateListener);
 
+  //init dom element -----------------------------------------------------------
+
+  updateListener();
+
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
-
-  this.render = function(){
-    updateListener();
-  }
 
 }

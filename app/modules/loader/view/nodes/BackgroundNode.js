@@ -6,7 +6,7 @@ import '../stylesheets/loader_background.scss';
 
 //exports ----------------------------------------------------------------------
 
-export default function BackgroundNode(state){
+export default function BackgroundNode(state, renderProps){
 
   //create dom element ---------------------------------------------------------
 
@@ -18,7 +18,7 @@ export default function BackgroundNode(state){
     if (state.isVisible){
       background.setOpacity('opaque');
     } else {
-      if (state.isAnimating){
+      if (renderProps.isAnimating){
         await background.animateOpacity('transparent');
       } else {
         background.setOpacity('transparent');
@@ -39,13 +39,13 @@ export default function BackgroundNode(state){
   state.addListener('isVisible', 'background', 'opacity', updateOpacity);
   state.addListener('isVisible', 'background', 'visibility', updateVisibility);
 
+  //init dom element -----------------------------------------------------------
+
+  updateOpacity();
+  updateVisibility();
+
   //public api -----------------------------------------------------------------
 
-  this.node = background.node;
-
-  this.render = async function(){
-    await updateOpacity();
-    updateVisibility();
-  };
+  return background;
 
 }

@@ -100,14 +100,15 @@ export default function ContainerNode(menuState, optionState, key){
   menuState.addListener('isOpen', 'optionContainer', 'height', updateHeight);
   menuState.addListener('isOpen', 'optionContainer', 'opacity', updateOpacity);
 
+  //init dom element -----------------------------------------------------------
+
+  updateVisibility();
+  updateBorderRadius();
+  updateHeight();
+  updateOpacity();
+
   //public api -----------------------------------------------------------------
 
   this.node = container.node;
 
-  this.render = function(){
-    updateVisibility();
-    updateBorderRadius();
-    updateHeight();
-    updateOpacity();
   }
-}

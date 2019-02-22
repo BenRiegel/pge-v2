@@ -17,15 +17,13 @@ export default function Loader(){
 
   this.rootNode = view.rootNode;
 
-  this.hasRendered = view.hasRendered;
-
   this.show = function(){
-    state.set('isAnimating', false);
+    view.setRenderProp('isAnimating', false);
     state.set('isVisible', true);
   };
 
-  this.hide = async function( {fadeOutOnHide} ){
-    state.set('isAnimating', fadeOutOnHide);
+  this.hide = async function(fadeOutOnHide){
+    view.setRenderProp('isAnimating', fadeOutOnHide);
     await state.set('isVisible', false);
   };
 

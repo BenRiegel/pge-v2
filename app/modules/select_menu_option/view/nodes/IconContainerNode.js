@@ -34,12 +34,12 @@ export default function IconContainerNode(menuState){
 
   menuState.addListener('isOpen', 'optionIconContainer', 'borderVisibility', updateBorderVisibility);
 
+  //init dom element -----------------------------------------------------------
+
+  updateBorderVisibility();
+
   //public api -----------------------------------------------------------------
 
   this.node = iconContainer.node;
-
-  this.render = function(){
-    updateBorderVisibility();
-  }
 
 }

@@ -165,6 +165,9 @@ export default class DomElement{
     this.node.appendChild(docFragment);
   }
 
+  appendChildNode(childNode){
+    this.node.appendChild(childNode);
+  }
 
 
 };

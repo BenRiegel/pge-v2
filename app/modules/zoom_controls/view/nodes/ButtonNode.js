@@ -6,23 +6,23 @@ import '../stylesheets/zoom_button_container.scss';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode(className, controlsState, eventsEmitter){
+export default function ButtonNode(className, broadcastMessage, controlsState, eventsEmitter){
 
   //create dom element ---------------------------------------------------------
 
-  var container = new DomElement('div', `zoom-button ${className}`);
+  var button = new DomElement('div', `zoom-button ${className}`);
 
-  container.setEventListener('click', () => {
-    eventsEmitter.broadcast('click');
+  button.setEventListener('click', () => {
+    eventsEmitter.broadcast(broadcastMessage);
   });
 
   //define state change reactions ----------------------------------------------
 
   var updateListeners = function(){
     if (controlsState.isEnabled){
-      container.enableListeners();
+      button.enableListeners();
     } else {
-      container.disableListeners();
+      button.disableListeners();
     }
   }
 
@@ -30,12 +30,12 @@ export default function ContainerNode(className, controlsState, eventsEmitter){
 
   controlsState.addListener('isEnabled', 'zoomInButton', 'isListening', updateListeners);
 
+  //init dom element -----------------------------------------------------------
+
+  updateListeners();
+
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
-
-  this.render = function(){
-    updateListeners();
-  }
+  this.node = button.node;
 
 }

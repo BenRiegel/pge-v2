@@ -27,12 +27,12 @@ export default function ArrowNode(summaryState){
   summaryState.addListener('isVisible', 'arrow', 'display', updateDisplay);
   summaryState.addListener('isExpanded', 'arrow', 'display', updateDisplay);
 
+  //init dom element -----------------------------------------------------------
+
+  updateDisplay();
+
   //public api -----------------------------------------------------------------
 
   this.node = arrow.node;
-
-  this.render = function(){
-    updateDisplay();
-  }
 
 }

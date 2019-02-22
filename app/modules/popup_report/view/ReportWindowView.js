@@ -36,10 +36,4 @@ export default function ReportWindowView(popupState, reportState){
 
   this.rootNode = container.node;
 
-  this.hasRendered = new Promise(resolve => {
-    container.render();
-    contentContainer.render();
-    resolve();
-  });
-
 }

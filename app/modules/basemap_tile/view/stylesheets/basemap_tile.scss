@@ -3,5 +3,6 @@
 .basemap-tile{
   position:absolute;
   border:0;
+  pointer-events: none;
   @include user-select(none);
 }

@@ -1,42 +1,40 @@
 //imports ----------------------------------------------------------------------
 
-import ZoomButton from '../../zoom_button/ZoomButton.js';
 import ContainerNode from './nodes/ContainerNode.js';
 import ButtonContainerNode from './nodes/ButtonContainerNode.js';
+import ButtonNode from './nodes/ButtonNode.js';
+import IconNode from './nodes/IconNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ZoomControlsView(state){
+export default function ZoomControlsView(state, eventsEmitter){
 
   //create nodes ---------------------------------------------------------------
 
   var container = new ContainerNode();
   var homeButtonContainer = new ButtonContainerNode();
   var inOutButtonContainer = new ButtonContainerNode();
-
-  //create subcomponents -------------------------------------------------------
-
-  var buttons = {
-    home: new ZoomButton('zoom-home', 'fa-home', state),
-    in: new ZoomButton('zoom-in', 'fa-plus', state),
-    out: new ZoomButton('zoom-out', 'fa-minus', state),
-  }
+  var zoomHomeButton = new ButtonNode('zoom-home', 'zoomHome', state, eventsEmitter);
+  var zoomHomeIcon = new IconNode('fa-home');
+  var zoomInButton = new ButtonNode('zoom-in', 'zoomIn', state, eventsEmitter);
+  var zoomInIcon = new IconNode('fa-plus');
+  var zoomOutButton = new ButtonNode('zoom-out', 'zoomOut', state, eventsEmitter);
+  var zoomOutIcon = new IconNode('fa-minus');
 
   //configure dom --------------------------------------------------------------
 
   container.node.appendChild(homeButtonContainer.node);
   container.node.appendChild(inOutButtonContainer.node);
-  homeButtonContainer.node.appendChild(buttons.home.rootNode);
-  inOutButtonContainer.node.appendChild(buttons.in.rootNode);
-  inOutButtonContainer.node.appendChild(buttons.out.rootNode);
+  zoomHomeButton.node.appendChild(zoomHomeIcon.node);
+  zoomInButton.node.appendChild(zoomInIcon.node);
+  zoomOutButton.node.appendChild(zoomOutIcon.node);
+  homeButtonContainer.node.appendChild(zoomHomeButton.node);
+  inOutButtonContainer.node.appendChild(zoomInButton.node);
+  inOutButtonContainer.node.appendChild(zoomOutButton.node);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = container.node;
-
-  this.addClickListener = function(buttonName, cb){
-    buttons[buttonName].addClickListener(cb);
-  }
 
 }
