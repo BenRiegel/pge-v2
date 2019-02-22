@@ -55,6 +55,6 @@ export default function ImageNode(popupState, summaryState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = image.node;
+  return image;
 
 }

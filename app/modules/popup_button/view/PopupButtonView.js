@@ -15,7 +15,7 @@ export default function PopupButtonView(containerClassName, iconClassName, popup
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(icon.node);
+  container.appendChildNode(icon.node);
 
   //public api -----------------------------------------------------------------
 

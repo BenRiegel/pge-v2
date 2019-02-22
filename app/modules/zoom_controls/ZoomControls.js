@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import Emitter from '../../lib/Emitter.js';
-import ComponentState from '../../lib/ComponentState.js';
+import ComponentState from '../../lib/ComponentState2.js';
 import ZoomControlsView from './view/ZoomControlsView.js';
 
 
@@ -21,9 +21,7 @@ export default function ZoomControls(){
 
   this.rootNode = view.rootNode;
 
-  this.addClickListener = function(eventName, cb){
-    eventsEmitter.addListener(eventName, cb);
-  }
+  this.addClickListener = eventsEmitter.addListener;
 
   this.enable = function(){
     state.set('isEnabled', true);

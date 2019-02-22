@@ -23,11 +23,11 @@ export default function OptionView(menuState, optionState, optionProps){
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(iconContainer.node);
-  container.node.appendChild(labelContainer.node);
-  iconContainer.node.appendChild(icon.node);
-  labelContainer.node.appendChild(labelName.node);
-  labelContainer.node.appendChild(labelCount.node);
+  container.appendChildNode(iconContainer.node);
+  container.appendChildNode(labelContainer.node);
+  iconContainer.appendChildNode(icon.node);
+  labelContainer.appendChildNode(labelName.node);
+  labelContainer.appendChildNode(labelCount.node);
 
   //public api -----------------------------------------------------------------
 

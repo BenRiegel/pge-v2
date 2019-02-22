@@ -24,6 +24,6 @@ export default function TextNode(popupState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = text.node;
+  return text;
 
 }

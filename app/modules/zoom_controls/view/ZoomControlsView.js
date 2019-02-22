@@ -24,14 +24,14 @@ export default function ZoomControlsView(state, eventsEmitter){
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(homeButtonContainer.node);
-  container.node.appendChild(inOutButtonContainer.node);
-  zoomHomeButton.node.appendChild(zoomHomeIcon.node);
-  zoomInButton.node.appendChild(zoomInIcon.node);
-  zoomOutButton.node.appendChild(zoomOutIcon.node);
-  homeButtonContainer.node.appendChild(zoomHomeButton.node);
-  inOutButtonContainer.node.appendChild(zoomInButton.node);
-  inOutButtonContainer.node.appendChild(zoomOutButton.node);
+  container.appendChildNode(homeButtonContainer.node);
+  container.appendChildNode(inOutButtonContainer.node);
+  zoomHomeButton.appendChildNode(zoomHomeIcon.node);
+  zoomInButton.appendChildNode(zoomInIcon.node);
+  zoomOutButton.appendChildNode(zoomOutIcon.node);
+  homeButtonContainer.appendChildNode(zoomHomeButton.node);
+  inOutButtonContainer.appendChildNode(zoomInButton.node);
+  inOutButtonContainer.appendChildNode(zoomOutButton.node);
 
   //public api -----------------------------------------------------------------
 

@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import Option from '../../select_menu_option/SelectMenuOption.js';
 import ContainerNode from './nodes/ContainerNode.js';
 
 
@@ -15,8 +16,9 @@ export default function SelectMenuView(state){
 
   this.rootNode = container.node;
 
-  this.addOptionNode = function(optionRootNode){
-    container.node.appendChild(optionRootNode);
+  this.addNewOption = function(optionProps){
+    var option = new Option(optionProps, state);
+    container.appendChildNode(option.rootNode);
   }
 
 }

@@ -14,6 +14,6 @@ export default function BodyNode(){
 
   //public api -----------------------------------------------------------------
 
-  this.node = body.node;
+  return body;
 
 }

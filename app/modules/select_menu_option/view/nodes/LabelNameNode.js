@@ -15,6 +15,6 @@ export default function LabelNameNode(name){
 
   //public api -----------------------------------------------------------------
 
-  this.node = labelName.node;
+  return labelName;
 
 }

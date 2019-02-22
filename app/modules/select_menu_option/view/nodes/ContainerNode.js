@@ -91,14 +91,14 @@ export default function ContainerNode(menuState, optionState, key){
 
   //load reactions -------------------------------------------------------------
 
-  optionState.addListener('isSelected', 'optionContainer', 'visibility', updateVisibility);
-  optionState.addListener('isSelected', 'optionContainer', 'borderRadius', updateBorderRadius);
-  optionState.addListener('isSelected', 'optionContainer', 'height', updateHeight);
-  optionState.addListener('isSelected', 'optionContainer', 'opacity', updateOpacity);
-  menuState.addListener('isOpen', 'optionContainer', 'visibility', updateVisibility);
-  menuState.addListener('isOpen', 'optionContainer', 'borderRadius', updateBorderRadius);
-  menuState.addListener('isOpen', 'optionContainer', 'height', updateHeight);
-  menuState.addListener('isOpen', 'optionContainer', 'opacity', updateOpacity);
+  optionState.addListener('isSelected', 'optionContainer - visibility', updateVisibility);
+  optionState.addListener('isSelected', 'optionContainer - borderRadius', updateBorderRadius);
+  optionState.addListener('isSelected', 'optionContainer - height', updateHeight);
+  optionState.addListener('isSelected', 'optionContainer - opacity', updateOpacity);
+  menuState.addListener('isOpen', 'optionContainer - visibility', updateVisibility);
+  menuState.addListener('isOpen', 'optionContainer - borderRadius', updateBorderRadius);
+  menuState.addListener('isOpen', 'optionContainer - height', updateHeight);
+  menuState.addListener('isOpen', 'optionContainer - opacity', updateOpacity);
 
   //init dom element -----------------------------------------------------------
 
@@ -109,6 +109,6 @@ export default function ContainerNode(menuState, optionState, key){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
+  return container;
 
-  }
+}

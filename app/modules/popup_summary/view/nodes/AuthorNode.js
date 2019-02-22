@@ -35,6 +35,6 @@ export default function AuthorNode(popupState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = author.node;
+  return author;
 
 }

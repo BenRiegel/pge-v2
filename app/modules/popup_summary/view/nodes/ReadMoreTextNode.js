@@ -16,6 +16,6 @@ export default function ReadMoreTextNode(popupState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = readMoreText.node;
+  return readMoreText;
 
 }

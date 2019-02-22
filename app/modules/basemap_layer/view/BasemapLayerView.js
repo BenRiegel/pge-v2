@@ -32,8 +32,8 @@ export default function BasemapLayerView(mapViewpoint, state, eventsEmitter){
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(tileContainerCopy.node);
-  container.node.appendChild(tileContainer.node);
+  container.appendChildNode(tileContainerCopy.node);
+  container.appendChildNode(tileContainer.node);
   tileContainer.addChildNodes(tileNodes);
 
   //helper function ------------------------------------------------------------
@@ -41,13 +41,14 @@ export default function BasemapLayerView(mapViewpoint, state, eventsEmitter){
   mapViewpoint.addListener('basemapLayer - copyTiles', () => {
     for (var childNode of tileContainer.node.childNodes){
       var childCopy = childNode.cloneNode(true);
-      tileContainerCopy.node.appendChild(childCopy);
+      tileContainerCopy.appendChildNode(childCopy);
     }
   });
 
   mapViewpoint.addListener('basemapLayer - revealNewTiles', async () => {
-    await tileContainerCopy.fadeOut();
-    tileContainerCopy.reset();
+    await tileContainerCopy.animateOpacity('transparent');
+    tileContainerCopy.removeAllChildren();
+    tileContainerCopy.setOpacity('opaque');
   });
 
   //public api -----------------------------------------------------------------
@@ -55,7 +56,6 @@ export default function BasemapLayerView(mapViewpoint, state, eventsEmitter){
   this.rootNode = container.node;
 
   this.hasRendered = new Promise(async resolve => {
-    container.render();
     var tileRenderPromises = tiles.map(tile => tile.hasRendered);
     await tileRenderPromises;
     resolve();

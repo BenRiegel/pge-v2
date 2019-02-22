@@ -20,6 +20,7 @@ export default function SelectMenuEmitter(state){
   var broadcastEventMessages = function(){
     while (eventMessages.length > 0){
       var message = eventMessages.pop();
+      console.log(message);
       emitter.broadcast(message.eventName, message.payload);
     }
   }
@@ -30,8 +31,8 @@ export default function SelectMenuEmitter(state){
 
   //define state change reactions ----------------------------------------------
 
-  var broadcast = function(eventInProgress){
-    if (eventInProgress){
+  var broadcast = function(){
+    if (state.eventInProgress){
       emitter.broadcast('eventStart');
     } else {
       emitter.broadcast('eventEnd');
@@ -39,16 +40,17 @@ export default function SelectMenuEmitter(state){
     }
   }
 
-  var addEventMessage = function(newSelectedOption){
+  //this is stupid
+  var addEventMessage = function(){
     if (state.eventInProgress){
-      addNewEventMessage('newSelectedOption', newSelectedOption);
+      addNewEventMessage('newSelectedOption', state.selectedOptionKey);
     }
   }
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('eventInProgress', 'emitter', 'broadcast', broadcast);
-  state.addListener('selectedOptionKey', 'emitter', 'addEventMessage', addEventMessage);
+  state.addListener('eventInProgress', 'emitter - broadcast', broadcast);
+  state.addListener('selectedOptionKey', 'emitter - addEventMessage', addEventMessage);
 
   //public api -----------------------------------------------------------------
 

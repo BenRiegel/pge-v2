@@ -14,5 +14,5 @@ export default function ContainerNode(){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
+  return container;
 }

@@ -60,9 +60,9 @@ export default function ContainerNode(state){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('isOpen', 'menuContainer', 'borderRadius', updateBorderRadius);
-  state.addListener('eventInProgress', 'menuContainer', 'listener', updateListener);
-  state.addListener('isEnabled', 'menuContainer', 'listener', updateListener);
+  state.addListener('isOpen', 'menuContainer - borderRadius', updateBorderRadius);
+  state.addListener('eventInProgress', 'menuContainer - listener', updateListener);
+  state.addListener('isEnabled', 'menuContainer - listener', updateListener);
 
   //init dom element -----------------------------------------------------------
 
@@ -71,6 +71,6 @@ export default function ContainerNode(state){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
+  return container;
 
 };

@@ -13,6 +13,6 @@ export default function ButtonContainerNode(){
 
   //public api -----------------------------------------------------------------
 
-  this.node = buttonContainer.node;
+  return buttonContainer;
 
 }

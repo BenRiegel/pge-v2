@@ -71,10 +71,6 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
-
-  this.render = function(){
-    updateListener();
-  };
+  return container;
 
 }

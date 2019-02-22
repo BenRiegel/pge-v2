@@ -34,6 +34,6 @@ export default function IframeNode(popupState, reportState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = iframe.node;
+  return iframe;
 
 }

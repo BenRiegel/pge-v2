@@ -13,6 +13,6 @@ export default function IconNode(className){
 
   //public api -----------------------------------------------------------------
 
-  this.node = icon.node;
+  return icon;
 
 }

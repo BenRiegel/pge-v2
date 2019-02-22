@@ -33,6 +33,6 @@ export default function ArrowNode(summaryState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = arrow.node;
+  return arrow;
 
 }

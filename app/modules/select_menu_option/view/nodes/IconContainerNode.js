@@ -32,7 +32,7 @@ export default function IconContainerNode(menuState){
 
   //load reactions -------------------------------------------------------------
 
-  menuState.addListener('isOpen', 'optionIconContainer', 'borderVisibility', updateBorderVisibility);
+  menuState.addListener('isOpen', 'optionIconContainer - borderVisibility', updateBorderVisibility);
 
   //init dom element -----------------------------------------------------------
 
@@ -40,6 +40,6 @@ export default function IconContainerNode(menuState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = iconContainer.node;
+  return iconContainer;
 
 }

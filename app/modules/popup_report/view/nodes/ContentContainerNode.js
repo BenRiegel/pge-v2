@@ -34,9 +34,8 @@ export default function ContentContainerNode(popupState, reportState){
 
   updateOpacity();
 
-
   //public api -----------------------------------------------------------------
 
-  this.node = contentContainer.node;
+  return contentContainer;
 
 }

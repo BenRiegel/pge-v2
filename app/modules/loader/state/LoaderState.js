@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState.js';
+import ComponentState from '../../../lib/ComponentState2.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -16,9 +16,9 @@ export default function LoaderState(){
   //modify behavior of isVisible prop ------------------------------------------
 
   state.setOnChange('isVisible', async function(){
-    this.requestUpdate('spinner', 'visibility');
-    await this.requestUpdate('background', 'opacity');
-    this.requestUpdate('background', 'visibility');
+    this.requestUpdate('spinner - visibility');
+    await this.requestUpdateAsync('background - opacity');
+    this.requestUpdate('background - visibility');
   });
 
   //public api -----------------------------------------------------------------

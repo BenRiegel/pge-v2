@@ -36,6 +36,6 @@ export default function ContainerNode(className, popupState, eventsEmitter){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
+  return container;
 
 }

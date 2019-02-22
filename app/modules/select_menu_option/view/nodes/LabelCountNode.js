@@ -15,6 +15,6 @@ export default function LabelCountNode(count){
 
   //public api -----------------------------------------------------------------
 
-  this.node = labelCount.node;
+  return labelCount;
 
 }

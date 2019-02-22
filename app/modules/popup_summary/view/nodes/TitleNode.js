@@ -24,6 +24,6 @@ export default function TitleNode(popupState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = title.node;
+  return title;
 
 }

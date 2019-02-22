@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState.js';
+import ComponentState from '../../../lib/ComponentState2.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -11,7 +11,7 @@ export default function OptionState(menuState, key){
 
   var state = new ComponentState({
     isAnimating: false,
-    isSelected: (key === menuState.selectedOptionKey),
+    isSelected: undefined,
   });
 
   //define state change reactions ----------------------------------------------
@@ -26,8 +26,12 @@ export default function OptionState(menuState, key){
 
   //load reactions -------------------------------------------------------------
 
-  menuState.addListener('isAnimating', 'optionState', 'isAnimating', updateIsAnimating);
-  menuState.addListener('selectedOptionKey', 'optionState', 'isSelected', updateIsSelected);
+  menuState.addListener('isAnimating', 'optionState - isAnimating', updateIsAnimating);
+  menuState.addListener('selectedOptionKey', 'optionState - isSelected', updateIsSelected);
+
+  //init state -----------------------------------------------------------------
+
+  updateIsSelected();
 
   //public api -----------------------------------------------------------------
 

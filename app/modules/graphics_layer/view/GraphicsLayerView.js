@@ -14,7 +14,7 @@ export default function GraphicsLayerView(mapViewpoint, layerState, eventsEmitte
   layerState.addListener('graphics', () => {
     container.removeAllChildren();
     var rootNodes = layerState.graphics.map( graphic => graphic.rootNode );
-    container.addChildren(rootNodes);
+    container.addChildNodes(rootNodes);
   });
 
   //public api -----------------------------------------------------------------

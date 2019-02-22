@@ -26,11 +26,11 @@ export default function ReportWindowView(popupState, reportState){
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(contentContainer.node);
-  container.node.appendChild(loader.rootNode);
-  contentContainer.node.appendChild(iframe.node);
-  contentContainer.node.appendChild(closeButton.rootNode);
-  contentContainer.node.appendChild(contractButton.rootNode);
+  container.appendChildNode(contentContainer.node);
+  container.appendChildNode(loader.rootNode);
+  contentContainer.appendChildNode(iframe.node);
+  contentContainer.appendChildNode(closeButton.rootNode);
+  contentContainer.appendChildNode(contractButton.rootNode);
 
   //public api -----------------------------------------------------------------
 

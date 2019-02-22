@@ -53,6 +53,6 @@ export default function ContentContainerNode(summaryState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = contentContainer.node;
+  return contentContainer;
 
 }

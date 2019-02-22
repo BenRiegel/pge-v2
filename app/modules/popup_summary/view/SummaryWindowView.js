@@ -36,16 +36,16 @@ export default function PopupSummaryView(popupState, summaryState){
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(body.node);
-  container.node.appendChild(arrow.node);
-  body.node.appendChild(loader.rootNode);
-  body.node.appendChild(contentContainer.node);
-  contentContainer.node.appendChild(closeButton.rootNode);
-  contentContainer.node.appendChild(title.node);
-  contentContainer.node.appendChild(author.node);
-  contentContainer.node.appendChild(image.node);
-  contentContainer.node.appendChild(text.node);
-  contentContainer.node.appendChild(readMoreText.node);
+  container.appendChildNode(body.node);
+  container.appendChildNode(arrow.node);
+  body.appendChildNode(loader.rootNode);
+  body.appendChildNode(contentContainer.node);
+  contentContainer.appendChildNode(closeButton.rootNode);
+  contentContainer.appendChildNode(title.node);
+  contentContainer.appendChildNode(author.node);
+  contentContainer.appendChildNode(image.node);
+  contentContainer.appendChildNode(text.node);
+  contentContainer.appendChildNode(readMoreText.node);
 
   //public api -----------------------------------------------------------------
 

@@ -52,6 +52,6 @@ export default function GraphicNode(props, graphicState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = graphic.node;
+  return graphic;
 
 }

@@ -20,8 +20,8 @@ export default function PopupView(state){
 
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(summaryWindow.rootNode);
-  container.node.appendChild(reportWindow.rootNode);
+  container.appendChildNode(summaryWindow.rootNode);
+  container.appendChildNode(reportWindow.rootNode);
 
   //public api -----------------------------------------------------------------
 

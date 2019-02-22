@@ -50,14 +50,6 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
-
-  this.removeAllChildren = function(){
-    container.removeAllChildren();
-  };
-
-  this.addChildren = function(childNodes){
-    container.addChildren(childNodes);
-  };
+  return container;
 
 }

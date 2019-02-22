@@ -28,7 +28,7 @@ export default function ButtonNode(className, broadcastMessage, controlsState, e
 
   //load reactions -------------------------------------------------------------
 
-  controlsState.addListener('isEnabled', 'zoomInButton', 'isListening', updateListeners);
+  controlsState.addListener('isEnabled', 'zoomButton - isListening', updateListeners);
 
   //init dom element -----------------------------------------------------------
 
@@ -36,6 +36,6 @@ export default function ButtonNode(className, broadcastMessage, controlsState, e
 
   //public api -----------------------------------------------------------------
 
-  this.node = button.node;
+  return button;
 
 }

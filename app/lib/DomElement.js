@@ -157,7 +157,7 @@ export default class DomElement{
     }
   }
 
-  addChildren(childNodes){
+  addChildNodes(childNodes){
     var docFragment = document.createDocumentFragment();
     for (var childNode of childNodes){
       docFragment.appendChild(childNode);

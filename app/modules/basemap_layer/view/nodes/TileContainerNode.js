@@ -14,25 +14,6 @@ export default function TileContainerNode(){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
-
-  this.addChildNodes = function(childNodes){
-    var docFragment = document.createDocumentFragment();
-    for (var childNode of childNodes){
-      docFragment.appendChild(childNode);
-    }
-    container.node.appendChild(docFragment);
-  }
-
-  this.fadeOut = async function(){
-    await container.animateOpacity('transparent');
-  }
-
-  this.reset = async function(){
-    while (container.node.firstChild) {
-      container.node.removeChild(container.node.firstChild);
-    }
-    container.setOpacity('opaque');
-  }
+  return container;
 
 }

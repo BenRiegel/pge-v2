@@ -100,6 +100,6 @@ export default function ContainerNode(popupState, summaryState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
+  return container;
 
 }

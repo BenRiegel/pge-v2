@@ -42,8 +42,8 @@ export default function IconNode(menuState, optionState){
 
   //load reactions -------------------------------------------------------------
 
-  menuState.addListener('isOpen', 'optionIcon', 'iconChar', updateChar);
-  optionState.addListener('isSelected', 'optionIcon', 'visibility', updateVisibility);
+  menuState.addListener('isOpen', 'optionIcon - iconChar', updateChar);
+  optionState.addListener('isSelected', 'optionIcon - visibility', updateVisibility);
 
   //init dom element -----------------------------------------------------------
 
@@ -52,6 +52,6 @@ export default function IconNode(menuState, optionState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = icon.node;
+  return icon;
 
 }

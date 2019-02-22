@@ -32,6 +32,6 @@ export default function ContainerNode(reportState){
 
   //public api -----------------------------------------------------------------
 
-  this.node = container.node;
+  return container;
 
 }

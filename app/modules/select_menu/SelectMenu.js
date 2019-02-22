@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import Option from '../select_menu_option/SelectMenuOption.js';
 import SelectMenuState from './state/SelectMenuState.js';
 import SelectMenuEmitter from './services/SelectMenuEmitter.js';
 import SelectMenuView from './view/SelectMenuView.js';
@@ -22,10 +21,7 @@ export default function SelectMenu(){
 
   this.addListener = eventsEmitter.addListener;
 
-  this.addNewOption = function(optionProps){
-    var option = new Option(optionProps, state);
-    view.addOptionNode(option.rootNode);
-  };
+  this.addNewOption = view.addNewOption;
 
   this.enable = function(){
     state.set('isEnabled', true);
@@ -37,7 +33,7 @@ export default function SelectMenu(){
 
   this.close = async function(){
     state.set('isAnimating', true);
-    await state.set('isOpen', false);
+    await state.setAsync('isOpen', false);
   };
 
   this.setSelectedOption = function(newOptionKey){

@@ -24,7 +24,7 @@ export default function SpinnerNode(state){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('isVisible', 'spinner', 'visibility', updateVisibility);
+  state.addListener('isVisible', 'spinner - visibility', updateVisibility);
 
   //init dom element -----------------------------------------------------------
 

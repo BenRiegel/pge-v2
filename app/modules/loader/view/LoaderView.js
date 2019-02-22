@@ -8,15 +8,15 @@ import SpinnerNode from './nodes/SpinnerNode.js';
 
 export default function LoaderView(state){
 
-  //create renderProps ---------------------------------------------------------
+  //create renderingProps ---------------------------------------------------------
 
-  var renderProps = {
+  var renderingProps = {
     isAnimating: false,
   }
 
   //create nodes ---------------------------------------------------------------
 
-  var background = new BackgroundNode(state, renderProps);
+  var background = new BackgroundNode(state, renderingProps);
   var spinner = new SpinnerNode(state);
 
   //configure dom --------------------------------------------------------------
@@ -27,8 +27,8 @@ export default function LoaderView(state){
 
   this.rootNode = background.node;
 
-  this.setRenderProp = function(propName, value){
-    renderProps[propName] = value;
+  this.setRenderingProp = function(propName, value){
+    renderingProps[propName] = value;
   };
 
 }

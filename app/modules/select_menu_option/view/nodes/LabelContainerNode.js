@@ -36,7 +36,7 @@ export default function NewLabelContainer(menuState, isIndented){
 
   //load reactions -------------------------------------------------------------
 
-  menuState.addListener('isOpen', 'optionLabelContainer', 'indent', updateIndent);
+  menuState.addListener('isOpen', 'optionLabelContainer - indent', updateIndent);
 
   //init dom element -----------------------------------------------------------
 
@@ -44,6 +44,6 @@ export default function NewLabelContainer(menuState, isIndented){
 
   //public api -----------------------------------------------------------------
 
-  this.node = labelContainer.node;
+  return labelContainer;
 
 }
