@@ -15,8 +15,8 @@ export default function BasemapLayerView(mapViewpoint, state, eventsEmitter){
   var tileContainer = new TileContainerNode();
   var tileContainerCopy = new TileContainerNode();
 
-  var numTilesWidth = 9;
-  var numTilesHeight = 5;
+  var numTilesWidth = 5;
+  var numTilesHeight = 3;
 
   var tiles = [];
   var tileNodes = [];

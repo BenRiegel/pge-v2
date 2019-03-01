@@ -1,0 +1,13 @@
+@import '../../../../assets/stylesheets/mixins';
+
+.graphic-container{
+  @include user-select(none);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+}

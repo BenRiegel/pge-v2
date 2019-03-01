@@ -15,20 +15,16 @@ export default function ContentContainerNode(popupState, reportState){
   //define state change reactions ----------------------------------------------
 
   var updateOpacity = async function(){
-    if (reportState.isVisible){
+    if (reportState.contentIsLoaded){
       await contentContainer.animateOpacity('opaque');
     } else {
-      if (popupState.isOpen){
-        await contentContainer.animateOpacity('transparent');
-      } else {
-        contentContainer.setOpacity('transparent');
-      }
+      contentContainer.setOpacity('transparent');
     }
   }
 
   //load reactions -------------------------------------------------------------
 
-  reportState.addListener('isVisible', 'contentContainer', 'opacity', updateOpacity);
+  reportState.addListener('contentIsLoaded', 'contentContainer - opacity', updateOpacity);
 
   //init dom element -----------------------------------------------------------
 

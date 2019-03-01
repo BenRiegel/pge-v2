@@ -51,7 +51,7 @@ export default function ImageNode(popupState, summaryState){
 
   //load reactions -------------------------------------------------------------
 
-  popupState.addListener('projectData', 'image', 'content', updateContent);
+  popupState.addListener('projectData', 'image - content', updateContent);
 
   //public api -----------------------------------------------------------------
 

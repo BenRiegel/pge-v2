@@ -1,41 +1,26 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import Emitter from '../../../../lib/Emitter.js';
 import '../stylesheets/zoom_button_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ButtonNode(className, broadcastMessage, controlsState, eventsEmitter){
+export default function ButtonNode(className, buttonId){
+
+  var emitter = new Emitter();
 
   //create dom element ---------------------------------------------------------
 
-  var button = new DomElement('div', `zoom-button ${className}`);
+  var node = document.createElement('div');
+  node.className = `zoom-button ${className}`;
 
-  button.setEventListener('click', () => {
-    eventsEmitter.broadcast(broadcastMessage);
+  node.addEventListener('click', function(){
+    emitter.broadcast('click', buttonId);
   });
-
-  //define state change reactions ----------------------------------------------
-
-  var updateListeners = function(){
-    if (controlsState.isEnabled){
-      button.enableListeners();
-    } else {
-      button.disableListeners();
-    }
-  }
-
-  //load reactions -------------------------------------------------------------
-
-  controlsState.addListener('isEnabled', 'zoomButton - isListening', updateListeners);
-
-  //init dom element -----------------------------------------------------------
-
-  updateListeners();
 
   //public api -----------------------------------------------------------------
 
-  return button;
+  return { node, emitter };
 
 }

@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
 import '../stylesheets/zoom_controls.scss';
 
 
@@ -10,9 +9,11 @@ export default function ContainerNode(){
 
   //create dom element ---------------------------------------------------------
 
-  var container = new DomElement('div', 'zoom-controls-container');
+  var node = document.createElement('span');
+  node.className = 'zoom-controls-container';
 
   //public api -----------------------------------------------------------------
 
-  return container;
+  return { node };
+
 }

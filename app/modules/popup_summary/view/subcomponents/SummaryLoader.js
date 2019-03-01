@@ -14,17 +14,17 @@ export default function SummaryLoader(popupState, summaryState){
   //define state change reactions ----------------------------------------------
 
   var activate = function(){
-    loader.show();
+    loader.activate();
   }
 
   var terminate = function(){
-    loader.hide(false);
+    loader.terminate(false);
   }
 
   //load reactions -------------------------------------------------------------
 
-  summaryState.addListener('isVisible', 'loader', 'activate', activate);
-  summaryState.addListener('isVisible', 'loader', 'terminate', terminate);
+  summaryState.addListener('isVisible', 'loader - activate', activate);
+  summaryState.addListener('isVisible', 'loader - terminate', terminate);
 
   //public api -----------------------------------------------------------------
 

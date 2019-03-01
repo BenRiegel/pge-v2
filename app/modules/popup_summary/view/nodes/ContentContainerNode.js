@@ -42,9 +42,9 @@ export default function ContentContainerNode(summaryState){
 
   //load reactions -------------------------------------------------------------
 
-  summaryState.addListener('isVisible', 'contentContainer', 'opacity', updateOpacity);
-  summaryState.addListener('isExpanded', 'contentContainer', 'opacity', updateOpacity);
-  summaryState.addListener('isVisible', 'contentContainer', 'height', updateHeight);
+  summaryState.addListener('isVisible', 'contentContainer - opacity', updateOpacity);
+  summaryState.addListener('isExpanded', 'contentContainer - opacity', updateOpacity);
+  summaryState.addListener('isVisible', 'contentContainer - height', updateHeight);
 
   //init dom element -----------------------------------------------------------
 

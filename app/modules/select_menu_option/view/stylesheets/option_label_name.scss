@@ -2,12 +2,13 @@
   flex-grow: 1;
   box-sizing: border-box;
   padding-left: 8px;
+  padding-right: 0px;
 }
 
-.label.indent-left .tag-name{
+.tag-name.indent-visible{
   padding-left: 18px;
 }
 
-.label.indent-right .tag-name{
+.tag-name.indent-hidden{
   padding-right: 10px;
 }

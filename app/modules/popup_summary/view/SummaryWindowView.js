@@ -3,6 +3,7 @@
 import ContainerNode from './nodes/ContainerNode.js';
 import ArrowNode from './nodes/ArrowNode.js';
 import BodyNode from './nodes/BodyNode.js';
+import FadeContainerNode from './nodes/FadeContainerNode.js';
 import ContentContainerNode from './nodes/ContentContainerNode.js';
 import AuthorNode from './nodes/AuthorNode.js';
 import TitleNode from './nodes/TitleNode.js';
@@ -22,6 +23,7 @@ export default function PopupSummaryView(popupState, summaryState){
   var container = new ContainerNode(popupState, summaryState);
   var arrow = new ArrowNode(summaryState);
   var body = new BodyNode();
+  var fadeContainer = new FadeContainerNode(popupState, summaryState);
   var contentContainer = new ContentContainerNode(summaryState);
   var author = new AuthorNode(popupState);
   var title = new TitleNode(popupState);
@@ -38,8 +40,9 @@ export default function PopupSummaryView(popupState, summaryState){
 
   container.appendChildNode(body.node);
   container.appendChildNode(arrow.node);
-  body.appendChildNode(loader.rootNode);
-  body.appendChildNode(contentContainer.node);
+  body.appendChildNode(fadeContainer.node);
+  fadeContainer.appendChildNode(contentContainer.node);
+  fadeContainer.appendChildNode(loader.rootNode);
   contentContainer.appendChildNode(closeButton.rootNode);
   contentContainer.appendChildNode(title.node);
   contentContainer.appendChildNode(author.node);

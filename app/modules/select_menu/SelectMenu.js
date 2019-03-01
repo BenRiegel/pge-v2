@@ -1,8 +1,12 @@
 //imports ----------------------------------------------------------------------
 
+import Option from '../select_menu_option/SelectMenuOption.js';
+import Emitter from '../../lib/Emitter.js';
 import SelectMenuState from './state/SelectMenuState.js';
-import SelectMenuEmitter from './services/SelectMenuEmitter.js';
 import SelectMenuView from './view/SelectMenuView.js';
+import StateController from './controller/StateController.js';
+import EmitterController from './controller/EmitterController.js';
+import ViewController from './controller/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -12,32 +16,40 @@ export default function SelectMenu(){
   //private code block ---------------------------------------------------------
 
   var state = new SelectMenuState();
-  var eventsEmitter = new SelectMenuEmitter(state);
-  var view = new SelectMenuView(state);
+  var eventsEmitter = new Emitter();
+  var view = new SelectMenuView();
+  var controller = {
+    state: new StateController(state, view),
+    emitter: new EmitterController(state, eventsEmitter),
+    view: new ViewController(state, view),
+  }
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
-  this.addListener = eventsEmitter.addListener;
+  this.addListener = function(eventName, listener){
+    eventsEmitter.addListener(eventName, listener);
+  };
 
-  this.addNewOption = view.addNewOption;
+  this.addNewOption = function(optionProps){
+    var option = new Option(optionProps, state);
+    controller.view.addNewOption(option);
+  };
 
   this.enable = function(){
-    state.set('isEnabled', true);
+    state.set('userDisabled', false);
   };
 
   this.disable = function(){
-    state.set('isEnabled', false);
+    state.set('userDisabled', true);
   };
 
-  this.close = async function(){
-    state.set('isAnimating', true);
-    await state.setAsync('isOpen', false);
+  this.close = function(){
+    state.set('isOpen', false);
   };
 
   this.setSelectedOption = function(newOptionKey){
-    state.set('isAnimating', false);
     state.set('selectedOptionKey', newOptionKey);
   };
 }

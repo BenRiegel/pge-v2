@@ -1,45 +1,26 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import ClassNameProp from '../../../../lib/props/ClassNameProp.js';
 import '../stylesheets/option_icon_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function IconContainerNode(menuState){
+export default function IconContainerNode(){
 
   //create dom element ---------------------------------------------------------
 
-  var iconContainer = new DomElement('div', 'icon-container');
+  var node = document.createElement('div');
+  node.className = 'icon-container';
 
-  iconContainer.showBorder = function(){
-    this.addClass('border');
-  };
+  //define props ---------------------------------------------------------------
 
-  iconContainer.hideBorder = function(){
-    this.removeClass('border');
-  };
-
-  //define state change reactions ----------------------------------------------
-
-  var updateBorderVisibility = function(){
-    if (menuState.isOpen){
-      iconContainer.hideBorder();
-    } else {
-      iconContainer.showBorder();
-    }
-  };
-
-  //load reactions -------------------------------------------------------------
-
-  menuState.addListener('isOpen', 'optionIconContainer - borderVisibility', updateBorderVisibility);
-
-  //init dom element -----------------------------------------------------------
-
-  updateBorderVisibility();
+  var props = {
+    border: new ClassNameProp(node),
+  }
 
   //public api -----------------------------------------------------------------
 
-  return iconContainer;
+  return { node, props };
 
 }

@@ -11,44 +11,50 @@ export default function ReportWindowState(popupState){
 
   var state = new ComponentState({
     isVisible: popupState.isExpanded,
-    contentIsLoaded: false,
+    projectUrl: null,
+    contentIsLoaded: undefined,
   });
 
   state.onContentIsLoaded = function(){
     state.set('contentIsLoaded', true);
   }
 
-  //modify behavior of isVisible prop ------------------------------------------
+  //modify behavior of isDisplaying prop ------------------------------------------
 
-  state.setOnChange('isVisible', async function(currentValue){
-    if (currentValue === true){
-      this.requestUpdate('container', 'visibility');
-      if (!state.contentIsLoaded){
-        this.requestUpdate('reportLoader', 'activate');
-        await this.requestUpdate('iframe', 'content');
-        this.requestUpdate('reportLoader', 'terminate');
-      }
-      await this.requestUpdate('contentContainer', 'opacity');
+  state.props.isVisible.onChangeAsync = async function(){
+    if (state.isVisible){
+      this.requestUpdate('container - visibility');
+      await this.requestUpdateAsync('fadeContainer - opacity');
     } else {
-      await this.requestUpdate('contentContainer', 'opacity');
-      this.requestUpdate('container', 'visibility');
+      await this.requestUpdateAsync('fadeContainer - opacity');
+      this.requestUpdate('container - visibility');
     }
-  });
+  };
+
+  state.props.contentIsLoaded.onChangeAsync = async function(){
+    this.requestUpdate('reportLoader - activation');
+    await this.requestUpdateAsync('contentContainer - opacity');
+  };
 
   //define state change reactions ----------------------------------------------
 
   var updateIsVisible = async function(){
-    await state.set('isVisible', popupState.isExpanded);
+    await state.setAsync('isVisible', popupState.isExpanded);
+  };
+
+  var loadContent = function(){
+    state.set('projectUrl', popupState.projectData.url);
   };
 
   var updateContentIsLoaded = function(){
     state.set('contentIsLoaded', false);
-  }
+  };
 
   //define state change reactions ----------------------------------------------
 
-  popupState.addListener('isExpanded', 'reportWindow', 'isVisible', updateIsVisible);
-  popupState.addListener('projectData', 'reportWindow', 'contentIsLoaded', updateContentIsLoaded);
+  state.addListener('projectUrl', 'self - contentIsLoaded', updateContentIsLoaded);
+  popupState.addListener('isExpanded', 'reportWindow - isVisible', updateIsVisible);
+  popupState.addListener('isExpanded', 'reportWindow - loadContent', loadContent);
 
   //public api -----------------------------------------------------------------
 

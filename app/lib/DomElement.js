@@ -1,4 +1,5 @@
 import { wait } from './Utils.js';
+import ObservedVar from './ObservedVar3.js';
 
 
 export default class DomElement{
@@ -7,6 +8,7 @@ export default class DomElement{
     this.node = document.createElement(type);
     this.node.className = className;
     this.listeners = new Map();
+    this.props = {};
   }
 
   set innerHTML(htmlStr){
@@ -17,7 +19,7 @@ export default class DomElement{
     Object.assign(this.node.dataset, obj);
   }
 
-  set src(src){
+  setSrc(src){
     this.node.src = src;
   }
 
@@ -169,5 +171,18 @@ export default class DomElement{
     this.node.appendChild(childNode);
   }
 
+  addNewProp(propName, listener){
+    this.props[propName] = new ObservedVar();
+    this.props[propName].listener = listener;
+  }
+
+  setPropValue(propName, newValue){
+    this.props[propName].set(newValue);
+  }
+
+  async setPropValueAsync(propName, newValue, isAnimating){
+    this.isAnimating = isAnimating;
+    await this.props[propName].setAsync(newValue);
+  }
 
 };

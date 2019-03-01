@@ -1,51 +1,29 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import OpacityProp from '../../../../lib/props/OpacityProp2.js';
+import VisibilityProp from '../../../../lib/props/VisibilityProp.js';
+import AnimationProp from '../../../../lib/props/AnimationProp.js';
 import '../stylesheets/loader_background.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BackgroundNode(state, renderingProps){
+export default function BackgroundNode(){
 
   //create dom element ---------------------------------------------------------
 
-  var background = new DomElement('div', 'loader-background');
+  var node = document.createElement('div');
+  node.className = 'loader-background';
 
-  //define state change reactions ----------------------------------------------
+  //define props ---------------------------------------------------------------
 
-  var updateOpacity = async function(){
-    if (state.isVisible){
-      background.setOpacity('opaque');
-    } else {
-      if (renderingProps.isAnimating){
-        await background.animateOpacity('transparent');
-      } else {
-        background.setOpacity('transparent');
-      }
-    }
+  var props = {
+    visibility: new VisibilityProp(node),
+    opacity: new OpacityProp(node),
   }
-
-  var updateVisibility = async function(){
-    if (state.isVisible){
-      background.setVisibility('visible');
-    } else {
-      background.setVisibility('hidden');
-    }
-  };
-
-  //load reactions -------------------------------------------------------------
-
-  state.addListener('isVisible', 'background - opacity', updateOpacity);
-  state.addListener('isVisible', 'background - visibility', updateVisibility);
-
-  //init dom element -----------------------------------------------------------
-
-  updateOpacity();
-  updateVisibility();
 
   //public api -----------------------------------------------------------------
 
-  return background;
+  return { node, props };
 
 }

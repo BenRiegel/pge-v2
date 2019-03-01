@@ -1,6 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../lib/ComponentState.js';
+import ComponentState from '../../../lib/ComponentState.js';
+import TileIndicesProp from './TileIndicesProp.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -15,6 +16,8 @@ export default function BasemapTileState(xPosition, yPosition, mapViewpoint, lay
     yIndexIsValid: undefined,
   });
 
+  state.props.tileIndices = new TileIndicesProp({x:undefined, y:undefined});
+
   //define state change reactions ----------------------------------------------
 
   var updateScreenCoords = function(){
@@ -23,7 +26,7 @@ export default function BasemapTileState(xPosition, yPosition, mapViewpoint, lay
     state.set('screenCoords', {x:screenX, y:screenY});
   }
 
-  var updateIndices = async function(){
+  var updateIndices = function(){
     var xIndex = (layerState.centerTileIndices.x + xPosition) % layerState.numBasemapTiles;
     if (xIndex < 0){
       xIndex += layerState.numBasemapTiles;
@@ -32,24 +35,13 @@ export default function BasemapTileState(xPosition, yPosition, mapViewpoint, lay
     var tileIndices = {x:xIndex, y:yIndex};
     var yIndexIsValid = (yIndex >= 0 && yIndex < layerState.numBasemapTiles);
     state.set('yIndexIsValid', yIndexIsValid);
-    if (layerState.isWaiting){
-      await state.setTileIndices(tileIndices);
-    } else {
-      state.setTileIndices(tileIndices);
-    }
+    state.props.tileIndices.set(tileIndices);
   }
 
   //load state change reactions ------------------------------------------------
 
-  layerState.addListener('centerTileScreenCoords', updateScreenCoords);
-
-  layerState.addListener('centerTileIndices', async () => {
-    if (layerState.isWaiting){
-      await updateIndices();
-    } else {
-      updateIndices();
-    }
-  });
+  layerState.addListener('centerTileScreenCoords', 'tile - screenCoords', updateScreenCoords);
+  layerState.addListener('centerTileIndices', 'tile - indices', updateIndices);
 
   //init state -----------------------------------------------------------------
 

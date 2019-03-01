@@ -18,7 +18,7 @@ export default function ContainerNode(className, popupState, eventsEmitter){
   //define state change reactions ----------------------------------------------
 
   var updateListener = function(){
-    if (popupState.isEnabled  && !popupState.eventInProgress){
+    if (popupState.isListening){
       container.enableListeners();
     } else {
       container.disableListeners();
@@ -27,8 +27,7 @@ export default function ContainerNode(className, popupState, eventsEmitter){
 
   //load reactions -------------------------------------------------------------
 
-  popupState.addListener('isEnabled', 'menuContainer', 'listener', updateListener);
-  popupState.addListener('eventInProgress', 'menuContainer', 'listener', updateListener);
+  popupState.addListener('isListening', 'menuContainer - listener', updateListener);
 
   //init dom element -----------------------------------------------------------
 

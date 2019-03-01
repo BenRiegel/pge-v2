@@ -2,18 +2,13 @@
 @import '../../../../assets/stylesheets/mixins';
 
 .graphic{
-  display: flex;
   @include user-select(none);
-  justify-content: center;
-  align-items: center;
   position: absolute;
   background-color: rgba(134,38,51, 0.85);
   box-shadow: $outer-box-shadow;
   border-radius: 50%;
-  color:white;
-  font-size: 12px;
-  text-align:center;
   cursor:pointer;
+  z-index: -1;
 }
 
 .graphic:hover{

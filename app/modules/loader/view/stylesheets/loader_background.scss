@@ -16,4 +16,5 @@ $loader-fade-in-out-time: 0.75s;
   border-radius: inherit;
   z-index: $loader-z-index;
   animation-duration: $loader-fade-in-out-time;
+  transition: opacity $loader-fade-in-out-time;
 }

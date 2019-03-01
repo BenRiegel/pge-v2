@@ -2,11 +2,12 @@ export default class ObservedVar{
 
   constructor(initValue){
     this.value = initValue;
+    this.hasChanged = false;
     this.listenersList = [];
     this.listenersLookup = {};
   }
 
-  addListener(reactionId, cb){
+  addListener(cb, reactionId){
     this.listenersList.push(cb);
     var reactionListeners = this.listenersLookup[reactionId] || [];
     reactionListeners.push(cb);
@@ -15,6 +16,7 @@ export default class ObservedVar{
 
   removeListeners(){
     this.listeners = [];
+    this.listenersLookup = {};
   }
 
   async requestUpdateAllAsync(...args){
@@ -28,7 +30,12 @@ export default class ObservedVar{
 
   requestUpdateAll(...args){
     for (var listener of this.listenersList){
-      listener(...args);
+      //try{
+        listener(...args);
+    //  }
+    //  catch(error){
+      //  console.log(listener);
+      //}
     }
   }
 
@@ -49,21 +56,31 @@ export default class ObservedVar{
     }
   }
 
-  onChange(currentValue, previousValue){
-    this.requestUpdateAll(currentValue, previousValue);
+  onChange(){
+    this.requestUpdateAll();
+  }
+
+  async onChangeAsync(){
+    await this.requestUpdateAllAsync();
   }
 
   async setAsync(newValue){
+    this.hasChanged = false;
     if (newValue !== this.value){
+      this.hasChanged = true;
       this.value = newValue;
-      await this.onChange();
+      await this.onChangeAsync();
     }
   }
 
-  set(newValue){
+  set(newValue, notify){
+    this.hasChanged = false;
     if (newValue !== this.value){
+      this.hasChanged = true;
       this.value = newValue;
-      this.onChange();
+      if (notify){
+        this.onChange();
+      }
     }
   }
 }

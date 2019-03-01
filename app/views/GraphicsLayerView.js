@@ -13,6 +13,10 @@ import { latLonToWebMercator } from '../lib/WebMercator.js';
 
 //module code block ------------------------------------------------------------
 
+
+//do something about all this
+var locations;
+
 var createLocations = function(projects){
   var locations = [];
   for (var project of projects){
@@ -26,21 +30,30 @@ var createLocations = function(projects){
   return locations;
 }
 
+var getSelectedLocations = function(selectedTag){
+  var mappedLocations = locations.filter( location => {
+    return location.tags.includes(selectedTag);
+  });
+  return mappedLocations;
+}
+
 
 var graphicsLayer = new GraphicsLayer(mapDimensions, mapViewpoint);
 
 dispatcher.addListener('load', async () => {
   var projects = await projectsReceived;
-  var locations = createLocations(projects);
-  graphicsLayer.loadLocations(locations);
-  graphicsLayer.filterGraphics(INIT_SELECTED_TAG);
+  locations = createLocations(projects);
+  var selectedLocations = getSelectedLocations(INIT_SELECTED_TAG);
+  //graphicsLayer.loadLocations(locations);
+  graphicsLayer.setMappedLocations(selectedLocations);
   graphicsLayer.addClickListener('point', pointSelect);
   graphicsLayer.addClickListener('cluster', clusterSelect);
   rootNode.appendChild(graphicsLayer.rootNode);
 });
 
 dispatcher.addListener('graphicsLayer - filterGraphics', selectedTag => {
-  graphicsLayer.filterGraphics(selectedTag);
+  var selectedLocations = getSelectedLocations(selectedTag);
+  graphicsLayer.setMappedLocations(selectedLocations);
 });
 
 dispatcher.addListener('graphicsLayer - enable', () => {

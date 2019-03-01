@@ -22,11 +22,11 @@ export default function Popup(){
   this.addListener = eventsEmitter.addListener;
 
   this.enable = function(){
-    state.set('isEnabled', true);
+    state.set('userDisabled', false);
   };
 
   this.disable = function(){
-    state.set('isEnabled', false);
+    state.set('userDisabled', true);
   };
 
   this.setContent = function(projectData){

@@ -15,22 +15,20 @@ export default function ComponentState(obj){
   }
 
   var state = {
-    addListener(prop, target, reaction, listener){
-      props[prop].addListener(target, reaction, listener);
+    props,
+    addListener(prop, reactionId, listener){
+      props[prop].addListener(reactionId, listener);
     },
-    async set(propName, value){
-      await props[propName].set(value);
+    set(propName, value, notify = true){
+      props[propName].set(value, notify);
     },
-    setQuick(propName, value){
-      props[propName].setQuick(value);
+    async setAsync(propName, value){
+      await props[propName].setAsync(value);
     },
-    setOnChange(propName, cb){
+    /*setOnChange(propName, cb){
       props[propName].onChange = cb;
-    },
-    setOnChangeQuick(propName, cb){
-      props[propName].onChangeQuick = cb;
-    },
-    propHasChanged(propName){
+    },*/
+    /*propHasChanged(propName){
       return props[propName].hasChanged;
     },
     propHasUpdated(propName){
@@ -41,7 +39,7 @@ export default function ComponentState(obj){
     },
     removeListeners(propName){
       props[propName].removeListeners();
-    },
+    },*/
   };
 
   for (let key of keys){

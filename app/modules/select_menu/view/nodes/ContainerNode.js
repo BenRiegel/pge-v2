@@ -1,76 +1,40 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import ClassNameProp from '../../../../lib/props/ClassNameProp.js';
+import Emitter from '../../../../lib/Emitter.js';
+import { getTargetNode } from '../../../../lib/Utils.js';
 import '../stylesheets/select_menu.scss';
-
-
-//module code block ------------------------------------------------------------
-
-export function getParentNodeProperty(node, className, prop){
-  while (node){
-    if (node.classList && node.classList.contains(className)){
-      return node.dataset[prop];
-    }
-    node = node.parentNode;
-  }
-  return null;
-};
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode(state){
+export default function ContainerNode(){
+
+  //create emitter -------------------------------------------------------------
+
+  var emitter = new Emitter();
 
   //create dom element ---------------------------------------------------------
 
-  var container = new DomElement('div', 'select-menu-container');
+  var node = document.createElement('div');
+  node.className = 'select-menu-container';
 
-  container.setRoundedBorderRadius = function(){
-    this.addClass('rounded');
-  };
-
-  container.setDefaultBorderRadius = function(){
-    this.removeClass('rounded');
-  };
-
-  container.setEventListener('click', function(evt){
-    var optionClicked = getParentNodeProperty(evt.target, 'option', 'key');
-    if (optionClicked){
-      state.updateOnOptionClick(optionClicked);
+  node.addEventListener('click', function(evt){
+    var optionNode = getTargetNode(evt.target, 'option');
+    if (optionNode){
+      var optionKey = optionNode.dataset.key;
+      emitter.broadcast('click', optionKey);
     }
   });
 
-  //define state change reactions ----------------------------------------------
+  //create props ---------------------------------------------------------------
 
-  var updateBorderRadius = function(){
-    if (state.isOpen){
-      container.setDefaultBorderRadius();
-    } else {
-      container.setRoundedBorderRadius();
-    }
-  };
-
-  var updateListener = function(){
-    if (state.isEnabled && !state.eventInProgress){
-      container.enableListeners();
-    } else {
-      container.disableListeners();
-    }
+  var props = {
+    borderRadiusStyle: new ClassNameProp(node),
   }
-
-  //load reactions -------------------------------------------------------------
-
-  state.addListener('isOpen', 'menuContainer - borderRadius', updateBorderRadius);
-  state.addListener('eventInProgress', 'menuContainer - listener', updateListener);
-  state.addListener('isEnabled', 'menuContainer - listener', updateListener);
-
-  //init dom element -----------------------------------------------------------
-
-  updateBorderRadius();
-  updateListener();
 
   //public api -----------------------------------------------------------------
 
-  return container;
+  return { node, props, emitter };
 
 };

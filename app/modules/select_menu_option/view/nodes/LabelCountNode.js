@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
 import '../stylesheets/option_label_count.scss';
 
 
@@ -10,11 +9,12 @@ export default function LabelCountNode(count){
 
   //create dom element ---------------------------------------------------------
 
-  var labelCount = new DomElement('div', 'tag-count');
-  labelCount.innerHTML = count;
+  var node = document.createElement('div');
+  node.className = 'tag-count';
+  node.innerHTML = count;
 
   //public api -----------------------------------------------------------------
 
-  return labelCount;
+  return { node };
 
 }

@@ -2,8 +2,10 @@
 
 import Emitter from '../../lib/Emitter.js';
 import GraphicsLayerState from './state/GraphicsLayerState.js';
-import GraphicsService from './services/GraphicsService.js';
 import GraphicsLayerView from './view/GraphicsLayerView.js';
+import StateController from './controllers/StateController.js';
+import EmitterController from './controllers/EmitterController.js';
+import ViewController from './controllers/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -12,10 +14,14 @@ export default function GraphicsLayer(mapDimensions, mapViewpoint){
 
   //private code block ---------------------------------------------------------
 
-  var graphicsService = new GraphicsService(mapViewpoint);
-  var state = new GraphicsLayerState(mapDimensions, mapViewpoint, graphicsService);
+  var state = new GraphicsLayerState();
   var eventsEmitter = new Emitter();
-  var view = new GraphicsLayerView(mapViewpoint, state, eventsEmitter);
+  var view = new GraphicsLayerView();
+  var controller = {
+    state: new StateController(mapDimensions, mapViewpoint, state),
+    emitter: new EmitterController(state, eventsEmitter, view),
+    view: new ViewController(state, view),
+  }
 
   //public api -----------------------------------------------------------------
 
@@ -26,19 +32,15 @@ export default function GraphicsLayer(mapDimensions, mapViewpoint){
   };
 
   this.enable = function(){
-    state.set('isEnabled', true);
+    state.set('userDisabled', false);
   };
 
   this.disable = function(){
-    state.set('isEnabled', false);
+    state.set('userDisabled', true);
   };
 
-  this.loadLocations = function(locations){
-    graphicsService.loadLocations(locations);
-  }
-
-  this.filterGraphics = function(selectedTag){
-    state.set('selectedTag', selectedTag)
+  this.setMappedLocations = function(mappedLocations){
+    state.set('mappedLocations', mappedLocations);
   }
 
   this.highlightGraphic = function(id){

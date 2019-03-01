@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import ComponentState from '../../../lib/ComponentState.js';
-import { waitAtLeast } from '../../../lib/Utils.js';
+import { waitAtLeast, wait } from '../../../lib/Utils.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -17,51 +17,55 @@ export default function PopupSummaryState(popupState){
 
   //modify behavior of props ---------------------------------------------------
 
-  state.setOnChange('isExpanded', async function(currentValue){
-    if (currentValue === true){
-      await this.requestUpdate('contentContainer', 'opacity');
-      this.requestUpdate('arrow', 'display');
-      this.requestUpdate('container', 'zIndex');
-      await this.requestUpdate('container', 'dimensions');
+  state.props.isExpanded.onChangeAsync = async function(){
+    if (state.isExpanded){
+      console.log('hello');
+      await this.requestUpdateAsync('fadeContainer - opacity');
+      console.log('world')
+      this.requestUpdate('arrow - display');
+      this.requestUpdate('container - zIndex');
+      await this.requestUpdateAsync('container - dimensions');
     } else {
-      await this.requestUpdate('container', 'dimensions');
-      this.requestUpdate('container', 'zIndex');
-      this.requestUpdate('arrow', 'display');
-      await this.requestUpdate('contentContainer', 'opacity');
+      await this.requestUpdateAsync('container - dimensions');
+      this.requestUpdate('container - zIndex');
+      this.requestUpdate('arrow - display');
+      await this.requestUpdateAsync('fadeContainer - opacity');
     }
-  });
+  };
 
-  state.setOnChange('isVisible', async function(currentValue){
-    this.requestUpdate('arrow', 'display');
-    this.requestUpdate('container', 'visibility');
-    if (currentValue === true){
-      if (!popupState.propHasUpdated('projectData')){
-        this.requestUpdate('loader', 'activate');
-        await waitAtLeast(500, popupState.getPropUpdatePromise('projectData'));
-        this.requestUpdate('loader', 'terminate');
-      }
-      await this.requestUpdate('contentContainer', 'height');
-      await this.requestUpdate('contentContainer', 'opacity');
+  state.props.isVisible.onChangeAsync = async function(){
+    this.requestUpdate('arrow - display');
+    this.requestUpdate('container - visibility');
+    if (state.isVisible){
+    //  if (!popupState.propHasUpdated('projectData')){
+
+        this.requestUpdate('loader - activate');
+        //await waitAtLeast(500, popupState.getPropUpdatePromise('projectData'));
+        await wait(500);
+        this.requestUpdate('loader - terminate');
+      //}
+      await this.requestUpdateAsync('contentContainer - height');
+      await this.requestUpdateAsync('contentContainer - opacity');
     } else {
-      this.requestUpdate('contentContainer', 'height');
-      this.requestUpdate('contentContainer', 'opacity');
+      this.requestUpdate('contentContainer - height');
+      this.requestUpdate('contentContainer - opacity');
     }
-  });
+  };
 
   //define state change reactions ----------------------------------------------
 
   var updateIsVisible = async function(){
-    await state.set('isVisible', popupState.isOpen);
+    await state.setAsync('isVisible', popupState.isOpen);
   };
 
   var updateIsExpanded = async function(){
-    await state.set('isExpanded', popupState.isExpanded);
+    await state.setAsync('isExpanded', popupState.isExpanded);
   }
 
   //load reactions -------------------------------------------------------------
 
-  popupState.addListener('isOpen', 'summaryWindow', 'isVisible', updateIsVisible);
-  popupState.addListener('isExpanded', 'summaryWindow', 'isExpanded', updateIsExpanded)
+  popupState.addListener('isOpen', 'summaryWindow - isVisible', updateIsVisible);
+  popupState.addListener('isExpanded', 'summaryWindow - isExpanded', updateIsExpanded)
 
   //public api -----------------------------------------------------------------
 

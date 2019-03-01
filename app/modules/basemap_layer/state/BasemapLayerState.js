@@ -1,7 +1,8 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../lib/ComponentState.js';
+import ComponentState from '../../../lib/ComponentState.js';
 import { valueToLevel } from '../../../lib/WebMapScale.js';
+import CenterTileIndicesProp from './CenterTileIndicesProp.js'
 
 
 //exports ----------------------------------------------------------------------
@@ -20,8 +21,9 @@ export default function BasemapLayerState(mapDimensions, mapViewpoint){
     tileSize: undefined,
     centerTileScreenCoords: undefined,
     centerTileIndices: {x:undefined, y:undefined},
-    isWaiting: false,
   });
+
+  state.props.centerTileIndices = new CenterTileIndicesProp({x:undefined, y:undefined});
 
   //define state change reactions ----------------------------------------------
 
@@ -46,8 +48,7 @@ export default function BasemapLayerState(mapDimensions, mapViewpoint){
     state.set('tileSize', tileSize);
   }
 
-  var updateCenterTileProps = async function(isWaiting = false){
-    state.set('isWaiting', isWaiting, false);
+  var updateCenterTileProps = function(){
     var viewpointCenterXMap = mapViewpoint.x / mapViewpoint.scale;
     var viewpointCenterYMap = mapViewpoint.y / mapViewpoint.scale;
     var centerTileXIndex = Math.floor(viewpointCenterXMap / state.tileSize);
@@ -59,24 +60,20 @@ export default function BasemapLayerState(mapDimensions, mapViewpoint){
     var centerTileTopScreen = centerTileTopMap - viewpointCenterYMap + mapDimensions.height / 2;
     var screenCoords = {x:centerTileLeftScreen, y:centerTileTopScreen};
     state.set('centerTileScreenCoords', screenCoords);
-    if (state.isWaiting){
-      await state.setCenterTileIndicesAsync(centerTileIndices);
-    } else {
-      state.setCenterTileIndices(centerTileIndices);
-    }
+    state.props.centerTileIndices.set(centerTileIndices);
   }
 
-  var resetState = async function(){
+  var resetState = function(){
     updateBaselineScale();
     setImageTileLevel();
     setNumBasemapTiles();
     updateTileSize();
-    await updateCenterTileProps(true);
+    updateCenterTileProps();
   }
 
   //load state change reactions ------------------------------------------------
 
-  mapViewpoint.addListener('zoomEnd - basemapLayerReset', resetState);
+  /*mapViewpoint.addListener('zoomEnd - basemapLayerReset', resetState);
 
   mapViewpoint.addListener('zoomAction', () => {
     updateTileSize();
@@ -87,7 +84,7 @@ export default function BasemapLayerState(mapDimensions, mapViewpoint){
     updateCenterTileProps();
   });
 
-  mapViewpoint.addListener('zoomHomeAction', resetState);
+  mapViewpoint.addListener('zoomHomeAction', resetState);*/
 
   //init state -----------------------------------------------------------------
 

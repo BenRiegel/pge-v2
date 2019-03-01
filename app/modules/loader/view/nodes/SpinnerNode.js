@@ -1,37 +1,26 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import VisibilityProp from '../../../../lib/props/VisibilityProp.js';
 import '../stylesheets/loader_spinner.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function SpinnerNode(state){
+export default function SpinnerNode(){
 
   //create dom element ---------------------------------------------------------
 
-  var spinner = new DomElement('div', 'spinner');
+  var node = document.createElement('div');
+  node.className = 'spinner';
 
-  //define state change reactions ----------------------------------------------
+  //define props ---------------------------------------------------------------
 
-  var updateVisibility = function(){
-    if (state.isVisible){
-      spinner.setVisibility('visible');
-    } else {
-      spinner.setVisibility('hidden');
-    }
-  };
-
-  //load reactions -------------------------------------------------------------
-
-  state.addListener('isVisible', 'spinner - visibility', updateVisibility);
-
-  //init dom element -----------------------------------------------------------
-
-  updateVisibility();
+  var props = {
+    visibility: new VisibilityProp(node),
+  }
 
   //public api -----------------------------------------------------------------
 
-  return spinner;
+  return { node, props };
 
 }

@@ -13,18 +13,17 @@ export default function ReportLoader(popupState, reportState){
 
   //define state change reactions ----------------------------------------------
 
-  var activate = function(){
-    loader.show();
-  }
-
-  var terminate = function(){
-    loader.hide(false);
+  var updateActivation = function(){
+    if (reportState.contentIsLoaded){
+      loader.hide(false);
+    } else {
+      loader.show();
+    }
   }
 
   //load reactions -------------------------------------------------------------
 
-  reportState.addListener('isVisible', 'reportLoader', 'activate', activate);
-  reportState.addListener('isVisible', 'reportLoader', 'terminate', terminate);
+  reportState.addListener('contentIsLoaded', 'reportLoader - activation', updateActivation);
 
   //public api -----------------------------------------------------------------
 

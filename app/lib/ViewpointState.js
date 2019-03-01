@@ -25,7 +25,7 @@ export default function ViewpointState(obj){
       emitter.addListener(sourceName, listener);
     },
 
-    async set(x, y, scale){
+    set(x, y, scale){
       props.x.set(x);
       props.y.set(y);
       props.scale.set(scale);
@@ -34,7 +34,7 @@ export default function ViewpointState(obj){
       } else if (props.action === 'pan'){
         emitter.broadcast('panAction');
       } else if (props.action === 'zoomHome'){
-        await emitter.asyncBroadcast('zoomHomeAction');
+    //    await emitter.asyncBroadcast('zoomHomeAction');
       }
     },
 

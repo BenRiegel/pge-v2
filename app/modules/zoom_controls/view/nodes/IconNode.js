@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
 import '../stylesheets/zoom_button_icon.scss';
 
 
@@ -10,10 +9,11 @@ export default function IconNode(className){
 
   //create dom element ---------------------------------------------------------
 
-  var icon = new DomElement('span', `fa ${className}`);
+  var node = document.createElement('span');
+  node.className = `fa ${className}`;
 
   //public api -----------------------------------------------------------------
 
-  return icon;
+  return { node };
 
 }

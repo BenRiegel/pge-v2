@@ -5,20 +5,18 @@ import ContainerNode from './nodes/ContainerNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerView(mapViewpoint, layerState, eventsEmitter){
+export default function GraphicsLayerView(){
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode(mapViewpoint, layerState, eventsEmitter);
-
-  layerState.addListener('graphics', () => {
-    container.removeAllChildren();
-    var rootNodes = layerState.graphics.map( graphic => graphic.rootNode );
-    container.addChildNodes(rootNodes);
-  });
-
+  var nodes = {
+    container: new ContainerNode(),
+  }
+  
   //public api -----------------------------------------------------------------
 
-  this.rootNode = container.node;
+  this.rootNode = nodes.container.node;
+
+  this.nodes = nodes;
 
 }

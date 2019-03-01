@@ -1,55 +1,43 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import Emitter from '../../../../lib/Emitter.js';
+import ChildrenProp from '../../../../lib/props/ChildrenProp.js';
+import { getTargetNode } from '../../../../lib/Utils.js';
 import '../stylesheets/graphics_layer.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode(mapViewpoint, state, eventsEmitter){
+export default function ContainerNode(state, eventsEmitter){
+
+  //create emitter -------------------------------------------------------------
+
+  var emitter = new Emitter();
 
   //create dom element ---------------------------------------------------------
 
-  var container = new DomElement('div', 'graphics-layer');
+  var node = document.createElement('div');
+  node.className = 'graphics-layer';
 
-  container.setEventListener('click', evt => {
-    var graphicId = Number(evt.target.dataset.id);
-    var graphicType = evt.target.dataset.type;
-    var worldCoords = {
-      x: Number(evt.target.dataset.x),
-      y: Number(evt.target.dataset.y),
-    };
-    eventsEmitter.broadcast(graphicType, graphicId, worldCoords);
-  });
-
-  //define state change reactions ----------------------------------------------
-
-  var updateListener = function(){
-    if (state.isEnabled){
-      container.enableListeners();
-    } else {
-      container.disableListeners();
+  node.addEventListener('click', evt => {
+    var graphicContainer = getTargetNode(evt.target, 'graphic-container');
+    if (graphicContainer){
+      var graphicId = Number(graphicContainer.dataset.id);
+      var graphicType = graphicContainer.dataset.type;
+      var worldCoords = {
+        x: Number(graphicContainer.dataset.x),
+        y: Number(graphicContainer.dataset.y),
+      };
+      emitter.broadcast('click', graphicType, graphicId, worldCoords);
     }
+  });
+
+  var props = {
+    children: new ChildrenProp(node),
   }
-
-  //load reactions -------------------------------------------------------------
-
-  state.addListener('isEnabled', updateListener);
-
-  mapViewpoint.addListener('zoomHomeStart', async () => {
-    await container.animateOpacity('transparent');
-  });
-
-  mapViewpoint.addListener('zoomHomeEnd', async () => {
-    await container.animateOpacity('opaque');
-  });
-
-  //init dom element -----------------------------------------------------------
-
-  updateListener();
 
   //public api -----------------------------------------------------------------
 
-  return container;
+  return { node, emitter, props };
 
 }

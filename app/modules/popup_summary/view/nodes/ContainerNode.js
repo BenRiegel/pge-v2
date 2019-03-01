@@ -88,9 +88,9 @@ export default function ContainerNode(popupState, summaryState){
 
   //load reactions -------------------------------------------------------------
 
-  summaryState.addListener('isVisible', 'container', 'visibility', updateVisibility);
-  summaryState.addListener('isExpanded', 'container', 'dimensions', updateDimensions);
-  summaryState.addListener('isExpanded', 'container', 'zIndex', updateZIndex);
+  summaryState.addListener('isVisible', 'container - visibility', updateVisibility);
+  summaryState.addListener('isExpanded', 'container - dimensions', updateDimensions);
+  summaryState.addListener('isExpanded', 'container - zIndex', updateZIndex);
 
   //init dom element -----------------------------------------------------------
 

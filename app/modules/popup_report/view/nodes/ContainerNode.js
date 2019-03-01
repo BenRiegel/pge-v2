@@ -24,7 +24,7 @@ export default function ContainerNode(reportState){
 
   //load reactions -------------------------------------------------------------
 
-  reportState.addListener('isVisible', 'container', 'visibility', updateVisibility);
+  reportState.addListener('isVisible', 'container - visibility', updateVisibility);
 
   //init dom element -----------------------------------------------------------
 

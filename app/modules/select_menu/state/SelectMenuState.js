@@ -1,56 +1,42 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState2.js';
+import ComponentState from '../../../lib/ComponentState4.js';
 
 
 //exports ----------------------------------------------------------------------
 
 export default function SelectMenuState(){
 
-  //create state var -----------------------------------------------------------
-
   var state = new ComponentState({
-    eventInProgress: false,
-    isAnimating: false,
-    isEnabled: true,
     isOpen: false,
     selectedOptionKey: null,
+    userDisabled: false,
+    eventInProgress: false,
   });
 
-  //modify behavior of isOpenProp ----------------------------------------------
+  //modify behavior of isOpen prop ---------------------------------------------
 
-  state.setOnChange('isOpen', async function(){
-    if (state.isOpen === true){
-      this.requestUpdate('menuContainer - borderRadius');
-      this.requestUpdate('optionLabelContainer - indent');
-      this.requestUpdate('optionIcon - iconChar');
-      this.requestUpdate('optionIconContainer - borderVisibility');
-      this.requestUpdate('optionContainer - borderRadius');
-      this.requestUpdate('optionContainer - visibility');
-      await this.requestUpdateAsync('optionContainer - height');
-      await this.requestUpdateAsync('optionContainer - opacity');
+  state.props.isOpen.onChange = async function(currentValue){
+    if (currentValue === true){
+      this.updateType('menuContainerBorderRadius');
+      this.updateType('optionLabelIndent');
+      this.updateType('optionIconChar');
+      this.updateType('optionIconBorderVisibility');
+      this.updateType('optionContainerBorderRadius');
+      this.updateType('optionContainerVisibility');
+      await this.updateTypeAsync('optionContainerHeight');
+      await this.updateTypeAsync('optionContainerOpacity');
     } else {
-      await this.requestUpdateAsync('optionContainer - opacity');
-      await this.requestUpdateAsync('optionContainer - height');
-      this.requestUpdate('optionContainer - visibility');
-      this.requestUpdate('optionContainer - borderRadius');
-      this.requestUpdate('optionIconContainer - borderVisibility');
-      this.requestUpdate('optionIcon - iconChar');
-      this.requestUpdate('optionLabelContainer - indent');
-      this.requestUpdate('menuContainer - borderRadius');
+      await this.updateTypeAsync('optionContainerOpacity');
+      await this.updateTypeAsync('optionContainerHeight');
+      this.updateType('optionContainerVisibility');
+      this.updateType('optionContainerBorderRadius');
+      this.updateType('optionIconBorderVisibility');
+      this.updateType('optionIconChar');
+      this.updateType('optionLabelIndent');
+      this.updateType('menuContainerBorderRadius');
     }
-  });
-
-  //define methods -------------------------------------------------------------
-
-  state.updateOnOptionClick = async function(optionClicked){
-    state.set('eventInProgress', true);
-    state.set('isAnimating', false);
-    state.set('selectedOptionKey', optionClicked);
-    state.set('isAnimating', true);
-    await state.setAsync('isOpen', !state.isOpen);
-    state.set('eventInProgress', false);
-  };
+  }
 
   //public api -----------------------------------------------------------------
 

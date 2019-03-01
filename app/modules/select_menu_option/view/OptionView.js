@@ -10,27 +10,23 @@ import LabelCountNode from './nodes/LabelCountNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function OptionView(menuState, optionState, optionProps){
+export default function OptionView(optionProps){
 
   //create nodes ---------------------------------------------------------------
 
-  var container = new ContainerNode(menuState, optionState, optionProps.key)
-  var iconContainer = new IconContainerNode(menuState);
-  var icon = new IconNode(menuState, optionState);
-  var labelContainer = new LabelContainerNode(menuState, optionProps.labelIsIndented);
-  var labelName = new LabelNameNode(optionProps.name);
-  var labelCount = new LabelCountNode(optionProps.count);
-
-  //configure dom --------------------------------------------------------------
-
-  container.appendChildNode(iconContainer.node);
-  container.appendChildNode(labelContainer.node);
-  iconContainer.appendChildNode(icon.node);
-  labelContainer.appendChildNode(labelName.node);
-  labelContainer.appendChildNode(labelCount.node);
+  var nodes = {
+    container: new ContainerNode(optionProps.key),
+    iconContainer: new IconContainerNode(),
+    icon: new IconNode(),
+    labelContainer: new LabelContainerNode(),
+    labelName: new LabelNameNode(optionProps.name),
+    labelCount: new LabelCountNode(optionProps.count),
+  }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = container.node;
+  this.rootNode = nodes.container.node;
+
+  this.nodes = nodes;
 
 }

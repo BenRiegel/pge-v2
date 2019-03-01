@@ -24,8 +24,8 @@ export default function ArrowNode(summaryState){
 
   //load reactions -------------------------------------------------------------
 
-  summaryState.addListener('isVisible', 'arrow', 'display', updateDisplay);
-  summaryState.addListener('isExpanded', 'arrow', 'display', updateDisplay);
+  summaryState.addListener('isVisible', 'arrow - display', updateDisplay);
+  summaryState.addListener('isExpanded', 'arrow - display', updateDisplay);
 
   //init dom element -----------------------------------------------------------
 

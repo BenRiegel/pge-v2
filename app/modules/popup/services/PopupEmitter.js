@@ -27,9 +27,9 @@ export default function PopupEmitter(state){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('eventInProgress', 'emitter', 'broadcast', broadcast);
+  state.addListener('eventInProgress', 'emitter - broadcast', broadcast);
 
-  state.addListener('isOpen', 'emitter', 'broadcast', () => {
+  state.addListener('isOpen', 'emitter - broadcast', () => {
     if (!state.isOpen){
       broadcastOnClose();
     }

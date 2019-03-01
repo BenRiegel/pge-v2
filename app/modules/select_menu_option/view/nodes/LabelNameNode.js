@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import ClassNameProp from '../../../../lib/props/ClassNameProp.js';
 import '../stylesheets/option_label_name.scss';
 
 
@@ -10,11 +10,18 @@ export default function LabelNameNode(name){
 
   //create dom element ---------------------------------------------------------
 
-  var labelName = new DomElement('div', 'tag-name');
-  labelName.innerHTML = name;
+  var node = document.createElement('div');
+  node.className = 'tag-name';
+  node.innerHTML = name;
+
+  //define props ---------------------------------------------------------------
+
+  var props = {
+    indent: new ClassNameProp(node),
+  }
 
   //public api -----------------------------------------------------------------
 
-  return labelName;
+  return { node, props };
 
 }

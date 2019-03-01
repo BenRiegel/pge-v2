@@ -1,57 +1,29 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import ClassNameProp from '../../../../lib/props/ClassNameProp.js';
+import ScaleProp from '../../../../lib/props/ScaleProp.js';
+import { BASELINE_DIAMETER_PX } from '../../config/GraphicConfig.js';
 import '../stylesheets/graphic.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicNode(props, graphicState){
+export default function GraphicNode(props){
 
   //create dom element ---------------------------------------------------------
 
-  var graphic = new DomElement('div', 'graphic');
-  graphic.dataset = { id: props.id };
-  graphic.dataset = {x: props.worldCoords.x};
-  graphic.dataset = {y: props.worldCoords.y};
-  graphic.dataset = {type: props.type};
-  graphic.innerHTML = props.numLocations;
+  var node = document.createElement('div');
+  node.className = 'graphic';
+  node.style.width = `${BASELINE_DIAMETER_PX}px`;
+  node.style.height = `${BASELINE_DIAMETER_PX}px`;
 
-  //define state change reactions ----------------------------------------------
-
-  var updateHighlight = function(){
-    if (graphicState.isHighlighted){
-      graphic.addClass('highlight');
-    } else {
-      graphic.removeClass('highlight');
-    }
+  var props = {
+    isHighlighted: new ClassNameProp(node),
+    scale: new ScaleProp(node),
   }
-
-  var updateSize = function(){
-    graphic.setStyle('width', `${graphicState.renderedDiameter}px`);
-    graphic.setStyle('height', `${graphicState.renderedDiameter}px`);
-  }
-
-  var updateScreenCoords = function(){
-    var { x, y } = graphicState.screenCoords;
-    var str = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-    graphic.setStyle('transform', str);
-  }
-
-  //load state change reactions ------------------------------------------------
-
-  graphicState.setOnChange('isHighlighted', updateHighlight);
-  graphicState.setOnChange('renderedDiameter', updateSize);
-  graphicState.setOnChange('screenCoords', updateScreenCoords);
-
-  //init dom element -----------------------------------------------------------
-
-  updateHighlight();
-  updateSize();
-  updateScreenCoords();
 
   //public api -----------------------------------------------------------------
 
-  return graphic;
+  return { node, props };
 
 }

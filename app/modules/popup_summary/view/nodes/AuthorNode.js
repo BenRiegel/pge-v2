@@ -27,7 +27,7 @@ export default function AuthorNode(popupState){
 
   //load reactions -------------------------------------------------------------
 
-  popupState.addListener('projectData', 'author', 'content', updateContent)
+  popupState.addListener('projectData', 'author - content', updateContent)
 
   //init dom element -----------------------------------------------------------
 

@@ -20,7 +20,7 @@ export default function TextNode(popupState){
 
   //load reactions -------------------------------------------------------------
 
-  popupState.addListener('projectData', 'text', 'content', updateContent)
+  popupState.addListener('projectData', 'text - content', updateContent)
 
   //public api -----------------------------------------------------------------
 

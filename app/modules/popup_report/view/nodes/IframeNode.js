@@ -15,22 +15,20 @@ export default function IframeNode(popupState, reportState){
   //define state change reactions ----------------------------------------------
 
   var updateContent = async function(){
-    if (reportState.isVisible && !reportState.contentIsLoaded){
-      await new Promise( resolve => {
-        var contentLoaded = evt => {
-          iframe.node.removeEventListener('load', contentLoaded);
-          reportState.onContentIsLoaded();
-          resolve();
-        }
-        iframe.node.addEventListener('load', contentLoaded);
-        iframe.node.src = popupState.projectData.url;
-      });
-    };
+    await new Promise( resolve => {
+      var contentLoaded = evt => {
+        iframe.node.removeEventListener('load', contentLoaded);
+        reportState.onContentIsLoaded();
+        resolve();
+      }
+      iframe.node.addEventListener('load', contentLoaded);
+      iframe.node.src = popupState.projectData.url;
+    });
   }
 
   //load reactions -------------------------------------------------------------
 
-  reportState.addListener('isVisible', 'iframe', 'content', updateContent);
+  reportState.addListener('projectUrl', 'iframe - content', updateContent);
 
   //public api -----------------------------------------------------------------
 

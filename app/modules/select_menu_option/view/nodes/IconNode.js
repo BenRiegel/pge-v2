@@ -1,57 +1,28 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import VisibilityProp from '../../../../lib/props/VisibilityProp.js';
+import IconCharProp from '../props/IconCharProp.js';
 import '../stylesheets/option_icon.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function IconNode(menuState, optionState){
+export default function IconNode(){
 
   //create dom element ---------------------------------------------------------
 
-  var icon = new DomElement('span', 'icon fa');
+  var node = document.createElement('span');
+  node.className = 'icon fa';
 
-  icon.displayArrow = function(){
-    this.removeClass('fa-check');
-    this.addClass('fa-sort-desc');
-  };
+  //define props ---------------------------------------------------------------
 
-  icon.displayCheck = function(){
-    this.removeClass('fa-sort-desc');
-    this.addClass('fa-check');
-  };
-
-  //define state change reactions ----------------------------------------------
-
-  var updateVisibility = function(){
-    if (optionState.isSelected){
-      icon.setVisibility('visible');
-    } else {
-      icon.setVisibility('hidden');
-    }
-  };
-
-  var updateChar = function(){
-    if (menuState.isOpen){
-      icon.displayCheck();
-      } else {
-      icon.displayArrow();
-    }
-  };
-
-  //load reactions -------------------------------------------------------------
-
-  menuState.addListener('isOpen', 'optionIcon - iconChar', updateChar);
-  optionState.addListener('isSelected', 'optionIcon - visibility', updateVisibility);
-
-  //init dom element -----------------------------------------------------------
-
-  updateVisibility();
-  updateChar();
+  var props = {
+    visibility: new VisibilityProp(node),
+    char: new IconCharProp(node),
+  }
 
   //public api -----------------------------------------------------------------
 
-  return icon;
+  return { node, props };
 
 }

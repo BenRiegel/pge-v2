@@ -6,29 +6,21 @@ import SpinnerNode from './nodes/SpinnerNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function LoaderView(state){
-
-  //create renderingProps ---------------------------------------------------------
-
-  var renderingProps = {
-    isAnimating: false,
-  }
+export default function LoaderView(){
 
   //create nodes ---------------------------------------------------------------
 
-  var background = new BackgroundNode(state, renderingProps);
-  var spinner = new SpinnerNode(state);
-
-  //configure dom --------------------------------------------------------------
-
-  background.appendChildNode(spinner.node);
+  var nodes = {
+    background: new BackgroundNode(),
+    spinner: new SpinnerNode(),
+  }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = background.node;
+  this.rootNode = nodes.background.node;
 
-  this.setRenderingProp = function(propName, value){
-    renderingProps[propName] = value;
-  };
+  this.nodes = nodes;
+
+  this.isFadingOut = false;
 
 }

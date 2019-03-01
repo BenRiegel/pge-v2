@@ -9,7 +9,6 @@
   left: $web-map-widget-padding;
   background-color: $theme-background-color;
   box-shadow: $outer-box-shadow;
-  border-radius: $theme-border-radius;
   font-size: $theme-font-size;
   color: $theme-font-color;
   min-height: $option-height;
@@ -17,8 +16,12 @@
   z-index: $select-menu-z-index;
 }
 
-.select-menu-container.rounded{
+.select-menu-container.rounded-border-radius{
   border-radius: ($option-height / 2);
+}
+
+.select-menu-container.default-border-radius{
+  border-radius: $theme-border-radius;
 }
 
 /*.select-menu.disabled * {

@@ -1,28 +1,24 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState2.js';
+import ComponentState from '../../../lib/ComponentState4.js';
 
+//imports ----------------------------------------------------------------------
 
-//exports ----------------------------------------------------------------------
-
-export default function LoaderState(){
-
-  //create state var -----------------------------------------------------------
+export default function SelectMenuState(){
 
   var state = new ComponentState({
-    isVisible: false,
+    isActivated: false,
   });
 
-  //modify behavior of isVisible prop ------------------------------------------
+  //modify behavior of isActivated prop ----------------------------------------
 
-  state.setOnChange('isVisible', async function(){
-    this.requestUpdate('spinner - visibility');
-    await this.requestUpdateAsync('background - opacity');
-    this.requestUpdate('background - visibility');
-  });
+  state.props.isActivated.onChange = async function(){
+    this.updateType('spinnerVisibility');
+    await this.updateTypeAsync('backgroundOpacity');
+    this.updateType('backgroundVisibility');
+  };
 
   //public api -----------------------------------------------------------------
 
   return state;
-
 }

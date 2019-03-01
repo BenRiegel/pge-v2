@@ -11,7 +11,8 @@ export default function PopupState(){
 
   var state = new ComponentState({
     eventInProgress: false,
-    isEnabled: true,
+    userDisabled: false,
+    isListening: true,
     isOpen: false,
     isExpanded: false,
     projectData: null,
@@ -24,27 +25,40 @@ export default function PopupState(){
 
   state.onExpandAction = async function(){
     this.set('eventInProgress', true);
-    await this.set('isExpanded', true);
+    await this.setAsync('isExpanded', true);
     this.set('eventInProgress', false);
   }
 
   state.onContractAction = async function(){
     this.set('eventInProgress', true);
-    await this.set('isExpanded', false);
+    await this.setAsync('isExpanded', false);
     this.set('eventInProgress', false);
   }
 
   //modify behavior of isExpanded prop -----------------------------------------
 
-  state.setOnChange('isExpanded', async function(currentValue){
-    if (currentValue === true){
-      await this.requestUpdate('summaryWindow', 'isExpanded');
-      await this.requestUpdate('reportWindow', 'isVisible');
+  state.props.isExpanded.onChangeAsync = async function(){
+    if (state.isExpanded){
+      await this.requestUpdateAsync('summaryWindow - isExpanded');
+      this.requestUpdate('reportWindow - loadContent');
+      await this.requestUpdateAsync('reportWindow - isVisible');
     } else {
-      await this.requestUpdate('reportWindow', 'isVisible');
-      await this.requestUpdate('summaryWindow', 'isExpanded');
+      await this.requestUpdateAsync('reportWindow - isVisible');
+      await this.requestUpdateAsync('summaryWindow - isExpanded');
     }
-  });
+  };
+
+  //define state change reactions ----------------------------------------------
+
+  var updateIsListening = function(){
+    var isListening = !state.userDisabled && !state.eventInProgress;
+    state.set('isListening', isListening);
+  }
+
+  //load reactions -------------------------------------------------------------
+
+  state.addListener('userDisabled', 'self - isListening', updateIsListening);
+  state.addListener('eventInProgress', 'self - isListening', updateIsListening);
 
   //public api -----------------------------------------------------------------
 

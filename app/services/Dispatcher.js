@@ -101,6 +101,7 @@ export async function zoom(type){
   dispatcher.broadcast('popup - close');
   dispatcher.broadcast('zoomControls - disable');
   dispatcher.broadcast('selectMenu - disable');
+  dispatcher.broadcast('selectMenu - close');
   dispatcher.broadcast('graphicsLayer - disable');
   dispatcher.broadcast('basemapLayer - disable');
   await dispatcher.asyncBroadcast('mapMoveAnimator - zoom', type);

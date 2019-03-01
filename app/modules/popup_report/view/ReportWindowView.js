@@ -2,6 +2,7 @@
 
 import ContainerNode from './nodes/ContainerNode.js';
 import ContentContainerNode from './nodes/ContentContainerNode.js';
+import FadeContainerNode from './nodes/FadeContainerNode.js';
 import IframeNode from './nodes/IframeNode.js';
 import Loader from './subcomponents/ReportLoader.js';
 import CloseButton from './subcomponents/CloseButton.js';
@@ -15,6 +16,7 @@ export default function ReportWindowView(popupState, reportState){
   //create nodes ---------------------------------------------------------------
 
   var container = new ContainerNode(reportState);
+  var fadeContainer = new FadeContainerNode(popupState, reportState);
   var contentContainer = new ContentContainerNode(popupState, reportState);
   var iframe = new IframeNode(popupState, reportState);
 
@@ -26,8 +28,9 @@ export default function ReportWindowView(popupState, reportState){
 
   //configure dom --------------------------------------------------------------
 
-  container.appendChildNode(contentContainer.node);
-  container.appendChildNode(loader.rootNode);
+  container.appendChildNode(fadeContainer.node);
+  fadeContainer.appendChildNode(contentContainer.node);
+  fadeContainer.appendChildNode(loader.rootNode);
   contentContainer.appendChildNode(iframe.node);
   contentContainer.appendChildNode(closeButton.rootNode);
   contentContainer.appendChildNode(contractButton.rootNode);

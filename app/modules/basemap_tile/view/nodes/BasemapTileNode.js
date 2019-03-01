@@ -39,23 +39,35 @@ export default function BasemapTileNode(layerState, state){
     tile.setStyle('transform', `translate(${x}px, ${y}px)`);
   }
 
-  var updateSrc = async function(){
+  /*var updateSrc = async function(){
     var x = state.tileIndices.x;
     var y = state.tileIndices.y;
     var z = layerState.imageTileLevel;
     await tile.asyncSetSrc(basemapURLString + `/${z}/${y}/${x}`);
+  }*/
+  var updateSrc = function(){
+    var x = state.tileIndices.x;
+    var y = state.tileIndices.y;
+    var z = layerState.imageTileLevel;
+    tile.setSrc(basemapURLString + `/${z}/${y}/${x}`);
   }
 
   //load state change reactions ------------------------------------------------
 
-  layerState.addListener('tileSize', updateDimensions);
-  state.setUpdateFunction('screenCoords', updateScreenCoords);
-  state.setUpdateFunction('yIndexIsValid', updateVisibility);
-  state.setUpdateFunction('tileIndices', async () => {
+  layerState.addListener('tileSize', 'tileNode - dimensions', updateDimensions);
+  state.addListener('screenCoords', 'tileNode - screenCoords', updateScreenCoords);
+  state.addListener('yIndexIsValid', 'tileNode - visibility', updateVisibility);
+  state.addListener('tileIndices', 'tileNode - src', () => {
+    if (state.yIndexIsValid){
+      updateSrc();
+    }
+  });
+
+  /*state.addListener('tileIndices', async () => {
     if (state.yIndexIsValid){
       await updateSrc();
     }
-  });
+  });*/
 
   //public api -----------------------------------------------------------------
 

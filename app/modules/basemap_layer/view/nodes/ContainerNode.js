@@ -59,7 +59,7 @@ export default function ContainerNode(mapViewpoint, state, eventsEmitter){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('isEnabled', updateListener);
+  state.addListener('isEnabled', 'containerNode - isListening', updateListener);
 
   mapViewpoint.addListener('zoomHomeStart', async () => {
     await container.animateOpacity('transparent');

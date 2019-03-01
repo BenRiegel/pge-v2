@@ -1,18 +1,24 @@
 //imports ----------------------------------------------------------------------
 
+import GraphicContainerNode from './nodes/GraphicContainerNode.js';
 import GraphicNode from './nodes/GraphicNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsView(props, state){
+export default function GraphicsView(props){
 
   //create nodes ---------------------------------------------------------------
 
-  var graphic = new GraphicNode(props, state);
+  var nodes = {
+    graphicContainer: new GraphicContainerNode(props),
+    graphic: new GraphicNode(props),
+  }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = graphic.node;
+  this.rootNode = nodes.graphicContainer.node;
+
+  this.nodes = nodes;
 
 }
