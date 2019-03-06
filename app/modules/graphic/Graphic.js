@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../lib/ComponentState4.js';
+import ComponentState from '../../lib/ComponentState.js';
 import GraphicView from './view/GraphicView.js';
 import StateController from './controllers/StateController.js';
 import ViewController from './controllers/ViewController.js';

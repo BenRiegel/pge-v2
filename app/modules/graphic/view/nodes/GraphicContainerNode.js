@@ -1,29 +1,23 @@
 //imports ----------------------------------------------------------------------
 
-import ScreenCoordsProp from '../props/ScreenCoordsProp.js';
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/graphic_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicContainerNode(props){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('div');
-  node.className = 'graphic-container';
-  node.dataset.id = props.id;
-  node.dataset.x = props.worldCoords.x;
-  node.dataset.y = props.worldCoords.y;
-  node.dataset.type = props.type;
-  node.innerHTML = props.numLocations;
-
-  var props = {
-    screenCoords: new ScreenCoordsProp(node),
+export default class GraphicContainerNode extends DomNode{
+  constructor(props){
+    super('div', 'graphic-container');
+    this.setDatasetProp('id', props.id);
+    this.setDatasetProp('x', props.worldCoords.x);
+    this.setDatasetProp('y', props.worldCoords.y);
+    this.setDatasetProp('type', props.type);
+    this.innerHTML = props.numLocations;
   }
-
-  //public api -----------------------------------------------------------------
-
-  return { node, props };
-
+  setScreenCoords(screenCoords){
+    var {x, y} = screenCoords;
+    var translateStr = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+    this.setStyle('transform', translateStr);
+  }
 }

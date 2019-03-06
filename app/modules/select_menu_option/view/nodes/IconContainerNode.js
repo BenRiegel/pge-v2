@@ -1,26 +1,19 @@
 //imports ----------------------------------------------------------------------
 
-import ClassNameProp from '../../../../lib/props/ClassNameProp.js';
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/option_icon_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function IconContainerNode(){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('div');
-  node.className = 'icon-container';
-
-  //define props ---------------------------------------------------------------
-
-  var props = {
-    border: new ClassNameProp(node),
+export default class IconContainerNode extends DomNode{
+  constructor(){
+    super('div', 'icon-container');
   }
-
-  //public api -----------------------------------------------------------------
-
-  return { node, props };
-
+  showBorder(){
+    this.addClass('border');
+  }
+  hideBorder(){
+    this.removeClass('border');
+  }
 }

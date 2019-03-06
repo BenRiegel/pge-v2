@@ -1,8 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import LoaderState from './state/LoaderState.js';
 import LoaderView from './view/LoaderView.js';
-import LoaderController from './controller/LoaderController.js';
+import LoaderViewController from './controller/LoaderViewController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -11,21 +10,25 @@ export default function Loader(){
 
   //private code block ---------------------------------------------------------
 
-  var state = new LoaderState();
   var view = new LoaderView();
-  var controller = new LoaderController(state, view);
+  var controller = {
+    view: new LoaderViewController(view),
+  }
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
   this.activate = function(){
-    state.set('isActivated', true);
+    controller.view.show();
   };
 
-  this.terminate = function(isFadingOut){
-    view.isFadingOut = isFadingOut;
-    return state.set('isActivated', false);
+  this.terminate = function(){
+    controller.view.hide();
+  };
+
+  this.terminateAndFade = function(){
+    return controller.view.hideAndFade();
   };
 
 }

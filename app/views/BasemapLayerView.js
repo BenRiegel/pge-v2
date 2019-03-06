@@ -10,24 +10,24 @@ import { mapDimensions } from '../views/RootView.js';
 
 //module code block ------------------------------------------------------------
 
-var basemapLayer = new BasemapLayer(mapDimensions, mapViewpoint);
+//var basemapLayer = new BasemapLayer(mapDimensions, mapViewpoint);
 
 dispatcher.addListener('load', async () => {
-  basemapLayer.addListener('userPanStartRequest', panStartRequest);
-  basemapLayer.addListener('userPanEndRequest', panEndRequest);
-  basemapLayer.addListener('userPanRequest', panRequest);
-  await basemapLayer.hasRendered;
-  rootNode.appendChild(basemapLayer.rootNode);
+  //basemapLayer.addListener('userPanStartRequest', panStartRequest);
+  //basemapLayer.addListener('userPanEndRequest', panEndRequest);
+  //basemapLayer.addListener('userPanRequest', panRequest);
+  //await basemapLayer.hasRendered;
+//  rootNode.appendChild(basemapLayer.rootNode);
 });
 
 dispatcher.addListener('basemapLayer - enable', () => {
-  basemapLayer.enable();
+  //basemapLayer.enable();
 });
 
 dispatcher.addListener('basemapLayer - disable', () => {
-  basemapLayer.disable();
+  //basemapLayer.disable();
 });
 
 //exports ----------------------------------------------------------------------
 
-export default basemapLayer;
+//export default basemapLayer;

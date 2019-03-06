@@ -10,8 +10,8 @@ export default class ScreenCoordsProp extends DomElementProp{
     super(node);
   }
   onUpdate(newValue){
-    var translateStr = 'translate(-50%, -50%)';
-    translateStr += `translate(${newValue.x}px, ${newValue.y}px)`;
+    var {x, y} = newValue;
+    var translateStr = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
     this.setStyle('transform', translateStr);
   }
 }

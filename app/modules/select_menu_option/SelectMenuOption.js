@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../lib/ComponentState4.js';
+import OptionState from './state/OptionState.js';
 import OptionView from './view/OptionView.js';
 import StateController from './controller/StateController.js';
 import ViewController from './controller/ViewController.js';
@@ -12,9 +12,7 @@ export default function SelectMenuOption(optionProps, menuState){
 
   //private code block ---------------------------------------------------------
 
-  var optionState = new ComponentState({
-    isSelected: undefined,
-  });
+  var optionState = new OptionState();
   var view = new OptionView(optionProps);
   var controller = {
     state: new StateController(optionProps.key, menuState, optionState),

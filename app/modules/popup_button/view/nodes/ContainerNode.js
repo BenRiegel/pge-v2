@@ -1,40 +1,17 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
+import DomNode from '../../../../lib/DomNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ContainerNode(className, popupState, eventsEmitter){
-
-  //create dom element ---------------------------------------------------------
-
-  var container = new DomElement('div', className);
-
-  container.setEventListener('click', () => {
-    eventsEmitter.broadcast('click');
-  });
-
-  //define state change reactions ----------------------------------------------
-
-  var updateListener = function(){
-    if (popupState.isListening){
-      container.enableListeners();
-    } else {
-      container.disableListeners();
-    }
+export default class ContainerNode extends DomNode{
+  constructor(className, buttonId){
+    super('div', `${className}`);
+    this.buttonId = buttonId
   }
-
-  //load reactions -------------------------------------------------------------
-
-  popupState.addListener('isListening', 'menuContainer - listener', updateListener);
-
-  //init dom element -----------------------------------------------------------
-
-  updateListener();
-
-  //public api -----------------------------------------------------------------
-
-  return container;
-
+  clickHandler(){
+    var broadcastArgs = ['click', this.buttonId];
+    return broadcastArgs;
+  }
 }

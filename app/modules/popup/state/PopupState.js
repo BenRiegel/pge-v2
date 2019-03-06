@@ -10,55 +10,44 @@ export default function PopupState(){
   //create state var -----------------------------------------------------------
 
   var state = new ComponentState({
-    eventInProgress: false,
-    userDisabled: false,
-    isListening: true,
     isOpen: false,
     isExpanded: false,
-    projectData: null,
+    content: null,
   });
 
-  state.onCloseAction = function(){
-    this.set('isOpen', false);
-    this.set('isExpanded', false);
-  }
+  //modify behavior of props ---------------------------------------------------
 
-  state.onExpandAction = async function(){
-    this.set('eventInProgress', true);
-    await this.setAsync('isExpanded', true);
-    this.set('eventInProgress', false);
-  }
-
-  state.onContractAction = async function(){
-    this.set('eventInProgress', true);
-    await this.setAsync('isExpanded', false);
-    this.set('eventInProgress', false);
-  }
-
-  //modify behavior of isExpanded prop -----------------------------------------
-
-  state.props.isExpanded.onChangeAsync = async function(){
-    if (state.isExpanded){
-      await this.requestUpdateAsync('summaryWindow - isExpanded');
-      this.requestUpdate('reportWindow - loadContent');
-      await this.requestUpdateAsync('reportWindow - isVisible');
+  state.props.isOpen.onChange = async function(currentValue){
+    this.updateType('containerVisibility');
+    if (currentValue === true){
+      await this.updateTypeAsync('summaryContent');
+      await this.updateTypeAsync('containerHeightAjust')
+      await this.updateTypeAsync('summaryOpacity');
     } else {
-      await this.requestUpdateAsync('reportWindow - isVisible');
-      await this.requestUpdateAsync('summaryWindow - isExpanded');
+      this.updateType('containerDimensions');
+      this.updateType('summaryOpacity');
     }
-  };
-
-  //define state change reactions ----------------------------------------------
-
-  var updateIsListening = function(){
-    var isListening = !state.userDisabled && !state.eventInProgress;
-    state.set('isListening', isListening);
+    this.updateType('publicEmitter');
   }
 
-  //load reactions -------------------------------------------------------------
-
-  state.addListener('userDisabled', 'self - isListening', updateIsListening);
-  state.addListener('eventInProgress', 'self - isListening', updateIsListening);
+  state.props.isExpanded.onChange = async function(currentValue){
+    this.updateType('eventInProgress', true);
+    if (currentValue === true){
+      await this.updateTypeAsync('summaryOpacity');
+      this.updateTypeAsync('arrowDisplay');
+      this.updateType('containerZIndex');
+      await this.updateTypeAsync('containerDimensions');
+      await this.updateTypeAsync('reportContent');
+      await this.updateTypeAsync('reportOpacity');
+    } else {
+      await this.updateTypeAsync('reportOpacity');
+      await this.updateTypeAsync('containerDimensions');
+      this.updateType('containerZIndex');
+      this.updateTypeAsync('arrowDisplay');
+      await this.updateTypeAsync('summaryOpacity');
+    }
+    this.updateType('eventInProgress', false);
+  }
 
   //public api -----------------------------------------------------------------
 

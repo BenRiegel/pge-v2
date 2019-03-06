@@ -3,7 +3,7 @@
 $spinner-inner-radius: 20px;
 $spinner-outer-radius: 12px;
 
-.spinner{
+.loader-spinner{
   width: $spinner-inner-radius * 2;
   height: $spinner-inner-radius * 2;
   border: $spinner-outer-radius solid $theme-light-gray;

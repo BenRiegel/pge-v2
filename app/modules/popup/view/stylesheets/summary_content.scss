@@ -1,0 +1,11 @@
+.summary-content{
+  position:relative;
+  width: 400px;
+  height: 100%;
+  border-radius: inherit;
+  z-index: 3;  /* need this? */
+  font-size: 12px;
+  box-sizing: border-box;
+  padding: 0 10px 10px 10px;
+  overflow: hidden;
+}

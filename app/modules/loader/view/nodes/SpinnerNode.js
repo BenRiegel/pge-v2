@@ -1,26 +1,13 @@
 //imports ----------------------------------------------------------------------
 
-import VisibilityProp from '../../../../lib/props/VisibilityProp.js';
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/loader_spinner.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function SpinnerNode(){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('div');
-  node.className = 'spinner';
-
-  //define props ---------------------------------------------------------------
-
-  var props = {
-    visibility: new VisibilityProp(node),
+export default class LoaderSpinnerNode extends DomNode{
+  constructor(){
+    super('div', 'loader-spinner');
   }
-
-  //public api -----------------------------------------------------------------
-
-  return { node, props };
-
 }

@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState4.js';
+import ComponentState from '../../../lib/ComponentState.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -10,7 +10,6 @@ export default function GraphicsLayerState(){
   //public state variable ------------------------------------------------------
 
   var state = new ComponentState({
-    userDisabled: false,
     mappedLocations: null,
     graphics: null,
     baselineScale: undefined,        /* feel like these should be somewhere else */
@@ -21,7 +20,7 @@ export default function GraphicsLayerState(){
   });
 
   //modify behavior of mappedLocations prop ------------------------------------
-  
+
   state.props.mappedLocations.onChange = function(){
     this.updateType('resetListeners');
     this.updateType('newGraphics');

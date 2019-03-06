@@ -1,29 +1,25 @@
 //imports ----------------------------------------------------------------------
 
-import ClassNameProp from '../../../../lib/props/ClassNameProp.js';
-import ScaleProp from '../../../../lib/props/ScaleProp.js';
+import DomNode from '../../../../lib/DomNode.js';
 import { BASELINE_DIAMETER_PX } from '../../config/GraphicConfig.js';
 import '../stylesheets/graphic.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicNode(props){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('div');
-  node.className = 'graphic';
-  node.style.width = `${BASELINE_DIAMETER_PX}px`;
-  node.style.height = `${BASELINE_DIAMETER_PX}px`;
-
-  var props = {
-    isHighlighted: new ClassNameProp(node),
-    scale: new ScaleProp(node),
+export default class GraphicNode extends DomNode{
+  constructor(props){
+    super('div', 'graphic');
+    this.setStyle('width', `${BASELINE_DIAMETER_PX}px`);
+    this.setStyle('height', `${BASELINE_DIAMETER_PX}px`);
   }
-
-  //public api -----------------------------------------------------------------
-
-  return { node, props };
-
+  setHighlight(){
+    this.addClass('highlight');
+  }
+  setNoHighlight(){
+    this.removeClass('highlight');
+  }
+  setScale(newValue){
+    this.setStyle('transform', `scale(${newValue, newValue})`);
+  }
 }

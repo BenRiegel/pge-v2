@@ -1,24 +1,26 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../lib/Emitter.js';
 import PopupButtonView from './view/PopupButtonView.js';
+import ViewController from './controller/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupButton(containerClassName, iconClassName, popupState){
+export default function PopupButton(containerClassName, iconClassName, buttonId){
 
   //private code block ---------------------------------------------------------
 
-  var eventsEmitter = new Emitter();
-  var view = new PopupButtonView(containerClassName, iconClassName, popupState, eventsEmitter);
+  var view = new PopupButtonView(containerClassName, iconClassName, buttonId);
+  var controller = {
+    view: new ViewController(view),
+  }
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
-  this.addClickListener = function(cb){
-    eventsEmitter.addListener('click', cb);
+  this.addListener = function(eventName, cb){
+    view.emitter.public.addListener(eventName, cb);
   }
 
 }

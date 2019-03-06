@@ -1,27 +1,24 @@
 export default function ViewController(props, layerState, state, view){
 
-  var { nodes } = view;
-  var { graphic, graphicContainer } = nodes;
-
   //configure dom --------------------------------------------------------------
 
-  graphicContainer.node.appendChild(view.nodes.graphic.node);
+  view.nodes.graphicContainer.node.appendChild(view.nodes.graphic.node);
 
   //define state change reactions ----------------------------------------------
 
   var updateIsHighlighted = function(){
     if (layerState.highlightedGraphicId === props.id){
-      graphic.props.isHighlighted.set('highlight');
+      view.nodes.graphic.setHighlight();
     } else {
-      graphic.props.isHighlighted.set(null);
+      view.nodes.graphic.setNoHighlight();
     }
   }
 
   var updateScaleFactor = function(){
     var newRenderedDiameter = props.diameter * layerState.zoomScaleFactor;
     newRenderedDiameter = Math.max(newRenderedDiameter, props.minDiameter);
-    var scaleFactor = newRenderedDiameter / 20;
-    graphic.props.scale.set(scaleFactor);
+    var scaleFactor = newRenderedDiameter / 20;  //change this
+    view.nodes.graphic.setScale(scaleFactor);
   }
 
   var updateScreenCoords = function(){
@@ -34,7 +31,7 @@ export default function ViewController(props, layerState, state, view){
     }
     var screenY = state.mapCoords.y - layerState.viewpointCenterMap.y;
     var screenCoords = {x:screenX, y:screenY};
-    graphicContainer.props.screenCoords.set(screenCoords);
+    view.nodes.graphicContainer.setScreenCoords(screenCoords);
   };
 
   //load reactions -------------------------------------------------------------

@@ -1,26 +1,18 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../../../lib/Emitter.js';
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/zoom_button_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ButtonNode(className, buttonId){
-
-  var emitter = new Emitter();
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('div');
-  node.className = `zoom-button ${className}`;
-
-  node.addEventListener('click', function(){
-    emitter.broadcast('click', buttonId);
-  });
-
-  //public api -----------------------------------------------------------------
-
-  return { node, emitter };
-
+export default class ButtonNode extends DomNode{
+  constructor(className, buttonId){
+    super('div', `zoom-button ${className}`);
+    this.buttonId = buttonId;
+  }
+  clickHandler(){
+    var broadcastArgs = [this.buttonId];
+    return broadcastArgs;
+  }
 }

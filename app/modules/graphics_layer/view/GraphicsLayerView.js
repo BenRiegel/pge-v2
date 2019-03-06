@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import Emitter from '../../../lib/Emitter.js';
 import ContainerNode from './nodes/ContainerNode.js';
 
 
@@ -7,16 +8,20 @@ import ContainerNode from './nodes/ContainerNode.js';
 
 export default function GraphicsLayerView(){
 
-  //create nodes ---------------------------------------------------------------
-
-  var nodes = {
-    container: new ContainerNode(),
-  }
-  
   //public api -----------------------------------------------------------------
 
-  this.rootNode = nodes.container.node;
+  this.props = {
+    inputEnabled: true,
+  }
 
-  this.nodes = nodes;
+  this.nodes = {
+    container: new ContainerNode(),
+  }
+
+  this.rootNode = this.nodes.container.node;
+
+  this.emitter = {
+    public: new Emitter(),
+  };
 
 }

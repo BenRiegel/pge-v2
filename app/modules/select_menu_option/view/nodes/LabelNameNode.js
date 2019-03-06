@@ -1,27 +1,22 @@
 //imports ----------------------------------------------------------------------
 
-import ClassNameProp from '../../../../lib/props/ClassNameProp.js';
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/option_label_name.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function LabelNameNode(name){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('div');
-  node.className = 'tag-name';
-  node.innerHTML = name;
-
-  //define props ---------------------------------------------------------------
-
-  var props = {
-    indent: new ClassNameProp(node),
+export default class LabelNameNode extends DomNode{
+  constructor(name){
+    super('div', 'tag-name');
+    this.innerHTML = name;
   }
-
-  //public api -----------------------------------------------------------------
-
-  return { node, props };
-
+  showIndent(){
+    this.removeClass('indent-hidden');
+    this.addClass('indent-visible');
+  }
+  hideIndent(){
+    this.removeClass('indent-visible');
+    this.addClass('indent-hidden');
+  }
 }

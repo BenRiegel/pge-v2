@@ -1,17 +1,23 @@
 export default function ViewController(state, view){
 
-  var { nodes } = view;
-  var { container } = nodes;
-
   //define state change reactions ----------------------------------------------
 
   var updateContainerChildren = function(){
+    view.nodes.container.removeAllChildNodes();
     var childNodes = state.graphics.map( graphic => graphic.rootNode );
-    container.props.children.set(childNodes);
+    view.nodes.container.appendChildNodes(childNodes);
+  }
+
+  var broadcastPublic = function(...args){
+    if (view.props.inputEnabled){
+      view.emitter.public.broadcast(...args);
+    }
   }
 
   //load reactions -------------------------------------------------------------
 
   state.addListener('graphics', updateContainerChildren);
+
+  view.nodes.container.setEventListener('click', broadcastPublic);
 
 }

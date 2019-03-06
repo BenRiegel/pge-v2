@@ -15,7 +15,7 @@ dispatcher.addListener('startLoading', () => {
 });
 
 dispatcher.addListener('finishLoading', async () => {
-  await loader.terminate(true);
+  await loader.terminateAndFade();
 });
 
 

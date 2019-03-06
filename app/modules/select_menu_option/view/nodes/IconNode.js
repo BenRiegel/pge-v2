@@ -1,28 +1,28 @@
 //imports ----------------------------------------------------------------------
 
-import VisibilityProp from '../../../../lib/props/VisibilityProp.js';
-import IconCharProp from '../props/IconCharProp.js';
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/option_icon.scss';
+
+
+//module code block ------------------------------------------------------------
+
+const ARROW_CLASS_NAME = 'fa-sort-desc';
+const CHECK_CLASS_NAME = 'fa-check';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function IconNode(){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('span');
-  node.className = 'icon fa';
-
-  //define props ---------------------------------------------------------------
-
-  var props = {
-    visibility: new VisibilityProp(node),
-    char: new IconCharProp(node),
+export default class IconNode extends DomNode{
+  constructor(){
+    super('span', 'icon fa');
   }
-
-  //public api -----------------------------------------------------------------
-
-  return { node, props };
-
+  setChar(value){
+    if (value === 'check'){
+      this.removeClass(ARROW_CLASS_NAME);
+      this.addClass(CHECK_CLASS_NAME);
+    } else {
+      this.removeClass(CHECK_CLASS_NAME);
+      this.addClass(ARROW_CLASS_NAME);
+    }
+  }
 }

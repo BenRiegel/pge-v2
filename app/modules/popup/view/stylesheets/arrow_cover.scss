@@ -1,0 +1,23 @@
+@import '../../../../assets/stylesheets/variables';
+
+.arrow-cover{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: $theme-background-color;
+  border-radius: inherit;
+  color: $theme-font-color;
+  z-index: 1;
+}
+
+/*.popup-body::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color: $theme-background-color;
+  z-index: 2;
+  border-radius: inherit;
+}*/

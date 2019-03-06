@@ -2,14 +2,16 @@ export function clamp(value, min, max){
   return Math.min(Math.max(value, min), max);
 }
 
-export async function wait(time){
-  await new Promise( resolve => {
+export function wait(time){
+  return new Promise( resolve => {
     setTimeout(resolve, time);
   });
 }
 
-export async function waitAtLeast(minTime, p){
-  await Promise.all( [wait(minTime), p] );
+export function waitAtLeast(minTime, callback){
+  var waitPromise = wait(minTime);
+  var callbackPromise = callback();
+  return Promise.all( [waitPromise, callbackPromise] );
 }
 
 export function getDistance(p1, p2){

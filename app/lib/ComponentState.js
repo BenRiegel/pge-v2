@@ -16,14 +16,14 @@ export default function ComponentState(obj){
 
   var state = {
     props,
-    addListener(prop, reactionId, listener){
-      props[prop].addListener(reactionId, listener);
+    addListener(propName, listener){
+      props[propName].addListener(listener);
     },
-    set(propName, value, notify = true){
-      props[propName].set(value, notify);
+    addListenerByType(propName, type, listener){
+      props[propName].addListenerByType(type, listener);
     },
-    async setAsync(propName, value){
-      await props[propName].setAsync(value);
+    set(propName, value){
+      return props[propName].set(value);
     },
     /*setOnChange(propName, cb){
       props[propName].onChange = cb;

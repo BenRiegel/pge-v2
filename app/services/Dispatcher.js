@@ -36,7 +36,7 @@ export async function pointSelect(id, worldCoords){
   await dispatcher.asyncBroadcast('mapMoveAnimator - panTo', worldCoords);
   await wait(200);
   var projectData = await getProjectData(id);
-  dispatcher.broadcast('popup - loadProjectData', projectData);
+  dispatcher.broadcast('popup - loadProjectData', projectData)
   await dispatcher.asyncBroadcast('popup - open');
   dispatcher.broadcast('popup - enable');
   dispatcher.broadcast('zoomControls - enable');

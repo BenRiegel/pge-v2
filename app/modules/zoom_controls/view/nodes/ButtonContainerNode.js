@@ -1,19 +1,13 @@
 //imports ----------------------------------------------------------------------
 
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/zoom_controls_button_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ButtonContainerNode(){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('div');
-  node.className = 'zoom-button-container';
-
-  //public api -----------------------------------------------------------------
-
-  return { node };
-
+export default class ButtonContainerNode extends DomNode{
+  constructor(){
+    super('div', 'zoom-button-container');
+  }
 }

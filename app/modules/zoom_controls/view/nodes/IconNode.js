@@ -1,19 +1,13 @@
 //imports ----------------------------------------------------------------------
 
+import DomNode from '../../../../lib/DomNode.js';
 import '../stylesheets/zoom_button_icon.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function IconNode(className){
-
-  //create dom element ---------------------------------------------------------
-
-  var node = document.createElement('span');
-  node.className = `fa ${className}`;
-
-  //public api -----------------------------------------------------------------
-
-  return { node };
-
+export default class IconNode extends DomNode{
+  constructor(className){
+    super('span', `fa ${className}`);
+  }
 }

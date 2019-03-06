@@ -1,43 +1,49 @@
 //imports ----------------------------------------------------------------------
 
 import PopupState from './state/PopupState.js';
-import PopupEmitter from './services/PopupEmitter.js';
 import PopupView from './view/PopupView.js';
+import StateController from './controller/StateController.js';
+import ViewController from './controller/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function Popup(){
+export default function Popup(mapDimensions){
 
   //private code block ---------------------------------------------------------
 
   var state = new PopupState();
-  var eventsEmitter = new PopupEmitter(state);
-  var view = new PopupView(state);
+  var view = new PopupView(mapDimensions);
+  var controller = {
+    state: new StateController(state, view),
+    view: new ViewController(state, view, mapDimensions),
+  }
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.rootNode;
 
-  this.addListener = eventsEmitter.addListener;
+  this.addListener = function(eventName, listener){
+    view.emitter.public.addListener(eventName, listener);
+  }
 
   this.enable = function(){
-    state.set('userDisabled', false);
+    view.props.inputEnabled = true;
   };
 
   this.disable = function(){
-    state.set('userDisabled', true);
+    view.props.inputEnabled = false;
   };
 
-  this.setContent = function(projectData){
-    state.set('projectData', projectData);
+  this.setContent = function(content){
+    state.set('content', content);
+  }
+
+  this.open = function(){
+    return state.set('isOpen', true);
   };
 
-  this.open = async function(){
-    await state.set('isOpen', true);
-  };
-
-  this.close = async function(){
+  this.close = function(){
     state.set('isExpanded', false);
     state.set('isOpen', false);
   };

@@ -1,98 +1,94 @@
 export default function ViewController(labelIsIndented, menuState, optionState, view){
 
-  var { nodes } = view;
-  var { container, iconContainer, icon } = nodes;
-  var { labelContainer, labelName, labelCount } = nodes;
-
   //configure dom --------------------------------------------------------------
 
-  container.node.appendChild(iconContainer.node);
-  container.node.appendChild(labelContainer.node);
-  iconContainer.node.appendChild(icon.node);
-  labelContainer.node.appendChild(labelName.node);
-  labelContainer.node.appendChild(labelCount.node);
+  view.nodes.container.appendChildNode(view.nodes.iconContainer.node);
+  view.nodes.container.appendChildNode(view.nodes.labelContainer.node);
+  view.nodes.iconContainer.appendChildNode(view.nodes.icon.node);
+  view.nodes.labelContainer.appendChildNode(view.nodes.labelName.node);
+  view.nodes.labelContainer.appendChildNode(view.nodes.labelCount.node);
 
   //define state change rections -----------------------------------------------
 
   var updateIconVisibility = function(){
     if (optionState.isSelected){
-      icon.props.visibility.set('visible');
+      view.nodes.icon.setVisible();
     } else {
-      icon.props.visibility.set('hidden');
+      view.nodes.icon.setHidden();
     }
   }
 
   var updateLabelIndent = function(){
     if (labelIsIndented){
       if (menuState.isOpen){
-        labelName.props.indent.set('indent-visible');
+        view.nodes.labelName.showIndent();
       } else {
-        labelName.props.indent.set('indent-hidden');
+        view.nodes.labelName.hideIndent();
       }
     }
   }
 
   var updateIconChar = function(){
     if (menuState.isOpen){
-      icon.props.char.set('check');
+      view.nodes.icon.setChar('check');
     } else {
-      icon.props.char.set('arrow');
+      view.nodes.icon.setChar('arrow');
     }
   }
 
   var updateIconBorderVisibility = function(){
     if (menuState.isOpen){
-      iconContainer.props.border.set('no-border');
+      view.nodes.iconContainer.hideBorder();
     } else {
-      iconContainer.props.border.set('border');
+      view.nodes.iconContainer.showBorder();
     }
   }
 
   var updateContainerBorderRadius = function(){
     if (optionState.isSelected && !menuState.isOpen){
-      container.props.borderRadiusStyle.set('rounded');
+      view.nodes.container.setRoundedBorderRadius();
     } else {
-      container.props.borderRadiusStyle.set('default');
+      view.nodes.container.setDefaultBorderRadius();
     }
   }
 
   var updateContainerVisibility = function(){
     if (optionState.isSelected || menuState.isOpen){
-      container.props.visibility.set('visible');
+      view.nodes.container.setVisible();
     } else {
-      container.props.visibility.set('hidden');
+      view.nodes.container.setHidden();
     }
   }
 
   var updateContainerHeight = function(){
     if (optionState.isSelected || menuState.isOpen){
-      container.props.height.set('expanded');
+      view.nodes.container.setExpanded();
     } else {
-      container.props.height.set('contracted');
+      view.nodes.container.setContracted();
     }
   }
 
   var transitionContainerHeight = function(){
     if (optionState.isSelected || menuState.isOpen){
-      return container.props.height.transition('expanded');
+      return view.nodes.container.transitionToExpanded();
     } else {
-      return container.props.height.transition('contracted');
+      return view.nodes.container.transitionToContracted();
     }
   }
 
   var updateContainerOpacity = function(){
     if (optionState.isSelected || menuState.isOpen){
-      container.props.opacity.set('1');
+      view.nodes.container.setOpaque();
     } else {
-      container.props.opacity.set('0');
+      view.nodes.container.setTransparent();
     }
   }
 
   var transitionContainerOpacity = function(){
     if (optionState.isSelected || menuState.isOpen){
-      return container.props.opacity.transition('1');
+      return view.nodes.container.transitionToOpaque();
     } else {
-      return container.props.opacity.transition('0');
+      return view.nodes.container.transitionToTransparent();
     }
   }
 

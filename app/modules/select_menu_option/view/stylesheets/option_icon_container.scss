@@ -4,13 +4,10 @@
   box-sizing: border-box;
   width: 30px;
   padding: 0 5px 0 10px;
+  border:0;
   text-align: center;
 }
 
 .icon-container.border{
   border-right: 1px solid $theme-light-gray;
-}
-
-.icon-container.no-border{
-  border:0;
 }

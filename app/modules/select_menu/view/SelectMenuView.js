@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import Emitter from '../../../lib/Emitter.js';
 import ContainerNode from './nodes/ContainerNode.js';
 
 
@@ -7,16 +8,24 @@ import ContainerNode from './nodes/ContainerNode.js';
 
 export default function SelectMenuView(){
 
-  //create nodes ---------------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var nodes = {
+  this.props = {
+    inputEnabled: true,
+    updateInProgress: false,
+  }
+
+  this.nodes = {
     container: new ContainerNode(),
   }
 
-  //public api -----------------------------------------------------------------
+  this.subcomponents = {};
 
-  this.rootNode = nodes.container.node;
+  this.rootNode = this.nodes.container.node;
 
-  this.nodes = nodes;
+  this.emitter = {
+    public: new Emitter(),
+    private: new Emitter(),
+  };
 
 }

@@ -3,16 +3,15 @@
 import dispatcher from '../services/Dispatcher.js';
 import { popupEventStart, popupEventEnd, popupClose } from '../services/Dispatcher.js';
 import Popup from '../modules/popup/Popup.js';
+import { mapDimensions } from '../views/RootView.js';
 import rootNode from './RootView.js';
 
 
 //module code block ------------------------------------------------------------
 
-var popup = new Popup();
+var popup = new Popup(mapDimensions);
 
 dispatcher.addListener('load', () => {
-  popup.close();
-  popup.enable();
   popup.addListener('eventStart', popupEventStart);
   popup.addListener('eventEnd', popupEventEnd);
   popup.addListener('isClosed', popupClose);
@@ -23,8 +22,8 @@ dispatcher.addListener('popup - loadProjectData', projectData => {
   popup.setContent(projectData);
 });
 
-dispatcher.addListener('popup - open', () => {
-  popup.open();
+dispatcher.addListener('popup - open', projectData => {
+  popup.open(projectData);
 });
 
 dispatcher.addListener('popup - close', () => {

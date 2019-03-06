@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import Emitter from '../../../lib/Emitter.js';
 import ContainerNode from './nodes/ContainerNode.js';
 import ButtonContainerNode from './nodes/ButtonContainerNode.js';
 import ButtonNode from './nodes/ButtonNode.js';
@@ -10,9 +11,13 @@ import IconNode from './nodes/IconNode.js';
 
 export default function ZoomControlsView(){
 
-  //create nodes ---------------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var nodes = {
+  this.props = {
+    inputEnabled: true,
+  }
+
+  this.nodes = {
     container: new ContainerNode(),
     homeButtonContainer: new ButtonContainerNode(),
     inOutButtonContainer: new ButtonContainerNode(),
@@ -24,10 +29,10 @@ export default function ZoomControlsView(){
     zoomOutIcon: new IconNode('fa-minus'),
   }
 
-  //public api -----------------------------------------------------------------
+  this.rootNode = this.nodes.container.node;
 
-  this.rootNode = nodes.container.node;
-
-  this.nodes = nodes;
+  this.emitter = {
+    public: new Emitter(),
+  };
 
 }

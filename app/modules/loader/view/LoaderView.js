@@ -1,26 +1,20 @@
 //imports ----------------------------------------------------------------------
 
-import BackgroundNode from './nodes/BackgroundNode.js';
-import SpinnerNode from './nodes/SpinnerNode.js';
+import AnimationContainerNode from './nodes/AnimationContainerNode.js';
+import LoaderSpinnerNode from './nodes/SpinnerNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
 export default function LoaderView(){
 
-  //create nodes ---------------------------------------------------------------
-
-  var nodes = {
-    background: new BackgroundNode(),
-    spinner: new SpinnerNode(),
-  }
-
   //public api -----------------------------------------------------------------
 
-  this.rootNode = nodes.background.node;
+  this.nodes = {
+    animationContainer: new AnimationContainerNode(),
+    animation: new LoaderSpinnerNode(),
+  }
 
-  this.nodes = nodes;
-
-  this.isFadingOut = false;
+  this.rootNode = this.nodes.animationContainer.node;
 
 }

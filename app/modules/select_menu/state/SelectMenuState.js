@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState4.js';
+import ComponentState from '../../../lib/ComponentState.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -10,13 +10,12 @@ export default function SelectMenuState(){
   var state = new ComponentState({
     isOpen: false,
     selectedOptionKey: null,
-    userDisabled: false,
-    eventInProgress: false,
   });
 
   //modify behavior of isOpen prop ---------------------------------------------
 
   state.props.isOpen.onChange = async function(currentValue){
+    this.updateType('eventInProgress', true);
     if (currentValue === true){
       this.updateType('menuContainerBorderRadius');
       this.updateType('optionLabelIndent');
@@ -36,6 +35,7 @@ export default function SelectMenuState(){
       this.updateType('optionLabelIndent');
       this.updateType('menuContainerBorderRadius');
     }
+    this.updateType('eventInProgress', false);
   }
 
   //public api -----------------------------------------------------------------

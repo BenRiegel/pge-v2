@@ -1,24 +1,25 @@
 //imports ----------------------------------------------------------------------
 
+import Emitter from '../../../lib/Emitter.js';
 import ContainerNode from './nodes/ContainerNode.js';
 import IconNode from './nodes/IconNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupButtonView(containerClassName, iconClassName, popupState, eventsEmitter){
-
-  //create nodes ---------------------------------------------------------------
-
-  var container = new ContainerNode(containerClassName, popupState, eventsEmitter);
-  var icon = new IconNode(iconClassName);
-
-  //configure dom --------------------------------------------------------------
-
-  container.appendChildNode(icon.node);
+export default function PopupButtonView(containerClassName, iconClassName, buttonId){
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = container.node;
+  this.nodes = {
+    container: new ContainerNode(containerClassName, buttonId),
+    icon: new IconNode(iconClassName),
+  }
+
+  this.rootNode = this.nodes.container.node;
+
+  this.emitter = {
+    public: new Emitter(),
+  };
 
 }

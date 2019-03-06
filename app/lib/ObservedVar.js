@@ -2,80 +2,70 @@ export default class ObservedVar{
 
   constructor(initValue){
     this.value = initValue;
-    this.hasChanged = false;
+    this.previousValue = undefined;
+    this.hasChanged = null;
     this.listenersList = [];
     this.listenersLookup = {};
   }
 
-  addListener(reactionId, cb){
-    this.listenersList.push(cb);
-    var reactionListeners = this.listenersLookup[reactionId] || [];
-    reactionListeners.push(cb);
-    this.listenersLookup[reactionId] = reactionListeners;
+  addListener(listener){
+    this.listenersList.push(listener);
+  }
+
+  addListenerByType(listenerType, listener){
+    var typeListeners = this.listenersLookup[listenerType] || [];
+    typeListeners.push(listener);
+    this.listenersLookup[listenerType] = typeListeners;
   }
 
   removeListeners(){
-    this.listeners = [];
+    this.listenersList = [];
     this.listenersLookup = {};
   }
 
-  async requestUpdateAllAsync(...args){
-    var promises = [];
-    for (var listener of this.listenersList){
-      var p = listener(...args);
-      promises.push(p);
-    }
-    await Promise.all(promises);
-  }
-
-  requestUpdateAll(...args){
+  updateAll(...args){
     for (var listener of this.listenersList){
       listener(...args);
     }
   }
 
-  async requestUpdateAsync(reactionId, ...args){
+  updateAllAsync(...args){
     var promises = [];
-    var reactionListeners = this.listenersLookup[reactionId] || [];
-    for (var listener of reactionListeners){
+    for (var listener of this.listenersList){
       var p = listener(...args);
       promises.push(p);
     }
-    await Promise.all(promises);
+    return Promise.all(promises);
   }
 
-  requestUpdate(reactionId, ...args){
-    var reactionListeners = this.listenersLookup[reactionId] || [];
-    for (var listener of reactionListeners){
+  updateType(listenerType, ...args){
+    var typeListeners = this.listenersLookup[listenerType] || [];
+    for (var listener of typeListeners){
       listener(...args);
     }
   }
 
-  onChange(){
-    this.requestUpdateAll();
-  }
-
-  async onChangeAsync(){
-    await this.requestUpdateAllAsync();
-  }
-
-  async setAsync(newValue){
-    this.hasChanged = false;
-    if (newValue !== this.value){
-      this.hasChanged = true;
-      this.value = newValue;
-      await this.onChangeAsync();
+  updateTypeAsync(listenerType, ...args){
+    var promises = [];
+    var typeListeners = this.listenersLookup[listenerType] || [];
+    for (var listener of typeListeners){
+      var p = listener(...args);
+      promises.push(p);
     }
+    return Promise.all(promises);
   }
 
-  set(newValue, notify){
+  onChange(currentValue, previousValue){
+    this.updateAll(currentValue, previousValue);
+  }
+
+  set(newValue){
+    this.previousValue = this.value;
     this.hasChanged = false;
     if (newValue !== this.value){
       this.hasChanged = true;
       this.value = newValue;
-      if (notify){
-        this.onChange();
-      }
+      return this.onChange(this.value, this.previousValue);
     }
   }
 }
