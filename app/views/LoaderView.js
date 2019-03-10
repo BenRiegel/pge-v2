@@ -10,12 +10,12 @@ import rootNode from './RootView.js';
 var loader = new Loader();
 
 dispatcher.addListener('startLoading', () => {
-  loader.activate();
+  loader.show();
   rootNode.appendChild(loader.rootNode);
 });
 
 dispatcher.addListener('finishLoading', async () => {
-  await loader.terminateAndFade();
+  await loader.fadeAndHide();
 });
 
 

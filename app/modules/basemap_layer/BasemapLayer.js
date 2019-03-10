@@ -21,7 +21,7 @@ export default function BasemapLayer(mapDimensions, mapViewpoint){
 
   this.hasRendered = view.hasRendered;
 
-  this.addListener = function(eventName, cb){
+  this.addEventListener = function(eventName, cb){
     eventsEmitter.addListener(eventName, cb);
   };
 

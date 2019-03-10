@@ -1,13 +1,13 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../lib/DomNode.js';
-import '../stylesheets/loader_spinner.scss';
+import '../stylesheets/spinner.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class LoaderSpinnerNode extends DomNode{
+export default class SpinnerNode extends DomNode{
   constructor(){
-    super('div', 'loader-spinner');
+    super('div', 'spinner');
   }
 }

@@ -3,18 +3,17 @@
 import dispatcher from '../services/Dispatcher.js';
 import { popupEventStart, popupEventEnd, popupClose } from '../services/Dispatcher.js';
 import Popup from '../modules/popup/Popup.js';
-import { mapDimensions } from '../views/RootView.js';
 import rootNode from './RootView.js';
 
 
 //module code block ------------------------------------------------------------
 
-var popup = new Popup(mapDimensions);
+var popup = new Popup();
 
 dispatcher.addListener('load', () => {
-  popup.addListener('eventStart', popupEventStart);
-  popup.addListener('eventEnd', popupEventEnd);
-  popup.addListener('isClosed', popupClose);
+  popup.addEventListener('eventStart', popupEventStart);
+  popup.addEventListener('eventEnd', popupEventEnd);
+  popup.addEventListener('isClosed', popupClose);
   rootNode.appendChild(popup.rootNode);
 });
 

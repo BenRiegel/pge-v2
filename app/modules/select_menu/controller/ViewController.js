@@ -5,56 +5,41 @@ import Option from '../../select_menu_option/SelectMenuOption.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ViewController(state, view){
+export default function SelectMenuViewController(view, state){
+
+  var { nodes } = view;
+  var { root } = nodes;
 
   //define state change reactions ----------------------------------------------
 
-  var updateContainerBorderRadius = function(){
+  var updateRootBorderRadius = function(){
     if (state.isOpen){
-      view.nodes.container.setDefaultBorderRadius();
+      root.setBorderRadius('default');
     } else {
-      view.nodes.container.setRoundedBorderRadius();
+      root.setBorderRadius('rounded');
     }
   }
 
-  var updateEventInProgress = function(updateInProgress){
-    view.props.updateInProgress = updateInProgress;
-  }
-
-  var broadcastPrivate = function(...args){
-    if (view.props.inputEnabled && !view.props.updateInProgress){
-      view.emitter.private.broadcast('click', ...args);
-    }
-  }
-
-  var broadcastPublic = function(eventInProgress){
-    if (eventInProgress){
-      view.emitter.public.broadcast('eventStart');
-    } else {
-      view.emitter.public.broadcast('eventEnd');
-      if (state.props.selectedOptionKey.hasChanged){
-        view.emitter.public.broadcast('newSelectedOption', state.selectedOptionKey);
-      }
-    }
+  var updateDomListener = function(isListening){
+    root.isListening = isListening;
   }
 
   //load reactions -------------------------------------------------------------
 
-  state.addListenerByType('isOpen', 'menuContainerBorderRadius', updateContainerBorderRadius);
-  state.addListenerByType('isOpen', 'eventInProgress', updateEventInProgress);
-  state.addListenerByType('isOpen', 'eventInProgress', broadcastPublic)
-  view.nodes.container.setEventListener('click', broadcastPrivate);
+  state.addListenerByType('isOpen', 'menuRootBorderRadius', updateRootBorderRadius);
 
   //init -----------------------------------------------------------------------
 
-  updateContainerBorderRadius();
+  updateRootBorderRadius();
+  updateDomListener(true);
 
   //public api -----------------------------------------------------------------
 
+  this.updateDomListener = updateDomListener;
+
   this.addNewOption = function(optionProps){
     var option = new Option(optionProps, state);
-    view.subcomponents[optionProps.key] = option;
-    view.nodes.container.node.appendChild(option.rootNode);
+    root.appendChildNode(option.rootNode);
   }
 
 }

@@ -3,10 +3,12 @@ $arrow-width: 15px;
 
 /* do I need this?*/
 .arrow{
-  position: relative;
+  position: absolute;
+  top: 50%;
   left: 100%;
   width: $arrow-width;
   height: 20px;
+  transform: translateY(-50%);
 }
 
 

@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../lib/DomNode.js';
-import '../stylesheets/option_label_container.scss';
+import '../stylesheets/label_container.scss';
 
 
 //exports ----------------------------------------------------------------------

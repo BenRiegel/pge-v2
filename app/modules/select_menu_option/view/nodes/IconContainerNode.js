@@ -1,19 +1,23 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../lib/DomNode.js';
-import '../stylesheets/option_icon_container.scss';
+import '../stylesheets/icon_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
 export default class IconContainerNode extends DomNode{
+
   constructor(){
     super('div', 'icon-container');
   }
-  showBorder(){
-    this.addClass('border');
+
+  setBorderVisibility(value){
+    if (value === 'visible'){
+      this.addClass('border');
+    } else if (value === 'hidden'){
+      this.removeClass('border');
+    }
   }
-  hideBorder(){
-    this.removeClass('border');
-  }
+
 }

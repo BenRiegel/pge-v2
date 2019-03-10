@@ -1,17 +1,24 @@
-export default function ViewController(view){
+export default function PopupButtonViewController(view){
+
+  var { nodes } = view;
+  var { root, icon } = nodes;
 
   //configure dom --------------------------------------------------------------
 
-  view.nodes.container.appendChildNode(view.nodes.icon.node);
+  root.appendChildNode(icon.node);
 
   //define reactions -----------------------------------------------------------
 
-  var broadcastPublic = function(...args){
-    view.emitter.public.broadcast(...args);
+  var updateDomListener = function(isListening){
+    root.isListening = isListening;
   }
 
-  //load reactions -------------------------------------------------------------
+  //init -----------------------------------------------------------------------
 
-  view.nodes.container.setEventListener('click', broadcastPublic);
+  updateDomListener(true);
+
+  //public api -----------------------------------------------------------------
+
+  this.updateDomListener = updateDomListener;
 
 }

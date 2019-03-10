@@ -1,6 +1,8 @@
 //imports ----------------------------------------------------------------------
 
-import ZoomControlsView from './view/ZoomControlsView.js';
+import Emitter from '../../lib/Emitter.js';
+import View from './view/View.js';
+import EmitterController from './controller/EmitterController.js';
 import ViewController from './controller/ViewController.js';
 
 
@@ -10,25 +12,27 @@ export default function ZoomControls(){
 
   //private code block ---------------------------------------------------------
 
-  var view = new ZoomControlsView();
+  var view = new View();
+  var emitter = new Emitter();
   var controller = {
     view: new ViewController(view),
+    emitter: new EmitterController(emitter, view),
   }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.rootNode;
+  this.rootNode = view.nodes.root.node;
 
-  this.addClickListener = function(buttonName, cb){
-    view.emitter.public.addListener(buttonName, cb);
+  this.addEventListener = function(eventName, listener){
+    emitter.addListener(eventName, listener);
   };
 
   this.enable = function(){
-    view.props.inputEnabled = true;
+    controller.view.enableButtons();
   };
 
   this.disable = function(){
-    view.props.inputEnabled = false;
+    controller.view.disableButtons();
   };
 
 }

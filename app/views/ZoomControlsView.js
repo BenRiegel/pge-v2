@@ -11,13 +11,13 @@ import { zoom } from '../services/Dispatcher.js';
 var zoomControls = new ZoomControls();
 
 dispatcher.addListener('load', () => {
-  zoomControls.addClickListener('zoomIn', () => {
+  zoomControls.addEventListener('zoomInButtonClicked', () => {
     zoom('zoomIn');
   });
-  zoomControls.addClickListener('zoomOut', () => {
+  zoomControls.addEventListener('zoomOutButtonClicked', () => {
     zoom('zoomOut');
   });
-  zoomControls.addClickListener('zoomHome', () => {
+  zoomControls.addEventListener('zoomHomeButtonClicked', () => {
     zoom('zoomHome');
   });
   rootNode.appendChild(zoomControls.rootNode);

@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../lib/DomNode.js';
-import '../stylesheets/zoom_controls_button_container.scss';
+import '../stylesheets/button_container.scss';
 
 
 //exports ----------------------------------------------------------------------

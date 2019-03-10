@@ -1,4 +1,7 @@
-export default function StateController(state, view){
+export default function PopupStateController(state, view){
+
+  var { subcomponents } = view;
+  var { summary, report } = subcomponents;
 
   //define state change reactions ----------------------------------------------
 
@@ -17,8 +20,9 @@ export default function StateController(state, view){
 
   //load reactions -------------------------------------------------------------
 
-  view.emitter.private.addListener('close', close);
-  view.emitter.private.addListener('expand', expand);
-  view.emitter.private.addListener('contract', contract);
+  summary.addEventListener('close', close);
+  summary.addEventListener('expand', expand);
+  report.addEventListener('close', close);
+  report.addEventListener('contract', contract);
 
 }

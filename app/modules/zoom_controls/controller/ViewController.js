@@ -1,28 +1,29 @@
-export default function ViewController(view){
+export default function ZoomControlsViewController(view){
+
+  var { nodes, subcomponents } = view;
+  var { root, homeButtonContainer, inOutButtonContainer} = nodes;
+  var { zoomHomeButton, zoomInButton, zoomOutButton } = subcomponents;
 
   //configure dom --------------------------------------------------------------
 
-  view.nodes.container.appendChildNode(view.nodes.homeButtonContainer.node);
-  view.nodes.container.appendChildNode(view.nodes.inOutButtonContainer.node);
-  view.nodes.zoomHomeButton.appendChildNode(view.nodes.zoomHomeIcon.node);
-  view.nodes.zoomInButton.appendChildNode(view.nodes.zoomInIcon.node);
-  view.nodes.zoomOutButton.appendChildNode(view.nodes.zoomOutIcon.node);
-  view.nodes.homeButtonContainer.appendChildNode(view.nodes.zoomHomeButton.node);
-  view.nodes.inOutButtonContainer.appendChildNode(view.nodes.zoomInButton.node);
-  view.nodes.inOutButtonContainer.appendChildNode(view.nodes.zoomOutButton.node);
+  root.appendChildNode(homeButtonContainer.node);
+  root.appendChildNode(inOutButtonContainer.node);
+  homeButtonContainer.appendChildNode(zoomHomeButton.rootNode);
+  inOutButtonContainer.appendChildNode(zoomInButton.rootNode);
+  inOutButtonContainer.appendChildNode(zoomOutButton.rootNode);
 
-  //define reactions -----------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var broadcastPublic = function(...args){
-    if (view.props.inputEnabled){
-      view.emitter.public.broadcast(...args);
-    }
-  }
+  this.enableButtons = function(){
+    zoomHomeButton.enable();
+    zoomInButton.enable();
+    zoomOutButton.enable();
+  };
 
-  //load reactions -------------------------------------------------------------
-
-  view.nodes.zoomHomeButton.setEventListener('click', broadcastPublic);
-  view.nodes.zoomInButton.setEventListener('click', broadcastPublic);
-  view.nodes.zoomOutButton.setEventListener('click', broadcastPublic);
+  this.disableButtons = function(){
+    zoomHomeButton.disable();
+    zoomInButton.disable();
+    zoomOutButton.disable();
+  };
 
 }

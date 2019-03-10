@@ -1,14 +1,17 @@
-export default function StateController(state, view){
+export default function SelectMenuStateController(state, view){
+
+  var { nodes } = view;
+  var { root } = nodes;
 
   //define user event reactions ------------------------------------------------
 
-  var updateOnOptionClick = async function(optionClicked){
+  var updateOnOptionClick = function(optionClicked){
     state.set('selectedOptionKey', optionClicked);
-    await state.set('isOpen', !state.isOpen);
+    state.setAsync('isOpen', !state.isOpen);
   }
 
   //load reactions -------------------------------------------------------------
 
-  view.emitter.private.addListener('click', updateOnOptionClick);
+  root.onClick = updateOnOptionClick;
 
 }

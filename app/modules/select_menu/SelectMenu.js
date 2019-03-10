@@ -1,8 +1,10 @@
 //imports ----------------------------------------------------------------------
 
-import SelectMenuState from './state/SelectMenuState.js';
-import SelectMenuView from './view/SelectMenuView.js';
+import Emitter from '../../lib/Emitter.js';
+import State from './state/State.js';
+import View from './view/View.js';
 import StateController from './controller/StateController.js';
+import EmitterController from './controller/EmitterController.js';
 import ViewController from './controller/ViewController.js';
 
 
@@ -12,19 +14,21 @@ export default function SelectMenu(){
 
   //private code block ---------------------------------------------------------
 
-  var state = new SelectMenuState();
-  var view = new SelectMenuView();
+  var state = new State();
+  var view = new View();
+  var emitter = new Emitter();
   var controller = {
     state: new StateController(state, view),
-    view: new ViewController(state, view),
+    view: new ViewController(view, state),
+    emitter: new EmitterController(emitter, state),
   }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.rootNode;
+  this.rootNode = view.nodes.root.node;
 
-  this.addListener = function(eventName, listener){
-    view.emitter.public.addListener(eventName, listener);
+  this.addEventListener = function(eventName, listener){
+    emitter.addListener(eventName, listener);
   };
 
   this.addNewOption = function(optionProps){
@@ -32,11 +36,11 @@ export default function SelectMenu(){
   };
 
   this.enable = function(){
-    view.props.inputEnabled = true;
+    controller.view.updateDomListener(true);
   };
 
   this.disable = function(){
-    view.props.inputEnabled = false;
+    controller.view.updateDomListener(false);
   };
 
   this.close = function(){

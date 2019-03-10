@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import { wait } from './Utils.js';
+import { wait, capitalize } from './Utils.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -17,11 +17,13 @@ export default class DomNode{
   }
 
   addDomListener(eventName){
+    var callbackName = 'on' + capitalize(eventName);
     this.node.addEventListener(eventName, evt => {
-      var args = this.clickHandler(evt);
-      if (args !== null){
-        var listener = this.eventListeners.get(eventName);
-        listener(...args);
+      if (this.isListening){
+        var args = this.clickHandler(evt);
+        if (args !== null){
+          this[callbackName](...args);
+        }
       }
     });
   }
@@ -38,20 +40,18 @@ export default class DomNode{
     this.node.dataset[propName] = value;
   }
 
-  setHidden(){
-    this.node.style.visibility = 'hidden';
+  setVisibility(newValue){
+    this.node.style.visibility = newValue;
   }
 
-  setVisible(){
-    this.node.style.visibility = 'visible';
+  setOpacity(newValue){
+    this.node.style.opacity = newValue;
   }
 
-  setOpaque(){
-    this.node.style.opacity = '1';
-  }
-
-  setTransparent(){
-    this.node.style.opacity = '0';
+  async transitionOpacity(newValue){
+    this.addClass('transition-opacity');
+    await this.transitionSetStyle('opacity', newValue);
+    this.removeClass('transition-opacity');
   }
 
   setStyle(styleName, value){
@@ -61,8 +61,8 @@ export default class DomNode{
   transitionSetStyle(styleName, newValue){
     var currentValue = this.node.style[styleName];
     if (currentValue === ''){
-      this.node.style[styleName] = newValue;
-      return;
+        //this.node.style[styleName] = newValue;
+        //return;
     }
     if (currentValue === newValue){
       return;
@@ -75,7 +75,7 @@ export default class DomNode{
         }
       }
       this.node.addEventListener('transitionend', transitionEnded);
-      await wait(0);
+    //  await wait(0);
       this.node.style[styleName] = newValue;
     });
   }
@@ -90,6 +90,30 @@ export default class DomNode{
     if (className){
       this.node.classList.remove(className);
     }
+  }
+
+  transitionModifyClassList(className, actionName, styleList){
+    return new Promise( async resolve => {
+      var transitionEnded = evt => {
+        var transitionedStyleName = evt.propertyName;
+        styleList = styleList.filter(style => style !== transitionedStyleName);
+        if (styleList.length === 0){
+          this.node.removeEventListener('transitionend', transitionEnded);
+          resolve();
+        }
+      }
+      this.node.addEventListener('transitionend', transitionEnded);
+    //  await wait(0);
+      this.node.classList[actionName](className);
+    });
+  }
+
+  transitionAddClass(className, styleList){
+    return this.transitionModifyClassList(className, 'add', styleList);
+  }
+
+  transitionRemoveClass(className, styleList){
+    return this.transitionModifyClassList(className, 'remove', styleList);
   }
 
   removeAllChildNodes(){
@@ -119,6 +143,10 @@ export default class DomNode{
       this.node.addEventListener('load', contentLoaded);
       this.node.src = src;
     });
+  }
+
+  getProp(propName){
+    return this.node[propName];
   }
 
 };

@@ -1,111 +1,119 @@
-export default function ViewController(labelIsIndented, menuState, optionState, view){
+export default function SelectMenuOptionViewController(view, labelIsIndented, menuState, optionState){
+
+  var { nodes } = view;
+  var { root, iconContainer, icon } = nodes;
+  var { labelContainer, labelName, labelCount } = nodes;
 
   //configure dom --------------------------------------------------------------
 
-  view.nodes.container.appendChildNode(view.nodes.iconContainer.node);
-  view.nodes.container.appendChildNode(view.nodes.labelContainer.node);
-  view.nodes.iconContainer.appendChildNode(view.nodes.icon.node);
-  view.nodes.labelContainer.appendChildNode(view.nodes.labelName.node);
-  view.nodes.labelContainer.appendChildNode(view.nodes.labelCount.node);
+  root.appendChildNode(iconContainer.node);
+  root.appendChildNode(labelContainer.node);
+  iconContainer.appendChildNode(icon.node);
+  labelContainer.appendChildNode(labelName.node);
+  labelContainer.appendChildNode(labelCount.node);
 
   //define state change rections -----------------------------------------------
 
   var updateIconVisibility = function(){
     if (optionState.isSelected){
-      view.nodes.icon.setVisible();
+      icon.setVisibility('visible');
     } else {
-      view.nodes.icon.setHidden();
+      icon.setVisibility('hidden');
     }
   }
 
   var updateLabelIndent = function(){
     if (labelIsIndented){
       if (menuState.isOpen){
-        view.nodes.labelName.showIndent();
+        labelName.setIndentVisibility('visible');
       } else {
-        view.nodes.labelName.hideIndent();
+        labelName.setIndentVisibility('hidden');
       }
     }
   }
 
   var updateIconChar = function(){
     if (menuState.isOpen){
-      view.nodes.icon.setChar('check');
+      icon.setChar('check');
     } else {
-      view.nodes.icon.setChar('arrow');
+      icon.setChar('arrow');
     }
   }
 
   var updateIconBorderVisibility = function(){
     if (menuState.isOpen){
-      view.nodes.iconContainer.hideBorder();
+      iconContainer.setBorderVisibility('hidden');
     } else {
-      view.nodes.iconContainer.showBorder();
+      iconContainer.setBorderVisibility('visible');
     }
   }
 
-  var updateContainerBorderRadius = function(){
+  var updateRootBorderRadius = function(){
     if (optionState.isSelected && !menuState.isOpen){
-      view.nodes.container.setRoundedBorderRadius();
+      root.setBorderRadius('rounded');
     } else {
-      view.nodes.container.setDefaultBorderRadius();
+      root.setBorderRadius('default');
     }
   }
 
-  var updateContainerVisibility = function(){
+  var updateRootVisibility = function(){
     if (optionState.isSelected || menuState.isOpen){
-      view.nodes.container.setVisible();
+      root.setVisibility('visible');
     } else {
-      view.nodes.container.setHidden();
+      root.setVisibility('hidden');
     }
   }
 
-  var updateContainerHeight = function(){
+  var updateRootHeight = function(){
     if (optionState.isSelected || menuState.isOpen){
-      view.nodes.container.setExpanded();
+      root.setHeight('expanded');
     } else {
-      view.nodes.container.setContracted();
+      root.setHeight('contracted');
     }
   }
 
-  var transitionContainerHeight = function(){
-    if (optionState.isSelected || menuState.isOpen){
-      return view.nodes.container.transitionToExpanded();
-    } else {
-      return view.nodes.container.transitionToContracted();
+  var transitionRootHeight = function(){
+    if (!optionState.isSelected){
+      if (menuState.isOpen){
+        return root.transitionHeight('expanded');
+      } else {
+        return root.transitionHeight('contracted');
+      }
     }
   }
 
-  var updateContainerOpacity = function(){
+  var updateRootOpacity = function(){
     if (optionState.isSelected || menuState.isOpen){
-      view.nodes.container.setOpaque();
+      root.setOpacity('1');
     } else {
-      view.nodes.container.setTransparent();
+      root.setOpacity('0');
     }
   }
 
-  var transitionContainerOpacity = function(){
-    if (optionState.isSelected || menuState.isOpen){
-      return view.nodes.container.transitionToOpaque();
-    } else {
-      return view.nodes.container.transitionToTransparent();
+  var transitionRootOpacity = function(){
+    if (!optionState.isSelected){
+      if (menuState.isOpen){
+        return root.transitionOpacity('1');
+      } else {
+        return root.transitionOpacity('0');
+      }
     }
   }
 
   //load reactions -------------------------------------------------------------
 
   optionState.addListener('isSelected', updateIconVisibility);
-  optionState.addListener('isSelected', updateContainerBorderRadius);
-  optionState.addListener('isSelected', updateContainerVisibility);
-  optionState.addListener('isSelected', updateContainerHeight);
-  optionState.addListener('isSelected', updateContainerOpacity);
+  optionState.addListener('isSelected', updateRootBorderRadius);
+  optionState.addListener('isSelected', updateRootVisibility);
+  optionState.addListener('isSelected', updateRootHeight);
+  optionState.addListener('isSelected', updateRootOpacity);
   menuState.addListenerByType('isOpen', 'optionLabelIndent', updateLabelIndent);
   menuState.addListenerByType('isOpen', 'optionIconChar', updateIconChar);
   menuState.addListenerByType('isOpen', 'optionIconBorderVisibility', updateIconBorderVisibility);
-  menuState.addListenerByType('isOpen', 'optionContainerBorderRadius', updateContainerBorderRadius);
-  menuState.addListenerByType('isOpen', 'optionContainerVisibility', updateContainerVisibility);
-  menuState.addListenerByType('isOpen', 'optionContainerHeight', transitionContainerHeight);
-  menuState.addListenerByType('isOpen', 'optionContainerOpacity', transitionContainerOpacity);
+  menuState.addListenerByType('isOpen', 'optionRootBorderRadius', updateRootBorderRadius);
+  menuState.addListenerByType('isOpen', 'optionRootVisibility', updateRootVisibility);
+  menuState.addListenerByType('isOpen', 'optionRootHeight', transitionRootHeight);
+  menuState.addListenerByType('isOpen', 'optionRootOpacity', transitionRootOpacity);
 
   //init -----------------------------------------------------------------------
 
@@ -113,9 +121,9 @@ export default function ViewController(labelIsIndented, menuState, optionState, 
   updateLabelIndent();
   updateIconChar();
   updateIconBorderVisibility();
-  updateContainerBorderRadius();
-  updateContainerVisibility();
-  updateContainerHeight();
-  updateContainerOpacity();
+  updateRootBorderRadius();
+  updateRootVisibility();
+  updateRootHeight();
+  updateRootOpacity();
 
 }

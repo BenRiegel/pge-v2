@@ -25,9 +25,9 @@ dispatcher.addListener('load', async () => {
     });
   }
   selectMenu.setSelectedOption(INIT_SELECTED_TAG);
-  selectMenu.addListener('newSelectedOption', setNewSelectedTag);
-  selectMenu.addListener('eventStart', selectMenuEventStart);
-  selectMenu.addListener('eventEnd', selectMenuEventEnd);
+  selectMenu.addEventListener('newSelectedOption', setNewSelectedTag);
+  selectMenu.addEventListener('eventStart', selectMenuEventStart);
+  selectMenu.addEventListener('eventEnd', selectMenuEventEnd);
   rootNode.appendChild(selectMenu.rootNode);
 });
 

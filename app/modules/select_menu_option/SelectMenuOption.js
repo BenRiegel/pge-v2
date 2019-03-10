@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import OptionState from './state/OptionState.js';
-import OptionView from './view/OptionView.js';
+import State from './state/State.js';
+import View from './view/View.js';
 import StateController from './controller/StateController.js';
 import ViewController from './controller/ViewController.js';
 
@@ -12,15 +12,23 @@ export default function SelectMenuOption(optionProps, menuState){
 
   //private code block ---------------------------------------------------------
 
-  var optionState = new OptionState();
-  var view = new OptionView(optionProps);
+  var optionState = new State();
+  var view = new View(optionProps);
   var controller = {
-    state: new StateController(optionProps.key, menuState, optionState),
-    view: new ViewController(optionProps.labelIsIndented, menuState, optionState, view),
+    state: new StateController(optionState, optionProps.key, menuState),
+    view: new ViewController(view, optionProps.labelIsIndented, menuState, optionState),
   }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.rootNode;
+  this.rootNode = view.nodes.root.node;
+
+  this.select = function(){
+    optionState.set('isSelected', true);
+  }
+
+  this.unselect = function(){
+    optionState.set('isSelected', false);
+  }
 
 }

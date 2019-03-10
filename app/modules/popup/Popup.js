@@ -1,38 +1,42 @@
 //imports ----------------------------------------------------------------------
 
-import PopupState from './state/PopupState.js';
-import PopupView from './view/PopupView.js';
+import Emitter from '../../lib/Emitter.js';
+import State from './state/State.js';
+import View from './view/View.js';
 import StateController from './controller/StateController.js';
 import ViewController from './controller/ViewController.js';
+import EmitterController from './controller/EmitterController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function Popup(mapDimensions){
+export default function Popup(){
 
   //private code block ---------------------------------------------------------
 
-  var state = new PopupState();
-  var view = new PopupView(mapDimensions);
+  var state = new State();
+  var view = new View(state);
+  var emitter = new Emitter();
   var controller = {
     state: new StateController(state, view),
-    view: new ViewController(state, view, mapDimensions),
+    view: new ViewController(view, state),
+    emitter: new EmitterController(emitter, state),
   }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.rootNode;
+  this.rootNode = view.nodes.root.node;
 
-  this.addListener = function(eventName, listener){
-    view.emitter.public.addListener(eventName, listener);
+  this.addEventListener = function(eventName, listener){
+    emitter.addListener(eventName, listener);
   }
 
   this.enable = function(){
-    view.props.inputEnabled = true;
+    controller.view.enableSubcomponents();
   };
 
   this.disable = function(){
-    view.props.inputEnabled = false;
+    controller.view.disableSubcomponents();
   };
 
   this.setContent = function(content){

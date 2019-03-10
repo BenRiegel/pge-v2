@@ -1,4 +1,4 @@
-export default function StateController(optionKey, menuState, optionState){
+export default function SelectMenuOptionStateController(optionState, optionKey, menuState){
 
   //define state change reactions ----------------------------------------------
 

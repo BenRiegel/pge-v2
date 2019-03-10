@@ -13,9 +13,9 @@ import { mapDimensions } from '../views/RootView.js';
 //var basemapLayer = new BasemapLayer(mapDimensions, mapViewpoint);
 
 dispatcher.addListener('load', async () => {
-  //basemapLayer.addListener('userPanStartRequest', panStartRequest);
-  //basemapLayer.addListener('userPanEndRequest', panEndRequest);
-  //basemapLayer.addListener('userPanRequest', panRequest);
+  //basemapLayer.addEventListener('userPanStartRequest', panStartRequest);
+  //basemapLayer.addEventListener('userPanEndRequest', panEndRequest);
+  //basemapLayer.addEventListener('userPanRequest', panRequest);
   //await basemapLayer.hasRendered;
 //  rootNode.appendChild(basemapLayer.rootNode);
 });

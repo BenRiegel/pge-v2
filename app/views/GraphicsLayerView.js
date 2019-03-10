@@ -46,8 +46,8 @@ dispatcher.addListener('load', async () => {
   var selectedLocations = getSelectedLocations(INIT_SELECTED_TAG);
   //graphicsLayer.loadLocations(locations);
   graphicsLayer.setMappedLocations(selectedLocations);
-  graphicsLayer.addClickListener('point', pointSelect);
-  graphicsLayer.addClickListener('cluster', clusterSelect);
+  graphicsLayer.addEventListener('point', pointSelect);
+  graphicsLayer.addEventListener('cluster', clusterSelect);
   rootNode.appendChild(graphicsLayer.rootNode);
 });
 

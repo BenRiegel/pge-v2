@@ -1,28 +1,28 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../lib/ComponentState.js';
-import GraphicView from './view/GraphicView.js';
-import StateController from './controllers/StateController.js';
+import State from './state/State.js';
+import View from './view/View.js';
 import ViewController from './controllers/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function Graphic(props, mapViewpoint, layerState){
+export default function Graphic(props, mapViewpoint, layerState, mapDimensions){
 
   //private code block ---------------------------------------------------------
 
-  var state = new ComponentState({
-    mapCoords: undefined,
-  });
-  var view = new GraphicView(props);
+  var state = new State();
+  var view = new View(props);
   var controller = {
-    state: new StateController(props, mapViewpoint, layerState, state),
-    view: new ViewController(props, layerState, state, view),
+    view: new ViewController(view, props, mapViewpoint, layerState, state, mapDimensions),
   };
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.rootNode;
+  this.rootNode = view.nodes.root.node;
+
+  this.updateIsHighlighted = function(highlightedGraphicId){
+    state.set('isHighlighted', props.id === highlightedGraphicId);
+  }
 
 }
