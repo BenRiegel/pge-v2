@@ -1,7 +1,7 @@
 //module code block ------------------------------------------------------------
 
 var projectsReceived = new Promise(async resolve => {
-  var response = await fetch('./app/assets/data/projects.json');
+  var response = await fetch('./app/data/projects.json');
   var projects = await response.json();
   resolve(projects);
 });

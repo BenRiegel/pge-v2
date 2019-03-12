@@ -1,0 +1,10 @@
+@import './_variables';
+
+#root .loader{
+  z-index: $loader-z-index;
+}
+
+#root .spinner {
+  border-color: $theme-light-gray;
+  border-top-color: $theme-red;
+}

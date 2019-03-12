@@ -1,0 +1,17 @@
+@import '../../../../stylesheets/mixins';
+@import '../../../select_menu_option/view/stylesheets/_variables';
+
+.select-menu{
+  @include user-select(none);
+  position: absolute;
+  background-color: white;
+  cursor:default;
+}
+
+.select-menu.rounded-border-radius{
+  border-radius: ($option-expanded-height / 2);
+}
+
+.select-menu.default-border-radius{
+  border-radius: 5px;
+}

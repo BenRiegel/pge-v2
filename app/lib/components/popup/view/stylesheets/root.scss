@@ -1,0 +1,33 @@
+@import './_variables';
+
+$web-map-width: 1024px;
+$web-map-height: 512px;
+$contracted-width: 400px;
+$margin: 15px;
+$popup-expand-contract-time: 0.75s;
+$popup-fade-in-out-time: 0.5s;
+
+.popup{
+  position: absolute;
+  top: 50%;
+  width: $contracted-width;
+  height: auto;
+  left: $web-map-width / 2 - $contracted-width - $arrow-width;
+  background-color: white;
+  transform: translateY(-50%);
+  /*z-index: $summary-popup-contracted-z-index;*/
+}
+
+.popup.expanded{
+  left: $margin;
+  width: $web-map-width - $margin * 2;
+  height: $web-map-height - $margin * 2 !important;
+}
+
+.popup.transition-dimensions{
+  transition: left $popup-expand-contract-time, width $popup-expand-contract-time, height $popup-expand-contract-time;
+}
+
+.popup.expanded-z{
+  /*z-index: $summary-popup-expanded-z-index;*/
+}

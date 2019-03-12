@@ -1,0 +1,36 @@
+@import './_variables';
+
+$transition-duration: 0.5s;
+
+.option{
+  display: flex;
+  border-radius: 0;
+  line-height: $option-expanded-height;
+  height: 0;
+}
+
+.option.transition-opacity{
+  transition: opacity $transition-duration;
+}
+
+.option.transition-height{
+  transition: height $transition-duration;
+}
+
+.option.expanded{
+  height: $option-expanded-height;
+}
+
+.option.rounded-border-radius{
+  border-radius: inherit;
+}
+
+.option:first-child{
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.option:last-child{
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}

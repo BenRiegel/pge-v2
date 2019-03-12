@@ -1,0 +1,46 @@
+@import './_variables';
+
+#root .zoom-controls{
+  top: $web-map-widget-padding;
+  right: $web-map-widget-padding;
+  z-index: $zoom-controls-z-index;
+}
+
+#root .zoom-button-container{
+  box-shadow: $outer-box-shadow;
+  border-radius: $theme-border-radius;
+}
+
+#root .zoom-in{
+  border-bottom-color: $theme-light-gray;
+}
+
+#root .zoom-button{
+  color: $theme-font-color;
+}
+
+#root .zoom-button:hover{
+  box-shadow: $inner-box-shadow;
+}
+
+#root .popup{
+  box-shadow: $outer-box-shadow;
+  border-radius: $theme-border-radius;
+}
+
+#root .arrow-cover{
+  color: $theme-font-color;
+}
+
+#root .arrow::after{
+  box-shadow: $outer-box-shadow;
+  background-color: $theme-background-color;
+}
+
+#root .project-title{
+  font-size: $theme-font-size;
+}
+
+#root .graphic-location{
+  box-shadow: $outer-box-shadow;
+}
