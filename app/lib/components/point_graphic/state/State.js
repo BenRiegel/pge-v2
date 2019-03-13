@@ -5,18 +5,13 @@ import ObservedObj from '../../../utils/ObservedObj.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerState(){
-
-  //public state variable ------------------------------------------------------
+export default function PointGraphicState(){
 
   var state = new ObservedObj({
-    selectedTag: null,
+    hasSelectedTag: undefined,
+    isObscured: false,
+    isSelected: undefined,
   });
-
-  state.props.selectedTag.onChange = function(){
-    this.updateType('pointGraphic');
-    this.updateType('clusterGraphics');
-  }
 
   //public api -----------------------------------------------------------------
 

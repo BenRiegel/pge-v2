@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import { clamp } from '../../../utils/Utils.js';
+import { clamp } from '../utils/Utils.js';
 
 
 //module code block ------------------------------------------------------------

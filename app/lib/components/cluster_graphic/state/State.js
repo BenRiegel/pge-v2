@@ -5,10 +5,10 @@ import ObservedObj from '../../../utils/ObservedObj.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicState(){
+export default function ClusterGraphicState(){
 
   var state = new ObservedObj({
-    isHighlighted: false,
+    isSelected: false,
   });
 
   //public api -----------------------------------------------------------------

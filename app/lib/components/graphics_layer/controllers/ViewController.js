@@ -1,15 +1,22 @@
 //imports ----------------------------------------------------------------------
 
-import Graphic from '../../graphic/Graphic.js';
+import PointGraphic from '../../point_graphic/PointGraphic.js';
+import ClusterGraphic from '../../cluster_graphic/ClusterGraphic.js';
 import { getDistance } from '../../../utils/Utils.js';
+import { MIN_POINT_RADIUS, MAX_POINT_RADIUS } from '../config/GraphicsLayerConfig.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerViewController(view, state, mapViewpoint, mapDimensions){
+export default function GraphicsLayerViewController(view, state, webMapState, mapDimensions){
 
-  var { nodes } = view;
-  var { root, subcomponents } = nodes;
+  var { nodes, subcomponents } = view;
+  var { root, pointsContainer, clustersContainer } = nodes;
+
+  //configure dom --------------------------------------------------------------
+
+  root.appendChildNode(pointsContainer.node);
+  root.appendChildNode(clustersContainer.node);
 
   //define state change reactions ----------------------------------------------
 
@@ -17,79 +24,85 @@ export default function GraphicsLayerViewController(view, state, mapViewpoint, m
     root.isListening = isListening;
   }
 
-  var createNewGraphics = function(){
-    const MIN_RADIUS = 10;
-    const MAX_RADIUS = 20;
-    var graphics = [];
-    var filteredLocations = [...state.filteredLocations];
-    var location = filteredLocations.shift();
-    while (location){
-      var graphicProps = {
-        id: location.id,
-        worldCoords: {x:location.worldCoords.x, y:location.worldCoords.y},
+  var clusterGraphics = function(){
+    var clusterCounter = 0;
+    for (var point of view.subcomponents.pointGraphics){
+      point.updateIsObscured(false);
+    }
+    for (var point of view.subcomponents.pointGraphics){
+      if (!point.hasSelectedTag || point.isObscured){
+        continue;
+      }
+      var clusterProps = {
+        id: clusterCounter,
+        worldCoords: {x:point.worldCoords.x, y:point.worldCoords.y},
         numLocations: 1,
         diameter: 0,
-        type:'point',
-        minDiameter: MIN_RADIUS * 2,
+        type:'cluster',
+        minDiameter: MIN_POINT_RADIUS * 2,
+        renderedRadius: MIN_POINT_RADIUS,
       };
-      var sumX = location.worldCoords.x;
-      var sumY = location.worldCoords.y;
-      var points = [location.worldCoords];
-      var renderedRadius = MIN_RADIUS;
+      var sumX = point.worldCoords.x;
+      var sumY = point.worldCoords.y;
+      var clusteredPoints = [point.worldCoords];
+
+      var clusterCreated = false;
       var done = false;
       while (!done){
         var clusterFound = false;
-        var index = 0;
-        for (var compareLocation of filteredLocations){
-          var thresholdDistance = (renderedRadius + MIN_RADIUS) * mapViewpoint.scale;
-          var distance = getDistance(graphicProps.worldCoords, compareLocation.worldCoords);
+        for (var comparePoint of view.subcomponents.pointGraphics){
+          if (comparePoint === point || !comparePoint.hasSelectedTag || comparePoint.isObscured){
+            continue;
+          }
+          var thresholdDistance = (clusterProps.renderedRadius + MIN_POINT_RADIUS) * webMapState.viewpoint.scaleValue;
+          var distance = getDistance(clusterProps.worldCoords, comparePoint.worldCoords);
           if (distance < thresholdDistance){
             clusterFound = true;
-            points.push(compareLocation.worldCoords);
-            graphicProps.numLocations += 1;
-            graphicProps.type = 'cluster';
-            sumX += compareLocation.worldCoords.x;
-            sumY += compareLocation.worldCoords.y;
-            graphicProps.worldCoords.x = sumX / graphicProps.numLocations;
-            graphicProps.worldCoords.y = sumY / graphicProps.numLocations;
-            for (var point of points){
-              var pointRadius = getDistance(graphicProps.worldCoords, point) / mapViewpoint.scale;
-              graphicProps.diameter = Math.max(graphicProps.diameter, pointRadius * 2);
-              renderedRadius = Math.max(renderedRadius, pointRadius);
+            clusterCreated = true;
+
+            comparePoint.updateIsObscured(true);
+            clusteredPoints.push(comparePoint.worldCoords);
+            clusterProps.numLocations += 1;
+            sumX += comparePoint.worldCoords.x;
+            sumY += comparePoint.worldCoords.y;
+            clusterProps.worldCoords.x = sumX / clusterProps.numLocations;
+            clusterProps.worldCoords.y = sumY / clusterProps.numLocations;
+            for (var clusteredPoint of clusteredPoints){
+              var pointRadius = getDistance(clusterProps.worldCoords, clusteredPoint) / webMapState.viewpoint.scaleValue;
+              clusterProps.diameter = Math.max(clusterProps.diameter, pointRadius * 2);
+              clusterProps.renderedRadius = Math.max(clusterProps.renderedRadius, pointRadius);
             }
-            graphicProps.diameter = Math.min(graphicProps.diameter, MAX_RADIUS * 2);
-            renderedRadius = Math.min(renderedRadius, MAX_RADIUS);
-            filteredLocations.splice(index, 1);
+            clusterProps.diameter = Math.min(clusterProps.diameter, MAX_POINT_RADIUS * 2);
+            clusterProps.renderedRadius = Math.min(clusterProps.renderedRadius, MAX_POINT_RADIUS);
             break;
           }
-          index += 1;
         }
         done = !clusterFound;
       }
-      var graphic = new Graphic(graphicProps, mapViewpoint, state, mapDimensions);
-      graphics.push(graphic);
-      location = filteredLocations.shift();
+      if (clusterCreated){
+        point.updateIsObscured(true);
+        var cluster = new ClusterGraphic(clusterProps, mapDimensions, webMapState);
+        view.subcomponents.clusterGraphics.push(cluster);
+        clustersContainer.appendChildNode(cluster.rootNode);
+        clusterCounter += 1;
+      }
     }
-    return graphics;
+
   }
 
-  var loadNewGraphics = function(){
-    root.removeAllChildNodes();
-    view.subcomponents = createNewGraphics();
-    var childNodes = view.subcomponents.map( graphic => graphic.rootNode );
-    root.appendChildNodes(childNodes);
-  }
 
-  var updateHighlightedGraphics = function(){
-    for (var graphic of view.subcomponents){
-      graphic.updateIsHighlighted(state.highlightedGraphicId);
+  var filterGraphics = function(){
+    for (var cluster of view.subcomponents.clusterGraphics){
+      cluster.removeListeners();
     }
+    view.subcomponents.clusterGraphics = [];
+    clustersContainer.removeAllChildNodes();
+    clusterGraphics();
   }
 
   //load reactions -------------------------------------------------------------
 
-  state.addListener('filteredLocations', loadNewGraphics);
-  state.addListener('highlightedGraphicId', updateHighlightedGraphics);
+  state.addListenerByType('selectedTag', 'clusterGraphics', filterGraphics);
 
   //init -----------------------------------------------------------------------
 
@@ -98,5 +111,35 @@ export default function GraphicsLayerViewController(view, state, mapViewpoint, m
   //public api -----------------------------------------------------------------
 
   this.updateDomListener = updateDomListener;
+
+  this.setGraphics = function(graphicPropsList){
+    for (var graphicProps of graphicPropsList){
+      var pointGraphic = new PointGraphic(graphicProps, state, mapDimensions, webMapState);
+      view.subcomponents.pointGraphics.push(pointGraphic);
+      pointsContainer.appendChildNode(pointGraphic.rootNode);
+    }
+  };
+
+  this.resetGraphics = function(){
+    filterGraphics();
+  }
+
+  this.updateGraphicsOnPan = function(state){
+    for (var graphic of view.subcomponents.pointGraphics){
+      graphic.update(state);
+    }
+    for (var graphic of view.subcomponents.clusterGraphics){
+      graphic.updateOnPan(state);
+    }
+  }
+
+  this.updateGraphicsOnZoom = function(state, zoomFactor){
+    for (var graphic of view.subcomponents.pointGraphics){
+      graphic.update(state);
+    }
+    for (var graphic of view.subcomponents.clusterGraphics){
+      graphic.updateOnZoom(state, zoomFactor);
+    }
+  }
 
 }

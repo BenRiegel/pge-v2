@@ -31,8 +31,8 @@ export default function SelectMenu(){
     emitter.addListener(eventName, listener);
   };
 
-  this.addNewOption = function(optionProps){
-    controller.view.addNewOption(optionProps);
+  this.setOptions = function(optionPropsList){
+    controller.view.setOptions(optionPropsList);
   };
 
   this.enable = function(){

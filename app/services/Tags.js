@@ -9,4 +9,17 @@ var tagsReceived = new Promise(async resolve => {
 
 //exports ----------------------------------------------------------------------
 
-export { tagsReceived };
+export async function getOptionPropsList(){
+  var tagsList = await tagsReceived;
+  var optionPropsList = [];
+  for (var tag of tagsList){
+     var optionProps = {
+       key: tag.name,
+       name: tag.name,
+       count: tag.count,
+       labelIsIndented: tag.labelIsIndented
+     };
+    optionPropsList.push(optionProps);
+  }
+  return optionPropsList;
+}

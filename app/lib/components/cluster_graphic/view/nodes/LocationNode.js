@@ -1,7 +1,6 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../utils/DomNode.js';
-import { BASELINE_DIAMETER_PX } from '../../config/GraphicConfig.js';
 import '../stylesheets/location.scss';
 
 
@@ -10,8 +9,8 @@ import '../stylesheets/location.scss';
 export default class LocationNode extends DomNode{
   constructor(props){
     super('div', 'graphic-location');
-    this.setStyle('width', `${BASELINE_DIAMETER_PX}px`);
-    this.setStyle('height', `${BASELINE_DIAMETER_PX}px`);
+    this.setStyle('width', `${props.renderedRadius * 2}px`);
+    this.setStyle('height', `${props.renderedRadius * 2}px`);
   }
   setHighlight(isHighlighted){
     if (isHighlighted){

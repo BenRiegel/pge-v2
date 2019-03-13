@@ -3,14 +3,13 @@
 import Emitter from '../../utils/Emitter.js';
 import State from './state/State.js';
 import View from './view/View.js';
-import StateController from './controllers/StateController.js';
 import ViewController from './controllers/ViewController.js';
 import EmitterController from './controllers/EmitterController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayer(mapDimensions, mapViewpoint){
+export default function GraphicsLayer(mapDimensions, webMapState){
 
   //private code block ---------------------------------------------------------
 
@@ -18,8 +17,7 @@ export default function GraphicsLayer(mapDimensions, mapViewpoint){
   var view = new View();
   var emitter = new Emitter();
   var controller = {
-    state: new StateController(state, mapViewpoint),
-    view: new ViewController(view, state, mapViewpoint, mapDimensions),
+    view: new ViewController(view, state, webMapState, mapDimensions),
     emitter: new EmitterController(emitter, view),
   }
 
@@ -39,16 +37,19 @@ export default function GraphicsLayer(mapDimensions, mapViewpoint){
     controller.view.updateDomListener(false);
   };
 
-  this.loadLocations = function(locations){
-    state.set('locations', locations);
-  };
-
-  this.filterLocations = function(filter){
-    controller.state.filterLocations(filter)
+  this.setGraphics = function(graphicPropsList){
+    controller.view.setGraphics(graphicPropsList);
   }
 
-  this.highlightGraphic = function(id){
-    state.set('highlightedGraphicId', id);
+  this.setSelectedTag = function(selectedTag){
+    state.set('selectedTag', selectedTag);
   }
+
+  //get rid of these eventually
+  this.resetGraphics = controller.view.resetGraphics;
+
+  this.updateGraphicsOnPan = controller.view.updateGraphicsOnPan;
+
+  this.updateGraphicsOnZoom = controller.view.updateGraphicsOnZoom;
 
 }

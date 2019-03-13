@@ -15,7 +15,6 @@ $popup-fade-in-out-time: 0.5s;
   left: $web-map-width / 2 - $contracted-width - $arrow-width;
   background-color: white;
   transform: translateY(-50%);
-  /*z-index: $summary-popup-contracted-z-index;*/
 }
 
 .popup.expanded{

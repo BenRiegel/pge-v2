@@ -1,5 +1,6 @@
 @import './_variables';
 
+
 #root .zoom-controls{
   top: $web-map-widget-padding;
   right: $web-map-widget-padding;
@@ -26,6 +27,11 @@
 #root .popup{
   box-shadow: $outer-box-shadow;
   border-radius: $theme-border-radius;
+  z-index: $popup-contracted-z-index;
+}
+
+#root .popup.expanded-z{
+  z-index: $popup-expanded-z-index
 }
 
 #root .arrow-cover{
@@ -39,6 +45,10 @@
 
 #root .project-title{
   font-size: $theme-font-size;
+}
+
+#root .graphics-layer{
+  z-index: $graphics-layer-z-index;
 }
 
 #root .graphic-location{

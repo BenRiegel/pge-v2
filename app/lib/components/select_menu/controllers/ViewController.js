@@ -37,9 +37,11 @@ export default function SelectMenuViewController(view, state){
 
   this.updateDomListener = updateDomListener;
 
-  this.addNewOption = function(optionProps){
-    var option = new Option(optionProps, state);
-    root.appendChildNode(option.rootNode);
+  this.setOptions = function(optionPropsList){
+    for (var optionProps of optionPropsList){
+      var option = new Option(optionProps, state);
+      root.appendChildNode(option.rootNode);
+    }
   }
 
 }

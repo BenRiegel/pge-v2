@@ -15,8 +15,8 @@ export default function WebMap(props){
   var state = new State(props);
   var view = new View(props, state);
   var controller = {
-    view: new ViewController(view),
-    state: new StateController(state, props),
+    view: new ViewController(view, state),
+    state: new StateController(state, view),
   }
 
   //public api -----------------------------------------------------------------
@@ -25,12 +25,6 @@ export default function WebMap(props){
 
   this.hasRendered = view.hasRendered;
 
-  this.addGraphics = function(locations){
-    controller.view.addGraphicsLocations(locations);
-  };
-
-  this.filterGraphics = function(filter){
-    view.subcomponents.graphicsLayer.filterLocations(filter);
-  }
+  this.graphicsLayer = view.subcomponents.graphicsLayer;
 
 }

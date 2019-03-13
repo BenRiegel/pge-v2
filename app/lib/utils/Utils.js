@@ -21,7 +21,7 @@ export function getDistance(p1, p2){
 export function easeInOut(frameNum, numFrames){
   var rad = frameNum / numFrames * Math.PI;
   var percent = (1 - Math.cos(rad)) / 2;
-  return percent;
+  return Math.pow(percent, 1.25);
 }
 
 export function getTargetNode(node, className){

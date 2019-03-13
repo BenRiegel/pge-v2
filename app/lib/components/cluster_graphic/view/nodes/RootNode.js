@@ -9,10 +9,8 @@ import '../stylesheets/root.scss';
 export default class RootNode extends DomNode{
   constructor(props){
     super('div', 'graphic');
-    this.setDatasetProp('id', props.id);
-    this.setDatasetProp('x', props.worldCoords.x);
-    this.setDatasetProp('y', props.worldCoords.y);
     this.setDatasetProp('type', props.type);
+    this.setDatasetProp('id', props.id);
   }
   setScreenCoords(x, y){
     var translateStr = `translate(-50%, -50%) translate(${x}px, ${y}px)`;

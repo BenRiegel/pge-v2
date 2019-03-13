@@ -13,11 +13,13 @@ $theme-font-size: 14px;
 $select-menu-total-animation-time: 1s;
 
 $web-map-widget-padding: 15px;
+
+
 $basemap-layer-z-index: 1;
 $graphics-layer-z-index: 2;
-$summary-popup-contracted-z-index: 3;
-$zoom-controls-z-index: 4;
+$zoom-controls-z-index: 3;
+$popup-contracted-z-index: 4;
 $select-menu-z-index: 5;
-$summary-popup-expanded-z-index: 6;
-$report-popup-z-index: 7;
+$popup-expanded-z-index: 6;
+
 $loader-z-index: 8;

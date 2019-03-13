@@ -7,14 +7,14 @@ import LabelNode from './nodes/LabelNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicView(props){
+export default function PointGraphicView(props){
 
   //public api -----------------------------------------------------------------
 
   this.nodes = {
     root: new RootNode(props),
-    location: new LocationNode(props),
-    label: new LabelNode(props.numLocations),
+    location: new LocationNode(),
+    label: new LabelNode(),
   }
 
 }
