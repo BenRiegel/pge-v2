@@ -8,15 +8,15 @@ import StateController from './controllers/StateController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ClusterGraphic(props, mapDimensions, webMapState){
+export default function ClusterGraphic(props, layerState, webMapState){
 
   //private code block ---------------------------------------------------------
 
   var state = new State();
   var view = new View(props);
   var controller = {
-    view: new ViewController(view, props, state, mapDimensions, webMapState),
-    state: new StateController(state, props, webMapState),
+    view: new ViewController(view, props, state, webMapState),
+    state: new StateController(state, props, layerState),
   };
 
   //public api -----------------------------------------------------------------
@@ -26,12 +26,5 @@ export default function ClusterGraphic(props, mapDimensions, webMapState){
   this.worldCoords = props.worldCoords;
 
   this.removeListeners = controller.state.removeListener;
-
-  //get rid of these eventually
-  this.reset = controller.view.reset;
-
-  this.updateOnPan = controller.view.updateOnPan;
-
-  this.updateOnZoom = controller.view.updateOnZoom;
 
 }

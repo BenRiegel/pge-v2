@@ -9,7 +9,7 @@ import EmitterController from './controllers/EmitterController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayer(mapDimensions, webMapState){
+export default function GraphicsLayer(webMapState){
 
   //private code block ---------------------------------------------------------
 
@@ -17,7 +17,7 @@ export default function GraphicsLayer(mapDimensions, webMapState){
   var view = new View();
   var emitter = new Emitter();
   var controller = {
-    view: new ViewController(view, state, webMapState, mapDimensions),
+    view: new ViewController(view, state, webMapState),
     emitter: new EmitterController(emitter, view),
   }
 
@@ -45,11 +45,8 @@ export default function GraphicsLayer(mapDimensions, webMapState){
     state.set('selectedTag', selectedTag);
   }
 
-  //get rid of these eventually
-  this.resetGraphics = controller.view.resetGraphics;
-
-  this.updateGraphicsOnPan = controller.view.updateGraphicsOnPan;
-
-  this.updateGraphicsOnZoom = controller.view.updateGraphicsOnZoom;
+  this.setSelectedGraphic = function(graphicInfo){
+    state.set('selectedGraphic', graphicInfo);
+  }
 
 }

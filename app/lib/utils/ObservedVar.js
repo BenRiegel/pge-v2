@@ -12,15 +12,14 @@ export default class ObservedVar{
     this.listenersList.push(listener);
   }
 
+  removeListener(cb){
+    this.listenersList = this.listenersList.filter( listener => listener !== cb );
+  }
+
   addListenerByType(listenerType, listener){
     var typeListeners = this.listenersLookup[listenerType] || [];
     typeListeners.push(listener);
     this.listenersLookup[listenerType] = typeListeners;
-  }
-
-  removeListeners(){
-    this.listenersList = [];
-    this.listenersLookup = {};
   }
 
   updateAll(...args){

@@ -8,7 +8,7 @@ import GraphicsLayer from '../../graphics_layer/GraphicsLayer.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function LoaderView(props, state){
+export default function WebMapViewView(state){
 
   //public api -----------------------------------------------------------------
 
@@ -19,7 +19,7 @@ export default function LoaderView(props, state){
   this.subcomponents = {
     zoomControls: new ZoomControls(),
     popup: new Popup(),
-    graphicsLayer: new GraphicsLayer(props.mapDimensions, state),
+    graphicsLayer: new GraphicsLayer(state),
   };
 
   this.hasRendered = undefined;

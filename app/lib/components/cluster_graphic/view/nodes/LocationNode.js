@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../utils/DomNode.js';
-import '../stylesheets/location.scss';
+import '../../../point_graphic/view/stylesheets/location.scss';
 
 
 //exports ----------------------------------------------------------------------

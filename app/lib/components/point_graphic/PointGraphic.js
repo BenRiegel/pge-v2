@@ -8,20 +8,21 @@ import ViewController from './controllers/ViewController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function PointGraphic(props, layerState, mapDimensions, webMapState){
+export default function PointGraphic(props, layerState, webMapState){
 
   //private code block ---------------------------------------------------------
 
   var state = new State();
   var view = new View(props);
   var controller = {
-    state: new StateController(state, props, layerState, webMapState),
-    view: new ViewController(view, props, state, mapDimensions, webMapState),
+    state: new StateController(state, props, layerState),
+    view: new ViewController(view, props, state, webMapState),
   };
 
   //public api -----------------------------------------------------------------
 
   return {
+
     rootNode: view.nodes.root.node,
 
     worldCoords: props.worldCoords,
@@ -40,8 +41,6 @@ export default function PointGraphic(props, layerState, mapDimensions, webMapSta
       state.set('isObscured', isObscured);
     },
 
-    //get rid of this eventually
-    update: controller.view.update,
   }
 
 }

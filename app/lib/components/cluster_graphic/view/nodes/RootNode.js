@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../utils/DomNode.js';
-import '../stylesheets/root.scss';
+import '../../../point_graphic/view/stylesheets/root.scss';
 
 
 //exports ----------------------------------------------------------------------
@@ -9,10 +9,11 @@ import '../stylesheets/root.scss';
 export default class RootNode extends DomNode{
   constructor(props){
     super('div', 'graphic');
-    this.setDatasetProp('type', props.type);
+    this.setDatasetProp('type', 'cluster');
     this.setDatasetProp('id', props.id);
   }
-  setScreenCoords(x, y){
+  setScreenCoords(screenCoords){
+    var { x, y } = screenCoords;
     var translateStr = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
     this.setStyle('transform', translateStr);
   }

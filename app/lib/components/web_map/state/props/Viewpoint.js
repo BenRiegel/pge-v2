@@ -1,29 +1,22 @@
 //imports ----------------------------------------------------------------------
 
 import { XCoord, YCoord, Scale } from './Coords.js';
-import { lonToWebMercatorX, latToWebMercatorY } from '../../lib/WebMercator.js';
-import { levelToValue } from '../../lib/WebMapScale.js';
 import Emitter from '../../../../utils/Emitter.js';
+import { calculateDeltaX } from '../../../../web_mapping/WebMercator.js';
 
 
 //exports ----------------------------------------------------------------------
 
 export default function WebMapState(initProps){
 
-  var { initCoords, initScaleLevel } = initProps;
-
-  var initState = {
-    x: lonToWebMercatorX(initCoords.lon),
-    y: latToWebMercatorY(initCoords.lat),
-    scale: initScaleLevel,
-  }
+  var { initCoords, initScale, mapDimensions } = initProps;
 
   var emitter = new Emitter();
 
   var props = {
-    x: new XCoord(initState.x),
-    y: new YCoord(initState.y),
-    scale: new Scale(initState.scale),
+    x: new XCoord(initCoords.x),
+    y: new YCoord(initCoords.y),
+    scale: new Scale(initScale),
   };
 
   var set = async function(actionName, x, y, scale){
@@ -39,16 +32,16 @@ export default function WebMapState(initProps){
       emitter.addListener(eventName, callback);
     },
     zoomHome: function(){
-      set('zoomHome', initState.x, initState.y, initState.scale);
+      set('zoomHome', initCoords.x, initCoords.y, initScale);
     },
     zoomIn: function(){
-      set('zoomIn', props.x.value, props.y.value, props.scale.value + 1);
+      set('zoomIn', props.x.value, props.y.value, props.scale.value * 0.5);
     },
     zoomOut: function(){
-      set('zoomOut', props.x.value, props.y.value, props.scale.value - 1);
+      set('zoomOut', props.x.value, props.y.value, props.scale.value * 2);
     },
     zoomTo: async function( {x, y} ){
-      await set('zoomTo', x, y, props.scale.value + 1);
+      await set('zoomTo', x, y, props.scale.value * 0.5);
     },
     panTo: async function( {x, y} ){
       await set('panTo', x, y, props.scale.value);
@@ -56,6 +49,31 @@ export default function WebMapState(initProps){
     pan: function(xPx, yPx){
 
     },
+    calculateScreenCoords(worldCoords){
+      var deltaX = calculateDeltaX(worldCoords.x, props.x.value);
+      var deltaXMap = deltaX / props.scale.value;
+      var screenX = deltaXMap + mapDimensions.width / 2;
+      var deltaY = worldCoords.y - props.y.value;
+      var deltaYMap = deltaY / props.scale.value;
+      var screenY = deltaYMap + mapDimensions.height / 2;
+      return {x:screenX, y:screenY};
+    },
+    calculateScreenCoordsViewpoint(worldCoords, viewpoint){
+      var deltaX = calculateDeltaX(worldCoords.x, viewpoint.x);
+      var deltaXMap = deltaX / viewpoint.scale;
+      var screenX = deltaXMap + mapDimensions.width / 2;
+      var deltaY = worldCoords.y - viewpoint.y;
+      var deltaYMap = deltaY / viewpoint.scale;
+      var screenY = deltaYMap + mapDimensions.height / 2;
+      return {x:screenX, y:screenY};
+    },
+
+    get canZoomHome(){
+      var zoomLevelDiff = Math.log2(props.scale.previousValue / props.scale.value);
+      return (zoomLevelDiff > -2);
+    },
+
+
     get x(){
       return props.x.value;
     },
@@ -65,9 +83,6 @@ export default function WebMapState(initProps){
     get scale(){
       return props.scale.value;
     },
-    get scaleValue(){
-      return levelToValue(props.scale.value);
-    }
   }
 
   //public api -----------------------------------------------------------------

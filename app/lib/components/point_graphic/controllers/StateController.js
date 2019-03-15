@@ -1,6 +1,4 @@
-export default function PointGraphicStateController(state, props, layerState, webMapState){
-
-  var { selectedGraphic } = webMapState;
+export default function PointGraphicStateController(state, props, layerState){
 
   //define state change reactions ----------------------------------------------
 
@@ -9,21 +7,20 @@ export default function PointGraphicStateController(state, props, layerState, we
     state.set('hasSelectedTag', hasSelectedTag);
   }
 
-  var updateIsSelected = function(){
-    var typeMatch = (selectedGraphic.type === 'point');
-    var idMatch = (selectedGraphic.id === props.id);
+  var updateIsSelected = function(graphicInfo){
+    var typeMatch = (graphicInfo.type === 'point');
+    var idMatch = (graphicInfo.id === props.id);
     var isSelected = (typeMatch && idMatch);
     state.set('isSelected', isSelected);
   }
 
   //load reactions -------------------------------------------------------------
 
-  selectedGraphic.addListener('updateGraphics', updateIsSelected);
+  layerState.addListener('selectedGraphic', updateIsSelected);
   layerState.addListenerByType('selectedTag', 'pointGraphic', updateHasSelectedTag);
 
   //init -----------------------------------------------------------------------
 
   updateHasSelectedTag();
-  updateIsSelected();
 
 }

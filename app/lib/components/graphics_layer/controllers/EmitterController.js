@@ -11,9 +11,10 @@ export default function GraphicsLayerEmitterController(emitter, view){
     } else if (type === 'cluster'){
       var graphic = view.subcomponents.clusterGraphics[id];
     }
+    var eventName = `${type}GraphicClicked`;
     var worldCoords = graphic.worldCoords;
     var attributes =  graphic.attributes;
-    emitter.broadcast('graphicClicked', type, id, worldCoords, attributes);
+    emitter.broadcast(eventName, id, worldCoords, attributes);
   }
 
   //load reactions -------------------------------------------------------------

@@ -12,7 +12,8 @@ export default class RootNode extends DomNode{
     this.setDatasetProp('type', 'point');
     this.setDatasetProp('id', props.id);
   }
-  setScreenCoords(x, y){
+  setScreenCoords(screenCoords){
+    var { x, y } = screenCoords;
     var translateStr = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
     this.setStyle('transform', translateStr);
   }

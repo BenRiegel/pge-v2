@@ -39,11 +39,8 @@ export default function Popup(){
     controller.view.disableSubcomponents();
   };
 
-  this.setContent = function(content){
+  this.open = function(content){
     state.set('content', content);
-  }
-
-  this.open = function(){
     return state.set('isOpen', true);
   };
 

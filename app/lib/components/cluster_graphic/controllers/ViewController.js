@@ -1,14 +1,15 @@
 //imports ----------------------------------------------------------------------
 
-import { calculateDeltaX } from '../../web_map/lib/WebMercator.js';
+import { MIN_POINT_RADIUS } from '../../graphics_layer/config/GraphicsLayerConfig.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function ClusterGraphicViewController(view, props, state, mapDimensions, webMapState){
+export default function ClusterGraphicViewController(view, props, state, webMapState){
 
   var { nodes } = view;
   var { root, location, label } = nodes;
+  var { viewpoint, action } = webMapState;
 
   //configure dom --------------------------------------------------------------
 
@@ -21,51 +22,32 @@ export default function ClusterGraphicViewController(view, props, state, mapDime
     location.setHighlight(state.isSelected);
   }
 
-  var resetScaleFactor = function(){
-    location.setScale(1);
-  }
-
-  var updateScaleFactor = function(zoomScaleFactor){
-    var newRenderedDiameter = props.diameter * zoomScaleFactor;
-    newRenderedDiameter = Math.max(newRenderedDiameter, props.minDiameter);
-    var scaleFactor = newRenderedDiameter / (2 * props.renderedRadius);
+  var updateScaleFactor = function(){
+    var newDiameter = props.diameter * action.frameProps.zoomScaleFactor;
+    newDiameter = Math.max(newDiameter, MIN_POINT_RADIUS * 2);
+    var scaleFactor = newDiameter / (props.renderedRadius * 2);
     location.setScale(scaleFactor);
   }
 
-  var updateScreenCoords = function(viewpoint){
-    var deltaX = calculateDeltaX(props.worldCoords.x, viewpoint.x);
-    var deltaXMap = deltaX / viewpoint.scaleValue;
-    var screenX = deltaXMap + mapDimensions.width / 2;
-    var deltaY = props.worldCoords.y - viewpoint.y;
-    var deltaYMap = deltaY / viewpoint.scaleValue;
-    var screenY = deltaYMap + mapDimensions.height / 2;
-    root.setScreenCoords(screenX, screenY);
+  var updateScreenCoords = function(vp){
+    var screenCoords = viewpoint.calculateScreenCoordsViewpoint(props.worldCoords, vp);
+    root.setScreenCoords(screenCoords);
+  };
+
+  var updateOnPan = function(){
+    updateScreenCoords(action.frameProps);
   };
 
   //load reactions -------------------------------------------------------------
 
   state.addListener('isSelected', updateHighlight);
+  action.addListenerByType('frameProps', 'panFrame', updateOnPan);
+  action.addListenerByType('frameProps', 'zoomFrame', updateScaleFactor);
+  action.addListenerByType('frameProps', 'zoomFrame', updateOnPan);
 
   //init -----------------------------------------------------------------------
 
   updateHighlight();
-  resetScaleFactor();
-  updateScreenCoords(webMapState.viewpoint);
-
-  //public api -----------------------------------------------------------------
-
-  this.reset = function(viewpoint){
-    resetScaleFactor();
-    updateScreenCoords(viewpoint);
-  }
-
-  this.updateOnPan = function(viewpoint){
-    updateScreenCoords(viewpoint);
-  }
-
-  this.updateOnZoom = function(viewpoint, zoomScaleFactor){
-    updateScaleFactor(zoomScaleFactor);
-    updateScreenCoords(viewpoint);
-  }
+  updateScreenCoords(viewpoint);
 
 }

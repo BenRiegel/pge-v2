@@ -10,7 +10,7 @@ export default function PointGraphicState(){
   var state = new ObservedObj({
     hasSelectedTag: undefined,
     isObscured: false,
-    isSelected: undefined,
+    isSelected: false,
   });
 
   //public api -----------------------------------------------------------------

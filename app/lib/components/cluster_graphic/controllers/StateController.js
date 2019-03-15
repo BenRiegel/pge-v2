@@ -1,24 +1,22 @@
-export default function ClusterGraphicStateController(state, props, webMapState){
-
-  var { selectedGraphic } = webMapState;
+export default function ClusterGraphicStateController(state, props, layerState){
 
   //define state change reactions ----------------------------------------------
 
-  var updateIsSelected = function(){
-    var typeMatch = (selectedGraphic.type === 'cluster');
-    var idMatch = (selectedGraphic.id === props.id);
+  var updateIsSelected = function(graphicInfo){
+    var typeMatch = (graphicInfo.type === 'point');
+    var idMatch = (graphicInfo.id === props.id);
     var isSelected = (typeMatch && idMatch);
     state.set('isSelected', isSelected);
   }
 
   //load reactions -------------------------------------------------------------
 
-  selectedGraphic.addListener('updateGraphics', updateIsSelected);
+  layerState.addListener('selectedGraphic', updateIsSelected);
 
   //public api -----------------------------------------------------------------
 
   this.removeListener = function(){
-    selectedGraphic.removeListener('updateGraphics', updateIsSelected);
+    layerState.removeListener('selectedGraphic', updateIsSelected);
   }
 
 }

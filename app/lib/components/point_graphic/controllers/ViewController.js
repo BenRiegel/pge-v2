@@ -1,14 +1,8 @@
-//imports ----------------------------------------------------------------------
-
-import { calculateDeltaX } from '../../web_map/lib/WebMercator.js';
-
-
-//exports ----------------------------------------------------------------------
-
-export default function PointGraphicViewController(view, props, state, mapDimensions, webMapState){
+export default function PointGraphicViewController(view, props, state, webMapState){
 
   var { nodes } = view;
   var { root, location, label } = nodes;
+  var { viewpoint, action } = webMapState;
 
   //configure dom --------------------------------------------------------------
 
@@ -29,14 +23,13 @@ export default function PointGraphicViewController(view, props, state, mapDimens
     location.setHighlight(state.isSelected);
   }
 
-  var updateScreenCoords = function(viewpoint){
-    var deltaX = calculateDeltaX(props.worldCoords.x, viewpoint.x);
-    var deltaXMap = deltaX / viewpoint.scaleValue;
-    var screenX = deltaXMap + mapDimensions.width / 2;
-    var deltaY = props.worldCoords.y - viewpoint.y;
-    var deltaYMap = deltaY / viewpoint.scaleValue;
-    var screenY = deltaYMap + mapDimensions.height / 2;
-    root.setScreenCoords(screenX, screenY);
+  var updateScreenCoords = function(vp){
+    var screenCoords = viewpoint.calculateScreenCoordsViewpoint(props.worldCoords, vp);
+    root.setScreenCoords(screenCoords);
+  };
+
+  var update= function(){
+    updateScreenCoords(action.frameProps);
   };
 
   //load reactions -------------------------------------------------------------
@@ -44,19 +37,13 @@ export default function PointGraphicViewController(view, props, state, mapDimens
   state.addListener('isSelected', updateHighlight);
   state.addListener('hasSelectedTag', updateRootVisibility);
   state.addListener('isObscured', updateRootVisibility);
+  action.addListenerByType('frameProps', 'panFrame', update);
+  action.addListenerByType('frameProps', 'zoomFrame', update);
 
   //init -----------------------------------------------------------------------
 
   updateRootVisibility();
   updateHighlight();
-  updateScreenCoords(webMapState.viewpoint);
-
-  //public api -----------------------------------------------------------------
-
-  this.update = function(viewpoint){
-  //  if (state.hasSelectedTag && !state.isObscured){
-      updateScreenCoords(viewpoint);
-    //}
-  }
+  updateScreenCoords(viewpoint);
 
 }

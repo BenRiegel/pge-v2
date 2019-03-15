@@ -1,4 +1,5 @@
 build
 node_modules
 old
+temp
 **/.DS_Store

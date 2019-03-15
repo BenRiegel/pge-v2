@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import SelectedGraphicProp from './props/SelectedGraphic.js';
+import ActionProp from './props/Action.js';
 import ViewpointProp from './props/Viewpoint.js';
 
 
@@ -8,7 +8,7 @@ import ViewpointProp from './props/Viewpoint.js';
 
 export default function WebMapState(props){
   return {
-    selectedGraphic: new SelectedGraphicProp(),
+    action: new ActionProp(),
     viewpoint: new ViewpointProp(props),
   };
 }

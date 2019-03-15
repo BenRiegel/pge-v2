@@ -1,13 +1,12 @@
 //imports ----------------------------------------------------------------------
 
-import { latLonToWebMercatorXY } from '../lib/WebMercator.js';
-import { levelToValue } from '../lib/WebMapScale.js';
+import { levelToValue } from '../../../web_mapping/WebMapScale.js';
 import { easeInOut, wait } from '../../../utils/Utils.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function WebMapViewController(view, state){
+export default function WebMapViewController(view, state, dispatcher){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
@@ -103,26 +102,22 @@ export default function WebMapViewController(view, state){
     }
   }
 
-  var openPopup = function(){
-    popup.setContent(state.selectedGraphic.attributes);
-    popup.open();
+  var openPopup = function(content){
+    popup.open(content);
   }
 
+  var selectGraphic = function(graphicInfo){
+    graphicsLayer.setSelectedGraphic(graphicInfo);
+  };
 
-  state.viewpoint.addEventListener('panTo', doAnimation);
-  state.selectedGraphic.addListener('openPopup', openPopup);
-  state.viewpoint.addEventListener('zoomTo', doAnimation);
-  //state.addEventListener('zoomIn', doAnimation);
-  //state.addEventListener('zoomOut', doAnimation);
-  //state.addEventListener('zoomHome', doAnimation);
-
-  //public api -----------------------------------------------------------------
-
-  this.addGraphicsLocations = function(locations){
-    for (var location of locations){
-      location.worldCoords = latLonToWebMercatorXY(location.geoCoords);
-    }
-    graphicsLayer.loadLocations(locations);
+  var unselectGraphic = function(){
+    graphicsLayer.setSelectedGraphic({type:null, id:null});
   }
+
+  dispatcher.addListener('selectGraphic', selectGraphic);
+  dispatcher.addListener('unselectGraphic', unselectGraphic);
+  dispatcher.addListener('openPopup', openPopup);
+
+  popup.addEventListener('isClosed', unselectGraphic);
 
 }

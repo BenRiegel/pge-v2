@@ -1,6 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import { WORLD_CIRCUMFERENCE } from '../../lib/WebMercator.js';
+import { WORLD_CIRCUMFERENCE } from '../../../../web_mapping/WebMercator.js';
+import { levelToValue } from '../../../../web_mapping/WebMapScale.js';
 import { clamp } from '../../../../utils/Utils.js';
 
 
@@ -8,6 +9,8 @@ import { clamp } from '../../../../utils/Utils.js';
 
 const MIN_VIEWPOINT_SCALE_LEVEL = 2;
 const MAX_VIEWPOINT_SCALE_LEVEL = 12;
+const MAX_VIEWPOINT_SCALE = levelToValue(MIN_VIEWPOINT_SCALE_LEVEL);
+const MIN_VIEWPOINT_SCALE = levelToValue(MAX_VIEWPOINT_SCALE_LEVEL);
 
 class Coord{
   constructor(initValue){
@@ -71,6 +74,6 @@ export class Scale extends Coord{
     return (value2 - value1);
   }
   rectifyNewValue(newValue){
-    return clamp(newValue, MIN_VIEWPOINT_SCALE_LEVEL, MAX_VIEWPOINT_SCALE_LEVEL);
+    return clamp(newValue, MIN_VIEWPOINT_SCALE, MAX_VIEWPOINT_SCALE);
   }
 }

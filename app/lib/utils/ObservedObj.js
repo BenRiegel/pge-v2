@@ -21,6 +21,9 @@ export default function ObservedObj(obj){
     addListener(propName, listener){
       props[propName].addListener(listener);
     },
+    removeListener(propName, listener){
+      props[propName].removeListener(listener);
+    },
     addListenerByType(propName, type, listener){
       props[propName].addListenerByType(type, listener);
     },

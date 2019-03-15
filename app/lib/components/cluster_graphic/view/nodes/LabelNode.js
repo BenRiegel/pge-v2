@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../utils/DomNode.js';
-import '../stylesheets/label.scss';
+import '../../../point_graphic/view/stylesheets/label.scss';
 
 
 //exports ----------------------------------------------------------------------

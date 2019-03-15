@@ -11,6 +11,7 @@ export default function GraphicsLayerState(){
 
   var state = new ObservedObj({
     selectedTag: null,
+    selectedGraphic: null,
   });
 
   state.props.selectedTag.onChange = function(){

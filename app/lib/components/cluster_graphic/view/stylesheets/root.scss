@@ -1,7 +1,0 @@
-@import '../../../../stylesheets/mixins';
-
-.graphic{
-  @include user-select(none);
-  position: absolute;
-  cursor: pointer;
-}
