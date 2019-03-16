@@ -12,7 +12,6 @@ export default function GraphicsLayerViewController(view, state, webMapState){
 
   var { nodes, subcomponents } = view;
   var { root, pointsContainer, clustersContainer } = nodes;
-  var { action } = webMapState;
 
   //configure dom --------------------------------------------------------------
 
@@ -53,7 +52,7 @@ export default function GraphicsLayerViewController(view, state, webMapState){
           if (comparePoint === point || !comparePoint.hasSelectedTag || comparePoint.isObscured){
             continue;
           }
-          var thresholdDistance = (clusterProps.renderedRadius + MIN_POINT_RADIUS) * webMapState.viewpoint.scale;
+          var thresholdDistance = (clusterProps.renderedRadius + MIN_POINT_RADIUS) * webMapState.scale;
           var distance = getDistance(clusterProps.worldCoords, comparePoint.worldCoords);
           if (distance < thresholdDistance){
             clusterFound = true;
@@ -66,7 +65,7 @@ export default function GraphicsLayerViewController(view, state, webMapState){
             clusterProps.worldCoords.x = sumX / clusterProps.numLocations;
             clusterProps.worldCoords.y = sumY / clusterProps.numLocations;
             for (var clusteredPoint of clusteredPoints){
-              var pointRadius = getDistance(clusterProps.worldCoords, clusteredPoint) / webMapState.viewpoint.scale;
+              var pointRadius = getDistance(clusterProps.worldCoords, clusteredPoint) / webMapState.scale;
               clusterProps.diameter = Math.max(clusterProps.diameter, pointRadius * 2);
               clusterProps.renderedRadius = Math.max(clusterProps.renderedRadius, pointRadius);
             }
@@ -88,7 +87,7 @@ export default function GraphicsLayerViewController(view, state, webMapState){
     }
   }
 
-  var filterGraphics = function(){
+  var updateClusters = function(){
     for (var cluster of view.subcomponents.clusterGraphics){
       cluster.removeListeners();
     }
@@ -99,8 +98,7 @@ export default function GraphicsLayerViewController(view, state, webMapState){
 
   //load reactions -------------------------------------------------------------
 
-  state.addListenerByType('selectedTag', 'clusterGraphics', filterGraphics);
-  action.addListenerByType('type', 'zoomEnd', filterGraphics);
+  state.addListenerByType('selectedTag', 'clusterGraphics', updateClusters);
 
   //init -----------------------------------------------------------------------
 
@@ -118,4 +116,19 @@ export default function GraphicsLayerViewController(view, state, webMapState){
     }
   };
 
+  this.updateClusters = updateClusters;
+
+  this.fadeDown = function(){
+    return root.transitionOpacity('0');
+  }
+
+  this.fadeUp = function(){
+    return root.transitionOpacity('1');
+  }
+
+  this.selectClusterGraphic = function(graphicId){
+    for (var cluster of view.subcomponents.clusterGraphics){
+      cluster.updateIsSelected(graphicId);
+    }
+  }
 }

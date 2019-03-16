@@ -21,7 +21,6 @@ export default function WebMap(props){
     dispatcher: new DispatcherController(dispatcher, view),
     state: new StateController(state, dispatcher, view),
     view: new ViewController(view, state, dispatcher),
-
   }
 
   //public api -----------------------------------------------------------------
@@ -31,5 +30,7 @@ export default function WebMap(props){
   this.hasRendered = view.hasRendered;
 
   this.graphicsLayer = view.subcomponents.graphicsLayer;
+
+  this.selectMenu = view.subcomponents.selectMenu;
 
 }

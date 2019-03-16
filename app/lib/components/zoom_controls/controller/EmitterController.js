@@ -6,8 +6,7 @@ export default function ZoomControlsEmitterController(emitter, view){
   //define reactions -----------------------------------------------------------
 
   var broadcast = function(buttonId){
-    var eventName = `${buttonId}ButtonClicked`;
-    emitter.broadcast(eventName);
+    emitter.broadcast('zoomButtonClicked', buttonId);
   }
 
   //load reactions -------------------------------------------------------------

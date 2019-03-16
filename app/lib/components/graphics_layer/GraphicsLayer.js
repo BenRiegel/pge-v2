@@ -41,12 +41,28 @@ export default function GraphicsLayer(webMapState){
     controller.view.setGraphics(graphicPropsList);
   }
 
+  this.updateClusters = function(){
+    controller.view.updateClusters();
+  }
+
   this.setSelectedTag = function(selectedTag){
     state.set('selectedTag', selectedTag);
   }
 
-  this.setSelectedGraphic = function(graphicInfo){
-    state.set('selectedGraphic', graphicInfo);
+  this.selectPointGraphic = function(graphicId){
+    state.set('selectedGraphic', graphicId);
+  }
+
+  this.selectClusterGraphic = function(graphicId){
+    controller.view.selectClusterGraphic(graphicId);
+  }
+
+  this.fadeDown = function(){
+    return controller.view.fadeDown();
+  }
+
+  this.fadeUp = function(){
+    return controller.view.fadeUp();
   }
 
 }

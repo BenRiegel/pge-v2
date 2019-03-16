@@ -2,7 +2,6 @@ export default function PointGraphicViewController(view, props, state, webMapSta
 
   var { nodes } = view;
   var { root, location, label } = nodes;
-  var { viewpoint, action } = webMapState;
 
   //configure dom --------------------------------------------------------------
 
@@ -23,13 +22,9 @@ export default function PointGraphicViewController(view, props, state, webMapSta
     location.setHighlight(state.isSelected);
   }
 
-  var updateScreenCoords = function(vp){
-    var screenCoords = viewpoint.calculateScreenCoordsViewpoint(props.worldCoords, vp);
+  var updateScreenCoords = function(){
+    var screenCoords = webMapState.calculateScreenCoords(props.worldCoords);
     root.setScreenCoords(screenCoords);
-  };
-
-  var update= function(){
-    updateScreenCoords(action.frameProps);
   };
 
   //load reactions -------------------------------------------------------------
@@ -37,13 +32,14 @@ export default function PointGraphicViewController(view, props, state, webMapSta
   state.addListener('isSelected', updateHighlight);
   state.addListener('hasSelectedTag', updateRootVisibility);
   state.addListener('isObscured', updateRootVisibility);
-  action.addListenerByType('frameProps', 'panFrame', update);
-  action.addListenerByType('frameProps', 'zoomFrame', update);
+  webMapState.addListener('panUpdate', updateScreenCoords);
+  webMapState.addListener('zoomUpdate', updateScreenCoords);
+  webMapState.addListener('zoomHomeUpdate', updateScreenCoords);
 
   //init -----------------------------------------------------------------------
 
   updateRootVisibility();
   updateHighlight();
-  updateScreenCoords(viewpoint);
+  updateScreenCoords();
 
 }

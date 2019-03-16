@@ -7,11 +7,8 @@ export default function PointGraphicStateController(state, props, layerState){
     state.set('hasSelectedTag', hasSelectedTag);
   }
 
-  var updateIsSelected = function(graphicInfo){
-    var typeMatch = (graphicInfo.type === 'point');
-    var idMatch = (graphicInfo.id === props.id);
-    var isSelected = (typeMatch && idMatch);
-    state.set('isSelected', isSelected);
+  var updateIsSelected = function(graphicId){
+    state.set('isSelected', graphicId === props.id);
   }
 
   //load reactions -------------------------------------------------------------

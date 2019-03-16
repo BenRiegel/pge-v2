@@ -3,7 +3,6 @@
 import State from './state/State.js';
 import View from './view/View.js';
 import ViewController from './controllers/ViewController.js';
-import StateController from './controllers/StateController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -16,7 +15,6 @@ export default function ClusterGraphic(props, layerState, webMapState){
   var view = new View(props);
   var controller = {
     view: new ViewController(view, props, state, webMapState),
-    state: new StateController(state, props, layerState),
   };
 
   //public api -----------------------------------------------------------------
@@ -25,6 +23,12 @@ export default function ClusterGraphic(props, layerState, webMapState){
 
   this.worldCoords = props.worldCoords;
 
-  this.removeListeners = controller.state.removeListener;
+  this.removeListeners = function(){
+    controller.view.removeListeners();
+  };
+
+  this.updateIsSelected = function(graphicId){
+    state.set('isSelected', graphicId === props.id);
+  };
 
 }

@@ -10,114 +10,77 @@ export default function WebMapViewController(view, state, dispatcher){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
-  var { zoomControls, popup, graphicsLayer } = subcomponents;
+  var { zoomControls, popup, graphicsLayer, selectMenu } = subcomponents;
 
   //configure dom --------------------------------------------------------------
 
   root.appendChildNode(zoomControls.rootNode);
   root.appendChildNode(popup.rootNode);
   root.appendChildNode(graphicsLayer.rootNode);
+  root.appendChildNode(selectMenu.rootNode);
 
-  //helper functions -----------------------------------------------------------
+  //define state change reactions ----------------------------------------------
 
-  var doPanAnimation = async function(){
-
-    var deltaXPx = Math.abs(state.viewpoint.props.x.deltaValue / state.viewpoint.scaleValue);
-    var deltaYPx = Math.abs(state.viewpoint.props.y.deltaValue / state.viewpoint.scaleValue);
-    var distancePx = Math.sqrt(deltaXPx * deltaXPx + deltaYPx * deltaYPx);
-    var numFrames = Math.ceil(distancePx / 5);
-    numFrames = Math.max(15, numFrames);
-
-    var differences = [];
-    var previousTime = new Date().getTime();
-
-    await new Promise(resolve => {
-      var frameNum = 0;
-
-      var addNewFrame = function(){
-        frameNum += 1;
-        requestAnimationFrame( () => {
-          var percent = easeInOut(frameNum, numFrames);
-          var newX = state.viewpoint.props.x.previousValue + percent * state.viewpoint.props.x.deltaValue;
-          var newY = state.viewpoint.props.y.previousValue + percent * state.viewpoint.props.y.deltaValue;
-          graphicsLayer.updateGraphicsOnPan({x:newX, y:newY, scaleValue:state.viewpoint.scaleValue});
-
-          var newTime = new Date().getTime();
-          differences.push(newTime - previousTime);
-          previousTime = newTime;
-          if (frameNum < numFrames){
-            addNewFrame();
-          } else {
-            resolve();
-          }
-        });
-      }
-      addNewFrame();
-    });
-    console.log(differences);
+  var selectMenuEventStart = function(){
+    zoomControls.disable();
+    popup.disable();
+    graphicsLayer.disable();
   }
 
-  var doZoomAnimation = async function(){
-    const NUM_FRAMES = 40;
-    var differences = [];
-    var previousTime = new Date().getTime();
-    await new Promise(resolve => {
-      var frameNum = 0;
-      var scaleInit = levelToValue(state.viewpoint.props.scale.previousValue);   //do something about this
-      var scaleEnd = levelToValue(state.viewpoint.props.scale.value);
-      var deltaScale = scaleEnd - scaleInit;
-
-      var addNewFrame = function(){
-        frameNum += 1;
-        requestAnimationFrame( () => {
-          var percent = easeInOut(frameNum, NUM_FRAMES);
-          var newX = state.viewpoint.props.x.previousValue + percent * state.viewpoint.props.x.deltaValue;
-          var newY = state.viewpoint.props.y.previousValue + percent * state.viewpoint.props.y.deltaValue;
-          var newScale = scaleInit + percent * deltaScale;
-          var zoomLevel = scaleInit / newScale;
-          graphicsLayer.updateGraphicsOnZoom({x:newX, y:newY, scaleValue:newScale}, zoomLevel);
-
-          var newTime = new Date().getTime();
-          differences.push(newTime - previousTime);
-          previousTime = newTime;
-          if (frameNum < NUM_FRAMES){
-            addNewFrame();
-          } else {
-            resolve();
-          }
-        });
-      }
-      addNewFrame();
-    });
-    console.log(differences);
+  var selectMenuEventEnd = function(){
+    zoomControls.enable();
+    popup.enable();
+    graphicsLayer.enable();
   }
 
-  var doAnimation = async function(){
-    if (state.viewpoint.props.scale.hasChanged){
-      await doZoomAnimation();
-      await wait(100);
-      graphicsLayer.resetGraphics();
-    } else if (state.viewpoint.props.x.hasChanged || state.viewpoint.props.y.hasChanged){
-      await doPanAnimation();
-    }
+  var onNewSelectedOption = function(selectedOptionKey){
+    popup.close();
+    graphicsLayer.setSelectedTag(selectedOptionKey);
   }
 
   var openPopup = function(content){
     popup.open(content);
   }
 
-  var selectGraphic = function(graphicInfo){
-    graphicsLayer.setSelectedGraphic(graphicInfo);
+  var selectPointGraphic = function(graphicId){
+    graphicsLayer.selectPointGraphic(graphicId);
+  };
+
+  var selectClusterGraphic = function(graphicId){
+    graphicsLayer.selectClusterGraphic(graphicId);
   };
 
   var unselectGraphic = function(){
-    graphicsLayer.setSelectedGraphic({type:null, id:null});
+    graphicsLayer.selectPointGraphic(null);
   }
 
-  dispatcher.addListener('selectGraphic', selectGraphic);
-  dispatcher.addListener('unselectGraphic', unselectGraphic);
+  var onZoomEnd = async function(){
+    graphicsLayer.updateClusters();
+  }
+
+  var onZoomHomeBegin = async function(){
+    await graphicsLayer.fadeDown();
+  }
+
+  var onZoomHomeEnd = async function(){
+    graphicsLayer.updateClusters();
+    await graphicsLayer.fadeUp();
+  }
+
+  //load reactions -------------------------------------------------------------
+
+  dispatcher.addListener('selectPointGraphic', selectPointGraphic);
+  dispatcher.addListener('selectClusterGraphic', selectClusterGraphic);
   dispatcher.addListener('openPopup', openPopup);
 
+  state.addListener('zoomEnd', onZoomEnd);
+  state.addListener('zoomHomeBegin', onZoomHomeBegin);
+  state.addListener('zoomHomeEnd', onZoomHomeEnd);
+
   popup.addEventListener('isClosed', unselectGraphic);
+
+  selectMenu.addEventListener('eventStart', selectMenuEventStart);
+  selectMenu.addEventListener('eventEnd', selectMenuEventEnd);
+  selectMenu.addEventListener('newSelectedOption', onNewSelectedOption);
 
 }

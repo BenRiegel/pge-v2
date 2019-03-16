@@ -9,7 +9,6 @@ export default function ClusterGraphicViewController(view, props, state, webMapS
 
   var { nodes } = view;
   var { root, location, label } = nodes;
-  var { viewpoint, action } = webMapState;
 
   //configure dom --------------------------------------------------------------
 
@@ -23,31 +22,36 @@ export default function ClusterGraphicViewController(view, props, state, webMapS
   }
 
   var updateScaleFactor = function(){
-    var newDiameter = props.diameter * action.frameProps.zoomScaleFactor;
+    var newDiameter = props.diameter * webMapState.zoomScaleFactor;
     newDiameter = Math.max(newDiameter, MIN_POINT_RADIUS * 2);
     var scaleFactor = newDiameter / (props.renderedRadius * 2);
     location.setScale(scaleFactor);
   }
 
-  var updateScreenCoords = function(vp){
-    var screenCoords = viewpoint.calculateScreenCoordsViewpoint(props.worldCoords, vp);
+  var updateScreenCoords = function(){
+    var screenCoords = webMapState.calculateScreenCoords(props.worldCoords);
     root.setScreenCoords(screenCoords);
-  };
-
-  var updateOnPan = function(){
-    updateScreenCoords(action.frameProps);
   };
 
   //load reactions -------------------------------------------------------------
 
   state.addListener('isSelected', updateHighlight);
-  action.addListenerByType('frameProps', 'panFrame', updateOnPan);
-  action.addListenerByType('frameProps', 'zoomFrame', updateScaleFactor);
-  action.addListenerByType('frameProps', 'zoomFrame', updateOnPan);
+  webMapState.addListener('panUpdate', updateScreenCoords);
+  webMapState.addListener('zoomUpdate', updateScreenCoords);
+  webMapState.addListener('zoomUpdate', updateScaleFactor);
 
   //init -----------------------------------------------------------------------
 
   updateHighlight();
-  updateScreenCoords(viewpoint);
+  updateScreenCoords();
+
+  //public api -----------------------------------------------------------------
+
+  this.removeListeners = function(){
+    state.removeListener('isSelected', updateHighlight);
+    webMapState.removeListener('panUpdate', updateScreenCoords);
+    webMapState.removeListener('zoomUpdate', updateScreenCoords);
+    webMapState.removeListener('zoomUpdate', updateScaleFactor);
+  }
 
 }

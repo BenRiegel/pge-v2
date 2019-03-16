@@ -1,5 +1,21 @@
 @import './_variables';
 
+#root .select-menu{
+  top: $web-map-widget-padding;
+  left: $web-map-widget-padding;
+  box-shadow: $outer-box-shadow;
+  font-size: $theme-font-size;
+  color: $theme-font-color;
+  z-index: $select-menu-z-index;
+}
+
+#root .option:hover{
+  box-shadow: $inner-box-shadow;
+}
+
+#root .icon-container.border{
+  border-color: $theme-light-gray;
+}
 
 #root .zoom-controls{
   top: $web-map-widget-padding;

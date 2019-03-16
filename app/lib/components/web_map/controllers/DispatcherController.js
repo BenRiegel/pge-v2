@@ -1,3 +1,10 @@
+//imports ----------------------------------------------------------------------
+
+import { wait } from '../../../utils/Utils.js';
+
+
+//exports ----------------------------------------------------------------------
+
 export default function WebMapDispatcherController(dispatcher, view){
 
   var { subcomponents } = view;
@@ -6,15 +13,15 @@ export default function WebMapDispatcherController(dispatcher, view){
   //define user event reactions ------------------------------------------------
 
   var selectPointGraphic = async function(id, worldCoords, attributes){
-    dispatcher.broadcast('selectGraphic', {type:'point', id} );
-    await dispatcher.asyncBroadcast('panTo', worldCoords);
-    await dispatcher.broadcast('openPopup', attributes);
+    dispatcher.broadcast('selectPointGraphic', id);
+    await dispatcher.asyncBroadcast('animateTo', 'panTo', worldCoords);
+    await wait(100);
+    await dispatcher.asyncBroadcast('openPopup', attributes);
   }
 
   var selectClusterGraphic = async function(id, worldCoords, attributes){
-    dispatcher.broadcast('selectGraphic', {type:'cluster', id} );
-    await dispatcher.asyncBroadcast('zoomTo', worldCoords);
-    dispatcher.broadcast('unselectGraphic');
+    dispatcher.broadcast('selectClusterGraphic', id);
+    await dispatcher.asyncBroadcast('animateTo', 'zoomTo', worldCoords);
   }
 
   //load reactions -------------------------------------------------------------

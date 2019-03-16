@@ -10,18 +10,19 @@ import { getGraphicPropsList } from '../services/Projects.js';
 
 var { nodes, components } = view;
 var { root } = nodes;
-var { loader, selectMenu, webMap } = components;
+var { loader, webMap } = components;
 
 //configure dom ----------------------------------------------------------------
 
 root.appendChild(loader.rootNode);
-root.appendChild(selectMenu.rootNode);
 root.appendChild(webMap.rootNode);
+
+//define help functions --------------------------------------------------------
 
 var initSelectMenu = async function(){
   var optionPropsList = await getOptionPropsList();
-  selectMenu.setOptions(optionPropsList);
-  selectMenu.setSelectedOption(INIT_SELECTED_TAG);
+  webMap.selectMenu.setOptions(optionPropsList);
+  webMap.selectMenu.setSelectedOption(INIT_SELECTED_TAG);
 }
 
 var initWebMap = async function(){
@@ -30,11 +31,6 @@ var initWebMap = async function(){
   webMap.graphicsLayer.setGraphics(graphicPropsList);
   webMap.graphicsLayer.setSelectedTag(INIT_SELECTED_TAG);
 };
-
-//event reactions --------------------------------------------------------------
-
-selectMenu.addEventListener('newSelectedOption', webMap.graphicsLayer.setSelectedTag);
-
 
 //exports ----------------------------------------------------------------------
 

@@ -2,7 +2,6 @@
 
 import root from './nodes/RootNode.js';
 import loader from './components/Loader.js';
-import selectMenu from './components/SelectMenu.js';
 import webMap from './components/WebMap.js';
 
 
@@ -10,7 +9,7 @@ import webMap from './components/WebMap.js';
 
 var nodes = {root};
 
-var components = {loader, selectMenu, webMap};
+var components = {loader, webMap};
 
 
 //exports ----------------------------------------------------------------------

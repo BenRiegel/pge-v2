@@ -1,4 +1,4 @@
-export default function LoaderViewController(view, state){
+export default function LoaderViewController(view){
 
   var { nodes } = view;
   var { root, animation } = nodes;
@@ -7,46 +7,30 @@ export default function LoaderViewController(view, state){
 
   root.appendChildNode(animation.node);
 
-  //define state change reactions ----------------------------------------------
-
-  var updateAnimationVisibility = function(){
-    if (state.isActive){
-      animation.setVisibility('visible');
-    } else {
-      animation.setVisibility('hidden');
-    }
-  }
-
-  var updateRootVisibility = function(){
-    if (state.isActive){
-      root.setVisibility('visible');
-    } else {
-      root.setVisibility('hidden');
-    }
-  }
-
-  var updateRootOpacity = function(){
-    if (state.isActive){
-      root.setOpacity('1');
-    } else {
-      if (view.isFading){
-        return root.transitionOpacity('0');
-      } else {
-        root.setOpacity('0');
-      }
-    }
-  }
-
-  //load reactions -------------------------------------------------------------
-
-  state.addListenerByType('isActive', 'animationVisibility', updateAnimationVisibility);
-  state.addListenerByType('isActive', 'rootVisibility', updateRootVisibility);
-  state.addListenerByType('isActive', 'rootOpacity', updateRootOpacity);
-
   //init -----------------------------------------------------------------------
 
-  updateAnimationVisibility();
-  updateRootVisibility();
-  updateRootOpacity();
+  animation.setVisibility('hidden');
+  root.setOpacity('0');
+  root.setVisibility('hidden');
+
+  //public api -----------------------------------------------------------------
+
+  this.show = function(){
+    animation.setVisibility('visible');
+    root.setOpacity('1');
+    root.setVisibility('visible');
+  };
+
+  this.hide = function(){
+    animation.setVisibility('hidden');
+    root.setOpacity('0');
+    root.setVisibility('hidden');
+  };
+
+  this.fadeAndHide = async function(){
+    animation.setVisibility('hidden');
+    await root.transitionOpacity('0');
+    root.setVisibility('hidden');
+  };
 
 }
