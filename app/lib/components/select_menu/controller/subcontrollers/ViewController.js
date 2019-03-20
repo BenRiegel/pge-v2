@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import Option from '../../select_menu_option/SelectMenuOption.js';
+import Option from '../../../select_menu_option/SelectMenuOption.js';
 
 
 //exports ----------------------------------------------------------------------

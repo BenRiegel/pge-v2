@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import { wait, capitalize } from './Utils.js';
+import { wait } from './Utils.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -10,32 +10,11 @@ export default class DomNode{
   constructor(type, className = ''){
     this.node = document.createElement(type);
     this.node.className = className;
-    if (this.clickHandler){
-      this.addDomListener('click');
-    }
-    this.eventListeners = new Map();
   }
 
   set className(className){
     this.node.className = className;
   }
-
-  addDomListener(eventName){
-    var callbackName = 'on' + capitalize(eventName);
-    this.node.addEventListener(eventName, evt => {
-      if (this.isListening){
-        var args = this.clickHandler(evt);
-        if (args !== null){
-          this[callbackName](...args);
-        }
-      }
-    });
-  }
-
-  setEventListener(eventName, listener){
-    this.eventListeners.set(eventName, listener);
-  }
-
 
   set innerHTML(innerHTML){
     this.node.innerHTML = innerHTML;

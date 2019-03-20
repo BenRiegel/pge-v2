@@ -88,6 +88,15 @@ export default function WebMapStateController(state, dispatcher, view){
   //load reactions -------------------------------------------------------------
 
   dispatcher.addListener('animateTo', doAnimation);
-  zoomControls.addEventListener('zoomButtonClicked', doAnimation);
+  zoomControls.addEventListener('zoomInRequest', () => {
+    doAnimation('zoomIn');
+  });
+  zoomControls.addEventListener('zoomOutRequest', () => {
+    doAnimation('zoomOut');
+  });
+  zoomControls.addEventListener('zoomHomeRequest', () => {
+    doAnimation('zoomHome');
+  });
+
 
 }

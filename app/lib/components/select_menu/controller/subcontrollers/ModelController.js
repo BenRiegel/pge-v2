@@ -1,4 +1,4 @@
-export default function SelectMenuStateController(state, view){
+export default function SelectMenuStateController(model, view){
 
   var { nodes } = view;
   var { root } = nodes;
@@ -6,8 +6,8 @@ export default function SelectMenuStateController(state, view){
   //define user event reactions ------------------------------------------------
 
   var updateOnOptionClick = function(optionClicked){
-    state.set('selectedOptionKey', optionClicked);
-    state.setAsync('isOpen', !state.isOpen);
+    model.set('selectedOptionKey', optionClicked);
+    model.setAsync('isOpen', !model.isOpen);
   }
 
   //load reactions -------------------------------------------------------------

@@ -1,25 +1,24 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeInput from '../../../../utils/DomNodeInput.js';
 import { getTargetNode } from '../../../../utils/Utils.js';
 import '../stylesheets/root.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class RootNode extends DomNode{
+export default class RootNode extends DomNodeInput{
   constructor(){
     super('div', 'graphics-layer');
   }
-  clickHandler(evt){
+  mouseClickHandler(evt){
     var graphicContainer = getTargetNode(evt.target, 'graphic');
     if (graphicContainer){
       var graphicType = graphicContainer.dataset.type;
       var graphicId = Number(graphicContainer.dataset.id);
-      var broadcastArgs = [graphicType, graphicId];
-      return broadcastArgs;
-    } else {
-      return null;
+      if (this.isListening && this.onClick){
+        this.onClick(graphicType, graphicId);
+      }
     }
   }
 }

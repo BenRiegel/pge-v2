@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeInput from '../../../../utils/DomNodeInput.js';
 import '../stylesheets/root.scss';
 
 
@@ -11,18 +11,10 @@ var previousTime;
 
 //exports ----------------------------------------------------------------------
 
-export default class RootNode extends DomNode{
+export default class RootNode extends DomNodeInput{
   constructor(){
     super('div', 'basemap-layer');
     this.initialCoords = {x:null, y:null};
-
-    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-    this.mouseDownHandler = this.mouseDownHandler.bind(this);
-    this.mouseUpHandler = this.mouseUpHandler.bind(this);
-    this.mouseOutHandler = this.mouseOutHandler.bind(this);
-
-    this.node.addEventListener('mousedown', this.mouseDownHandler);
-    this.node.addEventListener('mouseup', this.mouseUpHandler);
   }
 
   mouseMoveHandler(evt){
@@ -43,22 +35,21 @@ export default class RootNode extends DomNode{
     differences = [];
     previousTime = new Date().getTime();
     evt.preventDefault();
-    console.log('mouse down');
     this.setStyle('cursor', 'move');
     this.initialCoords.x = evt.clientX;
     this.initialCoords.y = evt.clientY;
-    this.node.addEventListener('mousemove', this.mouseMoveHandler);
+    this.node.addEventListener('mousemove', this.mouseMoveHandler.bind(this));
   }
 
   mouseOutHandler(evt){
     this.setStyle('cursor', 'default');
-    this.node.removeEventListener('mousemove', this.mouseMoveHandler);
+    this.node.removeEventListener('mousemove', this.mouseMoveHandler.bind(this));
   }
 
   mouseUpHandler(){
     console.log(differences);
     this.setStyle('cursor', 'default');
-    this.node.removeEventListener('mousemove', this.mouseMoveHandler);
+    this.node.removeEventListener('mousemove', this.mouseMoveHandler.bind(this));
   }
 }
 

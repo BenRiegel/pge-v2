@@ -1,11 +1,9 @@
 //imports ----------------------------------------------------------------------
 
+import Controller from './controller/Controller.js';
 import Emitter from '../../utils/Emitter.js';
-import State from './state/State.js';
+import Model from './model/Model.js';
 import View from './view/View.js';
-import StateController from './controllers/StateController.js';
-import EmitterController from './controllers/EmitterController.js';
-import ViewController from './controllers/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -14,14 +12,11 @@ export default function SelectMenu(){
 
   //private code block ---------------------------------------------------------
 
-  var state = new State();
-  var view = new View();
   var emitter = new Emitter();
-  var controller = {
-    state: new StateController(state, view),
-    view: new ViewController(view, state),
-    emitter: new EmitterController(emitter, state),
-  }
+  var model = new Model();
+  var view = new View();
+  var controller = new Controller(model, emitter, view);
+
 
   //public api -----------------------------------------------------------------
 
@@ -44,10 +39,10 @@ export default function SelectMenu(){
   };
 
   this.close = function(){
-    state.set('isOpen', false);
+    model.set('isOpen', false);
   };
 
   this.setSelectedOption = function(newOptionKey){
-    state.set('selectedOptionKey', newOptionKey);
+    model.set('selectedOptionKey', newOptionKey);
   };
 }

@@ -1,20 +1,18 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeInput from '../../../../utils/DomNodeInput.js';
 import '../stylesheets/root.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class RootNode extends DomNode{
-
+export default class RootNode extends DomNodeInput{
   constructor(className){
     super('div', `zoom-button ${className}`);
   }
-
-  clickHandler(){
-    var broadcastArgs = [];
-    return broadcastArgs;
+  mouseClickHandler(){
+    if (this.isListening && this.onClick){
+      this.onClick();
+    }
   }
-
 }

@@ -1,24 +1,23 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeInput from '../../../../utils/DomNodeInput.js';
 import { getTargetNode } from '../../../../utils/Utils.js';
 import '../stylesheets/root.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class RootNode extends DomNode{
+export default class RootNode extends DomNodeInput{
   constructor(){
     super('div', 'select-menu');
   }
-  clickHandler(evt){
+  mouseClickHandler(evt){
     var optionNode = getTargetNode(evt.target, 'option');
     if (optionNode){
       var optionKey = optionNode.dataset.key;
-      var broadcastArgs = [optionKey];
-      return broadcastArgs;
-    } else {
-      return null;
+      if (this.isListening && this.onClick){
+        this.onClick(optionKey);
+      }
     }
   }
   setBorderRadius(newValue){

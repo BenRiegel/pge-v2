@@ -1,18 +1,19 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeInput from '../../../../utils/DomNodeInput.js';
 import '../stylesheets/read_more.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class ReadMoreNode extends DomNode{
+export default class ReadMoreNode extends DomNodeInput{
   constructor(){
     super('span', 'read-more-text');
     this.innerHTML = 'Read more';
   }
-  clickHandler(){
-    var broadcastArgs = ['expand'];
-    return broadcastArgs;
+  mouseClickHandler(){
+    if (this.isListening && this.onClick){
+      this.onClick();
+    }
   }
 }

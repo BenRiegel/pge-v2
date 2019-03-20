@@ -5,14 +5,15 @@ export default function ZoomControlsEmitterController(emitter, view){
 
   //define reactions -----------------------------------------------------------
 
-  var broadcast = function(buttonId){
-    emitter.broadcast('zoomButtonClicked', buttonId);
+  var notifyPublic = function(buttonId){
+    var eventName = `${buttonId}Request`;
+    emitter.public.notify(eventName);
   }
 
   //load reactions -------------------------------------------------------------
 
-  zoomHomeButton.addEventListener('click', broadcast);
-  zoomInButton.addEventListener('click', broadcast);
-  zoomOutButton.addEventListener('click', broadcast);
+  zoomHomeButton.addEventListener('click', notifyPublic);
+  zoomInButton.addEventListener('click', notifyPublic);
+  zoomOutButton.addEventListener('click', notifyPublic);
 
 }

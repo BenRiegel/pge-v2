@@ -6,6 +6,7 @@
   @include user-select(none);
   position: absolute;
   background-color: white;
+  min-height: $option-expanded-height;
   z-index: $select-menu-z-index;
   cursor:default;
 }

@@ -1,15 +1,17 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeInput from '../../../../utils/DomNodeInput.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class RootNode extends DomNode{
+export default class RootNode extends DomNodeInput{
   constructor(className, buttonId){
     super('div', `${className}`);
   }
-  clickHandler(){
-    return [];
+  mouseClickHandler(){
+    if (this.isListening && this.onClick){
+      this.onClick();
+    }
   }
 }
