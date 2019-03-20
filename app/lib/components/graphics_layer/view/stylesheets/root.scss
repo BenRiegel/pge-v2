@@ -1,7 +1,10 @@
+@import '../../../web_map/view/stylesheets/_web_map_variables';
+
 $transition-duration: 0.75s;
 
 .graphics-layer{
   position: relative;
+  z-index: $graphics-layer-z-index;
 }
 
 .graphics-layer.transition-opacity{

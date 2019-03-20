@@ -4,6 +4,7 @@ import RootNode from './nodes/RootNode.js';
 import ZoomControls from '../../zoom_controls/ZoomControls.js';
 import Popup from '../../popup/Popup.js';
 import GraphicsLayer from '../../graphics_layer/GraphicsLayer.js';
+import BasemapLayer from '../../basemap_layer/BasemapLayer.js';
 import SelectMenu from '../../select_menu/SelectMenu.js';
 
 
@@ -21,9 +22,10 @@ export default function WebMapViewView(state){
     zoomControls: new ZoomControls(),
     popup: new Popup(),
     graphicsLayer: new GraphicsLayer(state),
+    basemapLayer: new BasemapLayer(state),
     selectMenu: new SelectMenu(),
   };
 
-  this.hasRendered = undefined;
+  this.hasRendered = this.subcomponents.basemapLayer.hasRendered;
 
 }

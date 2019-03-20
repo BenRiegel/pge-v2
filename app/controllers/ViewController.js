@@ -26,7 +26,7 @@ var initSelectMenu = async function(){
 }
 
 var initWebMap = async function(){
-  await webMap.hasRendered;
+  await webMap.render();
   var graphicPropsList = await getGraphicPropsList();
   webMap.graphicsLayer.setGraphics(graphicPropsList);
   webMap.graphicsLayer.setSelectedTag(INIT_SELECTED_TAG);

@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import ObservedObj from '../../../utils/ObservedObj.js';
 import RootNode from './nodes/RootNode.js';
 import ContentNode from './nodes/ContentNode.js';
 import TitleNode from './nodes/TitleNode.js';
@@ -13,9 +14,13 @@ import CloseButton from './subcomponents/CloseButton.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupSummaryView(){
+export default function PopupSummaryView(popupViewState){
 
   //public api -----------------------------------------------------------------
+
+  this.state = new ObservedObj({
+    contentHasLoaded: false,
+  });
 
   this.nodes = {
     root: new RootNode(),
@@ -29,7 +34,7 @@ export default function PopupSummaryView(){
 
   this.subcomponents = {
     loader: new Loader(),
-    closeButton: new CloseButton(),
+    closeButton: new CloseButton(popupViewState),
   };
 
 }

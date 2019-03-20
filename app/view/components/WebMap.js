@@ -9,13 +9,15 @@ import '../stylesheets/web_map.scss';
 
 //module code block ------------------------------------------------------------
 
-var props = {
+var { width, height } = rootNode.getBoundingClientRect();
+
+var config = {
   initCoords: latLonToWebMercatorXY({lon:-5, lat:28}),
   initScale: levelToValue(2),
-  mapDimensions: rootNode.getBoundingClientRect(),
+  mapDimensions: { width, height },
 }
 
-var webMap = new WebMap(props);
+var webMap = new WebMap(config);
 
 
 //exports ----------------------------------------------------------------------

@@ -1,17 +1,33 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
-import '../stylesheets/basemap_tile.scss';
+import DomNode from '../../../../utils/DomNode.js';
+import '../stylesheets/root.scss';
 
 
 //module code block ------------------------------------------------------------
 
-const basemapURLString = "https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile";
+const BASEMAP_URL_STRING = "https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile";
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTileNode(layerState, state){
+export default class RootNode extends DomNode{
+  constructor(){
+    super('img', 'basemap-tile');
+    this.node.draggable = false;
+  }
+  setScreenCoords(screenCoords){
+    var x = Math.floor(screenCoords.x);
+    var y = Math.floor(screenCoords.y);
+    var translateStr = `translate(${x}px, ${y}px)`;
+    this.setStyle('transform', translateStr);
+  }
+  setIndices(xIndex, yIndex, imageTileLevel){
+    return this.setSrc(BASEMAP_URL_STRING + `/${imageTileLevel}/${yIndex}/${xIndex}`);
+  }
+}
+
+/*export default function BasemapTileNode(layerState, state){
 
   //create dom element ---------------------------------------------------------
 
@@ -39,17 +55,17 @@ export default function BasemapTileNode(layerState, state){
     tile.setStyle('transform', `translate(${x}px, ${y}px)`);
   }
 
-  /*var updateSrc = async function(){
+  var updateSrc = async function(){
     var x = state.tileIndices.x;
     var y = state.tileIndices.y;
     var z = layerState.imageTileLevel;
-    await tile.asyncSetSrc(basemapURLString + `/${z}/${y}/${x}`);
-  }*/
+    await tile.asyncSetSrc(BASEMAP_URL_STRING + `/${z}/${y}/${x}`);
+  }
   var updateSrc = function(){
     var x = state.tileIndices.x;
     var y = state.tileIndices.y;
     var z = layerState.imageTileLevel;
-    tile.setSrc(basemapURLString + `/${z}/${y}/${x}`);
+    tile.setSrc(BASEMAP_URL_STRING + `/${z}/${y}/${x}`);
   }
 
   //load state change reactions ------------------------------------------------
@@ -67,7 +83,7 @@ export default function BasemapTileNode(layerState, state){
     if (state.yIndexIsValid){
       await updateSrc();
     }
-  });*/
+  });
 
   //public api -----------------------------------------------------------------
 
@@ -80,4 +96,4 @@ export default function BasemapTileNode(layerState, state){
     await updateSrc();
   }
 
-}
+}*/

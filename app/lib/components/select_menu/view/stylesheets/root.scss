@@ -1,10 +1,12 @@
 @import '../../../../stylesheets/mixins';
-@import '../../../select_menu_option/view/stylesheets/_variables';
+@import '../../../web_map/view/stylesheets/_web_map_variables';
+@import './_select_menu_variables';
 
 .select-menu{
   @include user-select(none);
   position: absolute;
   background-color: white;
+  z-index: $select-menu-z-index;
   cursor:default;
 }
 

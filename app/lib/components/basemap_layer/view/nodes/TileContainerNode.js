@@ -1,19 +1,13 @@
 //imports ----------------------------------------------------------------------
 
-import DomElement from '../../../../lib/DomElement.js';
-import '../stylesheets/basemap_tile_container.scss';
+import DomNode from '../../../../utils/DomNode.js';
+import '../stylesheets/tile_container.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function TileContainerNode(){
-
-  //create dom element ---------------------------------------------------------
-
-  var container = new DomElement('div', 'tile-container');
-
-  //public api -----------------------------------------------------------------
-
-  return container;
-
+export default class TileContainerNode extends DomNode{
+  constructor(){
+    super('div', 'tile-container');
+  }
 }

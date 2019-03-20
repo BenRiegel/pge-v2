@@ -1,7 +1,7 @@
 @import './_variables';
 
 #root .loader{
-  z-index: $loader-z-index;
+  z-index: 1;
 }
 
 #root .spinner {

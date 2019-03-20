@@ -19,10 +19,12 @@ export default function WebMapState(initProps){
     type: null,
     initCoords: null,
     zoomScaleFactor: 1,
-    updateProps: function(currentScale){
-      if (this.type === 'zoom'){
-        this.zoomScaleFactor = this.initCoords.scale / currentScale;
-      }
+    cumulativePan: null,
+    updateProps: function(){
+      this.zoomScaleFactor = this.initCoords.scale / coords.scale.value;
+      var deltaXPx = (coords.x.value - this.initCoords.x) / this.initCoords.scale;
+      var deltaYPx = (coords.y.value - this.initCoords.y) / this.initCoords.scale;
+      this.cumulativePan = {x:deltaXPx, y:deltaYPx};
     }
   }
 
@@ -57,7 +59,7 @@ export default function WebMapState(initProps){
       coords.x.set(x);
       coords.y.set(y);
       coords.scale.set(scale);
-      action.updateProps(coords.scale.value);
+      action.updateProps();
       var eventName = `${action.type}Update`;
       emitter.broadcast(eventName);
     },
@@ -120,6 +122,9 @@ export default function WebMapState(initProps){
     get zoomScaleFactor(){
       return action.zoomScaleFactor;
     },
+    get cumulativePan(){
+      return action.cumulativePan;
+    }
   }
 
   //public api -----------------------------------------------------------------

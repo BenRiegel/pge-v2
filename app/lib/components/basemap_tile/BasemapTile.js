@@ -1,22 +1,26 @@
 //imports ----------------------------------------------------------------------
 
-import BasemapTileState from './state/BasemapTileState.js';
-import BasemapTileView from './view/BasemapTileView.js';
+import View from './view/View.js';
+import ViewController from './controllers/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTile(xPos, yPos, mapViewpoint, layerState){
+export default function BasemapTile(props, layerState){
 
   //private code block ---------------------------------------------------------
 
-  var state = new BasemapTileState(xPos, yPos, mapViewpoint, layerState);
-  var view = new BasemapTileView(layerState, state);
+  var view = new View();
+  var controller = {
+    view: new ViewController(view, props, layerState),
+  }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.rootNode;
+  this.rootNode = view.nodes.root.node;
 
   this.hasRendered = view.hasRendered;
+
+  this.update = controller.view.update;
 
 }

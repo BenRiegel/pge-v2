@@ -2,6 +2,7 @@ $spinner-inner-radius: 20px;
 $spinner-outer-radius: 12px;
 
 .spinner{
+  visibility: hidden;
   width: $spinner-inner-radius * 2;
   height: $spinner-inner-radius * 2;
   border-width: $spinner-outer-radius;

@@ -1,0 +1,16 @@
+@import '../../../web_map/view/stylesheets/_web_map_variables';
+@import '../../../../stylesheets/mixins';
+
+$transition-duration: 0.75s;
+
+.basemap-layer{
+  @include user-select(none);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: $basemap-layer-z-index;
+}
+
+.basemap-layer.transition-opacity{
+  transition: opacity $transition-duration;
+}

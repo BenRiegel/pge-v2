@@ -6,8 +6,8 @@ import '../stylesheets/close_button.scss';
 
 //exports ----------------------------------------------------------------------
 
-export default function CloseButton(){
+export default function CloseButton(popupViewState){
 
-  return new PopupButton('report-close-button', 'fa-times', 'close');
+  return new PopupButton('report-close-button', 'fa-times', popupViewState);
 
 }

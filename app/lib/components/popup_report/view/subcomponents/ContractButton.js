@@ -6,8 +6,8 @@ import '../stylesheets/contract_button.scss';
 
 //exports ----------------------------------------------------------------------
 
-export default function ContractButton(){
+export default function ContractButton(popupViewState){
 
-  return new PopupButton('report-contract-button', 'fa-compress', 'contract');
+  return new PopupButton('report-contract-button', 'fa-compress', popupViewState);
 
 }

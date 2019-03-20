@@ -1,6 +1,11 @@
+//imports ----------------------------------------------------------------------
+
+import { waitAtLeast } from '../../../utils/Utils.js';
+
+
 //exports ----------------------------------------------------------------------
 
-export default function PopupSummaryViewController(view, state, popupState){
+export default function PopupSummaryViewController(view, popupModel, popupViewState){
 
   var { nodes, subcomponents } = view;
   var { root, content, title, author, image, text, readMore } = nodes;
@@ -19,116 +24,95 @@ export default function PopupSummaryViewController(view, state, popupState){
 
   //define state change reactions ----------------------------------------------
 
-  var updateRootVisibility = function(){
-    if (state.isActive){
-      root.setVisibility('visible');
-    } else {
-      root.setVisibility('hidden');
-    }
-  }
-
   var updateTitle = function(){
-    title.innerHTML = state.content.projectName;
+    title.innerHTML = popupModel.content.projectName;
   };
 
   var updateAuthor = function(){
-    var { university, year } = state.content;
-    if (state.content.author){
-      author.innerHTML = `by ${state.content.author}, ${university} University, ${year}`;
+    var { university, year } = popupModel.content;
+    if (popupModel.content.author){
+      author.innerHTML = `by ${popupModel.content.author}, ${university} University, ${year}`;
     } else {
       author.innerHTML = `written at ${university} University in ${year}`;
     }
   };
 
   var updateText = function(){
-    text.innerHTML = state.content.introText + ' . . . ';
+    text.innerHTML = popupModel.content.introText + ' . . . ';
   };
 
-  var loadImage = function(){
-    return image.setSrc(state.content.introImageUrl);
+  var updateImageSrc = function(){
+    return image.setSrc(popupModel.content.introImageUrl);
   }
 
-  var resizeImage = function(){
+  var updateImageSize = function(){
     image.resize();
   }
 
-  var updateLoader = function(loaderIsActive){
-    if (loaderIsActive){
+  var adjustContentHeight = function(){
+    var offsetHeight = content.getProp('offsetHeight');
+    var scrollHeight = content.getProp('scrollHeight');
+    var deltaHeight = scrollHeight - offsetHeight;
+    var transitionTime = Math.abs(3 * deltaHeight);
+    return content.transitionHeight(scrollHeight, transitionTime);
+  }
+
+  var resetContentHeight = function(){
+    content.setStyle('height', '');
+  }
+
+  var loadContent = async function(){
+    if (!view.state.contentHasLoaded){
       loader.show();
-    } else {
+      await waitAtLeast(500, async() => {
+        updateTitle();
+        updateAuthor();
+        updateText();
+        await updateImageSrc();
+        updateImageSize();
+      });
       loader.hide();
+      view.state.set('contentHasLoaded', true);
     }
   }
 
-  var updateReadMoreDomListener = function(isListening){
-    readMore.isListening = isListening;
+  var resetContentHasLoaded = function(){
+    view.state.set('contentHasLoaded', false);
   }
 
-  var updateContentHeight = function(){
-    if (state.isActive){
-      var offsetHeight = content.getProp('offsetHeight');
-      var scrollHeight = content.getProp('scrollHeight');
-      var deltaHeight = scrollHeight - offsetHeight;
-      var transitionTime = Math.abs(3 * deltaHeight);
-      return content.transitionHeight(scrollHeight, transitionTime);
-    } else {
-      content.setStyle('height', '');
-    }
-  }
-
-  var updateContentOpacity = function(){
-    if (state.isActive){
-      return content.transitionOpacity('1');
-    } else {
-      if (popupState.isOpen){
-        return content.transitionOpacity('0');
-      } else {
-        content.setOpacity('0');
-      }
-    }
-  };
-
-  var updateDomEvents = function(isUpdating){
-    if (isUpdating){
-      updateReadMoreDomListener(false);
-      closeButton.disable();
-    } else {
-      updateReadMoreDomListener(true);
-      closeButton.enable();
-    }
+  var updateReadMoreListener = function(value){
+    readMore.isListening = (!popupViewState.actionInProgress && !popupViewState.userDisabled);
   }
 
   //load state change reactions ------------------------------------------------
 
-  state.addListenerByType('content', 'loaderIsActive', updateLoader);
-  state.addListenerByType('content', 'updateTitle', updateTitle);
-  state.addListenerByType('content', 'updateAuthor', updateAuthor);
-  state.addListenerByType('content', 'updateText', updateText);
-  state.addListenerByType('content', 'updateImageSrc', loadImage);
-  state.addListenerByType('content', 'updateImageSize', resizeImage);
-  state.addListenerByType('isActive', 'contentOpacity', updateContentOpacity);
-  state.addListenerByType('isActive', 'contentHeight', updateContentHeight);
-  state.addListenerByType('isActive', 'rootVisibility', updateRootVisibility);
-  state.addListenerByType('isActive', 'viewIsUpdating', updateDomEvents);
+  popupModel.addListener('content', resetContentHasLoaded);
+  popupViewState.addListener('userDisabled', updateReadMoreListener);
+  popupViewState.addListener('actionInProgress', updateReadMoreListener);
 
   //init -----------------------------------------------------------------------
 
-  updateRootVisibility();
-  updateContentOpacity();
-  updateReadMoreDomListener(true);
+  updateReadMoreListener();
 
   //public api -----------------------------------------------------------------
 
-  this.updateReadMoreDomListener = updateReadMoreDomListener;
+  this.show = async function(){
+    root.setVisibility('visible');
+    await loadContent();
+    await adjustContentHeight();
+    await content.transitionOpacity('1');
+  }
 
-  this.enableDomEvents = function(){
-    updateReadMoreDomListener(true);
-    closeButton.enable();
-  };
+  this.hide = function(){
+    content.setOpacity('0');
+    root.setVisibility('hidden');
+    resetContentHeight();
+  }
 
-  this.disableDomEvents = function(){
-    updateReadMoreDomListener(false);
-    closeButton.disable();
-  };
+  this.fadeOutAndHide = async function(){
+    await content.transitionOpacity('0');
+    root.setVisibility('hidden');
+    resetContentHeight();
+  }
 
 }

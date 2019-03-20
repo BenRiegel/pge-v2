@@ -10,14 +10,15 @@ export default function WebMapViewController(view, state, dispatcher){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
-  var { zoomControls, popup, graphicsLayer, selectMenu } = subcomponents;
+  var { selectMenu, zoomControls, popup, graphicsLayer, basemapLayer} = subcomponents;
 
   //configure dom --------------------------------------------------------------
 
+  root.appendChildNode(selectMenu.rootNode);
   root.appendChildNode(zoomControls.rootNode);
   root.appendChildNode(popup.rootNode);
   root.appendChildNode(graphicsLayer.rootNode);
-  root.appendChildNode(selectMenu.rootNode);
+  root.appendChildNode(basemapLayer.rootNode);
 
   //define state change reactions ----------------------------------------------
 
@@ -39,7 +40,8 @@ export default function WebMapViewController(view, state, dispatcher){
   }
 
   var openPopup = function(content){
-    popup.open(content);
+    popup.setContent(content);
+    popup.open();
   }
 
   var selectPointGraphic = function(graphicId){
@@ -56,15 +58,25 @@ export default function WebMapViewController(view, state, dispatcher){
 
   var onZoomEnd = async function(){
     graphicsLayer.updateClusters();
+    await basemapLayer.updateOnZoomEnd();
   }
 
   var onZoomHomeBegin = async function(){
-    await graphicsLayer.fadeDown();
+    var p1 = graphicsLayer.fadeDown();
+    var p2 = basemapLayer.fadeDown();
+    await Promise.all([p1, p2]);
   }
 
   var onZoomHomeEnd = async function(){
     graphicsLayer.updateClusters();
-    await graphicsLayer.fadeUp();
+    await basemapLayer.updateOnZoomHome();
+    var p1 = graphicsLayer.fadeUp();
+    var p2 = basemapLayer.fadeUp();
+    await Promise.all([p1, p2]);
+  }
+
+  var onPanEnd = async function(){
+    await basemapLayer.updateOnPanEnd();
   }
 
   //load reactions -------------------------------------------------------------
@@ -77,10 +89,18 @@ export default function WebMapViewController(view, state, dispatcher){
   state.addListener('zoomHomeBegin', onZoomHomeBegin);
   state.addListener('zoomHomeEnd', onZoomHomeEnd);
 
-  popup.addEventListener('isClosed', unselectGraphic);
+  state.addListener('panEnd', onPanEnd);
+
+  popup.setEventListener('closed', unselectGraphic);
 
   selectMenu.addEventListener('eventStart', selectMenuEventStart);
   selectMenu.addEventListener('eventEnd', selectMenuEventEnd);
   selectMenu.addEventListener('newSelectedOption', onNewSelectedOption);
+
+  //public api -----------------------------------------------------------------
+
+  this.configure = async function(){
+    popup.configure();
+  }
 
 }

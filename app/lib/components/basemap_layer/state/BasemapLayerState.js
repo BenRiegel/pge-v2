@@ -14,11 +14,11 @@ export default function BasemapLayerState(mapDimensions, mapViewpoint){
   //create state var -----------------------------------------------------------
 
   var state = new ComponentState({
-    isEnabled: true,
-    baselineScale: undefined,
+    isEnabled: true,       //nope
+    baselineScale: undefined,   //nope
     imageTileLevel: undefined,
     numBasemapTiles: undefined,
-    tileSize: undefined,
+    tileSize: undefined,            //nope
     centerTileScreenCoords: undefined,
     centerTileIndices: {x:undefined, y:undefined},
   });

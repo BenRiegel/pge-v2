@@ -53,14 +53,14 @@ export default function WebMapStateController(state, dispatcher, view){
     state.beginAction('pan');
     var numFrames = calculateNumFramesPan(changeSummary);
     await animate(numFrames, changeSummary);
-    state.endAction();
+    await state.endAction();
   }
 
   var doZoomAnimation = async function(changeSummary){
     state.beginAction('zoom');
     var numFrames = 40;
     await animate(numFrames, changeSummary);
-    state.endAction();
+    await state.endAction();
   }
 
   var doZoomHome = async function(changeSummary){

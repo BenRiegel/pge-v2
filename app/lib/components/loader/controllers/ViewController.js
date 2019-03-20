@@ -7,12 +7,6 @@ export default function LoaderViewController(view){
 
   root.appendChildNode(animation.node);
 
-  //init -----------------------------------------------------------------------
-
-  animation.setVisibility('hidden');
-  root.setOpacity('0');
-  root.setVisibility('hidden');
-
   //public api -----------------------------------------------------------------
 
   this.show = function(){

@@ -36,6 +36,7 @@ export default class DomNode{
     this.eventListeners.set(eventName, listener);
   }
 
+
   set innerHTML(innerHTML){
     this.node.innerHTML = innerHTML;
   }
@@ -152,5 +153,10 @@ export default class DomNode{
   getProp(propName){
     return this.node[propName];
   }
+
+  getComputedStyle(styleName){
+    return window.getComputedStyle(this.node, null).getPropertyValue(styleName);
+  }
+
 
 };

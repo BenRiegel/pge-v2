@@ -6,7 +6,6 @@
   box-shadow: $outer-box-shadow;
   font-size: $theme-font-size;
   color: $theme-font-color;
-  z-index: $select-menu-z-index;
 }
 
 #root .option:hover{
@@ -20,7 +19,6 @@
 #root .zoom-controls{
   top: $web-map-widget-padding;
   right: $web-map-widget-padding;
-  z-index: $zoom-controls-z-index;
 }
 
 #root .zoom-button-container{
@@ -41,17 +39,12 @@
 }
 
 #root .popup{
-  box-shadow: $outer-box-shadow;
   border-radius: $theme-border-radius;
-  z-index: $popup-contracted-z-index;
-}
-
-#root .popup.expanded-z{
-  z-index: $popup-expanded-z-index
-}
-
-#root .arrow-cover{
   color: $theme-font-color;
+}
+
+#root .content-container{
+  box-shadow: $outer-box-shadow;
 }
 
 #root .arrow::after{
@@ -61,10 +54,6 @@
 
 #root .project-title{
   font-size: $theme-font-size;
-}
-
-#root .graphics-layer{
-  z-index: $graphics-layer-z-index;
 }
 
 #root .graphic-location{

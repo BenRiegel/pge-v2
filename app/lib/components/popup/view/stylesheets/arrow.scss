@@ -1,16 +1,9 @@
-@import './_variables';
-
-
-/* do I need this?*/
 .arrow{
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  width: $arrow-width;
+  position: relative;
+  width: 14px;
   height: 20px;
-  transform: translateY(-50%);
+  overflow: hidden;
 }
-
 
 .arrow::after{
   position: absolute;

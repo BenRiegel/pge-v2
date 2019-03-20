@@ -1,13 +1,13 @@
 //imports ----------------------------------------------------------------------
 
 import DomNode from '../../../../utils/DomNode.js';
-import '../stylesheets/arrow_cover.scss';
+import '../stylesheets/content.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class ArrowCoverNode extends DomNode{
+export default class ContentNode extends DomNode{
   constructor(){
-    super('div', 'arrow-cover');
+    super('div', 'content-container');
   }
 }

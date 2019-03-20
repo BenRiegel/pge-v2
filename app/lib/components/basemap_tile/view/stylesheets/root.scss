@@ -1,8 +1,10 @@
-@import '../../../../lib/stylesheets/mixins';
+@import '../../../../stylesheets/mixins';
 
 .basemap-tile{
   position:absolute;
   border:0;
   pointer-events: none;
   @include user-select(none);
+  width: 256.5px;
+  height: 256.5px;
 }

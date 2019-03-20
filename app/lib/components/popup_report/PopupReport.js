@@ -1,42 +1,39 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../utils/Emitter.js';
-import State from './state/State.js';
 import View from './view/View.js';
-import StateController from './controller/StateController.js';
 import ViewController from './controller/ViewController.js';
-import EmitterController from './controller/EmitterController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupReport(popupState){
+export default function PopupReport(popupModel, popupViewState){
 
   //private code block ---------------------------------------------------------
 
-  var state = new State();
-  var view = new View();
-  var emitter = new Emitter();
+  var view = new View(popupViewState);
   var controller = {
-    state: new StateController(state, popupState),
-    view: new ViewController(view, state, popupState),
-    emitter: new EmitterController(emitter, view),
+    view: new ViewController(view, popupModel),
   }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.nodes.root.node;
-
-  this.addEventListener = function(eventName, listener){
-    emitter.addListener(eventName, listener);
+  return {
+    rootNode: view.nodes.root.node,
+    set onContract(cb){
+      view.subcomponents.contractButton.onClick = cb;
+    },
+    set onClose(cb){
+      view.subcomponents.closeButton.onClick = cb;
+    },
+    fadeInAndShow: function(){
+      return controller.view.show();
+    },
+    hide: function(){
+      controller.view.hide();
+    },
+    fadeOutAndHide: function(){
+      return controller.view.fadeOutAndHide();
+    },
   }
-
-  this.enable = function(){
-    controller.view.enableDomEvents();
-  };
-
-  this.disable = function(){
-    controller.view.disableDomEvents();
-  };
 
 }

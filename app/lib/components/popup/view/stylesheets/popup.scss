@@ -1,0 +1,20 @@
+@import '../../../web_map/view/stylesheets/_web_map_variables';
+
+$popup-transition-duration: 0.75s;
+
+.popup{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 50%;
+  z-index: $popup-contracted-z-index;
+  visibility: hidden;
+}
+
+.popup.transition-dimensions{
+  transition: left $popup-transition-duration, width $popup-transition-duration, height $popup-transition-duration;
+}
+
+.popup.expanded-z{
+  z-index: $popup-expanded-z-index;
+}

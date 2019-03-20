@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import ObservedObj from '../../../utils/ObservedObj.js';
 import Loader from '../../loader/Loader.js';
 import RootNode from './nodes/RootNode.js';
 import ContentNode from './nodes/ContentNode.js';
@@ -10,9 +11,13 @@ import ContractButton from './subcomponents/ContractButton.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupReportView(){
+export default function PopupReportView(popupViewState){
 
   //public api -----------------------------------------------------------------
+
+  this.state = new ObservedObj({
+    contentHasLoaded: false,
+  });
 
   this.nodes = {
     root: new RootNode(),
@@ -22,8 +27,8 @@ export default function PopupReportView(){
 
   this.subcomponents = {
     loader: new Loader(),
-    closeButton: new CloseButton(),
-    contractButton: new ContractButton(),
+    closeButton: new CloseButton(popupViewState),
+    contractButton: new ContractButton(popupViewState),
   };
 
 }

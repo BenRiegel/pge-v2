@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import ComponentState from '../../../lib/ComponentState.js';
-import TileIndicesProp from './TileIndicesProp.js';
+import ObservedObj from '../../../utils/ObservedObj.js';
+//import TileIndicesProp from './TileIndicesProp.js';
 
 
 //exports ----------------------------------------------------------------------

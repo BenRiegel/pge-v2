@@ -1,3 +1,6 @@
+@import '../../../web_map/view/stylesheets/_web_map_variables';
+
 .zoom-controls{
   position: absolute;
+  z-index: $zoom-controls-z-index;
 }

@@ -23,15 +23,19 @@ export default function PointGraphicViewController(view, props, state, webMapSta
   }
 
   var updateScreenCoords = function(){
-    var screenCoords = webMapState.calculateScreenCoords(props.worldCoords);
-    root.setScreenCoords(screenCoords);
+    if (state.hasSelectedTag && !state.isObscured){
+      var screenCoords = webMapState.calculateScreenCoords(props.worldCoords);
+      root.setScreenCoords(screenCoords);
+    }
   };
 
   //load reactions -------------------------------------------------------------
 
   state.addListener('isSelected', updateHighlight);
+  state.addListener('hasSelectedTag', updateScreenCoords);
   state.addListener('hasSelectedTag', updateRootVisibility);
   state.addListener('isObscured', updateRootVisibility);
+  state.addListener('isObscured', updateScreenCoords);
   webMapState.addListener('panUpdate', updateScreenCoords);
   webMapState.addListener('zoomUpdate', updateScreenCoords);
   webMapState.addListener('zoomHomeUpdate', updateScreenCoords);

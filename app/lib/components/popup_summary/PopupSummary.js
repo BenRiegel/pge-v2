@@ -1,55 +1,39 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../utils/Emitter.js';
-import State from './state/State.js';
 import View from './view/View.js';
-import StateController from './controller/StateController.js';
 import ViewController from './controller/ViewController.js';
-import EmitterController from './controller/EmitterController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupSummary(popupState){
+export default function PopupSummary(popupModel, popupViewState){
 
   //private code block ---------------------------------------------------------
 
-  var state = new State();
-  var view = new View();
-  var emitter = new Emitter();
+  var view = new View(popupViewState);
   var controller = {
-    state: new StateController(state, popupState),
-    view: new ViewController(view, state, popupState),
-    emitter: new EmitterController(emitter, view),
+    view: new ViewController(view, popupModel, popupViewState),
   }
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.nodes.root.node;
-
-  this.addEventListener = function(eventName, listener){
-    emitter.addListener(eventName, listener);
-  };
-
-  this.enable = function(){
-    controller.view.enableDomEvents();
-  };
-
-  this.disable = function(){
-    controller.view.disableDomEvents();
-  };
-
-  this.setContent = function(content){
-    state.set('content', content);
+  return {
+    rootNode: view.nodes.root.node,
+    set onReadMore(cb){
+      view.nodes.readMore.onClick = cb;
+    },
+    set onClose(cb){
+      view.subcomponents.closeButton.onClick = cb;
+    },
+    fadeInAndShow: function(){
+      return controller.view.show();
+    },
+    hide: function(){
+      controller.view.hide();
+    },
+    fadeOutAndHide: function(){
+      return controller.view.fadeOutAndHide();
+    },
   }
-
-  this.open = function(){
-    return state.set('isOpen', true);
-  };
-
-  this.close = function(){
-    state.set('isExpanded', false);
-    state.set('isOpen', false);
-  };
 
 }

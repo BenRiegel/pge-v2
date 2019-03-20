@@ -4,12 +4,6 @@ import DomNode from '../../../../utils/DomNode.js';
 import '../stylesheets/image.scss';
 
 
-//module code block ------------------------------------------------------------
-
-const MAX_IMAGE_WIDTH = 200;
-const MAX_IMAGE_HEIGHT = 125;
-
-
 //exports ----------------------------------------------------------------------
 
 export default class ImageNode extends DomNode{
@@ -17,6 +11,8 @@ export default class ImageNode extends DomNode{
     super('img', 'project-image');
   }
   resize(){
+    const MAX_IMAGE_WIDTH = 200;
+    const MAX_IMAGE_HEIGHT = 125;
     var ratio = this.node.naturalWidth / this.node.naturalHeight;
     if (ratio > (MAX_IMAGE_WIDTH / MAX_IMAGE_HEIGHT)){
       var newWidth = MAX_IMAGE_WIDTH;

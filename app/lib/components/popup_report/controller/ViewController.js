@@ -1,4 +1,4 @@
-export default function PopupReportViewController(view, state, popupState){
+export default function PopupReportViewController(view, popupModel){
 
   var { nodes, subcomponents } = view;
   var { root, content, iframe } = nodes;
@@ -14,71 +14,39 @@ export default function PopupReportViewController(view, state, popupState){
 
   //define state change reactions ----------------------------------------------
 
-  var updateRootVisibility = function(){
-    if (state.isActive){
-      root.setVisibility('visible');
-    } else {
-      root.setVisibility('hidden');
-    }
-  }
-
-  var loadIframe = function(){
-    return iframe.setSrc(state.content.url);
-  }
-
-  var updateLoader = function(loaderIsActive){
-    if (loaderIsActive){
+  var loadContent = async function(){
+    if (!view.state.contentHasLoaded){
       loader.show();
-    } else {
+      await iframe.setSrc(popupModel.content.url);
       loader.hide();
+      view.state.set('contentHasLoaded', true);
     }
   }
 
-  var updateContentOpacity = function(){
-    if (state.isActive){
-      return content.transitionOpacity('1');
-    } else {
-      if (popupState.isOpen){
-        return content.transitionOpacity('0');
-      } else {
-        content.setOpacity('0');
-      }
-    }
-  };
-
-  var updateDomEvents = function(isUpdating){
-    if (isUpdating){
-      contractButton.disable();
-      closeButton.disable();
-    } else {
-      closeButton.enable();
-      contractButton.enable();
-    }
+  var resetContentHasLoaded = function(){
+    view.state.set('contentHasLoaded', false);
   }
 
   //load state change reactions ------------------------------------------------
 
-  state.addListenerByType('isActive', 'contentOpacity', updateContentOpacity);
-  state.addListenerByType('isActive', 'rootVisibility', updateRootVisibility);
-  state.addListenerByType('isActive', 'viewIsUpdating', updateDomEvents);
-  state.addListenerByType('content', 'loaderIsActive', updateLoader);
-  state.addListenerByType('content', 'iframeContent', loadIframe);
-
-  //init -----------------------------------------------------------------------
-
-  updateRootVisibility();
-  updateContentOpacity();
+  popupModel.addListener('content', resetContentHasLoaded);
 
   //public api -----------------------------------------------------------------
 
-  this.enableDomEvents = function(){
-    closeButton.enable();
-    contractButton.enable();
-  };
+  this.show = async function(){
+    root.setVisibility('visible');
+    await loadContent();
+    await content.transitionOpacity('1');
+  }
 
-  this.disableDomEvents = function(){
-    closeButton.disable();
-    contractButton.disable();
-  };
+  this.hide = function(){
+    content.setOpacity('0');
+    root.setVisibility('hidden');
+  }
+
+  this.fadeOutAndHide = async function(){
+    await content.transitionOpacity('0');
+    root.setVisibility('hidden');
+  }
 
 }

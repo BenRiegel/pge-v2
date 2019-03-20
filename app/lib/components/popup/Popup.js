@@ -1,12 +1,8 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../utils/Emitter.js';
-import State from './state/State.js';
+import Model from './model/Model.js';
 import View from './view/View.js';
-import StateController from './controller/StateController.js';
 import ViewController from './controller/ViewController.js';
-import EmitterController from './controller/EmitterController.js';
-
 
 //exports ----------------------------------------------------------------------
 
@@ -14,39 +10,38 @@ export default function Popup(){
 
   //private code block ---------------------------------------------------------
 
-  var state = new State();
-  var view = new View(state);
-  var emitter = new Emitter();
+  var model = new Model();
+  var view = new View(model);
   var controller = {
-    state: new StateController(state, view),
-    view: new ViewController(view, state),
-    emitter: new EmitterController(emitter, state),
+    view: new ViewController(view),
   }
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
-  this.addEventListener = function(eventName, listener){
-    emitter.addListener(eventName, listener);
-  }
+  this.setEventListener = function(eventName, listener){
+    view.emitter.addListener(eventName, listener);
+  };
 
   this.enable = function(){
-    controller.view.enableSubcomponents();
+    view.state.set('userDisabled', false);
   };
 
   this.disable = function(){
-    controller.view.disableSubcomponents();
+    view.state.set('userDisabled', true);
   };
 
-  this.open = function(content){
-    state.set('content', content);
-    return state.set('isOpen', true);
+  this.setContent = function(content){
+    model.set('content', content);
+  };
+
+  this.open = function(){
+    return controller.view.open();
   };
 
   this.close = function(){
-    state.set('isExpanded', false);
-    state.set('isOpen', false);
+    controller.view.close();
   };
 
 }

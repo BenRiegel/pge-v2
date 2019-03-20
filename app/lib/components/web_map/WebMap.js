@@ -10,12 +10,12 @@ import ViewController from './controllers/ViewController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function WebMap(props){
+export default function WebMap(config){
 
   //private code block ---------------------------------------------------------
 
   var dispatcher = new Emitter();
-  var state = new State(props);
+  var state = new State(config);
   var view = new View(state);
   var controller = {
     dispatcher: new DispatcherController(dispatcher, view),
@@ -27,10 +27,14 @@ export default function WebMap(props){
 
   this.rootNode = view.nodes.root.node;
 
-  this.hasRendered = view.hasRendered;
+  this.render = async function(){
+    //controller.view.configure();
+  };
+
 
   this.graphicsLayer = view.subcomponents.graphicsLayer;
 
   this.selectMenu = view.subcomponents.selectMenu;
+
 
 }
