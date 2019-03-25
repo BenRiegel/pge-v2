@@ -1,7 +1,8 @@
 //imports ----------------------------------------------------------------------
 
 import Controller from './controller/Controller.js';
-import Emitter from '../../utils/Emitter.js';
+import Dispatcher from '../../utils/Dispatcher.js';
+import Emitter from './services/Emitter.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
 
@@ -12,37 +13,34 @@ export default function SelectMenu(){
 
   //private code block ---------------------------------------------------------
 
+  var dispatcher = new Dispatcher();
   var emitter = new Emitter();
   var model = new Model();
   var view = new View();
-  var controller = new Controller(model, emitter, view);
-
+  var controller = new Controller(dispatcher, emitter, model, view);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
-  this.addEventListener = function(eventName, listener){
-    emitter.addListener(eventName, listener);
-  };
-
-  this.setOptions = function(optionPropsList){
-    controller.view.setOptions(optionPropsList);
+  this.setEventListener = function(eventName, listener){
+    emitter.setListener(eventName, listener);
   };
 
   this.enable = function(){
-    controller.view.updateDomListener(true);
+    dispatcher.enable();
   };
 
   this.disable = function(){
-    controller.view.updateDomListener(false);
+    dispatcher.disable();
+  };
+
+  this.loadOptions = function(optionsData, selectedOptionKey){
+    dispatcher.newAction('loadOptions', {optionsData, selectedOptionKey} );
   };
 
   this.close = function(){
-    model.set('isOpen', false);
+    dispatcher.newAction('close');
   };
 
-  this.setSelectedOption = function(newOptionKey){
-    model.set('selectedOptionKey', newOptionKey);
-  };
 }

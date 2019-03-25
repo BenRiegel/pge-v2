@@ -24,12 +24,22 @@ export default function WebMapStateController(state, dispatcher, view){
   var animate = async function(numFrames, changeSummary){
     var differences = [];
     var previousTime = new Date().getTime();
+    var totalTime = numFrames / 60 * 1000;
+    var initTime = new Date().getTime();
     await new Promise(resolve => {
       var frameNum = 0;
+
       var addNewFrame = function(){
         frameNum += 1;
         requestAnimationFrame( () => {
-          var percent = easeInOut(frameNum, numFrames);
+          var newTime = new Date().getTime();
+          var elapsedTime = newTime - initTime;
+          var percentDone = Math.min(elapsedTime / totalTime, 1);
+          //var percent = easeInOut(frameNum, numFrames);
+          var percent = easeInOut(percentDone, 1);
+          //console.log(elapsedTime, percentDone, frameNum);
+          //var percent = easeInOut(frameNum, numFrames);
+
           var newX = changeSummary.x.initValue + percent * changeSummary.x.deltaValue;
           var newY = changeSummary.y.initValue + percent * changeSummary.y.deltaValue;
           var newScale = changeSummary.scale.initValue + percent * changeSummary.scale.deltaValue;
@@ -37,7 +47,8 @@ export default function WebMapStateController(state, dispatcher, view){
           var newTime = new Date().getTime();
           differences.push(newTime - previousTime);
           previousTime = newTime;
-          if (frameNum < numFrames){
+          //if (frameNum < numFrames){
+          if (percentDone < 1){
             addNewFrame();
           } else {
             resolve();
@@ -88,13 +99,13 @@ export default function WebMapStateController(state, dispatcher, view){
   //load reactions -------------------------------------------------------------
 
   dispatcher.addListener('animateTo', doAnimation);
-  zoomControls.addEventListener('zoomInRequest', () => {
+  zoomControls.setEventListener('zoomInRequest', () => {
     doAnimation('zoomIn');
   });
-  zoomControls.addEventListener('zoomOutRequest', () => {
+  zoomControls.setEventListener('zoomOutRequest', () => {
     doAnimation('zoomOut');
   });
-  zoomControls.addEventListener('zoomHomeRequest', () => {
+  zoomControls.setEventListener('zoomHomeRequest', () => {
     doAnimation('zoomHome');
   });
 

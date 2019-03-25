@@ -1,4 +1,4 @@
-export default function SelectMenuOptionViewController(view, labelIsIndented, menuState, optionState){
+export default function SelectMenuOptionViewController(view, config, model, menuModel, dispatcher){
 
   var { nodes } = view;
   var { root, iconContainer, icon } = nodes;
@@ -15,7 +15,7 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   //define state change rections -----------------------------------------------
 
   var updateIconVisibility = function(){
-    if (optionState.isSelected){
+    if (model.isSelected){
       icon.setVisibility('visible');
     } else {
       icon.setVisibility('hidden');
@@ -23,8 +23,8 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var updateLabelIndent = function(){
-    if (labelIsIndented){
-      if (menuState.isOpen){
+    if (config.label.isIndented){
+      if (menuModel.isOpen){
         labelName.setIndentVisibility('visible');
       } else {
         labelName.setIndentVisibility('hidden');
@@ -33,7 +33,7 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var updateIconChar = function(){
-    if (menuState.isOpen){
+    if (menuModel.isOpen){
       icon.setChar('check');
     } else {
       icon.setChar('arrow');
@@ -41,7 +41,7 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var updateIconBorderVisibility = function(){
-    if (menuState.isOpen){
+    if (menuModel.isOpen){
       iconContainer.setBorderVisibility('hidden');
     } else {
       iconContainer.setBorderVisibility('visible');
@@ -49,7 +49,7 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var updateRootBorderRadius = function(){
-    if (optionState.isSelected && !menuState.isOpen){
+    if (model.isSelected && !menuModel.isOpen){
       root.setBorderRadius('rounded');
     } else {
       root.setBorderRadius('default');
@@ -57,7 +57,7 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var updateRootVisibility = function(){
-    if (optionState.isSelected || menuState.isOpen){
+    if (model.isSelected || menuModel.isOpen){
       root.setVisibility('visible');
     } else {
       root.setVisibility('hidden');
@@ -65,7 +65,7 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var updateRootHeight = function(){
-    if (optionState.isSelected || menuState.isOpen){
+    if (model.isSelected || menuModel.isOpen){
       root.setHeight('expanded');
     } else {
       root.setHeight('contracted');
@@ -73,8 +73,8 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var transitionRootHeight = function(){
-    if (!optionState.isSelected){
-      if (menuState.isOpen){
+    if (!model.isSelected){
+      if (menuModel.isOpen){
         return root.transitionHeight('expanded');
       } else {
         return root.transitionHeight('contracted');
@@ -83,7 +83,7 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var updateRootOpacity = function(){
-    if (optionState.isSelected || menuState.isOpen){
+    if (model.isSelected || menuModel.isOpen){
       root.setOpacity('1');
     } else {
       root.setOpacity('0');
@@ -91,8 +91,8 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   }
 
   var transitionRootOpacity = function(){
-    if (!optionState.isSelected){
-      if (menuState.isOpen){
+    if (!model.isSelected){
+      if (menuModel.isOpen){
         return root.transitionOpacity('1');
       } else {
         return root.transitionOpacity('0');
@@ -100,20 +100,15 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
     }
   }
 
+  var onNewSelectedOption = function(){
+    if (model.newIsSelectedValue){
+      updateIconVisibility();
+    }
+  }
+
   //load reactions -------------------------------------------------------------
 
-  optionState.addListener('isSelected', updateIconVisibility);
-  optionState.addListener('isSelected', updateRootBorderRadius);
-  optionState.addListener('isSelected', updateRootVisibility);
-  optionState.addListener('isSelected', updateRootHeight);
-  optionState.addListener('isSelected', updateRootOpacity);
-  menuState.addListenerByType('isOpen', 'optionLabelIndent', updateLabelIndent);
-  menuState.addListenerByType('isOpen', 'optionIconChar', updateIconChar);
-  menuState.addListenerByType('isOpen', 'optionIconBorderVisibility', updateIconBorderVisibility);
-  menuState.addListenerByType('isOpen', 'optionRootBorderRadius', updateRootBorderRadius);
-  menuState.addListenerByType('isOpen', 'optionRootVisibility', updateRootVisibility);
-  menuState.addListenerByType('isOpen', 'optionRootHeight', transitionRootHeight);
-  menuState.addListenerByType('isOpen', 'optionRootOpacity', transitionRootOpacity);
+  dispatcher.setListener('view', 'newSelectedOption', onNewSelectedOption);
 
   //init -----------------------------------------------------------------------
 
@@ -125,5 +120,16 @@ export default function SelectMenuOptionViewController(view, labelIsIndented, me
   updateRootVisibility();
   updateRootHeight();
   updateRootOpacity();
+
+  //public api -----------------------------------------------------------------
+
+  this.updateIconVisibility = updateIconVisibility;
+  this.updateLabelIndent = updateLabelIndent;
+  this.updateIconChar = updateIconChar;
+  this.updateIconBorderVisibility = updateIconBorderVisibility;
+  this.updateRootBorderRadius = updateRootBorderRadius ;
+  this.updateRootVisibility = updateRootVisibility;
+  this.transitionRootHeight = transitionRootHeight;
+  this.transitionRootOpacity = transitionRootOpacity;
 
 }

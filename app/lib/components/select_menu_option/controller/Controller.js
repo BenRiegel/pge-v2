@@ -1,16 +1,16 @@
 //imports ----------------------------------------------------------------------
 
-import ModelController from './subcontrollers/ModelController.js';
 import ViewController from './subcontrollers/ViewController.js';
+import ModelController from './subcontrollers/ModelController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function SelectMenuOptionController(config, optionModel, menuModel, view){
+export default function SelectMenuOptionController(config, dispatcher, model, view, menuModel){
 
   //public api -----------------------------------------------------------------
 
-  this.model = new ModelController(optionModel, config.key, menuModel)
-  this.view = new ViewController(view, config.labelIsIndented, menuModel, optionModel);
+  this.model = new ModelController(model, config, dispatcher, menuModel);
+  this.view = new ViewController(view, config, model, menuModel, dispatcher);
 
 }

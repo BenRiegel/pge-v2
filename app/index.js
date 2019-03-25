@@ -1,13 +1,10 @@
 //imports ----------------------------------------------------------------------
 
-import { startLoading, load, finishLoading} from './controllers/ViewController.js';
-import { waitAtLeast } from './lib/utils/Utils.js';
+import dispatcher from './services/Dispatcher.js';
+import './controllers/ViewController.js';        //other way to do this?
+import './view/stylesheets/index.scss';
 
 
 //module code block ------------------------------------------------------------
 
-(async function () {
-  startLoading();
-  await waitAtLeast(1000, load);
-  await finishLoading();
-})();
+dispatcher.newAsyncAction('initApp');

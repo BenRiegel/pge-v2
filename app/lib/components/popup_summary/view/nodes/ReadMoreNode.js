@@ -12,8 +12,6 @@ export default class ReadMoreNode extends DomNodeInput{
     this.innerHTML = 'Read more';
   }
   mouseClickHandler(){
-    if (this.isListening && this.onClick){
-      this.onClick();
-    }
+    this.notify('click');
   }
 }

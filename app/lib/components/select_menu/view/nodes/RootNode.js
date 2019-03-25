@@ -15,9 +15,7 @@ export default class RootNode extends DomNodeInput{
     var optionNode = getTargetNode(evt.target, 'option');
     if (optionNode){
       var optionKey = optionNode.dataset.key;
-      if (this.isListening && this.onClick){
-        this.onClick(optionKey);
-      }
+      this.notify('click', optionKey);
     }
   }
   setBorderRadius(newValue){

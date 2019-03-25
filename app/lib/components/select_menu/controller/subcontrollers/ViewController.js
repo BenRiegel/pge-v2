@@ -5,43 +5,84 @@ import Option from '../../../select_menu_option/SelectMenuOption.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function SelectMenuViewController(view, state){
+export default function SelectMenuViewController(view, model, dispatcher){
 
-  var { nodes } = view;
+  var { nodes, subcomponents } = view;
   var { root } = nodes;
 
-  //define state change reactions ----------------------------------------------
+  //helper functions -----------------------------------------------------------
+
+  var doForAllOptions = function(methodName, ...args){
+    for (var option of subcomponents){
+      option[methodName](...args);
+    }
+  }
+
+  var doForAllOptionsAsync = function(methodName, ...args){
+    var promises = [];
+    for (var option of subcomponents){
+      var p = option[methodName](...args);
+      promises.push(p);
+    }
+    return Promise.all(promises);
+  }
+
+  //event reactions ------------------------------------------------------------
 
   var updateRootBorderRadius = function(){
-    if (state.isOpen){
+    if (model.isOpen){
       root.setBorderRadius('default');
     } else {
       root.setBorderRadius('rounded');
     }
   }
 
-  var updateDomListener = function(isListening){
-    root.isListening = isListening;
+  var onLoadOptions = function( {optionsData} ){
+    for (var optionData of optionsData){
+      var option = new Option(optionData, model);
+      root.appendChildNode(option.rootNode);
+      subcomponents.push(option);
+    }
+  }
+
+  var updateOptionViews = async function(){
+    if (model.isOpen){
+      updateRootBorderRadius();
+      doForAllOptions('updateLabelIndent');
+      doForAllOptions('updateIconChar');
+      doForAllOptions('updateIconBorderVisibility');
+      doForAllOptions('updateRootBorderRadius');
+      doForAllOptions('updateRootVisibility');
+      await doForAllOptionsAsync('transitionRootHeight');
+      await doForAllOptionsAsync('transitionRootOpacity');
+    } else {
+      await doForAllOptionsAsync('transitionRootOpacity');
+      await doForAllOptionsAsync('transitionRootHeight');
+      doForAllOptions('updateRootVisibility');
+      doForAllOptions('updateRootBorderRadius');
+      doForAllOptions('updateIconBorderVisibility');
+      doForAllOptions('updateIconChar');
+      doForAllOptions('updateLabelIndent');
+      updateRootBorderRadius();
+    }
+  }
+
+  var onOptionClick = async function(){
+    if (model.newSelectedOption){
+      doForAllOptions('onNewSelectedOption');
+    }
+    if (model.newOpenState){
+      await updateOptionViews();
+    }
   }
 
   //load reactions -------------------------------------------------------------
 
-  state.addListenerByType('isOpen', 'menuRootBorderRadius', updateRootBorderRadius);
+  dispatcher.setListener('view', 'loadOptions', onLoadOptions);
+  dispatcher.setListener('view', 'optionClick', onOptionClick);
 
   //init -----------------------------------------------------------------------
 
   updateRootBorderRadius();
-  updateDomListener(true);
-
-  //public api -----------------------------------------------------------------
-
-  this.updateDomListener = updateDomListener;
-
-  this.setOptions = function(optionPropsList){
-    for (var optionProps of optionPropsList){
-      var option = new Option(optionProps, state);
-      root.appendChildNode(option.rootNode);
-    }
-  }
 
 }

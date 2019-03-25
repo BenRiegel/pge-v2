@@ -1,19 +1,14 @@
-export default function ZoomControlsEmitterController(emitter, view){
-
-  var { subcomponents } = view;
-  var { zoomHomeButton, zoomInButton, zoomOutButton } = subcomponents;
+export default function ZoomControlsEmitterController(emitter, dispatcher){
 
   //define reactions -----------------------------------------------------------
 
-  var notifyPublic = function(buttonId){
+  var onButtonClick = function(buttonId){
     var eventName = `${buttonId}Request`;
-    emitter.public.notify(eventName);
+    emitter.notify(eventName);
   }
 
   //load reactions -------------------------------------------------------------
 
-  zoomHomeButton.addEventListener('click', notifyPublic);
-  zoomInButton.addEventListener('click', notifyPublic);
-  zoomOutButton.addEventListener('click', notifyPublic);
+  dispatcher.setListener('public', 'buttonClick', onButtonClick);
 
 }

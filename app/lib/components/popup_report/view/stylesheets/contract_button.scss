@@ -1,11 +1,9 @@
 .report-contract-button{
+  display: block;
   position: absolute;
   top: 7px;
   right: 30px;
   z-index: 1;
   cursor:pointer;
-}
-
-.report-contract-button span{
   font-size: 16px;
 }

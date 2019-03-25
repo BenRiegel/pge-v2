@@ -19,6 +19,6 @@ export default function GraphicsLayerEmitterController(emitter, view){
 
   //load reactions -------------------------------------------------------------
 
-  root.onClick = broadcast;
+  root.setListener('click', broadcast);
 
 }

@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import '../stylesheets/index.scss';
+import '../stylesheets/root.scss';
 
 
 //module code block ------------------------------------------------------------

@@ -47,7 +47,7 @@ export default class RootNode extends DomNodeInput{
   }
 
   mouseUpHandler(){
-    console.log(differences);
+    //console.log(differences);
     this.setStyle('cursor', 'default');
     this.node.removeEventListener('mousemove', this.mouseMoveHandler.bind(this));
   }

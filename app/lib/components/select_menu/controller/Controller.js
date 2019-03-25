@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import DispatcherController from './subcontrollers/DispatcherController.js';
 import EmitterController from './subcontrollers/EmitterController.js';
 import ModelController from './subcontrollers/ModelController.js';
 import ViewController from './subcontrollers/ViewController.js';
@@ -7,12 +8,16 @@ import ViewController from './subcontrollers/ViewController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function SelectMenuController(model, emitter, view){
+export default function SelectMenuController(dispatcher, emitter, model, view){
 
   //public api -----------------------------------------------------------------
 
-  this.emitter = new EmitterController(emitter, model);
-  this.model = new ModelController(model, view)
-  this.view = new ViewController(view, model);
+  return {
+    dispatcher: new DispatcherController(dispatcher, model, view),
+    emitter: new EmitterController(emitter, dispatcher),
+    model: new ModelController(model, dispatcher),
+    view: new ViewController(view, model, dispatcher),
+  }
+
 
 }

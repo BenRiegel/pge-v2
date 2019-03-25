@@ -1,8 +1,9 @@
 //imports ----------------------------------------------------------------------
 
+import Dispatcher from '../../utils/Dispatcher.js';
 import Controller from './controller/Controller.js';
-import Model from './model/Model.js';
 import View from './view/View.js';
+import Model from './model/Model.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -11,20 +12,25 @@ export default function SelectMenuOption(config, menuModel){
 
   //private code block ---------------------------------------------------------
 
-  var optionModel = new Model();
+  var dispatcher = new Dispatcher();
+  var model = new Model();
   var view = new View(config);
-  var controller = new Controller(config, optionModel, menuModel, view);
+  var controller = new Controller(config, dispatcher, model, view, menuModel);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
-  this.select = function(){
-    optionModel.set('isSelected', true);
+  this.onNewSelectedOption = function(){
+    dispatcher.newAction('newSelectedOption');
   }
 
-  this.unselect = function(){
-    optionModel.set('isSelected', false);
-  }
-
+  this.updateIconVisibility = controller.view.updateIconVisibility;
+  this.updateLabelIndent = controller.view.updateLabelIndent;
+  this.updateIconChar = controller.view.updateIconChar;
+  this.updateIconBorderVisibility = controller.view.updateIconBorderVisibility;
+  this.updateRootBorderRadius = controller.view.updateRootBorderRadius ;
+  this.updateRootVisibility = controller.view.updateRootVisibility;
+  this.transitionRootHeight = controller.view.transitionRootHeight;
+  this.transitionRootOpacity = controller.view.transitionRootOpacity;
 }

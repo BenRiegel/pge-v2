@@ -16,9 +16,7 @@ export default class RootNode extends DomNodeInput{
     if (graphicContainer){
       var graphicType = graphicContainer.dataset.type;
       var graphicId = Number(graphicContainer.dataset.id);
-      if (this.isListening && this.onClick){
-        this.onClick(graphicType, graphicId);
-      }
+      this.notify('click', graphicType, graphicId);
     }
   }
 }

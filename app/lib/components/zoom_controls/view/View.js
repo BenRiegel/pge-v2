@@ -2,9 +2,9 @@
 
 import RootNode from './nodes/RootNode.js';
 import ButtonContainerNode from './nodes/ButtonContainerNode.js';
-import ZoomHomeButton from './subcomponents/ZoomHomeButton.js';
-import ZoomInButton from './subcomponents/ZoomInButton.js';
-import ZoomOutButton from './subcomponents/ZoomOutButton.js';
+import HomeButtonNode from './nodes/HomeButtonNode.js';
+import InButtonNode from './nodes/InButtonNode.js';
+import OutButtonNode from './nodes/OutButtonNode.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -17,12 +17,9 @@ export default function ZoomControlsView(){
     root: new RootNode(),
     homeButtonContainer: new ButtonContainerNode(),
     inOutButtonContainer: new ButtonContainerNode(),
+    homeButton: new HomeButtonNode('zoomHome'),
+    inButton: new InButtonNode('zoomIn'),
+    outButton: new OutButtonNode('zoomOut'),
   };
-
-  this.subcomponents = {
-    zoomHomeButton: new ZoomHomeButton(),
-    zoomInButton: new ZoomInButton(),
-    zoomOutButton: new ZoomOutButton(),
-  }
 
 }

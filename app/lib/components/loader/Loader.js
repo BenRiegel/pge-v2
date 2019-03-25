@@ -1,7 +1,8 @@
 //imports ----------------------------------------------------------------------
 
+import Controller from './controller/Controller.js';
+import Dispatcher from '../../utils/Dispatcher.js';
 import View from './view/View.js';
-import ViewController from './controllers/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -10,25 +11,24 @@ export default function Loader(){
 
   //private code block ---------------------------------------------------------
 
+  var dispatcher = new Dispatcher();
   var view = new View();
-  var controller = {
-    view: new ViewController(view),
-  }
+  var controller = new Controller(dispatcher, view);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
   this.show = function(){
-    controller.view.show();
+    dispatcher.newAction('show');
   };
 
-  this.hide = function(){
-    controller.view.hide();
-  };
-
-  this.fadeAndHide = function(){
-    return controller.view.fadeAndHide();
+  this.hide = function(fadeOut = false){
+    if (fadeOut){
+      return dispatcher.newAsyncAction('fadeOutAndHide');
+    } else {
+      dispatcher.newAction('hide');
+    }
   };
 
 }

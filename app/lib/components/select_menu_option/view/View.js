@@ -10,17 +10,17 @@ import LabelCountNode from './nodes/LabelCountNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function SelectMenuOptionView(optionProps){
+export default function SelectMenuOptionView(config){
 
   //public api -----------------------------------------------------------------
 
   this.nodes = {
-    root: new RootNode(optionProps.key),
+    root: new RootNode(config.key),
     iconContainer: new IconContainerNode(),
     icon: new IconNode(),
     labelContainer: new LabelContainerNode(),
-    labelName: new LabelNameNode(optionProps.name),
-    labelCount: new LabelCountNode(optionProps.count),
+    labelName: new LabelNameNode(config.label.name),
+    labelCount: new LabelCountNode(config.label.count),
   }
 
 }

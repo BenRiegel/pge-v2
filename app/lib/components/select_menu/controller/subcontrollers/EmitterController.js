@@ -1,20 +1,38 @@
-export default function SelectMenuEmitterController(emitter, state){
+export default function SelectMenuEmitterController(emitter, dispatcher){
 
   //define reactions -----------------------------------------------------------
 
-  var broadcast = function(viewIsUpdating){
-    if (viewIsUpdating){
-      emitter.broadcast('eventStart');
-    } else {
-      emitter.broadcast('eventEnd');
-      if (state.props.selectedOptionKey.hasChanged){
-        emitter.broadcast('newSelectedOption', state.selectedOptionKey);
-      }
+  /*var loadOptionsAction = function(optionsData){
+    emitter.view.notify('newOptions', optionsData);
+  }
+
+  var clickedOptionAction = async function(selectedOptionKey){
+    emitter.internalAction = true;
+    await emitter.model.notify('optionClick', selectedOptionKey);
+    if (model.newSelectedOption){
+      emitter.public.notify('newSelectedOption', model.selectedOptionKey);
     }
+    emitter.internalAction = false;
+  }
+
+  var selectedOptionAction = function(selectedOptionKey){
+    emitter.model.notify('optionSelected', selectedOptionKey);
+  }*/
+
+  var broadcastNewOption = function(selectedOptionKey){
+    emitter.notify('newSelectedOption', selectedOptionKey);
   }
 
   //load reactions -------------------------------------------------------------
 
-  state.addListenerByType('isOpen', 'viewIsUpdating', broadcast);
+  dispatcher.setListener('public', 'newSelectedOption', broadcastNewOption);
+
+  //view.nodes.root.onClick = clickedOptionAction;
+
+  //public api -----------------------------------------------------------------
+
+  //this.loadOptions = loadOptionsAction;
+
+  //this.setSelectedOption = selectedOptionAction;
 
 }

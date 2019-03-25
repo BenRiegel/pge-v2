@@ -5,7 +5,7 @@ export default function Emitter(eventNames){
   //public api -----------------------------------------------------------------
 
   return {
-    addListener: function(eventName, cb){
+    setListener: function(eventName, cb){
       if (eventNames && !eventNames.includes(eventName)){
         throw new Error(eventName + ' is not a valid event name');
       } else {

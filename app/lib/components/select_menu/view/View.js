@@ -13,4 +13,6 @@ export default function SelectMenuView(){
     root: new RootNode(),
   }
 
+  this.subcomponents = [];
+
 }

@@ -1,7 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../../utils/Emitter2.js';
-import ObservedObj from '../../../utils/ObservedObj.js';
 import RootNode from './nodes/RootNode.js';
 import PopupNode from './nodes/PopupNode.js';
 import ArrowNode from './nodes/ArrowNode.js';
@@ -16,13 +14,6 @@ export default function PopupView(model){
 
   //public api -----------------------------------------------------------------
 
-  this.state = new ObservedObj({
-    userDisabled: false,
-    actionInProgress: false,
-  });
-
-  this.emitter = new Emitter( ['open', 'closed', 'actionStart', 'actionEnd'] );
-
   this.nodes = {
     root: new RootNode(),
     popup: new PopupNode(),
@@ -31,8 +22,8 @@ export default function PopupView(model){
   };
 
   this.subcomponents = {
-    summary: new PopupSummary(model, this.state),
-    report: new PopupReport(model, this.state),
+    summary: new PopupSummary(model),
+    report: new PopupReport(model),
   };
 
 }

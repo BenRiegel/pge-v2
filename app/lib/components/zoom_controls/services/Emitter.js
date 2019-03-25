@@ -9,8 +9,6 @@ export default function ZoomControlsButtonEmitter(){
 
   //public api -----------------------------------------------------------------
 
-  this.public = new Emitter( ['zoomInRequest',
-                              'zoomOutRequest',
-                              'zoomHomeRequest'] );
+  return new Emitter( ['zoomInRequest', 'zoomOutRequest', 'zoomHomeRequest'] );
 
 }

@@ -1,17 +1,17 @@
-export default function SelectMenuStateController(model, view){
+export default function SelectMenuModelController(model, dispatcher){
 
-  var { nodes } = view;
-  var { root } = nodes;
+  var onLoadOptions = function( {selectedOptionKey} ){
+    model.selectOption(selectedOptionKey);
+  }
 
-  //define user event reactions ------------------------------------------------
-
-  var updateOnOptionClick = function(optionClicked){
-    model.set('selectedOptionKey', optionClicked);
-    model.setAsync('isOpen', !model.isOpen);
+  var onOptionClick = function(selectedOptionKey){
+    model.selectOption(selectedOptionKey);
+    model.toggleOpenState();
   }
 
   //load reactions -------------------------------------------------------------
 
-  root.onClick = updateOnOptionClick;
+  dispatcher.setListener('model', 'loadOptions', onLoadOptions);
+  dispatcher.setListener('model', 'optionClick', onOptionClick);
 
 }

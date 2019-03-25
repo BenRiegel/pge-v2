@@ -1,39 +1,42 @@
 //imports ----------------------------------------------------------------------
 
+import Dispatcher from '../../utils/Dispatcher.js';
+import Emitter from './services/Emitter.js';
+import Model from './model/Model.js';
 import View from './view/View.js';
-import ViewController from './controller/ViewController.js';
+import Controller from './controller/Controller.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupReport(popupModel, popupViewState){
+export default function PopupReport(popupModel){
 
   //private code block ---------------------------------------------------------
 
-  var view = new View(popupViewState);
-  var controller = {
-    view: new ViewController(view, popupModel),
-  }
+  var dispatcher = new Dispatcher();
+  var emitter = new Emitter();
+  var model = new Model();
+  var view = new View();
+  var controller = new Controller(dispatcher, emitter, model, view, popupModel);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    rootNode: view.nodes.root.node,
-    set onContract(cb){
-      view.subcomponents.contractButton.onClick = cb;
-    },
-    set onClose(cb){
-      view.subcomponents.closeButton.onClick = cb;
-    },
-    fadeInAndShow: function(){
-      return controller.view.show();
-    },
-    hide: function(){
-      controller.view.hide();
-    },
-    fadeOutAndHide: function(){
-      return controller.view.fadeOutAndHide();
-    },
-  }
+  this.rootNode = view.nodes.root.node;
+
+  this.setEventListener = function(eventName, listener){
+    emitter.setListener(eventName, listener);
+  };
+
+  this.fadeInAndShow = function(content){
+    return dispatcher.newAsyncAction('fadeInAndShow', content);
+  };
+
+  this.hide = function(){
+    dispatcher.newAction('hide');
+  };
+
+  this.fadeOutAndHide = function(){
+    return dispatcher.newAsyncAction('fadeOutAndHide');
+  };
 
 }

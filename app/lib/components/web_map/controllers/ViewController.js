@@ -93,9 +93,9 @@ export default function WebMapViewController(view, state, dispatcher){
 
   popup.setEventListener('closed', unselectGraphic);
 
-  selectMenu.addEventListener('eventStart', selectMenuEventStart);
-  selectMenu.addEventListener('eventEnd', selectMenuEventEnd);
-  selectMenu.addEventListener('newSelectedOption', onNewSelectedOption);
+  selectMenu.setEventListener('eventStart', selectMenuEventStart);
+  selectMenu.setEventListener('eventEnd', selectMenuEventEnd);
+  selectMenu.setEventListener('newSelectedOption', onNewSelectedOption);
 
   //public api -----------------------------------------------------------------
 

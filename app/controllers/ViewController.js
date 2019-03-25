@@ -1,9 +1,11 @@
 //imports ----------------------------------------------------------------------
 
+import dispatcher from '../services/Dispatcher.js';
 import { INIT_SELECTED_TAG } from '../config/Config.js';
 import view from '../view/View.js';
-import { getOptionPropsList } from '../services/Tags.js';
+import { getOptionsData } from '../services/Tags.js';
 import { getGraphicPropsList } from '../services/Projects.js';
+import { waitAtLeast } from '../lib/utils/Utils.js';
 
 
 //module code block ------------------------------------------------------------
@@ -17,12 +19,11 @@ var { loader, webMap } = components;
 root.appendChild(loader.rootNode);
 root.appendChild(webMap.rootNode);
 
-//define help functions --------------------------------------------------------
+//define helper functions ------------------------------------------------------
 
 var initSelectMenu = async function(){
-  var optionPropsList = await getOptionPropsList();
-  webMap.selectMenu.setOptions(optionPropsList);
-  webMap.selectMenu.setSelectedOption(INIT_SELECTED_TAG);
+  var optionsData = await getOptionsData();
+  webMap.selectMenu.loadOptions(optionsData, INIT_SELECTED_TAG);
 }
 
 var initWebMap = async function(){
@@ -32,18 +33,26 @@ var initWebMap = async function(){
   webMap.graphicsLayer.setSelectedTag(INIT_SELECTED_TAG);
 };
 
-//exports ----------------------------------------------------------------------
-
-export function startLoading(){
+var startLoading = function(){
   loader.show();
 };
 
-export async function load(){
+var load = async function(){
   var selectMenuReady = initSelectMenu();
   var webMapReady = initWebMap();
   await Promise.all( [selectMenuReady, webMapReady] );
 };
 
-export async function finishLoading(){
-  await loader.fadeAndHide();
+var finishLoading = async function(){
+  await loader.hide(true);
 };
+
+var onInitApp = async function(){
+  startLoading();
+  await waitAtLeast(1000, load);
+  await finishLoading();
+}
+
+//load listeners ---------------------------------------------------------------
+
+dispatcher.setListener('view', 'initApp', onInitApp);

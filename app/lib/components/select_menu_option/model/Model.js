@@ -1,18 +1,17 @@
-//imports ----------------------------------------------------------------------
-
-import ObservedObj from '../../../utils/ObservedObj.js';
-
-
-//exports ----------------------------------------------------------------------
-
-export default function SelectMenuOptionState(){
-
-  var state = new ObservedObj({
-    isSelected: undefined,
-  });
+export default function SelectMenuOptionModel(){
 
   //public api -----------------------------------------------------------------
 
-  return state;
+  this.isSelected = false;
+
+  this.newIsSelectedValue = false;
+
+  this.updateIsSelected = function(newValue){
+    this.newIsSelectedValue = false;
+    if (newValue !== this.isSelected){
+      this.isSelected = newValue;
+      this.newIsSelectedValue = true;
+    }
+  }
 
 }

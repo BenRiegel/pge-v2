@@ -7,6 +7,8 @@ $transition-duration: 0.5s;
   border-radius: 0;
   line-height: $option-expanded-height;
   height: 0;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .option.transition-opacity{

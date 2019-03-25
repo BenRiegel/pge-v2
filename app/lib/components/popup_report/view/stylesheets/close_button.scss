@@ -1,11 +1,9 @@
 .report-close-button{
+  display: block;
   position: absolute;
   top: 7px;
   right: 10px;
   z-index: 1;
   cursor:pointer;
-}
-
-.report-close-button span{
   font-size: 16px;
 }

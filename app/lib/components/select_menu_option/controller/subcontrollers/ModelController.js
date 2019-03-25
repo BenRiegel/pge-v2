@@ -1,17 +1,17 @@
-export default function SelectMenuOptionModelController(optionState, optionKey, menuState){
+export default function SelectMenuOptionModelController(model, config, dispatcher, menuModel){
 
-  //define state change reactions ----------------------------------------------
+  //define event reactions -----------------------------------------------------
 
-  var updateIsSelected = function(){
-    optionState.set('isSelected', optionKey === menuState.selectedOptionKey);
+  var onNewSelectedOption = function(){
+    var isSelected = (menuModel.selectedOptionKey === config.key);
+    model.updateIsSelected(isSelected);
   }
 
   //load reactions -------------------------------------------------------------
 
-  menuState.addListener('selectedOptionKey', updateIsSelected);
+  dispatcher.setListener('model', 'newSelectedOption', onNewSelectedOption);
 
   //init -----------------------------------------------------------------------
 
-  updateIsSelected();
-
+  onNewSelectedOption();
 }
