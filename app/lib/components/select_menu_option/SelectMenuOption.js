@@ -21,16 +21,12 @@ export default function SelectMenuOption(config, menuModel){
 
   this.rootNode = view.nodes.root.node;
 
-  this.onNewSelectedOption = function(){
-    dispatcher.newAction('newSelectedOption');
-  }
+  this.update = function(actionName, ...args){
+    dispatcher.newAction(actionName, ...args);
+  };
 
-  this.updateIconVisibility = controller.view.updateIconVisibility;
-  this.updateLabelIndent = controller.view.updateLabelIndent;
-  this.updateIconChar = controller.view.updateIconChar;
-  this.updateIconBorderVisibility = controller.view.updateIconBorderVisibility;
-  this.updateRootBorderRadius = controller.view.updateRootBorderRadius ;
-  this.updateRootVisibility = controller.view.updateRootVisibility;
-  this.transitionRootHeight = controller.view.transitionRootHeight;
-  this.transitionRootOpacity = controller.view.transitionRootOpacity;
+  this.updateAsync = function(actionName, ...args){
+    return dispatcher.newAsyncAction(actionName, ...args);
+  };
+
 }

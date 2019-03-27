@@ -12,82 +12,170 @@ export default function PopupViewController(view, model, dispatcher){
   content.appendChildNode(report.rootNode);
   popup.appendChildNode(arrow.node);
 
-  //define state change reactions ----------------------------------------------
+  //define view reactions ------------------------------------------------------
 
-  var setPopupDimensions = function(){
-    var rootDimensions = root.node.getBoundingClientRect();
-    var popupDimensions = popup.node.getBoundingClientRect();
-    var arrowDimensions = arrow.node.getBoundingClientRect();
-    popup.expandedDimensions = {
-      height: `${rootDimensions.height}px`,
-      width: `${rootDimensions.width + arrowDimensions.width}px`,
-      left: '0px',
-    };
-    popup.contractedDimensions = {
-      left: `${rootDimensions.width / 2 - popupDimensions.width}px`,
-      height: `${popupDimensions.height}px`,
-      width: `${popupDimensions.width}px`,
+  var updatePopupVisibility = function(){
+    if (model.isOpen){
+      popup.setVisibility('visible');
+    } else {
+      popup.setVisibility('hidden');
     }
-    popup.setStyle('width', popup.contractedDimensions.width);
-    popup.setStyle('height', popup.contractedDimensions.height);
-    popup.setStyle('left', popup.contractedDimensions.left);
-    popup.setStyle('right', 'auto');
-  };
-
-  var resetPopupDimensions = function(){
-    popup.setStyle('height', '');
-    popup.setStyle('width', '');
-    popup.setStyle('left', '');
-    popup.setStyle('right', '');
   }
 
-  var expandDimensions = function(){
-    var { height, width, left } = popup.expandedDimensions;
-    return popup.transitionDimensions(height, width, left);
+  var updateArrowVisibility = function(){
+    if (model.isOpen && !model.isExpanded){
+      arrow.setVisibility('visible');
+    } else {
+      arrow.setVisibility('hidden');
+    }
   }
 
-  var contractDimensions = function(){
-    var { height, width, left } = popup.contractedDimensions;
-    return popup.transitionDimensions(height, width, left);
+  var updatePopupZIndex = function(){
+    if (model.isExpanded){
+      popup.setZIndex('expanded');
+    } else {
+      popup.setZIndex('contracted');
+    }
+  }
+
+  var updatePopupRight = function(){
+    if (model.isOpen){
+      popup.setStyle('right', 'auto');
+    } else {
+      popup.setStyle('right', '');
+    }
+  }
+
+  var updatePopupLeft = function(isTransitioning){
+    if (model.isOpen){
+      if (model.isExpanded){
+        return popup.setStyle('left', '0px', isTransitioning);
+      } else {
+        var rootRect = root.node.getBoundingClientRect();
+        var summaryRect = summary.rootNode.getBoundingClientRect();
+        var arrowRect = arrow.node.getBoundingClientRect();
+        var left = rootRect.width / 2 - summaryRect.width - arrowRect.width;
+        return popup.setStyle('left', `${left}px`, isTransitioning);
+      }
+    } else {
+      popup.setStyle('left', '');
+    }
+  }
+
+  var updatePopupHeight = function(isTransitioning){
+    if (model.isOpen){
+      if (model.isExpanded){
+        var rootRect = root.node.getBoundingClientRect();
+        return popup.setStyle('height', `${rootRect.height}px`, isTransitioning);
+      } else {
+        var summaryRect = summary.rootNode.getBoundingClientRect();
+        return popup.setStyle('height', `${summaryRect.height}px`, isTransitioning);
+      }
+    } else {
+      popup.setStyle('height', '');
+    }
+  }
+
+  var updatePopupWidth = function(isTransitioning){
+    if (model.isOpen){
+      if (model.isExpanded){
+        var rootRect = root.node.getBoundingClientRect();
+        var arrowRect = arrow.node.getBoundingClientRect();
+        var width = rootRect.width + arrowRect.width;
+        return popup.setStyle('width', `${width}px`, isTransitioning);
+      } else {
+        var summaryRect = summary.rootNode.getBoundingClientRect();
+        return popup.setStyle('width', `${summaryRect.width}px`, isTransitioning);
+      }
+    } else {
+      popup.setStyle('width', '');
+    }
+  }
+
+  var updatePopupDimensions = function(isTransitioning){
+    updatePopupRight();
+    var p1 = updatePopupWidth(isTransitioning);
+    var p2 = updatePopupHeight(isTransitioning);
+    var p3 = updatePopupLeft(isTransitioning);
+    if (isTransitioning){
+      return Promise.all([p1, p2,p3]);
+    }
+  }
+
+  //define event reactions -----------------------------------------------------
+
+  var onSetContent = function(){
+    if (model.props.content.hasChanged){
+      summary.update('resetLoadingStatus');
+      report.update('resetLoadingStatus');
+    }
   }
 
   var onOpen = async function(){
-    popup.setVisibility('visible');
-    arrow.setVisibility('visible');
-    await summary.fadeInAndShow(model.content);
-    setPopupDimensions();
+    updateArrowVisibility();
+    updatePopupVisibility();
+    summary.update('rootVisibility');
+    await summary.loadContent();
+    await summary.updateAsync('contentHeight');
+    await summary.updateAsync('contentOpacity');
+    updatePopupDimensions(false);
   }
 
   var onClose = function(){
-    popup.setVisibility('hidden');
-    arrow.setVisibility('hidden');
-    popup.setZIndex('contracted');
-    summary.hide();
-    report.hide();
-    resetPopupDimensions();
+    updatePopupVisibility();
+    updateArrowVisibility();
+    summary.update('rootVisibility');
+    summary.update('contentHeight');
+    summary.update('contentOpacity');
+    updatePopupDimensions(false);
   }
 
   var onExpand = async function(){
-    await summary.fadeOutAndHide();
-    popup.setZIndex('expanded');
-    arrow.setVisibility('hidden');
-    await expandDimensions();
-    await report.fadeInAndShow(model.content);
+    await summary.updateAsync('contentOpacity');
+    summary.update('rootVisibility');
+    updateArrowVisibility();
+    updatePopupZIndex();
+    await updatePopupDimensions(true);
+    report.update('rootVisibility');
+    await report.loadContent();
+    await report.updateAsync('contentOpacity');
   }
 
   var onContract = async function(){
-    await report.fadeOutAndHide();
-    await contractDimensions();
-    arrow.setVisibility('visible');
-    popup.setZIndex('contracted');
-    await summary.fadeInAndShow(model.content);
+    await report.updateAsync('contentOpacity');
+    report.update('rootVisibility');
+    await updatePopupDimensions(true);
+    updatePopupZIndex();
+    updateArrowVisibility();
+    summary.update('rootVisibility');
+    await summary.updateAsync('contentOpacity');
   }
 
-  //load state change reactions ------------------------------------------------
+  var onContractAndClose = function(){
+    updatePopupVisibility();
+    updatePopupDimensions(false);
+    updateArrowVisibility();
+    updatePopupZIndex();
+    summary.update('rootVisibility');
+    summary.update('contentHeight');
+    summary.update('contentOpacity');
+    report.update('contentOpacity');
+    report.update('rootVisibility');
+  }
 
+  //load event reactions -------------------------------------------------------
+
+  dispatcher.setListener('view', 'setContent', onSetContent);
   dispatcher.setListener('view', 'open', onOpen);
   dispatcher.setListener('view', 'close', onClose);
   dispatcher.setListener('view', 'contract', onContract);
   dispatcher.setListener('view', 'expand', onExpand);
+  dispatcher.setListener('view', 'contractAndClose', onContractAndClose);
+
+  //init -----------------------------------------------------------------------
+
+  updatePopupVisibility();
+  updateArrowVisibility();
+  updatePopupZIndex();
 
 }

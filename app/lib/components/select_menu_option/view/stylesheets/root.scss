@@ -9,14 +9,7 @@ $transition-duration: 0.5s;
   height: 0;
   opacity: 0;
   visibility: hidden;
-}
-
-.option.transition-opacity{
-  transition: opacity $transition-duration;
-}
-
-.option.transition-height{
-  transition: height $transition-duration;
+  transition: opacity $transition-duration, height $transition-duration;
 }
 
 .option.expanded{

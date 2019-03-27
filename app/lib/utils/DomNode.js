@@ -1,10 +1,3 @@
-//imports ----------------------------------------------------------------------
-
-import { wait } from './Utils.js';
-
-
-//exports ----------------------------------------------------------------------
-
 export default class DomNode{
 
   constructor(type, className = ''){
@@ -24,6 +17,10 @@ export default class DomNode{
     this.node.dataset[propName] = value;
   }
 
+  setStyle(styleName, value){
+    this.node.style[styleName] = value;
+  }
+
   setVisibility(newValue){
     this.node.style.visibility = newValue;
   }
@@ -32,72 +29,12 @@ export default class DomNode{
     this.node.style.opacity = newValue;
   }
 
-  async transitionOpacity(newValue){
-    this.addClass('transition-opacity');
-    await this.transitionSetStyle('opacity', newValue);
-    this.removeClass('transition-opacity');
-  }
-
-  setStyle(styleName, value){
-    this.node.style[styleName] = value;
-  }
-
-  transitionSetStyle(styleName, newValue){
-    var currentValue = this.node.style[styleName];
-    if (currentValue === ''){
-        //this.node.style[styleName] = newValue;
-        //return;
-    }
-    if (currentValue === newValue){
-      return;
-    }
-    return new Promise( async resolve => {
-      var transitionEnded = evt => {
-        if (evt.propertyName === styleName){
-          this.node.removeEventListener('transitionend', transitionEnded);
-          resolve();
-        }
-      }
-      this.node.addEventListener('transitionend', transitionEnded);
-    //  await wait(0);
-      this.node.style[styleName] = newValue;
-    });
-  }
-
   addClass(className){
-    if (className){
-      this.node.classList.add(className);
-    }
+    this.node.classList.add(className);
   }
 
   removeClass(className){
-    if (className){
-      this.node.classList.remove(className);
-    }
-  }
-
-  transitionModifyClassList(className, actionName, styleList){
-    return new Promise( async resolve => {
-      var transitionEnded = evt => {
-        var transitionedStyleName = evt.propertyName;
-        styleList = styleList.filter(style => style !== transitionedStyleName);
-        if (styleList.length === 0){
-          this.node.removeEventListener('transitionend', transitionEnded);
-          resolve();
-        }
-      }
-      this.node.addEventListener('transitionend', transitionEnded);
-    //  await wait(0);
-      this.node.classList[actionName](className);
-    });
-  }
-
-  transitionAddClass(className, styleList){
-    return this.transitionModifyClassList(className, 'add', styleList);
-  }
-
-  transitionRemoveClass(className, styleList){
-    return this.transitionModifyClassList(className, 'remove', styleList);
+    this.node.classList.remove(className);
   }
 
   removeAllChildNodes(){
@@ -136,6 +73,5 @@ export default class DomNode{
   getComputedStyle(styleName){
     return window.getComputedStyle(this.node, null).getPropertyValue(styleName);
   }
-
 
 };

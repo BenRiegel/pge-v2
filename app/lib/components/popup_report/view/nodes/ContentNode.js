@@ -1,12 +1,12 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeTransitions from '../../../../utils/DomNodeTransitions.js';
 import '../stylesheets/content.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class ContentNode extends DomNode{
+export default class ContentNode extends DomNodeTransitions{
   constructor(){
     super('div', 'report-content');
   }

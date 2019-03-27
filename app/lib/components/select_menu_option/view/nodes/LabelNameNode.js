@@ -13,13 +13,13 @@ export default class LabelNameNode extends DomNode{
     this.innerHTML = name;
   }
 
-  setIndentVisibility(value){
-    if (value === 'visible'){
-      this.removeClass('indent-hidden');
-      this.addClass('indent-visible');
+  setIndentStyle(value){
+    if (value === 'none'){
+      this.className = 'tag-name';
+    } else if (value === 'visible'){
+      this.className = 'tag-name indent-visible';
     } else if (value === 'hidden'){
-      this.removeClass('indent-visible');
-      this.addClass('indent-hidden');
+      this.className = 'tag-name indent-hidden';
     }
   }
 

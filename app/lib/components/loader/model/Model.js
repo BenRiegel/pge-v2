@@ -5,14 +5,12 @@ import ComponentModel from '../../../utils/ComponentModel.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupModel(){
+export default function LoaderModel(){
 
   //create state var -----------------------------------------------------------
 
   var model = new ComponentModel({
-    content: null,
-    isOpen: false,
-    isExpanded: false,
+    isActive: false,
   });
 
   //public api -----------------------------------------------------------------

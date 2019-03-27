@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import ObservedObj from '../../../utils/ObservedObj.js';
+import ComponentModel from '../../../utils/ComponentModel.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -9,8 +9,8 @@ export default function PopupSummaryModel(){
 
   //create state var -----------------------------------------------------------
 
-  var model = new ObservedObj({
-    content: null,
+  var model = new ComponentModel({
+    loadingStatus: null,
   });
 
   //public api -----------------------------------------------------------------

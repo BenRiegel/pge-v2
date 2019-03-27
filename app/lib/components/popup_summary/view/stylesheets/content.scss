@@ -1,15 +1,11 @@
 $transition-duration: 0.75s;
 
 .summary-content{
+  position: relative;
   border-radius: inherit;
   font-size: 12px;
   height: 150px;
-  width: 380px;
-  padding: 7px 10px 0px 10px;
-  opacity: 0;
+  width: 400px;
   overflow: auto;
-}
-
-.summary-content.transition-opacity{
   transition: opacity $transition-duration;
 }

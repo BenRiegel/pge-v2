@@ -1,13 +1,39 @@
 export default function PopupModelController(model, dispatcher){
 
-  //define reactions -----------------------------------------------------------
+  //define event reactions -----------------------------------------------------
 
-  var onNewContent = function(content){
+  var onSetContent = function(content){
     model.set('content', content);
   }
 
-  //load reactions -------------------------------------------------------------
+  var onOpen = function(){
+    model.set('isOpen', true);
+  };
 
-  dispatcher.setListener('model', 'newContent', onNewContent);
+  var onClose = function(){
+    model.set('isOpen', false);
+  };
+
+  var onExpand = function(){
+    model.set('isExpanded', true);
+  };
+
+  var onContract = function(){
+    model.set('isExpanded', false)
+  }
+
+  var onContractAndClose = function(){
+    model.set('isExpanded', false);
+    model.set('isOpen', false);
+  }
+
+  //load event reactions -------------------------------------------------------
+
+  dispatcher.setListener('model', 'setContent', onSetContent);
+  dispatcher.setListener('model', 'open', onOpen);
+  dispatcher.setListener('model', 'close', onClose);
+  dispatcher.setListener('model', 'expand', onExpand);
+  dispatcher.setListener('model', 'contract', onContract);
+  dispatcher.setListener('model', 'contractAndClose', onContractAndClose);
 
 }

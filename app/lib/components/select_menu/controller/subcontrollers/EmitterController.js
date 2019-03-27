@@ -1,38 +1,24 @@
-export default function SelectMenuEmitterController(emitter, dispatcher){
+export default function SelectMenuEmitterController(emitter, dispatcher, model){
 
-  //define reactions -----------------------------------------------------------
+  //define event reactions -----------------------------------------------------
 
-  /*var loadOptionsAction = function(optionsData){
-    emitter.view.notify('newOptions', optionsData);
-  }
-
-  var clickedOptionAction = async function(selectedOptionKey){
-    emitter.internalAction = true;
-    await emitter.model.notify('optionClick', selectedOptionKey);
-    if (model.newSelectedOption){
-      emitter.public.notify('newSelectedOption', model.selectedOptionKey);
+  var onOptionClick = function(){
+    if (model.props.selectedOptionKey.hasChanged){
+      emitter.notify('newSelectedOption', model.selectedOptionKey);
     }
-    emitter.internalAction = false;
   }
 
-  var selectedOptionAction = function(selectedOptionKey){
-    emitter.model.notify('optionSelected', selectedOptionKey);
-  }*/
-
-  var broadcastNewOption = function(selectedOptionKey){
-    emitter.notify('newSelectedOption', selectedOptionKey);
+  var onActionInProgress = function(actionInProgress){
+    if (actionInProgress){
+      emitter.notify('actionStart');
+    } else {
+      emitter.notify('actionEnd');
+    }
   }
 
-  //load reactions -------------------------------------------------------------
+  //load event reactions -------------------------------------------------------
 
-  dispatcher.setListener('public', 'newSelectedOption', broadcastNewOption);
-
-  //view.nodes.root.onClick = clickedOptionAction;
-
-  //public api -----------------------------------------------------------------
-
-  //this.loadOptions = loadOptionsAction;
-
-  //this.setSelectedOption = selectedOptionAction;
+  dispatcher.setListener('public', 'optionClick', onOptionClick);
+  dispatcher.setListener('dispatcher', 'actionInProgress', onActionInProgress);
 
 }

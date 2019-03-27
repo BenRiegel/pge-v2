@@ -1,12 +1,12 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
+import DomNodeTransitions from '../../../../utils/DomNodeTransitions.js';
 import '../stylesheets/root.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class RootNode extends DomNode{
+export default class RootNode extends DomNodeTransitions{
 
   constructor(key){
     super('div', 'option');
@@ -21,22 +21,16 @@ export default class RootNode extends DomNode{
     }
   }
 
-  setHeight(value){
-    if (value === 'expanded'){
+  setHeight(newValue, isTransitioning){
+    this.isTransitioning = isTransitioning;
+    if (newValue === 'expanded'){
       this.addClass('expanded');
-    } else if (value === 'contracted'){
+    } else if (newValue === 'contracted'){
       this.removeClass('expanded');
     }
-  }
-
-  async transitionHeight(value){
-    this.addClass('transition-height');
-    if (value === 'expanded'){
-      await this.transitionAddClass('expanded', ['height']);   //<---- args
-    } else if (value === 'contracted'){
-      await this.transitionRemoveClass('expanded', ['height']);
+    if (isTransitioning){
+      return this.transitionComplete('height');
     }
-    this.removeClass('transition-height');
   }
 
 }

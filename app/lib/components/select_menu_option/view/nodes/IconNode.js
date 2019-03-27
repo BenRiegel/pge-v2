@@ -15,7 +15,7 @@ export default class IconNode extends DomNode{
   setChar(value){
     if (value === 'check'){
       this.className = `fa fa-check`;
-    } else {
+    } else if (value === 'arrow'){
       this.className = `fa fa-sort-desc`;
     }
   }

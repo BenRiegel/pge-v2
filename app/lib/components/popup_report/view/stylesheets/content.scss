@@ -7,10 +7,6 @@ $transition-duration: 0.75s;
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  opacity: 0;
   overflow: auto;
-}
-
-.report-content.transition-opacity{
   transition: opacity $transition-duration;
 }

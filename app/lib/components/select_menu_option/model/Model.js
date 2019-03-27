@@ -1,17 +1,20 @@
+//imports ----------------------------------------------------------------------
+
+import ComponentModel from '../../../utils/ComponentModel.js';
+
+
+//exports ----------------------------------------------------------------------
+
 export default function SelectMenuOptionModel(){
+
+  //create state var -----------------------------------------------------------
+
+  var model = new ComponentModel({
+    isSelected: false,
+  });
 
   //public api -----------------------------------------------------------------
 
-  this.isSelected = false;
-
-  this.newIsSelectedValue = false;
-
-  this.updateIsSelected = function(newValue){
-    this.newIsSelectedValue = false;
-    if (newValue !== this.isSelected){
-      this.isSelected = newValue;
-      this.newIsSelectedValue = true;
-    }
-  }
+  return model;
 
 }

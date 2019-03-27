@@ -1,9 +1,9 @@
-export default function PopupDispatcherController(dispatcher, model, view){
+export default function PopupDispatcherController(dispatcher, view){
 
   var { subcomponents } = view;
   var { report, summary } = subcomponents;
 
-  //define reactions -----------------------------------------------------------
+  //define event reactions -----------------------------------------------------
 
   var onReadMoreRequest = function(){
     dispatcher.newAsyncAction('expand');
@@ -17,11 +17,15 @@ export default function PopupDispatcherController(dispatcher, model, view){
     dispatcher.newAsyncAction('contract');
   }
 
-  //load reactions -------------------------------------------------------------
+  var contractAndCloseRequest = function(){
+    dispatcher.newAction('contractAndClose');
+  }
+
+  //load event reactions -------------------------------------------------------
 
   summary.setEventListener('readMoreRequest', onReadMoreRequest);
   summary.setEventListener('closeRequest', onCloseRequest);
   report.setEventListener('contractRequest', onContractRequest);
-  report.setEventListener('closeRequest', onCloseRequest);
+  report.setEventListener('closeRequest', contractAndCloseRequest);
 
 }

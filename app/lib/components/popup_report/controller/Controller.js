@@ -15,7 +15,7 @@ export default function PopupReportController(dispatcher, emitter, model, view, 
   return {
     dispatcher: new DispatcherController(dispatcher, view),
     emitter: new EmitterController(emitter, dispatcher),
-    model: new ModelController(model, dispatcher),
+    model: new ModelController(model, dispatcher, popupModel),
     view: new ViewController(view, dispatcher, model, popupModel),
   }
 

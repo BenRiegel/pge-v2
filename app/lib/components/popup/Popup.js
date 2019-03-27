@@ -17,7 +17,7 @@ export default function Popup(){
   var emitter = new Emitter();
   var model = new Model();
   var view = new View(model);
-  var controller = new Controller(dispatcher, emitter, model, view);
+  var controller = new Controller(dispatcher, model, emitter, view);
 
   //public api -----------------------------------------------------------------
 
@@ -36,7 +36,7 @@ export default function Popup(){
   };
 
   this.setContent = function(content){
-    dispatcher.newAction('newContent', content);
+    dispatcher.newAction('setContent', content);
   };
 
   this.open = function(){
@@ -44,7 +44,7 @@ export default function Popup(){
   };
 
   this.close = function(){
-    controller.dispatcher.close();
+    //controller.dispatcher.close();
   };
 
 }

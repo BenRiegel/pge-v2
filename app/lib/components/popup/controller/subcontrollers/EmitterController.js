@@ -1,6 +1,6 @@
 export default function PopupEmitterController(emitter, dispatcher){
 
-  //define reactions -----------------------------------------------------------
+  //define event reactions -----------------------------------------------------
 
   var onOpen = function(){
     emitter.notify('open');
@@ -18,10 +18,11 @@ export default function PopupEmitterController(emitter, dispatcher){
     }
   }
 
-  //load reactions -------------------------------------------------------------
+  //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('public', 'open', onOpen);
   dispatcher.setListener('public', 'close', onClose);
+  dispatcher.setListener('public', 'contractAndClose', onClose);
   dispatcher.setListener('dispatcher', 'actionInProgress', onActionInProgress);
 
 }

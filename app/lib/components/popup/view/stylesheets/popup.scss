@@ -8,10 +8,7 @@ $popup-transition-duration: 0.75s;
   position: absolute;
   right: 50%;
   z-index: $popup-contracted-z-index;
-  visibility: hidden;
-}
-
-.popup.transition-dimensions{
+  overflow: visible;
   transition: left $popup-transition-duration, width $popup-transition-duration, height $popup-transition-duration;
 }
 

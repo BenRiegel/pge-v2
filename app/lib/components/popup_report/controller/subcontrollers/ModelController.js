@@ -1,13 +1,34 @@
-export default function PopupModelController(model, dispatcher){
+export default function PopupReportModelController(model, dispatcher, popupModel){
 
   //define reactions -----------------------------------------------------------
 
-  var onFadeInAndShow = function(content){
-    model.set('content', content);
+  var onResetLoadingStatus = function(){
+    model.set('loadingStatus', null);
+  }
+
+  var onPrepLoading = function(){
+    if (model.loadingStatus === null){
+      model.set('loadingStatus', 'prepping');
+    }
+  }
+
+  var onLoading = function(){
+    if (model.loadingStatus === 'prepping'){
+      model.set('loadingStatus', 'loading');
+    }
+  }
+
+  var onFinishLoading = function(){
+    if (model.loadingStatus === 'loading'){
+      model.set('loadingStatus', 'done');
+    }
   }
 
   //load reactions -------------------------------------------------------------
 
-  dispatcher.setListener('model', 'fadeInAndShow', onFadeInAndShow);
+  dispatcher.setListener('model', 'resetLoadingStatus', onResetLoadingStatus);
+  dispatcher.setListener('model', 'prepLoading', onPrepLoading);
+  dispatcher.setListener('model', 'loading', onLoading);
+  dispatcher.setListener('model', 'finishLoading', onFinishLoading);
 
 }

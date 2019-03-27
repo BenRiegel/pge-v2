@@ -8,7 +8,8 @@ import { waitAtLeast } from '../../../../utils/Utils.js';
 export default function PopupSummaryViewController(view, dispatcher, model, popupModel){
 
   var { nodes, subcomponents } = view;
-  var { root, content, closeButton, title, author, image, text, readMore } = nodes;
+  var { root, content, closeButton, title, author } = nodes;
+  var { inlineContainer, image, text, readMore } = nodes;
   var { loader } = subcomponents;
 
   //configure dom --------------------------------------------------------------
@@ -18,9 +19,10 @@ export default function PopupSummaryViewController(view, dispatcher, model, popu
   content.appendChildNode(closeButton.node);
   content.appendChildNode(title.node);
   content.appendChildNode(author.node);
-  content.appendChildNode(image.node);
-  content.appendChildNode(text.node);
-  content.appendChildNode(readMore.node);
+  content.appendChildNode(inlineContainer.node);
+  inlineContainer.appendChildNode(image.node);
+  inlineContainer.appendChildNode(text.node);
+  inlineContainer.appendChildNode(readMore.node);
 
   //define state change reactions ----------------------------------------------
 
@@ -49,55 +51,77 @@ export default function PopupSummaryViewController(view, dispatcher, model, popu
     image.resize();
   }
 
-  var adjustContentHeight = function(){
-    var offsetHeight = content.getProp('offsetHeight');
-    var scrollHeight = content.getProp('scrollHeight');
-    var deltaHeight = scrollHeight - offsetHeight;
-    var transitionTime = Math.abs(3 * deltaHeight);
-    return content.transitionHeight(scrollHeight, transitionTime);
-  }
-
-  var resetContentHeight = function(){
-    content.setStyle('height', '');
-  }
-
-  var loadContent = async function(){
-    if (model.props.content.hasChanged){
-      loader.show();
-      await waitAtLeast(500, async() => {
-        updateTitle();
-        updateAuthor();
-        updateText();
-        await updateImageSrc();
-        updateImageSize();
-      });
-      loader.hide();
+  var updateRootVisibility = function(){
+    if (popupModel.isOpen && !popupModel.isExpanded){
+      root.setVisibility('visible');
+    } else {
+      root.setVisibility('hidden');
     }
   }
 
-  var onFadeInAndShow = async function(){
-    root.setVisibility('visible');
-    await loadContent();
-    await adjustContentHeight();
-    await content.transitionOpacity('1');
+  var updateContentHeight = function(){
+    if (popupModel.isOpen){
+      var offsetHeight = content.getProp('offsetHeight');
+      var scrollHeight = content.getProp('scrollHeight');
+      var deltaHeight = scrollHeight - offsetHeight;
+      var transitionTime = Math.abs(3 * deltaHeight);
+      if (deltaHeight){
+        return content.transitionHeight(scrollHeight, transitionTime);
+      }
+    } else {
+      content.setStyle('height', '');
+    }
   }
 
-  var hide = function(){
-    content.setOpacity('0');
-    root.setVisibility('hidden');
-    resetContentHeight();
+  var updateContentOpacity = function(){
+    if (popupModel.isOpen){
+      if (popupModel.isExpanded){
+        return content.setOpacity('0', true);
+      } else {
+        return content.setOpacity('1', true);
+      }
+    } else {
+      content.setOpacity('0', false);
+    }
   }
 
-  var onFadeOutAndHide = async function(){
-    await content.transitionOpacity('0');
-    root.setVisibility('hidden');
-    resetContentHeight();
+  var updateLoaderState = function(){
+    if (model.props.loadingStatus.hasChanged){
+      if (model.loadingStatus === 'prepping'){
+        loader.activate();
+      } else if (model.loadingStatus === 'done'){
+        loader.terminate(false);
+      }
+    }
+  }
+
+  var updateContent = function(){
+    if (model.props.loadingStatus.hasChanged){
+      if (model.loadingStatus === 'loading'){
+        return waitAtLeast(500, async() => {
+          updateTitle();
+          updateAuthor();
+          updateText();
+          await updateImageSrc();
+          updateImageSize();
+        });
+      }
+    }
   }
 
   //load state change reactions ------------------------------------------------
 
-  dispatcher.setListener('view', 'fadeInAndShow', onFadeInAndShow);
-  dispatcher.setListener('view', 'hide', hide);
-  dispatcher.setListener('view', 'fadeOutAndHide', onFadeOutAndHide);
+  dispatcher.setListener('view', 'prepLoading', updateLoaderState);
+  dispatcher.setListener('view', 'loading', updateContent);
+  dispatcher.setListener('view', 'finishLoading', updateLoaderState);
+  dispatcher.setListener('view', 'rootVisibility', updateRootVisibility);
+  dispatcher.setListener('view', 'contentHeight', updateContentHeight);
+  dispatcher.setListener('view', 'contentOpacity', updateContentOpacity);
+
+  //init -----------------------------------------------------------------------
+
+  updateRootVisibility();
+  updateContentHeight();
+  updateContentOpacity();
 
 }

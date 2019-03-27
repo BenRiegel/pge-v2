@@ -34,7 +34,7 @@ var initWebMap = async function(){
 };
 
 var startLoading = function(){
-  loader.show();
+  loader.activate();
 };
 
 var load = async function(){
@@ -44,7 +44,7 @@ var load = async function(){
 };
 
 var finishLoading = async function(){
-  await loader.hide(true);
+  await loader.terminate(true);
 };
 
 var onInitApp = async function(){

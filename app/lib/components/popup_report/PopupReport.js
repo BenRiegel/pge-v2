@@ -27,16 +27,18 @@ export default function PopupReport(popupModel){
     emitter.setListener(eventName, listener);
   };
 
-  this.fadeInAndShow = function(content){
-    return dispatcher.newAsyncAction('fadeInAndShow', content);
+  this.update = function(actionName, ...args){
+    dispatcher.newAction(actionName, ...args);
   };
 
-  this.hide = function(){
-    dispatcher.newAction('hide');
+  this.updateAsync = function(actionName, ...args){
+    return dispatcher.newAsyncAction(actionName, ...args);
   };
 
-  this.fadeOutAndHide = function(){
-    return dispatcher.newAsyncAction('fadeOutAndHide');
-  };
+  this.loadContent = async function(){
+    dispatcher.newAction('prepLoading');
+    await dispatcher.newAsyncAction('loading');
+    dispatcher.newAction('finishLoading');
+  }
 
 }

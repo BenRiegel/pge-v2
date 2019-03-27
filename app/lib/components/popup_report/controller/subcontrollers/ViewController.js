@@ -14,34 +14,55 @@ export default function PopupReportViewController(view, dispatcher, model, popup
 
   //define state change reactions ----------------------------------------------
 
-  var loadContent = async function(){
-    if (model.props.content.hasChanged){
-      loader.show();
-      await iframe.setSrc(model.content.url);
-      loader.hide();
+  var updateLoaderState = function(){
+    if (model.props.loadingStatus.hasChanged){
+      if (model.loadingStatus === 'prepping'){
+        loader.activate();
+      } else if (model.loadingStatus === 'done'){
+        loader.terminate(false);
+      }
     }
   }
 
-  var onFadeInAndShow = async function(){
-    root.setVisibility('visible');
-    await loadContent();
-    await content.transitionOpacity('1');
+  var updateContent = function(){
+    if (model.props.loadingStatus.hasChanged){
+      if (model.loadingStatus === 'loading'){
+        return iframe.setSrc(popupModel.content.url);
+      }
+    }
   }
 
-  var onHide = function(){
-    content.setOpacity('0');
-    root.setVisibility('hidden');
+  var updateRootVisibility = function(){
+    if (popupModel.isOpen && popupModel.isExpanded){
+      root.setVisibility('visible');
+    } else {
+      root.setVisibility('hidden');
+    }
   }
 
-  var onFadeOutAndHide = async function(){
-    await content.transitionOpacity('0');
-    root.setVisibility('hidden');
+  var updateContentOpacity = function(){
+    if (popupModel.isOpen){
+      if (popupModel.isExpanded){
+        return content.setOpacity('1', true);
+      } else {
+        return content.setOpacity('0', true);
+      }
+    } else {
+      content.setOpacity('0', false);
+    }
   }
 
   //load state change reactions ------------------------------------------------
 
-  dispatcher.setListener('view', 'fadeInAndShow', onFadeInAndShow);
-  dispatcher.setListener('view', 'hide', onHide);
-  dispatcher.setListener('view', 'fadeOutAndHide', onFadeOutAndHide);
+  dispatcher.setListener('view', 'prepLoading', updateLoaderState);
+  dispatcher.setListener('view', 'loading', updateContent);
+  dispatcher.setListener('view', 'finishLoading', updateLoaderState);
+  dispatcher.setListener('view', 'rootVisibility', updateRootVisibility);
+  dispatcher.setListener('view', 'contentOpacity', updateContentOpacity);
+
+  //init -----------------------------------------------------------------------
+
+  updateRootVisibility();
+  updateContentOpacity();
 
 }

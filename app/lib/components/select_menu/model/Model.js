@@ -1,26 +1,21 @@
+//imports ----------------------------------------------------------------------
+
+import ComponentModel from '../../../utils/ComponentModel.js';
+
+
+//exports ----------------------------------------------------------------------
+
 export default function SelectMenuModel(){
+
+  //create state var -----------------------------------------------------------
+
+  var model = new ComponentModel({
+    selectedOptionKey: null,
+    isOpen: false,
+  });
 
   //public api -----------------------------------------------------------------
 
-  this.isOpen = false;
-
-  this.selectedOptionKey = null;
-
-  this.newSelectedOption = false;
-
-  this.newOpenState = false;
-
-  this.selectOption = function(newKey){
-    this.newSelectedOption = false;
-    if (this.selectedOptionKey !== newKey){
-      this.selectedOptionKey = newKey;
-      this.newSelectedOption = true;
-    }
-  };
-
-  this.toggleOpenState = function(){
-    this.isOpen = !this.isOpen;
-    this.newOpenState = true;
-  }
+  return model;
 
 }

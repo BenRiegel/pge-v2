@@ -12,7 +12,7 @@ export default function SelectMenuOptionViewController(view, config, model, menu
   labelContainer.appendChildNode(labelName.node);
   labelContainer.appendChildNode(labelCount.node);
 
-  //define state change rections -----------------------------------------------
+  //define view rections -------------------------------------------------------
 
   var updateIconVisibility = function(){
     if (model.isSelected){
@@ -25,10 +25,12 @@ export default function SelectMenuOptionViewController(view, config, model, menu
   var updateLabelIndent = function(){
     if (config.label.isIndented){
       if (menuModel.isOpen){
-        labelName.setIndentVisibility('visible');
+        labelName.setIndentStyle('visible');
       } else {
-        labelName.setIndentVisibility('hidden');
+        labelName.setIndentStyle('hidden');
       }
+    } else {
+      labelName.setIndentStyle('none');
     }
   }
 
@@ -64,44 +66,26 @@ export default function SelectMenuOptionViewController(view, config, model, menu
     }
   }
 
-  var updateRootHeight = function(){
+  var updateRootHeight = function(isTransitioning = true){
     if (model.isSelected || menuModel.isOpen){
-      root.setHeight('expanded');
+      return root.setHeight('expanded', isTransitioning && !model.isSelected);
     } else {
-      root.setHeight('contracted');
+      return root.setHeight('contracted', isTransitioning && !model.isSelected);
     }
   }
 
-  var transitionRootHeight = function(){
-    if (!model.isSelected){
-      if (menuModel.isOpen){
-        return root.transitionHeight('expanded');
-      } else {
-        return root.transitionHeight('contracted');
-      }
-    }
-  }
-
-  var updateRootOpacity = function(){
+  var updateRootOpacity = function(isTransitioning = true){
     if (model.isSelected || menuModel.isOpen){
-      root.setOpacity('1');
+      return root.setOpacity('1', isTransitioning && !model.isSelected);
     } else {
-      root.setOpacity('0');
+      return root.setOpacity('0', isTransitioning && !model.isSelected);
     }
   }
 
-  var transitionRootOpacity = function(){
-    if (!model.isSelected){
-      if (menuModel.isOpen){
-        return root.transitionOpacity('1');
-      } else {
-        return root.transitionOpacity('0');
-      }
-    }
-  }
+  //define event rections ------------------------------------------------------
 
   var onNewSelectedOption = function(){
-    if (model.newIsSelectedValue){
+    if (model.props.isSelected.hasChanged){
       updateIconVisibility();
     }
   }
@@ -109,6 +93,13 @@ export default function SelectMenuOptionViewController(view, config, model, menu
   //load reactions -------------------------------------------------------------
 
   dispatcher.setListener('view', 'newSelectedOption', onNewSelectedOption);
+  dispatcher.setListener('view', 'labelIndent', updateLabelIndent);
+  dispatcher.setListener('view', 'iconChar', updateIconChar);
+  dispatcher.setListener('view', 'iconBorderVisibility', updateIconBorderVisibility);
+  dispatcher.setListener('view', 'rootBorderRadius', updateRootBorderRadius);
+  dispatcher.setListener('view', 'rootVisibility', updateRootVisibility);
+  dispatcher.setListener('view', 'rootHeight', updateRootHeight);
+  dispatcher.setListener('view', 'rootOpacity', updateRootOpacity);
 
   //init -----------------------------------------------------------------------
 
@@ -118,18 +109,7 @@ export default function SelectMenuOptionViewController(view, config, model, menu
   updateIconBorderVisibility();
   updateRootBorderRadius();
   updateRootVisibility();
-  updateRootHeight();
-  updateRootOpacity();
-
-  //public api -----------------------------------------------------------------
-
-  this.updateIconVisibility = updateIconVisibility;
-  this.updateLabelIndent = updateLabelIndent;
-  this.updateIconChar = updateIconChar;
-  this.updateIconBorderVisibility = updateIconBorderVisibility;
-  this.updateRootBorderRadius = updateRootBorderRadius ;
-  this.updateRootVisibility = updateRootVisibility;
-  this.transitionRootHeight = transitionRootHeight;
-  this.transitionRootOpacity = transitionRootOpacity;
+  updateRootHeight(false);
+  updateRootOpacity(false);
 
 }

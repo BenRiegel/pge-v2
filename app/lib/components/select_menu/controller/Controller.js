@@ -14,7 +14,7 @@ export default function SelectMenuController(dispatcher, emitter, model, view){
 
   return {
     dispatcher: new DispatcherController(dispatcher, model, view),
-    emitter: new EmitterController(emitter, dispatcher),
+    emitter: new EmitterController(emitter, dispatcher, model),
     model: new ModelController(model, dispatcher),
     view: new ViewController(view, model, dispatcher),
   }

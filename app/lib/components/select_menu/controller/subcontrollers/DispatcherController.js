@@ -3,14 +3,14 @@ export default function SelectMenuDispatcherController(dispatcher, model, view){
   var { nodes } = view;
   var { root } = nodes;
 
-  //define reactions -----------------------------------------------------------
+  //define event reactions -----------------------------------------------------
 
-  var clickedOptionAction = function(selectedOptionKey){
+  var onClick = function(selectedOptionKey){
     return dispatcher.newAsyncAction('optionClick', selectedOptionKey);
   }
 
-  //load reactions -------------------------------------------------------------
+  //load event reactions -------------------------------------------------------
 
-  root.setListener('click', clickedOptionAction);
+  root.setListener('click', onClick);
 
 }

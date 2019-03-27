@@ -4,10 +4,10 @@ export default function SelectMenuOptionModelController(model, config, dispatche
 
   var onNewSelectedOption = function(){
     var isSelected = (menuModel.selectedOptionKey === config.key);
-    model.updateIsSelected(isSelected);
+    model.set('isSelected', isSelected);
   }
 
-  //load reactions -------------------------------------------------------------
+  //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('model', 'newSelectedOption', onNewSelectedOption);
 

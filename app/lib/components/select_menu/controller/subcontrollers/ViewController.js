@@ -12,22 +12,22 @@ export default function SelectMenuViewController(view, model, dispatcher){
 
   //helper functions -----------------------------------------------------------
 
-  var doForAllOptions = function(methodName, ...args){
+  var updateOptions = function(propName, ...args){
     for (var option of subcomponents){
-      option[methodName](...args);
+      option.update(propName, ...args);
     }
-  }
+  };
 
-  var doForAllOptionsAsync = function(methodName, ...args){
+  var updateOptionsAsync = function(propName, ...args){
     var promises = [];
     for (var option of subcomponents){
-      var p = option[methodName](...args);
+      var p = option.updateAsync(propName, ...args);
       promises.push(p);
     }
     return Promise.all(promises);
-  }
+  };
 
-  //event reactions ------------------------------------------------------------
+  //define view reactions ------------------------------------------------------
 
   var updateRootBorderRadius = function(){
     if (model.isOpen){
@@ -37,6 +37,34 @@ export default function SelectMenuViewController(view, model, dispatcher){
     }
   }
 
+  var updateSelectedStyling = function(){
+    updateOptions('newSelectedOption');
+  }
+
+  var updateOpenStyling = async function(){
+    if (model.isOpen){
+      updateRootBorderRadius();
+      updateOptions('labelIndent');
+      updateOptions('iconChar');
+      updateOptions('iconBorderVisibility');
+      updateOptions('rootBorderRadius');
+      updateOptions('rootVisibility');
+      await updateOptionsAsync('rootHeight');
+      await updateOptionsAsync('rootOpacity');
+    } else {
+      await updateOptionsAsync('rootOpacity');
+      await updateOptionsAsync('rootHeight');
+      updateOptions('rootVisibility');
+      updateOptions('rootBorderRadius');
+      updateOptions('iconBorderVisibility');
+      updateOptions('iconChar');
+      updateOptions('labelIndent');
+      updateRootBorderRadius();
+    }
+  }
+
+  //define event reactions -----------------------------------------------------
+
   var onLoadOptions = function( {optionsData} ){
     for (var optionData of optionsData){
       var option = new Option(optionData, model);
@@ -45,38 +73,16 @@ export default function SelectMenuViewController(view, model, dispatcher){
     }
   }
 
-  var updateOptionViews = async function(){
-    if (model.isOpen){
-      updateRootBorderRadius();
-      doForAllOptions('updateLabelIndent');
-      doForAllOptions('updateIconChar');
-      doForAllOptions('updateIconBorderVisibility');
-      doForAllOptions('updateRootBorderRadius');
-      doForAllOptions('updateRootVisibility');
-      await doForAllOptionsAsync('transitionRootHeight');
-      await doForAllOptionsAsync('transitionRootOpacity');
-    } else {
-      await doForAllOptionsAsync('transitionRootOpacity');
-      await doForAllOptionsAsync('transitionRootHeight');
-      doForAllOptions('updateRootVisibility');
-      doForAllOptions('updateRootBorderRadius');
-      doForAllOptions('updateIconBorderVisibility');
-      doForAllOptions('updateIconChar');
-      doForAllOptions('updateLabelIndent');
-      updateRootBorderRadius();
-    }
-  }
-
   var onOptionClick = async function(){
-    if (model.newSelectedOption){
-      doForAllOptions('onNewSelectedOption');
+    if (model.props.selectedOptionKey.hasChanged){
+      updateSelectedStyling();
     }
-    if (model.newOpenState){
-      await updateOptionViews();
+    if (model.props.isOpen.hasChanged){
+      await updateOpenStyling();
     }
   }
 
-  //load reactions -------------------------------------------------------------
+  //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('view', 'loadOptions', onLoadOptions);
   dispatcher.setListener('view', 'optionClick', onOptionClick);
