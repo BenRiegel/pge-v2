@@ -1,19 +1,19 @@
 //imports ----------------------------------------------------------------------
 
+import Controller from './controller/Controller.js';
+import Dispatcher from '../../utils/Dispatcher.js';
 import View from './view/View.js';
-import ViewController from './controllers/ViewController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTile(props, layerState){
+export default function BasemapTile(props, layerModel){
 
   //private code block ---------------------------------------------------------
 
+  var dispatcher = new Dispatcher();
   var view = new View();
-  var controller = {
-    view: new ViewController(view, props, layerState),
-  }
+  var controller = new Controller(props, dispatcher, view, layerModel);
 
   //public api -----------------------------------------------------------------
 
@@ -21,6 +21,13 @@ export default function BasemapTile(props, layerState){
 
   this.hasRendered = view.hasRendered;
 
-  this.update = controller.view.update;
+  this.update = function(actionName, ...args){
+    dispatcher.newAction(actionName, ...args);
+  };
+
+  this.updateAsync = function(actionName, ...args){
+    return dispatcher.newAsyncAction(actionName, ...args);
+  };
+
 
 }

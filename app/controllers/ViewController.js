@@ -4,7 +4,7 @@ import dispatcher from '../services/Dispatcher.js';
 import { INIT_SELECTED_TAG } from '../config/Config.js';
 import view from '../view/View.js';
 import { getOptionsData } from '../services/Tags.js';
-import { getGraphicPropsList } from '../services/Projects.js';
+import { getLocationsList } from '../services/Projects.js';
 import { waitAtLeast } from '../lib/utils/Utils.js';
 
 
@@ -28,9 +28,9 @@ var initSelectMenu = async function(){
 
 var initWebMap = async function(){
   await webMap.render();
-  var graphicPropsList = await getGraphicPropsList();
-  webMap.graphicsLayer.setGraphics(graphicPropsList);
-  webMap.graphicsLayer.setSelectedTag(INIT_SELECTED_TAG);
+  var locationsList = await getLocationsList();
+  webMap.graphicsLayer.setLocations(locationsList);
+  webMap.graphicsLayer.filterLocations(INIT_SELECTED_TAG);
 };
 
 var startLoading = function(){

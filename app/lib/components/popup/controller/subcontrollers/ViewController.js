@@ -171,6 +171,7 @@ export default function PopupViewController(view, model, dispatcher){
   dispatcher.setListener('view', 'contract', onContract);
   dispatcher.setListener('view', 'expand', onExpand);
   dispatcher.setListener('view', 'contractAndClose', onContractAndClose);
+  dispatcher.setListener('view', 'forceClose', onClose);
 
   //init -----------------------------------------------------------------------
 

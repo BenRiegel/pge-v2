@@ -22,14 +22,14 @@ export default function Loader(){
   this.rootNode = view.nodes.root.node;
 
   this.activate = function(){
-    dispatcher.newAction('activate');
+    dispatcher.newAction('updateIsActive', true);
   };
 
   this.terminate = function(fadeOut = false){
     if (fadeOut){
-      return dispatcher.newAsyncAction('terminate', fadeOut);
+      return dispatcher.newAsyncAction('updateIsActive', false);
     } else {
-      dispatcher.newAction('terminate', fadeOut);
+      dispatcher.newAction('updateIsActive', false);
     }
   };
 

@@ -10,7 +10,7 @@ import SelectMenu from '../../select_menu/SelectMenu.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function WebMapViewView(state){
+export default function WebMapViewView(model){
 
   //public api -----------------------------------------------------------------
 
@@ -21,8 +21,8 @@ export default function WebMapViewView(state){
   this.subcomponents = {
     zoomControls: new ZoomControls(),
     popup: new Popup(),
-    graphicsLayer: new GraphicsLayer(state),
-    basemapLayer: new BasemapLayer(state),
+    graphicsLayer: new GraphicsLayer(model),
+    basemapLayer: new BasemapLayer(model),
     selectMenu: new SelectMenu(),
   };
 

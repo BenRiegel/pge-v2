@@ -6,7 +6,7 @@ import TileContainerNode from './nodes/TileContainerNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayerView(state, webMapState){
+export default function BasemapLayerView(){
 
   //public api -----------------------------------------------------------------
 

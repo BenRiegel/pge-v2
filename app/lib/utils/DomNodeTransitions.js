@@ -31,7 +31,7 @@ export default class DomNodeAnimations extends DomNode{
     this.node.style.transitionDuration = (value === true) ? '' : '0s';
   }
 
-  setOpacity(newValue, isTransitioning){
+  setOpacity(newValue, isTransitioning = false){
     this.isTransitioning = isTransitioning;
     this.node.style.opacity = newValue;
     if (isTransitioning){

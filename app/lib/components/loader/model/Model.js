@@ -7,7 +7,7 @@ import ComponentModel from '../../../utils/ComponentModel.js';
 
 export default function LoaderModel(){
 
-  //create state var -----------------------------------------------------------
+  //create model var -----------------------------------------------------------
 
   var model = new ComponentModel({
     isActive: false,

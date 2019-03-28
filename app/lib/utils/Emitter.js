@@ -1,37 +1,22 @@
-export default function Emitter(){
+export default function Emitter(eventNames){
 
-  //private code block ---------------------------------------------------------
-
-  var events = new Map();
+  var listeners = {};
 
   //public api -----------------------------------------------------------------
 
   return {
-    broadcast: function(eventName, ...args){
-      var listeners = events.get(eventName) || [];
-      for (var listener of listeners){
-        listener(...args);
+    setListener: function(eventName, cb){
+      if (eventNames && !eventNames.includes(eventName)){
+        throw new Error(eventName + ' is not a valid event name');
+      } else {
+        listeners[eventName] = cb;
       }
     },
-    asyncBroadcast: async function(eventName, ...args){
-      var listeners = events.get(eventName) || [];
-      var promises = [];
-      for (var listener of listeners){
-        var p = listener(...args);
-        promises.push(p);
+    notify: function(eventName, ...args){
+      var listener = listeners[eventName];
+      if (listener){
+        return listener(...args);
       }
-      await Promise.all(promises);
-    },
-    addListener: function(eventName, cb){
-      var listeners = events.get(eventName) || [];
-      listeners.push(cb);
-      events.set(eventName, listeners);
-    },
-    removeListener: function(eventName, cb){
-      var listeners = events.get(eventName) || [];
-      listeners = listeners.filter( listener => listener !== cb );
-      events.set(eventName, listeners);
     },
   };
-
-};
+}

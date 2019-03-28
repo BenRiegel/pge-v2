@@ -14,16 +14,19 @@ var projectsReceived = new Promise(async resolve => {
 
 //exports ----------------------------------------------------------------------
 
-export async function getGraphicPropsList(){
+export async function getLocationsList(){
   var projectsList = await projectsReceived;
   var graphicPropsList = [];
   for (var project of projectsList){
     var attributes = Object.assign({}, project);
     delete attributes.id;
     delete attributes.geoCoords;
+    delete attributes.tags;
     var graphicProps = {
       id: project.id,
       worldCoords: latLonToWebMercatorXY(project.geoCoords),
+      tags: project.tags,
+      hasSelectedTag: undefined,
       attributes,
     }
     graphicPropsList.push(graphicProps);

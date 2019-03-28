@@ -5,12 +5,12 @@ export default function ZoomControlsDispatcherController(dispatcher, view){
 
   //define reactions -----------------------------------------------------------
 
-  var buttonClickAction = function(buttonId){
+  var onClick = function(buttonId){
     dispatcher.newAction('buttonClick', buttonId);
   }
 
   //load reactions -------------------------------------------------------------
 
-  root.setListener('click', buttonClickAction);
+  root.setListener('click', onClick);
 
 }

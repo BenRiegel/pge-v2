@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import ObservedVar from './ObservedVar2.js';
-import ObservedObj from './ObservedObj2.js';
+import ObservedVar from './ObservedVar.js';
+import ObservedObj from './ObservedObj.js';
 
 
 //exports ----------------------------------------------------------------------

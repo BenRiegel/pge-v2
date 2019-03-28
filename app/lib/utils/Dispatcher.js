@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from './Emitter3.js';
+import Emitter from './Emitter.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -37,6 +37,7 @@ export default function Dispatcher(){
   //public api -----------------------------------------------------------------
 
   return {
+    isAsync: false,
     setListener: function(target, eventName, listener){
       emitters[target].setListener(eventName, listener);
     },
@@ -47,6 +48,7 @@ export default function Dispatcher(){
       isEnabled = false;
     },
     newAction(eventName, ...args){
+      this.isAsync = false;
       if (isEnabled && !isDispatching){
         emitters.model.notify(eventName, ...args);
         emitters.view.notify(eventName, ...args);
@@ -54,6 +56,7 @@ export default function Dispatcher(){
       }
     },
     async newAsyncAction(eventName, ...args){
+      this.isAsync = true;
       if (isEnabled && !isDispatching){
         setIsDispatching(true);
         emitters.model.notify(eventName, ...args);

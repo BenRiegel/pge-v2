@@ -1,57 +1,22 @@
-//imports ----------------------------------------------------------------------
-
 import ObservedVar from './ObservedVar.js';
 
 
-//exports ----------------------------------------------------------------------
-
-export default function ObservedObj(obj){
-
-  var isUpdating = false;
-
-  var keys = Object.keys(obj);
-
-  var props = {};
-  for (let key of keys){
-    props[key] = new ObservedVar(obj[key]);
+export default class ObservedObj extends ObservedVar{
+  constructor(initObj){
+    super(initObj);
+    this.value = initObj;
+    this.hasChanged = false;
   }
-
-  var state = {
-    props,
-    addListener(propName, listener){
-      props[propName].addListener(listener);
-    },
-    removeListener(propName, listener){
-      props[propName].removeListener(listener);
-    },
-    addListenerByType(propName, type, listener){
-      props[propName].addListenerByType(type, listener);
-    },
-    set(propName, value){
-      if (!isUpdating){
-        props[propName].set(value);
-      } else {
-        //console.log('rejected assignment', propName, value);
+  set(newObj){
+    this.hasChanged = false;
+    var keys = Object.keys(newObj);
+    for (var key of keys){
+      var initValue = this.value[key];
+      var newValue = newObj[key];
+      if (initValue !== newValue){
+        this.value[key] = newValue;
+        this.hasChanged = true;
       }
-    },
-    async setAsync(propName, value){
-      if (!isUpdating){
-        isUpdating = true;
-        await props[propName].set(value);
-        isUpdating = false;
-      } else {
-        //console.log('rejected assignment', propName, value);
-      }
-    },
-  };
-
-  for (let key of keys){
-    Object.defineProperty(state, key, {
-      get: function() {
-             return props[key].value;
-           },
-    });
+    }
   }
-
-  return state;
 }

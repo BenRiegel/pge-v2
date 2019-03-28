@@ -1,26 +1,23 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../utils/Emitter.js';
-import State from './state/State.js';
+import Dispatcher from '../../utils/Dispatcher.js';
+import Emitter from './services/Emitter.js';
+import Model from './model/Model.js';
 import View from './view/View.js';
-import ViewController from './controllers/ViewController.js';
-import StateController from './controllers/StateController.js';
-import EmitterController from './controllers/EmitterController.js';
+import Controller from './controller/Controller.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayer(webMapState){
+export default function BasemapLayer(webMapModel){
 
   //private code block ---------------------------------------------------------
 
+  var dispatcher = new Dispatcher();
   var emitter = new Emitter();
-  var state = new State;
-  var view = new View(state, webMapState);
-  var controller = {
-    emitter: new EmitterController(emitter),
-    state: new StateController(state, webMapState),
-    view: new ViewController(view, state, webMapState),
-  }
+  var model = new Model;
+  var view = new View();
+  var controller = new Controller(dispatcher, emitter, model, view, webMapModel)
+
 
   //public api -----------------------------------------------------------------
 
@@ -33,24 +30,27 @@ export default function BasemapLayer(webMapState){
   };
 
   this.enable = function(){
-    //state.set('isEnabled', true);
+    dispatcher.enable();
   };
 
   this.disable = function(){
-    //state.set('isEnabled', false);
+    dispatcher.disable();
   };
 
-  this.updateOnZoomEnd = async function(){
-    controller.state.updateProps();
-    await controller.view.updateOnZoomEnd();
+  this.updateOnPan = function(cumulativePan, scaleFactor){
+    dispatcher.newAction('pan', cumulativePan, scaleFactor);
+  };
+
+  this.updateOnZoomEnd = function(){
+    return dispatcher.newAsyncAction('zoomEnd');
   };
 
   this.updateOnPanEnd = function(){
-    controller.view.updateOnPanEnd();
+    return dispatcher.newAsyncAction('panEnd');
   }
 
-  this.updateOnZoomHome = function(){
-    controller.state.updateProps();
+  /*this.updateOnZoomHome = function(){
+    controller.model.updateProps();
     controller.view.updateOnZoomHomeEnd();
   }
 
@@ -60,6 +60,6 @@ export default function BasemapLayer(webMapState){
 
   this.fadeUp = function(){
     return controller.view.fadeUp();
-  }
+  }*/
 
 }

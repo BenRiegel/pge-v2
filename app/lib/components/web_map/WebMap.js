@@ -1,11 +1,9 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../utils/Emitter.js';
-import State from './state/State.js';
+import Dispatcher from '../../utils/Dispatcher.js';
+import Model from './model/Model.js';
 import View from './view/View.js';
-import DispatcherController from './controllers/DispatcherController.js';
-import StateController from './controllers/StateController.js';
-import ViewController from './controllers/ViewController.js';
+import Controller from './controller/Controller.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -14,14 +12,10 @@ export default function WebMap(config){
 
   //private code block ---------------------------------------------------------
 
-  var dispatcher = new Emitter();
-  var state = new State(config);
-  var view = new View(state);
-  var controller = {
-    dispatcher: new DispatcherController(dispatcher, view),
-    state: new StateController(state, dispatcher, view),
-    view: new ViewController(view, state, dispatcher),
-  }
+  var dispatcher = new Dispatcher();
+  var model = new Model(config);
+  var view = new View(model);
+  var controller = new Controller(config, dispatcher, model, view);
 
   //public api -----------------------------------------------------------------
 
@@ -31,10 +25,8 @@ export default function WebMap(config){
     //controller.view.configure();
   };
 
-
   this.graphicsLayer = view.subcomponents.graphicsLayer;
 
   this.selectMenu = view.subcomponents.selectMenu;
-
 
 }

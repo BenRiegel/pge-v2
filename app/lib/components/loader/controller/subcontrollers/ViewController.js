@@ -15,15 +15,23 @@ export default function LoaderViewController(view, model, dispatcher){
     } else {
       animation.setVisibility('hidden');
     }
-  }
+  };
 
-  var updateRootOpacity = function(isTransitioning = false){
+  var updateRootOpacity = function(){
     if (model.isActive){
-      root.setOpacity('1', false);
+      root.setOpacity('1');
     } else {
-      return root.setOpacity('0', isTransitioning);
+      root.setOpacity('0');
     }
-  }
+  };
+
+  var updateRootOpacityAsync = function(){
+    if (model.isActive){
+      return root.setOpacity('1', true);
+    } else {
+      return root.setOpacity('0', true);
+    }
+  };
 
   var updateRootVisibility = function(){
     if (model.isActive){
@@ -31,47 +39,40 @@ export default function LoaderViewController(view, model, dispatcher){
     } else {
       root.setVisibility('hidden');
     }
-  }
+  };
 
-  var updateProps = function(isFading){
+  var updateViewProps = function(){
     updateAnimationVisibility();
-    updateRootOpacity(isFading);
+    updateRootOpacity();
     updateRootVisibility();
-  }
+  };
 
-  var updatePropsAsync = async function(isFading){
+  var updateViewPropsAsync = async function(){
     updateAnimationVisibility();
-    await updateRootOpacity(isFading);
+    await updateRootOpacityAsync();
     updateRootVisibility();
-  }
+  };
 
   //define event reactions -----------------------------------------------------
 
-  var onActivate = function(){
+  var onUpdateIsActive = function(){
     if (model.props.isActive.hasChanged){
-      updateProps(false);
-    }
-  };
-
-  var onTerminate = function(isFading){
-    if (model.props.isActive.hasChanged){
-      if (isFading){
-        return updatePropsAsync(isFading);
+      if (dispatcher.isAsync){
+        return updateViewPropsAsync();
       } else {
-        updateProps(isFading);
+        updateViewProps();
       }
     }
   };
 
   //load event reactions -------------------------------------------------------
 
-  dispatcher.setListener('view', 'activate', onActivate);
-  dispatcher.setListener('view', 'terminate', onTerminate);
+  dispatcher.setListener('view', 'updateIsActive', onUpdateIsActive);
 
   //init -----------------------------------------------------------------------
 
   updateAnimationVisibility();
-  updateRootOpacity(false);
+  updateRootOpacity();
   updateRootVisibility();
 
 }

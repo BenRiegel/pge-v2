@@ -44,7 +44,7 @@ export default function Popup(){
   };
 
   this.close = function(){
-    //controller.dispatcher.close();
+    dispatcher.newAction('forceClose');
   };
 
 }

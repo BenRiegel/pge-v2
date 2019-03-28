@@ -35,5 +35,6 @@ export default function PopupModelController(model, dispatcher){
   dispatcher.setListener('model', 'expand', onExpand);
   dispatcher.setListener('model', 'contract', onContract);
   dispatcher.setListener('model', 'contractAndClose', onContractAndClose);
+  dispatcher.setListener('model', 'forceClose', onClose);
 
 }

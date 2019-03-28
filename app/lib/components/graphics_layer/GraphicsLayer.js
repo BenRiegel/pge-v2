@@ -1,68 +1,72 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from '../../utils/Emitter.js';
-import State from './state/State.js';
+import Controller from './controller/Controller.js';
+import Dispatcher from '../../utils/Dispatcher.js';
+import Emitter from './services/Emitter.js';
+import Model from './model/Model.js';
 import View from './view/View.js';
-import ViewController from './controllers/ViewController.js';
-import EmitterController from './controllers/EmitterController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayer(webMapState){
+export default function GraphicsLayer(webMapModel){
 
   //private code block ---------------------------------------------------------
 
-  var state = new State();
-  var view = new View();
   var emitter = new Emitter();
-  var controller = {
-    view: new ViewController(view, state, webMapState),
-    emitter: new EmitterController(emitter, view),
-  }
+  var dispatcher = new Dispatcher();
+  var model = new Model();
+  var view = new View();
+  var controller = new Controller(dispatcher, emitter, model, view, webMapModel);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
-  this.addEventListener = function(eventName, cb){
-    emitter.addListener(eventName, cb);
+  this.setEventListener = function(eventName, listener){
+    emitter.setListener(eventName, listener);
   };
 
   this.enable = function(){
-    controller.view.updateDomListener(true);
+    dispatcher.enable();
   };
 
   this.disable = function(){
-    controller.view.updateDomListener(false);
+    dispatcher.disable();
   };
 
-  this.setGraphics = function(graphicPropsList){
-    controller.view.setGraphics(graphicPropsList);
+  this.setLocations = function(graphicPropsList){
+    dispatcher.newAction('setLocations', graphicPropsList);
   }
 
-  this.updateClusters = function(){
-    controller.view.updateClusters();
+  this.filterLocations = function(selectedTag){
+    dispatcher.newAction('selectLocations', selectedTag);
   }
 
-  this.setSelectedTag = function(selectedTag){
-    state.set('selectedTag', selectedTag);
+  this.selectGraphic = function(graphicId){
+    dispatcher.newAction('selectGraphic', graphicId);
   }
 
-  this.selectPointGraphic = function(graphicId){
-    state.set('selectedGraphic', graphicId);
+  this.unselectGraphic = function(graphicId){
+    dispatcher.newAction('selectGraphic', null);
   }
 
-  this.selectClusterGraphic = function(graphicId){
-    controller.view.selectClusterGraphic(graphicId);
+  this.updateGraphics = function(){
+    dispatcher.newAction('updateGraphics');
   }
+
+  this.updateOnPan = function(viewpoint, zoomFactor){
+    dispatcher.newAction('pan', viewpoint, zoomFactor);
+  }
+
+
 
   this.fadeDown = function(){
-    return controller.view.fadeDown();
+    //return controller.view.fadeDown();
   }
 
   this.fadeUp = function(){
-    return controller.view.fadeUp();
+    //return controller.view.fadeUp();
   }
 
 }
