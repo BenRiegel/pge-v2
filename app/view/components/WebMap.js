@@ -9,12 +9,14 @@ import '../stylesheets/web_map.scss';
 
 //module code block ------------------------------------------------------------
 
-var { width, height } = rootNode.getBoundingClientRect();
+var webmapNode = document.getElementById('webmap');
+var { width, height } = webmapNode.getBoundingClientRect();
 
 var config = {
+  rootNodeId: 'webmap',
   initCoords: latLonToWebMercatorXY({lon:-5, lat:28}),
   initScale: levelToValue(2),
-  mapDimensions: { width, height },
+  mapDimensions: { width, height },  //take this out eventually
 }
 
 var webMap = new WebMap(config);

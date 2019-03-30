@@ -9,6 +9,7 @@ export default function BasemapLayerModel(){
 
   //create model var -----------------------------------------------------------
 
+  //get rid of this eventually
   var model = new ComponentModel({
     imageTileLevel: undefined,
     numBasemapTiles: undefined,

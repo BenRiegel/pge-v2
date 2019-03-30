@@ -20,8 +20,23 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
 
   //helper functions -----------------------------------------------------------
 
-  var numTilesWidth = 15;
-  var numTilesHeight = 7;
+  var webMapDimensions;
+  var activeNum = 0;
+  var activeTileContainer = undefined;
+  var resetTileContainer = undefined;
+  var activeTileSet = undefined;
+  var resetTileSet = undefined;
+  var numTilesWidth;
+  var numTilesHeight;
+
+
+
+  var setLayerDimensions = function({width, height}){
+    var widthPixelsNeeded = 4 * width;
+    numTilesWidth = Math.ceil(widthPixelsNeeded / 256);
+    var heightPixelsNeeded = 4 * height;
+    numTilesHeight = Math.ceil(heightPixelsNeeded / 256);
+  }
 
   var getCenterTileProps = function(){
     var centerXMap = webMapModel.x / webMapModel.scale;
@@ -29,22 +44,16 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
     return {
       xIndex: Math.floor(centerXMap / 256),
       yIndex: Math.floor(centerYMap / 256),
-      xOffset: (512 - centerXMap),
-      yOffset: (256 - centerYMap),
+      xOffset: (webMapDimensions.width / 2 - centerXMap),
+      yOffset: (webMapDimensions.height / 2 - centerYMap),
     }
   }
 
   var createTiles = function(){
-    var centerTileProps = getCenterTileProps();
     for (var i = 0; i < numTilesWidth; i++){
       for (var j = 0; j < numTilesHeight; j++){
-        var xIndex = i - Math.floor(numTilesWidth / 2) + centerTileProps.xIndex;
-        var yIndex = j - Math.floor(numTilesHeight / 2) + centerTileProps.yIndex;
-        var xScreen = xIndex * 256 + centerTileProps.xOffset;
-        var yScreen = yIndex * 256 + centerTileProps.yOffset;
-        var props = { xIndex, yIndex, xScreen, yScreen };
-        var tile1 = new BasemapTile(props, state);
-        var tile2 = new BasemapTile(props, state);
+        var tile1 = new BasemapTile(state);
+        var tile2 = new BasemapTile(state);
         subcomponents.tileSet1.push(tile1);
         subcomponents.tileSet2.push(tile2);
         tileContainer1.appendChildNode(tile1.rootNode);
@@ -53,15 +62,15 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
     }
   }
 
-  var updateRootTranslate = function(cumulativePan, zoomScaleFactor){
+  var updateRootTranslate = function(cumulativePan, zoomScaleFactor = 1){
     var x = Math.floor(-cumulativePan.x);
     var y = Math.floor(-cumulativePan.y);
     var translateStr = `scale(${zoomScaleFactor},${zoomScaleFactor}) translate(${x}px, ${y}px)`;
-    view.activeTileContainer.setStyle('transform', translateStr);
+    activeTileContainer.setStyle('transform', translateStr);
   }
 
   var updateResetTiles = function(){
-    view.resetTileContainer.setStyle('transform', '');
+    resetTileContainer.setStyle('transform', '');
     var centerTileProps = getCenterTileProps();
     var index = 0;
     var promises = [];
@@ -69,10 +78,10 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
       for (var j = 0; j < numTilesHeight; j++){
         var xIndex = i - Math.floor(numTilesWidth / 2) + centerTileProps.xIndex;
         var yIndex = j - Math.floor(numTilesHeight / 2) + centerTileProps.yIndex;
-        var xScreen = xIndex * 256 + centerTileProps.xOffset;
+        var xScreen = xIndex * 256 + centerTileProps.xOffset;                        //make screencoords static
         var yScreen = yIndex * 256 + centerTileProps.yOffset;
         var props = { xIndex, yIndex, xScreen, yScreen };
-        var tile = view.resetTileSet[index];
+        var tile = resetTileSet[index];
         var p = tile.updateAsync('update', props);
         promises.push(p);
         index+=1;
@@ -82,54 +91,59 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
   }
 
   var toggleActiveTiles = function(){
-    view.activeNum = 1 - view.activeNum;
-    view.activeTileContainer = tileContainers[view.activeNum];
-    view.activeTileContainer.setStyle('z-index', '1');
-    view.resetTileContainer = tileContainers[1 - view.activeNum];
-    view.resetTileContainer.setStyle('z-index', '0');
-    view.activeTileSet = tileSets[view.activeNum];
-    view.resetTileSet = tileSets[1 - view.activeNum];
+    activeNum = 1 - activeNum;
+    activeTileContainer = tileContainers[activeNum];
+    activeTileContainer.setStyle('z-index', '1');
+    activeTileContainer.setOpacity('1');
+    resetTileContainer = tileContainers[1 - activeNum];
+    resetTileContainer.setStyle('z-index', '0');
+    resetTileContainer.setOpacity('0');
+    activeTileSet = tileSets[activeNum];
+    resetTileSet = tileSets[1 - activeNum];
   }
 
   var onZoomEnd = async function(){
-    view.resetTileContainer.setStyle('transform', '');
+    resetTileContainer.setStyle('transform', '');
+    resetTileContainer.setOpacity('1');
     await updateResetTiles();
-    await view.activeTileContainer.setOpacity('0', true);
+    await activeTileContainer.setOpacity('0', true);
     toggleActiveTiles();
-    view.resetTileContainer.setOpacity('1');
   }
 
   var onPanEnd = async function(){
-    view.resetTileContainer.setStyle('transform', '');
+    resetTileContainer.setStyle('transform', '');
     await updateResetTiles();
     toggleActiveTiles();
   };
 
-  //load state change reactions ------------------------------------------------
-
-  dispatcher.setListener('view', 'pan', updateRootTranslate);
-  dispatcher.setListener('view', 'zoomEnd', onZoomEnd);
-  dispatcher.setListener('view', 'panEnd', onPanEnd);
-
-  //init -----------------------------------------------------------------------
-
-  createTiles();
-  toggleActiveTiles();
-
-  //public api -----------------------------------------------------------------
-
-/*  this.updateOnZoomHomeEnd = async function(){
-    view.resetTileContainer.setStyle('transform', '');
-    await updateResetTiles();
-    toggleActiveTiles();
+  var onConfigure = function(mapDimensions){
+    webMapDimensions = mapDimensions;
+    setLayerDimensions(mapDimensions);
+    createTiles();
+    return onPanEnd();
   }
 
-  this.fadeDown = function(){
+  var onFadeDown = function(){
     return root.setOpacity('0', true);
   }
 
-  this.fadeUp = function(){
+  var onFadeUp = function(){
     return root.setOpacity('1', true);
-  }*/
+  }
+
+  //load state change reactions ------------------------------------------------
+
+  dispatcher.setListener('view', 'pan', updateRootTranslate);
+  dispatcher.setListener('view', 'zoom', updateRootTranslate);
+  dispatcher.setListener('view', 'zoomEnd', onZoomEnd);
+  dispatcher.setListener('view', 'panEnd', onPanEnd);
+  dispatcher.setListener('view', 'configure', onConfigure);
+  dispatcher.setListener('view', 'fadeDown', onFadeDown);
+  dispatcher.setListener('view', 'fadeUp', onFadeUp);
+  dispatcher.setListener('view', 'zoomHome', onPanEnd);
+
+  //init -----------------------------------------------------------------------
+
+  toggleActiveTiles();
 
 }

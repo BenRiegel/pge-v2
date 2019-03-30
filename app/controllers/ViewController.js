@@ -17,7 +17,6 @@ var { loader, webMap } = components;
 //configure dom ----------------------------------------------------------------
 
 root.appendChild(loader.rootNode);
-root.appendChild(webMap.rootNode);
 
 //define helper functions ------------------------------------------------------
 
@@ -27,7 +26,7 @@ var initSelectMenu = async function(){
 }
 
 var initWebMap = async function(){
-  await webMap.render();
+  await webMap.hasRendered;
   var locationsList = await getLocationsList();
   webMap.graphicsLayer.setLocations(locationsList);
   webMap.graphicsLayer.filterLocations(INIT_SELECTED_TAG);

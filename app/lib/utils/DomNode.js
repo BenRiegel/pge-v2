@@ -74,4 +74,8 @@ export default class DomNode{
     return window.getComputedStyle(this.node, null).getPropertyValue(styleName);
   }
 
+  getDimensions(){
+    return this.node.getBoundingClientRect();
+  }
+
 };

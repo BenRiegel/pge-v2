@@ -22,57 +22,6 @@ export default function WebMapViewController(view, model, dispatcher){
 
   //define state change reactions ----------------------------------------------
 
-  /*var selectMenuEventStart = function(){
-    zoomControls.disable();
-    popup.disable();
-    graphicsLayer.disable();
-  }
-
-  var selectMenuEventEnd = function(){
-    zoomControls.enable();
-    popup.enable();
-    graphicsLayer.enable();
-  }
-
-
-
-  var openPopup = function(content){
-    popup.setContent(content);
-    popup.open();
-  }
-
-  var selectGraphic = function(graphicId){
-    graphicsLayer.selectGraphic(graphicId);
-  };
-
-  var unselectGraphic = function(){
-    graphicsLayer.unselectGraphic();
-  }
-
-  var onZoomEnd = async function(){
-    graphicsLayer.unselectGraphic();
-    graphicsLayer.updateGraphics();
-    await basemapLayer.updateOnZoomEnd();
-  }
-
-  var onZoomHomeBegin = async function(){
-    var p1 = graphicsLayer.fadeDown();
-    var p2 = basemapLayer.fadeDown();
-    await Promise.all([p1, p2]);
-  }
-
-  var onZoomHomeEnd = async function(){
-    graphicsLayer.updateGraphics();
-    await basemapLayer.updateOnZoomHome();
-    var p1 = graphicsLayer.fadeUp();
-    var p2 = basemapLayer.fadeUp();
-    await Promise.all([p1, p2]);
-  }
-
-  var onPanEnd = async function(){
-    await basemapLayer.updateOnPanEnd();
-  }*/
-
   var calculateNumFramesPan = function(){
     var deltaXPx = Math.abs(model.coords.x.deltaValue / model.scale);
     var deltaYPx = Math.abs(model.coords.y.deltaValue / model.scale);
@@ -81,7 +30,7 @@ export default function WebMapViewController(view, model, dispatcher){
     return Math.max(15, numFrames);
   }
 
-  var animate = async function(numFrames){
+  var animate = async function(numFrames, animationType){
     var differences = [];
     var previousTime = new Date().getTime();
     var totalTime = numFrames / 60 * 1000;
@@ -107,12 +56,15 @@ export default function WebMapViewController(view, model, dispatcher){
           var newY = model.coords.y.previousValue + percent * model.coords.y.deltaValue;
           var deltaYPx = (newY - model.coords.y.previousValue) / model.coords.scale.previousValue;
           var newScale = model.coords.scale.previousValue + percent * model.coords.scale.deltaValue;
-          var zoomFactor = baselineScale / newScale;
-          graphicsLayer.updateOnPan( {x:newX, y:newY, scale:newScale}, zoomFactor);
-          basemapLayer.updateOnPan( {x:deltaXPx, y:deltaYPx}, zoomFactor);
 
-      //    console.log(newX, newY, newScale);
-          //state.set(newX, newY, newScale);
+          if (animationType === 'pan'){
+            graphicsLayer.updateOnPan( {x:newX, y:newY, scale:newScale} );
+            basemapLayer.updateOnPan( {x:deltaXPx, y:deltaYPx} );
+          } else {
+            var zoomFactor = baselineScale / newScale;
+            graphicsLayer.updateOnZoom( {x:newX, y:newY, scale:newScale}, zoomFactor);
+            basemapLayer.updateOnZoom( {x:deltaXPx, y:deltaYPx}, zoomFactor);
+          }
           var newTime = new Date().getTime();
           differences.push(newTime - previousTime);
           previousTime = newTime;
@@ -131,13 +83,13 @@ export default function WebMapViewController(view, model, dispatcher){
 
   var doPanAnimation = async function(){
     var numFrames = calculateNumFramesPan();
-    await animate(numFrames);
+    await animate(numFrames, 'pan');
     await basemapLayer.updateOnPanEnd();
   }
 
   var doZoomAnimation = async function(){
     var numFrames = 40;
-    await animate(numFrames);
+    await animate(numFrames, 'zoom');
     var p = basemapLayer.updateOnZoomEnd();
     await wait(200);
     graphicsLayer.unselectGraphic();
@@ -148,13 +100,25 @@ export default function WebMapViewController(view, model, dispatcher){
   var doAnimation = function(){
     if (model.coords.scale.hasChanged){
       return doZoomAnimation();
-      /*if (actionType === 'zoomHome' && !changeSummary.scale.canZoomHome){
-        await doZoomHome(changeSummary);
-      } else {
-        await doZoomAnimation(changeSummary);
-      }*/
     } else if (model.coords.x.hasChanged || model.coords.y.hasChanged){
       return doPanAnimation();
+    }
+  }
+
+  var doZoomHome = async function(){
+    if (model.hasChanged){
+      if (model.coords.scale.canAnimateHome){
+        return doAnimation();
+      } else {
+        var p1 = graphicsLayer.fadeDown();
+        var p2 = basemapLayer.fadeDown();
+        await Promise.all([p1, p2]);
+        graphicsLayer.updateGraphics();
+        await basemapLayer.updateOnZoomHome();
+        var p3 = graphicsLayer.fadeUp();
+        var p4 = basemapLayer.fadeUp();
+        await Promise.all([p3, p4]);
+      }
     }
   }
 
@@ -187,20 +151,39 @@ export default function WebMapViewController(view, model, dispatcher){
   }
 
   var onZoomHomeRequest = async function(){
-    //await doAnimation();
+    await doZoomHome();
   }
 
   var onPopupClosed = function(){
     graphicsLayer.unselectGraphic();
   }
 
+  var onPan = function(cumulativePan){
+    graphicsLayer.updateOnPan(model, 1);
+    basemapLayer.updateOnPan(cumulativePan, 1);
+  }
+
+  var onPanEnd = function(){
+    basemapLayer.updateOnPanEnd();
+  }
+
+  var onConfigure = function(){
+    var {width, height} = root.getDimensions();
+    view.subcomponents.graphicsLayer.configure( {width, height} );
+    return view.subcomponents.basemapLayer.configure( {width, height} );
+  }
+
   //load reactions -------------------------------------------------------------
 
+  dispatcher.setListener('view', 'configure', onConfigure);
   dispatcher.setListener('view', 'newSelectedTag', onNewSelectedTag);
   dispatcher.setListener('view', 'pointGraphicSelected', onPointGraphicSelected);
   dispatcher.setListener('view', 'clusterGraphicSelected', onClusterGraphicSelected);
   dispatcher.setListener('view', 'zoomInRequest', onZoomInRequest);
+  dispatcher.setListener('view', 'zoomHomeRequest', onZoomHomeRequest);
   dispatcher.setListener('view', 'zoomOutRequest', onZoomOutRequest);
   dispatcher.setListener('view', 'popupClosed', onPopupClosed);
+  dispatcher.setListener('view', 'pan', onPan);
+  dispatcher.setListener('view', 'panEnd', onPanEnd);
 
 }

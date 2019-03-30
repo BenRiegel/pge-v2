@@ -14,19 +14,20 @@ export default function WebMap(config){
 
   var dispatcher = new Dispatcher();
   var model = new Model(config);
-  var view = new View(model);
+  var view = new View(config, model);
   var controller = new Controller(config, dispatcher, model, view);
 
   //public api -----------------------------------------------------------------
 
-  this.rootNode = view.nodes.root.node;
-
-  this.render = async function(){
-    //controller.view.configure();
+  return {
+    rootNode: view.nodes.root.node,
+    hasRendered: dispatcher.newAsyncAction('configure'),
+    get graphicsLayer(){
+      return view.subcomponents.graphicsLayer;
+    },
+    get selectMenu(){
+      return view.subcomponents.selectMenu;
+    },
   };
-
-  this.graphicsLayer = view.subcomponents.graphicsLayer;
-
-  this.selectMenu = view.subcomponents.selectMenu;
 
 }

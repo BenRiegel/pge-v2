@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import Coord from '../../lib/Coord.js';
-import { levelToValue } from '../../../../web_mapping/WebMapScale.js';
+import { levelToValue, valueToLevel } from '../../../../web_mapping/WebMapScale.js';
 import { clamp } from '../../../../utils/Utils.js';
 
 
@@ -21,6 +21,11 @@ export default class Scale extends Coord{
   rectifyNewValue(newValue){
     return clamp(newValue, MIN_VIEWPOINT_SCALE, MAX_VIEWPOINT_SCALE);
   }
+  get canAnimateHome(){
+    var zoomLevelDiff = Math.log2(this.previousValue / this.value);
+    return (zoomLevelDiff > -2);
+  }
+
   getChangeSummary(newValue){
     var initValue = this.value;
     var newValueRectified = this.rectifyNewValue(newValue);

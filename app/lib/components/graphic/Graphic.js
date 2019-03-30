@@ -7,14 +7,14 @@ import View from './view/View.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function Graphic(props, layerModel, webMapModel){
+export default function Graphic(props, layerModel, webMapModel, webMapDimensions){
 
   //private code block ---------------------------------------------------------
 
   var dispatcher = new Dispatcher();
   var model = new Model();
   var view = new View(props);
-  var controller = new Controller(props, dispatcher, model, view, layerModel, webMapModel);
+  var controller = new Controller(props, dispatcher, model, view, layerModel, webMapModel, webMapDimensions);
 
   //public api -----------------------------------------------------------------
 

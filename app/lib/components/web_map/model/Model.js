@@ -3,19 +3,16 @@
 import XCoord from './props/XCoord.js';
 import YCoord from './props/YCoord.js';
 import ScaleCoord from './props/ScaleCoord.js';
-import { calculateDeltaX } from '../../../web_mapping/WebMercator.js';
 
 
 //exports ----------------------------------------------------------------------
 
 export default function WebMapState(initProps){
 
-  var { initCoords, initScale, mapDimensions } = initProps;
-
   var coords = {
-    x: new XCoord(initCoords.x),
-    y: new YCoord(initCoords.y),
-    scale: new ScaleCoord(initScale),
+    x: new XCoord(),
+    y: new YCoord(),
+    scale: new ScaleCoord(),
   };
 
   var model = {
@@ -25,14 +22,8 @@ export default function WebMapState(initProps){
       coords.y.set(y);
       coords.scale.set(scale);
     },
-    calculateScreenCoords(worldCoords, viewpoint){
-      var deltaX = calculateDeltaX(worldCoords.x, viewpoint.x);
-      var deltaXMap = deltaX / viewpoint.scale;
-      var screenX = deltaXMap + mapDimensions.width / 2;
-      var deltaY = worldCoords.y - viewpoint.y;
-      var deltaYMap = deltaY / viewpoint.scale;
-      var screenY = deltaYMap + mapDimensions.height / 2;
-      return {x:screenX, y:screenY};
+    get hasChanged(){
+      return coords.x.hasChanged || coords.y.hasChanged || coords.scale.hasChanged;
     },
     get x(){
       return coords.x.value;

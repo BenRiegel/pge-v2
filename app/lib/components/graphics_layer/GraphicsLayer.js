@@ -35,6 +35,10 @@ export default function GraphicsLayer(webMapModel){
     dispatcher.disable();
   };
 
+  this.configure = function(mapDimensions){
+    dispatcher.newAction('configure', mapDimensions);
+  }
+
   this.setLocations = function(graphicPropsList){
     dispatcher.newAction('setLocations', graphicPropsList);
   }
@@ -55,18 +59,23 @@ export default function GraphicsLayer(webMapModel){
     dispatcher.newAction('updateGraphics');
   }
 
-  this.updateOnPan = function(viewpoint, zoomFactor){
-    dispatcher.newAction('pan', viewpoint, zoomFactor);
+  this.updateOnPan = function(viewpoint){
+    dispatcher.newAction('pan', viewpoint);
   }
+
+  this.updateOnZoom = function(viewpoint, zoomFactor){
+    dispatcher.newAction('zoom', viewpoint, zoomFactor);
+  }
+
 
 
 
   this.fadeDown = function(){
-    //return controller.view.fadeDown();
+    return dispatcher.newAsyncAction('fadeDown');
   }
 
   this.fadeUp = function(){
-    //return controller.view.fadeUp();
+    return dispatcher.newAsyncAction('fadeUp');
   }
 
 }

@@ -9,6 +9,6 @@ export default function BasemapLayerEmitter(){
 
   //public api -----------------------------------------------------------------
 
-  return new Emitter( [] );
+  return new Emitter( ['panStart', 'panEnd', 'pan'] );
 
 }

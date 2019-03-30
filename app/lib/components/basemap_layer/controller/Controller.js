@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import DispatcherController from './subcontrollers/DispatcherController.js';
 import ModelController from './subcontrollers/ModelController.js';
 import ViewController from './subcontrollers/ViewController.js';
 import EmitterController from './subcontrollers/EmitterController.js';
@@ -12,7 +13,8 @@ export default function BasemapLayerController(dispatcher, emitter, model, view,
   //public api -----------------------------------------------------------------
 
   return {
-    emitter: new EmitterController(emitter),
+    dispatcher: new DispatcherController(dispatcher, view),
+    emitter: new EmitterController(emitter, dispatcher),
     model: new ModelController(model, webMapModel, dispatcher),
     view: new ViewController(view, model, webMapModel, dispatcher),
   }

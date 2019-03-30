@@ -2,6 +2,8 @@ export default function WebMapModelController(model, config, dispatcher){
 
   //define state reactions ------------------------------------------------------
 
+  var initPanViewpoint;
+
   const ZOOM_IN_SCALER = 0.5;
   const ZOOM_OUT_SCALER = 2;
 
@@ -47,6 +49,18 @@ export default function WebMapModelController(model, config, dispatcher){
     zoomHome();
   }
 
+  var onPanStart = function(){
+    initPanViewpoint = {x:model.x, y:model.y};
+  }
+
+  var onPan = function(cumulativePan){
+    var deltaX = cumulativePan.x * model.scale;
+    var deltaY = cumulativePan.y * model.scale;
+    var newX = initPanViewpoint.x + deltaX;
+    var newY = initPanViewpoint.y + deltaY;
+    model.set(newX, newY, model.scale);
+  }
+
   //load reactions -------------------------------------------------------------
 
   dispatcher.setListener('model', 'pointGraphicSelected', onPointGraphicSelected);
@@ -54,6 +68,8 @@ export default function WebMapModelController(model, config, dispatcher){
   dispatcher.setListener('model', 'zoomInRequest', onZoomInRequest);
   dispatcher.setListener('model', 'zoomOutRequest', onZoomOutRequest);
   dispatcher.setListener('model', 'zoomHomeRequest', onZoomHomeRequest);
+  dispatcher.setListener('model', 'panStart', onPanStart);
+  dispatcher.setListener('model', 'pan', onPan);
 
   //init -----------------------------------------------------------------------
 

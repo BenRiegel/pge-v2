@@ -6,6 +6,7 @@ import Model from './model/Model.js';
 import View from './view/View.js';
 import Controller from './controller/Controller.js';
 
+
 //exports ----------------------------------------------------------------------
 
 export default function BasemapLayer(webMapModel){
@@ -18,15 +19,12 @@ export default function BasemapLayer(webMapModel){
   var view = new View();
   var controller = new Controller(dispatcher, emitter, model, view, webMapModel)
 
-
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
-  this.hasRendered = view.hasRendered;
-
-  this.addEventListener = function(eventName, listener){
-    emitter.addListener(eventName, listener);
+  this.setEventListener = function(eventName, listener){
+    emitter.setListener(eventName, listener);
   };
 
   this.enable = function(){
@@ -37,8 +35,16 @@ export default function BasemapLayer(webMapModel){
     dispatcher.disable();
   };
 
-  this.updateOnPan = function(cumulativePan, scaleFactor){
-    dispatcher.newAction('pan', cumulativePan, scaleFactor);
+  this.configure = function(mapDimensions){
+    return dispatcher.newAsyncAction('configure', mapDimensions);
+  }
+
+  this.updateOnPan = function(cumulativePan){
+    dispatcher.newAction('pan', cumulativePan);
+  };
+
+  this.updateOnZoom = function(cumulativePan, scaleFactor){
+    dispatcher.newAction('zoom', cumulativePan, scaleFactor);
   };
 
   this.updateOnZoomEnd = function(){
@@ -49,17 +55,16 @@ export default function BasemapLayer(webMapModel){
     return dispatcher.newAsyncAction('panEnd');
   }
 
-  /*this.updateOnZoomHome = function(){
-    controller.model.updateProps();
-    controller.view.updateOnZoomHomeEnd();
-  }
-
   this.fadeDown = function(){
-    return controller.view.fadeDown();
+    return dispatcher.newAsyncAction('fadeDown');
   }
 
   this.fadeUp = function(){
-    return controller.view.fadeUp();
-  }*/
+    return dispatcher.newAsyncAction('fadeUp');
+  }
+
+  this.updateOnZoomHome = function(){
+    return dispatcher.newAsyncAction('zoomHome');
+  }
 
 }

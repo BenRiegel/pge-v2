@@ -5,12 +5,12 @@ import ViewController from './subcontrollers/ViewController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTileController(props, dispatcher, view, layerModel){
+export default function BasemapTileController(dispatcher, view, layerModel){
 
   //public api -----------------------------------------------------------------
 
   return {
-    view: new ViewController(props, dispatcher, view, layerModel),
+    view: new ViewController(dispatcher, view, layerModel),
   }
 
 }

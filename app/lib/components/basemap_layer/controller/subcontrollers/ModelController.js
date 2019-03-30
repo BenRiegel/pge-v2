@@ -5,12 +5,13 @@ import { valueToLevel } from '../../../../web_mapping/WebMapScale.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayerModelController(model, webMapState, dispatcher){
+export default function BasemapLayerModelController(model, webMapModel, dispatcher){
 
   //define user event reactions ------------------------------------------------
 
+  //get rid of these eventually
   var updateProps = function(){
-    var imageTileLevel = valueToLevel(webMapState.scale);
+    var imageTileLevel = valueToLevel(webMapModel.scale);
     imageTileLevel = Math.round(imageTileLevel);
     model.set('imageTileLevel', imageTileLevel);
     var numBasemapTiles = Math.pow(2, imageTileLevel);
@@ -19,10 +20,8 @@ export default function BasemapLayerModelController(model, webMapState, dispatch
 
   //load reactions -------------------------------------------------------------
 
+  dispatcher.setListener('model', 'configure', updateProps);
   dispatcher.setListener('model', 'zoomEnd', updateProps);
-
-  //init -----------------------------------------------------------------------
-
-  updateProps();
+  dispatcher.setListener('model', 'zoomHome', updateProps);
 
 }

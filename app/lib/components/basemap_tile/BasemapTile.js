@@ -7,19 +7,17 @@ import View from './view/View.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTile(props, layerModel){
+export default function BasemapTile(layerModel){
 
   //private code block ---------------------------------------------------------
 
   var dispatcher = new Dispatcher();
   var view = new View();
-  var controller = new Controller(props, dispatcher, view, layerModel);
+  var controller = new Controller(dispatcher, view, layerModel);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
-
-  this.hasRendered = view.hasRendered;
 
   this.update = function(actionName, ...args){
     dispatcher.newAction(actionName, ...args);
@@ -28,6 +26,5 @@ export default function BasemapTile(props, layerModel){
   this.updateAsync = function(actionName, ...args){
     return dispatcher.newAsyncAction(actionName, ...args);
   };
-
 
 }

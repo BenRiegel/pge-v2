@@ -21,16 +21,4 @@ export default function BasemapLayerView(){
     tileSet2: [],
   };
 
-  this.activeNum = 0;
-  this.activeTileContainer = undefined;
-  this.resetTileContainer = undefined;
-  this.activeTileSet = undefined;
-  this.resetTileSet = undefined;
-
-  this.hasRendered = new Promise(async resolve => {
-    //var tileRenderPromises = tiles.map(tile => tile.hasRendered);
-    //await tileRenderPromises;
-    resolve();
-  });
-
 }

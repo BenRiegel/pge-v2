@@ -1,7 +1,9 @@
 //imports ----------------------------------------------------------------------
 
 import RootNode from './nodes/RootNode.js';
+import ArrowNode from './nodes/ArrowNode.js';
 import ContentNode from './nodes/ContentNode.js';
+import ContentContainerNode from './nodes/ContentContainerNode.js';
 import CloseButtonNode from './nodes/CloseButtonNode.js';
 import TitleNode from './nodes/TitleNode.js';
 import AuthorNode from './nodes/AuthorNode.js';
@@ -20,6 +22,8 @@ export default function PopupSummaryView(){
 
   this.nodes = {
     root: new RootNode(),
+    arrow: new ArrowNode(),
+    contentContainer: new ContentContainerNode(),
     content: new ContentNode(),
     closeButton: new CloseButtonNode(),
     title: new TitleNode(),

@@ -8,14 +8,16 @@ import { waitAtLeast } from '../../../../utils/Utils.js';
 export default function PopupSummaryViewController(view, dispatcher, model, popupModel){
 
   var { nodes, subcomponents } = view;
-  var { root, content, closeButton, title, author } = nodes;
+  var { root, arrow, content, contentContainer, closeButton, title, author } = nodes;
   var { inlineContainer, image, text, readMore } = nodes;
   var { loader } = subcomponents;
 
   //configure dom --------------------------------------------------------------
 
-  root.appendChildNode(loader.rootNode);
-  root.appendChildNode(content.node);
+  root.appendChildNode(contentContainer.node);
+  root.appendChildNode(arrow.node);
+  contentContainer.appendChildNode(loader.rootNode);
+  contentContainer.appendChildNode(content.node);
   content.appendChildNode(closeButton.node);
   content.appendChildNode(title.node);
   content.appendChildNode(author.node);
@@ -52,10 +54,18 @@ export default function PopupSummaryViewController(view, dispatcher, model, popu
   }
 
   var updateRootVisibility = function(){
-    if (popupModel.isOpen && !popupModel.isExpanded){
+    if (popupModel.isOpen){
       root.setVisibility('visible');
     } else {
       root.setVisibility('hidden');
+    }
+  }
+
+  var updateArrowVisibility = function(){
+    if (popupModel.isExpanded){
+      arrow.setStyle('visibility', 'hidden');
+    } else {
+      arrow.setStyle('visibility', '');
     }
   }
 
@@ -64,8 +74,8 @@ export default function PopupSummaryViewController(view, dispatcher, model, popu
       var offsetHeight = content.getProp('offsetHeight');
       var scrollHeight = content.getProp('scrollHeight');
       var deltaHeight = scrollHeight - offsetHeight;
-      var transitionTime = Math.abs(3 * deltaHeight);
       if (deltaHeight){
+        var transitionTime = Math.abs(3 * deltaHeight);
         return content.transitionHeight(scrollHeight, transitionTime);
       }
     } else {
@@ -117,11 +127,22 @@ export default function PopupSummaryViewController(view, dispatcher, model, popu
   dispatcher.setListener('view', 'rootVisibility', updateRootVisibility);
   dispatcher.setListener('view', 'contentHeight', updateContentHeight);
   dispatcher.setListener('view', 'contentOpacity', updateContentOpacity);
+  dispatcher.setListener('view', 'arrowVisibility', updateArrowVisibility);
 
   //init -----------------------------------------------------------------------
 
   updateRootVisibility();
+  updateArrowVisibility();
   updateContentHeight();
   updateContentOpacity();
+
+  //public api -----------------------------------------------------------------
+
+  this.getDimensions = function(){
+    var left = root.getProp('offsetLeft');
+    var top = root.getProp('offsetTop');
+    var { width, height } = content.getDimensions();
+    return { left, top, width, height };
+  }
 
 }

@@ -1,9 +1,14 @@
-.report-container{
+@import '../../../web_map/view/stylesheets/_web_map_variables';
+
+$transition-duration: 0.75s;
+
+.popup-report{
   position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
   border-radius: inherit;
-  visibility: hidden;
-  background-color:white;
+  background-color: white;
+  z-index: $popup-report-z-index;
+  transition: left $transition-duration,
+              top $transition-duration,
+              width $transition-duration,
+              height $transition-duration;
 }

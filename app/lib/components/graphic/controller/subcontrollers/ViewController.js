@@ -1,11 +1,12 @@
 //imports ----------------------------------------------------------------------
 
 import { MIN_POINT_RADIUS } from '../../../graphics_layer/config/GraphicsLayerConfig.js';
+import { calculateDeltaX } from '../../../../web_mapping/WebMercator.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicViewController(view, props, dispatcher, model, webMapModel){
+export default function GraphicViewController(view, props, dispatcher, model, webMapModel, webMapDimensions){
 
   var { nodes } = view;
   var { root, location, label } = nodes;
@@ -29,7 +30,13 @@ export default function GraphicViewController(view, props, dispatcher, model, we
   }
 
   var updateScreenCoords = function(viewpoint){
-    var screenCoords = webMapModel.calculateScreenCoords(props.worldCoords, viewpoint);
+    var deltaX = calculateDeltaX(props.worldCoords.x, viewpoint.x);
+    var deltaXMap = deltaX / viewpoint.scale;
+    var screenX = deltaXMap + webMapDimensions.width / 2;
+    var deltaY = props.worldCoords.y - viewpoint.y;
+    var deltaYMap = deltaY / viewpoint.scale;
+    var screenY = deltaYMap + webMapDimensions.height / 2;
+    var screenCoords = {x:screenX, y:screenY};
     root.setScreenCoords(screenCoords);
   };
 
@@ -41,25 +48,22 @@ export default function GraphicViewController(view, props, dispatcher, model, we
     }
   }
 
-  var onZoomUpdate = function(viewpoint){
-    updateScreenCoords(viewpoint);
-    if (props.type === 'cluster'){
-      updateScaleFactor();
-    }
-  }
-
-  var onPan = function(viewpoint, scaleFactor){
+  var onZoom = function(viewpoint, scaleFactor){
     updateScreenCoords(viewpoint);
     if (props.type === 'cluster'){
       updateScaleFactor(scaleFactor);
     }
   }
 
+  var onPan = function(viewpoint){
+    updateScreenCoords(viewpoint);
+  }
+
   //load reactions -------------------------------------------------------------
 
   dispatcher.setListener('view', 'updateIsSelected', onUpdateIsSelected);
   dispatcher.setListener('view', 'pan', onPan);
-  dispatcher.setListener('view', 'zoom', onZoomUpdate);
+  dispatcher.setListener('view', 'zoom', onZoom);
 
   //init -----------------------------------------------------------------------
 

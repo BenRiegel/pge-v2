@@ -33,6 +33,18 @@ export default function WebMapDispatcherController(dispatcher, view){
     dispatcher.newAction('popupClosed');
   }
 
+  var onPanStart = function(){
+    dispatcher.newAction('panStart');
+  };
+
+  var onPan = function(cumulativePan){
+    dispatcher.newAction('pan', cumulativePan);
+  };
+
+  var onPanEnd = function(){
+    dispatcher.newAction('panEnd');
+  };
+
   //load reactions -------------------------------------------------------------
 
   selectMenu.setEventListener('newSelectedOption', onNewSelectedOption);
@@ -42,6 +54,9 @@ export default function WebMapDispatcherController(dispatcher, view){
   zoomControls.setEventListener('zoomOutRequest', onZoomOutRequest);
   zoomControls.setEventListener('zoomHomeRequest', onZoomHomeRequest);
   popup.setEventListener('closed', onPopupClosed);
+  basemapLayer.setEventListener('panStart', onPanStart);
+  basemapLayer.setEventListener('pan', onPan);
+  basemapLayer.setEventListener('panEnd', onPanEnd);
 
 }
 

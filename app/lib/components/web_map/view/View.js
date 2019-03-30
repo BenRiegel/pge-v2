@@ -10,12 +10,12 @@ import SelectMenu from '../../select_menu/SelectMenu.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function WebMapViewView(model){
+export default function WebMapViewView(config, model){
 
   //public api -----------------------------------------------------------------
 
   this.nodes = {
-    root: new RootNode(),
+    root: new RootNode(config.rootNodeId),
   };
 
   this.subcomponents = {
@@ -25,7 +25,5 @@ export default function WebMapViewView(model){
     basemapLayer: new BasemapLayer(model),
     selectMenu: new SelectMenu(),
   };
-
-  this.hasRendered = this.subcomponents.basemapLayer.hasRendered;
 
 }

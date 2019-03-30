@@ -1,11 +1,11 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from './DomNode.js';
+import DomNodeTransitions from './DomNodeTransitions.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class DomNodeInput extends DomNode{
+export default class DomNodeInput extends DomNodeTransitions{
   constructor(type, className){
     super(type, className);
     this.configureListeners();

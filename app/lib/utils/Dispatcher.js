@@ -53,6 +53,8 @@ export default function Dispatcher(){
         emitters.model.notify(eventName, ...args);
         emitters.view.notify(eventName, ...args);
         emitters.public.notify(eventName, ...args);
+      } else {
+        console.log('error');
       }
     },
     async newAsyncAction(eventName, ...args){

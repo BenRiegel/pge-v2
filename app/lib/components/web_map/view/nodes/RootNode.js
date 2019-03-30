@@ -7,7 +7,9 @@ import '../stylesheets/root.scss';
 //exports ----------------------------------------------------------------------
 
 export default class RootNode extends DomNode{
-  constructor(){
-    super('div', 'web-map');
+  constructor(rootNodeId){
+    super('div', null);
+    this.node = document.getElementById(rootNodeId);
+    this.node.className = 'webmap';
   }
 }

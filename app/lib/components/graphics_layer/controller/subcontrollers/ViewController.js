@@ -14,6 +14,8 @@ export default function GraphicsLayerViewController(view, model, dispatcher, web
 
   //define model change reactions ----------------------------------------------
 
+  var webMapDimensions;
+
   var createGraphics = function(){
     var graphics = [];
     var mappedLocations = model.locations.filter(location => location.hasSelectedTag);
@@ -61,7 +63,7 @@ export default function GraphicsLayerViewController(view, model, dispatcher, web
         }
         done = !clusterFound;
       }
-      var graphic = new Graphic(graphicProps, model, webMapModel);
+      var graphic = new Graphic(graphicProps, model, webMapModel, webMapDimensions);
       graphics.push(graphic);
       location = mappedLocations.shift();
     }
@@ -81,16 +83,28 @@ export default function GraphicsLayerViewController(view, model, dispatcher, web
     }
   }
 
-  var onPan = function(newViewpoint, zoomFactor){
+  var onPan = function(newViewpoint){
     for (var graphic of view.subcomponents){
-      graphic.update('pan', newViewpoint, zoomFactor);
+      graphic.update('pan', newViewpoint);
     }
   }
 
-  var onZoom = function(){
+  var onZoom = function(newViewpoint, zoomFactor){
     for (var graphic of view.subcomponents){
-      graphic.update('zoom');
+      graphic.update('zoom', newViewpoint, zoomFactor);
     }
+  }
+
+  var onConfigure = function(dimensions){
+    webMapDimensions = dimensions;
+  }
+
+  var onFadeDown = function(){
+    return root.setOpacity('0', true);
+  }
+
+  var onFadeUp = function(){
+    return root.setOpacity('1', true);
   }
 
   //load reactions -------------------------------------------------------------
@@ -101,18 +115,8 @@ export default function GraphicsLayerViewController(view, model, dispatcher, web
   dispatcher.setListener('view', 'updateGraphics', updateGraphics);
   dispatcher.setListener('view', 'pan', onPan);
   dispatcher.setListener('view', 'zoom', onZoom);
-
-
-
-  //webMapModel.addListener('zoomUpdate', onZoomUpdate);
-
-
-/*  this.fadeDown = function(){
-    return root.transitionOpacity('0');
-  }
-
-  this.fadeUp = function(){
-    return root.transitionOpacity('1');
-  }*/
+  dispatcher.setListener('view', 'configure', onConfigure);
+  dispatcher.setListener('view', 'fadeDown', onFadeDown);
+  dispatcher.setListener('view', 'fadeUp', onFadeUp);
 
 }

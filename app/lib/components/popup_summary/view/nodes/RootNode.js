@@ -8,6 +8,6 @@ import '../stylesheets/root.scss';
 
 export default class RootNode extends DomNode{
   constructor(){
-    super('div', 'summary-container');
+    super('div', 'popup-summary');
   }
 }

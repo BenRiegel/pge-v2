@@ -38,4 +38,12 @@ export default class DomNodeAnimations extends DomNode{
       return this.transitionComplete('opacity');
     }
   }
+
+  setStyle(styleName, value, isTransitioning = false){
+    this.isTransitioning = isTransitioning;
+    this.node.style[styleName] = value;
+    if (isTransitioning){
+      return this.transitionComplete(styleName);
+    }
+  }
 };

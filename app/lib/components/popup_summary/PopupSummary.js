@@ -27,6 +27,10 @@ export default function PopupSummary(popupModel){
     emitter.setListener(eventName, listener);
   };
 
+  this.getDimensions = function(){
+    return controller.view.getDimensions();
+  }
+
   this.update = function(actionName, ...args){
     dispatcher.newAction(actionName, ...args);
   };

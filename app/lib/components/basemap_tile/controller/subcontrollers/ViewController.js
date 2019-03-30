@@ -1,4 +1,4 @@
-export default function BasemapTileViewController(props, dispatcher, view, layerModel){
+export default function BasemapTileViewController(dispatcher, view, layerModel){
 
   var { nodes } = view;
   var { root } = nodes;
@@ -34,11 +34,5 @@ export default function BasemapTileViewController(props, dispatcher, view, layer
   //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('view', 'update', onUpdate);
-
-  //init -----------------------------------------------------------------------
-
-  updateIndices(props);
-  updateScreenCoords(props);
-  updateVisibility(props);
 
 }

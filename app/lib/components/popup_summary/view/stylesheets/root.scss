@@ -1,4 +1,10 @@
-.summary-container{
-  flex-grow: 0;
-  border-radius: inherit;
+@import '../../../web_map/view/stylesheets/_web_map_variables';
+
+.popup-summary{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 50%;
+  z-index: $popup-summary-z-index;
+  overflow: visible;
 }
