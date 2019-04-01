@@ -9,7 +9,7 @@ import View from './view/View.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayer(webMapModel){
+export default function GraphicsLayer(webMapModel, webMapDimensions){
 
   //private code block ---------------------------------------------------------
 
@@ -17,7 +17,7 @@ export default function GraphicsLayer(webMapModel){
   var dispatcher = new Dispatcher();
   var model = new Model();
   var view = new View();
-  var controller = new Controller(dispatcher, emitter, model, view, webMapModel);
+  var controller = new Controller(dispatcher, emitter, model, view, webMapModel, webMapDimensions);
 
   //public api -----------------------------------------------------------------
 
@@ -34,10 +34,6 @@ export default function GraphicsLayer(webMapModel){
   this.disable = function(){
     dispatcher.disable();
   };
-
-  this.configure = function(mapDimensions){
-    dispatcher.newAction('configure', mapDimensions);
-  }
 
   this.setLocations = function(graphicPropsList){
     dispatcher.newAction('setLocations', graphicPropsList);

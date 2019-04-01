@@ -8,7 +8,6 @@ import Emitter from './Emitter.js';
 export default function Dispatcher(){
 
   var emitters = {
-    dispatcher: new Emitter(),
     model: new Emitter(),
     view: new Emitter(),
     public: new Emitter(),
@@ -16,21 +15,21 @@ export default function Dispatcher(){
 
   var isEnabled = true;
   var isDispatching = false;
-  var isFrozen = false;
+//  var isFrozen = false;
 
-  var updateFrozenStatus = function(){
+/*  var updateFrozenStatus = function(){
     var newValue = !isEnabled || isDispatching;
     if (newValue !== isFrozen){
       isFrozen = newValue;
-      emitters.dispatcher.notify('isFrozen', isFrozen);
+      //emitters.dispatcher.notify('isFrozen', isFrozen);
     }
-  }
+  }*/
 
   var setIsDispatching = function(newValue){
     if (newValue !== isDispatching){
       isDispatching = newValue;
-      emitters.dispatcher.notify('actionInProgress', isDispatching);
-      updateFrozenStatus();
+      emitters.view.notify('actionInProgress', isDispatching);
+      emitters.public.notify('actionInProgress', isDispatching);
     }
   }
 

@@ -19,6 +19,6 @@ export default function SelectMenuEmitterController(emitter, dispatcher, model){
   //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('public', 'optionClick', onOptionClick);
-  dispatcher.setListener('dispatcher', 'actionInProgress', onActionInProgress);
+  dispatcher.setListener('public', 'actionInProgress', onActionInProgress);
 
 }

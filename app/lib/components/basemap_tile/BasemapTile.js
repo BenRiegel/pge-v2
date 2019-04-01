@@ -7,13 +7,13 @@ import View from './view/View.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTile(layerModel){
+export default function BasemapTile(props){
 
   //private code block ---------------------------------------------------------
 
   var dispatcher = new Dispatcher();
   var view = new View();
-  var controller = new Controller(dispatcher, view, layerModel);
+  var controller = new Controller(props, dispatcher, view);
 
   //public api -----------------------------------------------------------------
 

@@ -82,10 +82,17 @@ export default function SelectMenuViewController(view, model, dispatcher){
     }
   }
 
+  var onClose = async function(){
+    if (model.props.isOpen.hasChanged){
+      await updateOpenStyling();
+    }
+  }
+
   //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('view', 'loadOptions', onLoadOptions);
   dispatcher.setListener('view', 'optionClick', onOptionClick);
+  dispatcher.setListener('view', 'close', onClose);
 
   //init -----------------------------------------------------------------------
 

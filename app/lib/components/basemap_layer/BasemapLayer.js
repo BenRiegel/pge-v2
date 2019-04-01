@@ -9,7 +9,7 @@ import Controller from './controller/Controller.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayer(webMapModel){
+export default function BasemapLayer(webMapModel, webMapDimensions){
 
   //private code block ---------------------------------------------------------
 
@@ -17,7 +17,7 @@ export default function BasemapLayer(webMapModel){
   var emitter = new Emitter();
   var model = new Model;
   var view = new View();
-  var controller = new Controller(dispatcher, emitter, model, view, webMapModel)
+  var controller = new Controller(dispatcher, emitter, model, view, webMapModel, webMapDimensions)
 
   //public api -----------------------------------------------------------------
 
@@ -35,8 +35,8 @@ export default function BasemapLayer(webMapModel){
     dispatcher.disable();
   };
 
-  this.configure = function(mapDimensions){
-    return dispatcher.newAsyncAction('configure', mapDimensions);
+  this.configure = function(){
+    return dispatcher.newAsyncAction('configure');
   }
 
   this.updateOnPan = function(cumulativePan){

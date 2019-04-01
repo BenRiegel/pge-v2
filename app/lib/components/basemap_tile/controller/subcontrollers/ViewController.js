@@ -1,32 +1,31 @@
-export default function BasemapTileViewController(dispatcher, view, layerModel){
+export default function BasemapTileViewController(props, dispatcher, view){
 
   var { nodes } = view;
   var { root } = nodes;
 
   //define state change reactions ----------------------------------------------
 
-  var updateIndices = function(data){
-    var rectifiedXIndex = data.xIndex % layerModel.numBasemapTiles;
-    if (rectifiedXIndex < 0){
-      rectifiedXIndex += layerModel.numBasemapTiles;
-    }
-    return root.setIndices(rectifiedXIndex, data.yIndex, layerModel.imageTileLevel);
-  };
+  const TILE_SIZE_PX = 256;
 
-  var updateScreenCoords = function(data){
-    root.setScreenCoords( {x:data.xScreen, y:data.yScreen} );
+  var setScreenCoords = function(){
+    var xScreen = props.xPos * TILE_SIZE_PX;
+    var yScreen = props.yPos * TILE_SIZE_PX;
+    root.setScreenCoords(xScreen, yScreen);
   }
 
-  var updateVisibility = function(data){
-    if (data.yIndex < 0 || data.yIndex >= layerModel.numBasemapTiles){
-      root.setVisibility('hidden');
-    } else {
+  var updateIndices = function( {xIndex, yIndex, imageTileLevel} ){
+    return root.setIndices(xIndex, yIndex, imageTileLevel);
+  };
+
+  var updateVisibility = function( {isVisible} ){
+    if (isVisible){
       root.setVisibility('visible');
+    } else {
+      root.setVisibility('hidden');
     }
   }
 
   var onUpdate = function(info){
-    updateScreenCoords(info);
     updateVisibility(info);
     return updateIndices(info);
   }
@@ -34,5 +33,9 @@ export default function BasemapTileViewController(dispatcher, view, layerModel){
   //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('view', 'update', onUpdate);
+
+  //init -----------------------------------------------------------------------
+
+  setScreenCoords();
 
 }

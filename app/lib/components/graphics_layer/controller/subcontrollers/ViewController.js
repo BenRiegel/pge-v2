@@ -7,14 +7,12 @@ import { MIN_POINT_RADIUS, MAX_POINT_RADIUS } from '../../config/GraphicsLayerCo
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerViewController(view, model, dispatcher, webMapModel){
+export default function GraphicsLayerViewController(view, model, dispatcher, webMapModel, webMapDimensions){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
 
   //define model change reactions ----------------------------------------------
-
-  var webMapDimensions;
 
   var createGraphics = function(){
     var graphics = [];
@@ -95,10 +93,6 @@ export default function GraphicsLayerViewController(view, model, dispatcher, web
     }
   }
 
-  var onConfigure = function(dimensions){
-    webMapDimensions = dimensions;
-  }
-
   var onFadeDown = function(){
     return root.setOpacity('0', true);
   }
@@ -115,7 +109,6 @@ export default function GraphicsLayerViewController(view, model, dispatcher, web
   dispatcher.setListener('view', 'updateGraphics', updateGraphics);
   dispatcher.setListener('view', 'pan', onPan);
   dispatcher.setListener('view', 'zoom', onZoom);
-  dispatcher.setListener('view', 'configure', onConfigure);
   dispatcher.setListener('view', 'fadeDown', onFadeDown);
   dispatcher.setListener('view', 'fadeUp', onFadeUp);
 

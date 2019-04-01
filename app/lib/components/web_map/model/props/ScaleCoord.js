@@ -25,14 +25,7 @@ export default class Scale extends Coord{
     var zoomLevelDiff = Math.log2(this.previousValue / this.value);
     return (zoomLevelDiff > -2);
   }
-
-  getChangeSummary(newValue){
-    var initValue = this.value;
-    var newValueRectified = this.rectifyNewValue(newValue);
-    var deltaValue = this.calculateDeltaValue(newValueRectified, initValue);
-    var hasChanged = Boolean(deltaValue);
-    var zoomLevelDiff = Math.log2(initValue / newValueRectified);
-    var canZoomHome = (zoomLevelDiff > -2);
-    return { initValue, newValueRectified, deltaValue, hasChanged, canZoomHome };
+  get level(){
+    return valueToLevel(this.value);
   }
 }

@@ -40,7 +40,7 @@ export default function SelectMenu(){
   };
 
   this.close = function(){
-    dispatcher.newAction('close');
+    return dispatcher.newAsyncAction('close');
   };
 
 }

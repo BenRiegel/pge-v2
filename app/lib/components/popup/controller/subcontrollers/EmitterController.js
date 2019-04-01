@@ -18,11 +18,21 @@ export default function PopupEmitterController(emitter, dispatcher){
     }
   }
 
+  var onExpand = function(){
+    emitter.notify('isExpanded');
+  }
+
+  var onContract = function(){
+    emitter.notify('isContracted');
+  }
+
   //load event reactions -------------------------------------------------------
 
   dispatcher.setListener('public', 'open', onOpen);
   dispatcher.setListener('public', 'close', onClose);
+  dispatcher.setListener('public', 'expand', onExpand);
+  dispatcher.setListener('public', 'contract', onContract);
   dispatcher.setListener('public', 'contractAndClose', onClose);
-  dispatcher.setListener('dispatcher', 'actionInProgress', onActionInProgress);
+  dispatcher.setListener('public', 'actionInProgress', onActionInProgress);
 
 }

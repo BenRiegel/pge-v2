@@ -13,6 +13,14 @@ export default function WebMapDispatcherController(dispatcher, view){
     dispatcher.newAsyncAction('clusterGraphicSelected', {id, worldCoords} );
   }
 
+  var onSelectMenuActionStart = function(){
+    dispatcher.newAction('selectMenuActionStart');
+  }
+
+  var onSelectMenuActionEnd = function(){
+    dispatcher.newAction('selectMenuActionEnd');
+  }
+
   var onNewSelectedOption = function(selectedOptionKey){
     dispatcher.newAction('newSelectedTag', selectedOptionKey);
   }
@@ -33,36 +41,26 @@ export default function WebMapDispatcherController(dispatcher, view){
     dispatcher.newAction('popupClosed');
   }
 
-  var onPanStart = function(){
-    dispatcher.newAction('panStart');
-  };
+  var onPopupActionStart = function(){
+    dispatcher.newAction('popupActionStart');
+  }
 
-  var onPan = function(cumulativePan){
-    dispatcher.newAction('pan', cumulativePan);
-  };
-
-  var onPanEnd = function(){
-    dispatcher.newAction('panEnd');
-  };
+  var onPopupActionEnd = function(){
+    dispatcher.newAction('popupActionEnd');
+  }
 
   //load reactions -------------------------------------------------------------
 
   selectMenu.setEventListener('newSelectedOption', onNewSelectedOption);
+  selectMenu.setEventListener('actionStart', onSelectMenuActionStart);
+  selectMenu.setEventListener('actionEnd', onSelectMenuActionEnd);
+
   graphicsLayer.setEventListener('pointGraphicClicked', onPointGraphicClicked);
   graphicsLayer.setEventListener('clusterGraphicClicked', onClusterGraphicClicked);
   zoomControls.setEventListener('zoomInRequest', onZoomInRequest);
   zoomControls.setEventListener('zoomOutRequest', onZoomOutRequest);
   zoomControls.setEventListener('zoomHomeRequest', onZoomHomeRequest);
   popup.setEventListener('closed', onPopupClosed);
-  basemapLayer.setEventListener('panStart', onPanStart);
-  basemapLayer.setEventListener('pan', onPan);
-  basemapLayer.setEventListener('panEnd', onPanEnd);
+  popup.setEventListener('actionStart', onPopupActionStart);
 
 }
-
-
-
-/*
-selectMenu.setEventListener('eventStart', selectMenuEventStart);
-selectMenu.setEventListener('eventEnd', selectMenuEventEnd);
-selectMenu.setEventListener('newSelectedOption', onNewSelectedOption);*/

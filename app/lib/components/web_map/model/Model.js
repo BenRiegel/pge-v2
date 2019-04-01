@@ -7,7 +7,7 @@ import ScaleCoord from './props/ScaleCoord.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function WebMapState(initProps){
+export default function WebMapModel(){
 
   var coords = {
     x: new XCoord(),

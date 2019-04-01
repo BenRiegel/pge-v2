@@ -7,7 +7,7 @@ import EmitterController from './subcontrollers/EmitterController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function GraphicsLayerController(dispatcher, emitter, model, view, webMapModel){
+export default function GraphicsLayerController(dispatcher, emitter, model, view, webMapModel, webMapDimensions){
 
   //public api -----------------------------------------------------------------
 
@@ -15,7 +15,7 @@ export default function GraphicsLayerController(dispatcher, emitter, model, view
     dispatcher: new DispatcherController(dispatcher, model, view),
     emitter: new EmitterController(emitter, dispatcher),
     model: new ModelController(model, dispatcher),
-    view: new ViewController(view, model, dispatcher, webMapModel),
+    view: new ViewController(view, model, dispatcher, webMapModel, webMapDimensions),
   }
 
 }

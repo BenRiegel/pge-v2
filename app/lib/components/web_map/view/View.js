@@ -14,6 +14,11 @@ export default function WebMapViewView(config, model){
 
   //public api -----------------------------------------------------------------
 
+  this.dimensions = {
+    width: undefined,
+    height: undefined,
+  }
+
   this.nodes = {
     root: new RootNode(config.rootNodeId),
   };
@@ -21,8 +26,8 @@ export default function WebMapViewView(config, model){
   this.subcomponents = {
     zoomControls: new ZoomControls(),
     popup: new Popup(),
-    graphicsLayer: new GraphicsLayer(model),
-    basemapLayer: new BasemapLayer(model),
+    graphicsLayer: new GraphicsLayer(model, this.dimensions),
+    basemapLayer: new BasemapLayer(model, this.dimensions),
     selectMenu: new SelectMenu(),
   };
 

@@ -13,7 +13,7 @@ export default function WebMap(config){
   //private code block ---------------------------------------------------------
 
   var dispatcher = new Dispatcher();
-  var model = new Model(config);
+  var model = new Model();
   var view = new View(config, model);
   var controller = new Controller(config, dispatcher, model, view);
 

@@ -5,7 +5,7 @@ import BasemapTile from '../../../basemap_tile/BasemapTile.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayerViewController(view, state, webMapModel, dispatcher){
+export default function BasemapLayerViewController(view, model, webMapModel, dispatcher, webMapDimensions){
 
   var { nodes, subcomponents } = view;
   var { root, tileContainer1, tileContainer2 } = nodes;
@@ -20,7 +20,6 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
 
   //helper functions -----------------------------------------------------------
 
-  var webMapDimensions;
   var activeNum = 0;
   var activeTileContainer = undefined;
   var resetTileContainer = undefined;
@@ -28,32 +27,40 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
   var resetTileSet = undefined;
   var numTilesWidth;
   var numTilesHeight;
+  var xOffset;
+  var yOffset;
 
-
-
-  var setLayerDimensions = function({width, height}){
-    var widthPixelsNeeded = 4 * width;
+  var setLayerDimensions = function(){
+    var widthPixelsNeeded = 4 * webMapDimensions.width;
     numTilesWidth = Math.ceil(widthPixelsNeeded / 256);
-    var heightPixelsNeeded = 4 * height;
+    var heightPixelsNeeded = 4 * webMapDimensions.height;
     numTilesHeight = Math.ceil(heightPixelsNeeded / 256);
   }
 
-  var getCenterTileProps = function(){
+  var setContainerOffsets = function(){
+    var centerXMap = webMapModel.x / webMapModel.scale;
+    var centerYMap = webMapModel.y / webMapModel.scale;
+    var xDiff = centerXMap % 256;
+    var yDiff = centerYMap % 256;
+    xOffset = (webMapDimensions.width - numTilesWidth * 256) / 2 - xDiff;
+    yOffset = (webMapDimensions.height - numTilesHeight * 256) / 2 - yDiff;
+  }
+
+  var getCenterTileIndices = function(){
     var centerXMap = webMapModel.x / webMapModel.scale;
     var centerYMap = webMapModel.y / webMapModel.scale;
     return {
       xIndex: Math.floor(centerXMap / 256),
       yIndex: Math.floor(centerYMap / 256),
-      xOffset: (webMapDimensions.width / 2 - centerXMap),
-      yOffset: (webMapDimensions.height / 2 - centerYMap),
     }
   }
 
   var createTiles = function(){
     for (var i = 0; i < numTilesWidth; i++){
       for (var j = 0; j < numTilesHeight; j++){
-        var tile1 = new BasemapTile(state);
-        var tile2 = new BasemapTile(state);
+        var props = {xPos:i, yPos:j};
+        var tile1 = new BasemapTile(props);
+        var tile2 = new BasemapTile(props);
         subcomponents.tileSet1.push(tile1);
         subcomponents.tileSet2.push(tile2);
         tileContainer1.appendChildNode(tile1.rootNode);
@@ -62,26 +69,36 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
     }
   }
 
-  var updateRootTranslate = function(cumulativePan, zoomScaleFactor = 1){
-    var x = Math.floor(-cumulativePan.x);
-    var y = Math.floor(-cumulativePan.y);
+  var updateActiveTranslate = function(cumulativePan, zoomScaleFactor = 1){
+    var x = Math.floor(xOffset-cumulativePan.x);
+    var y = Math.floor(yOffset-cumulativePan.y);
     var translateStr = `scale(${zoomScaleFactor},${zoomScaleFactor}) translate(${x}px, ${y}px)`;
     activeTileContainer.setStyle('transform', translateStr);
   }
 
-  var updateResetTiles = function(){
-    resetTileContainer.setStyle('transform', '');
-    var centerTileProps = getCenterTileProps();
+  var updateResetTranslate = function(){
+    var x = Math.floor(xOffset);
+    var y = Math.floor(yOffset);
+    var translateStr = `scale(${1},${1}) translate(${x}px, ${y}px)`;
+    resetTileContainer.setStyle('transform', translateStr);
+  }
+
+  var updateTiles = function(tileSet){
+    var centerTileProps = getCenterTileIndices();
     var index = 0;
     var promises = [];
     for (var i = 0; i < numTilesWidth; i++){
       for (var j = 0; j < numTilesHeight; j++){
         var xIndex = i - Math.floor(numTilesWidth / 2) + centerTileProps.xIndex;
+        xIndex = xIndex % model.numBasemapTiles;
+        if (xIndex < 0){
+          xIndex += model.numBasemapTiles;
+        }
         var yIndex = j - Math.floor(numTilesHeight / 2) + centerTileProps.yIndex;
-        var xScreen = xIndex * 256 + centerTileProps.xOffset;                        //make screencoords static
-        var yScreen = yIndex * 256 + centerTileProps.yOffset;
-        var props = { xIndex, yIndex, xScreen, yScreen };
-        var tile = resetTileSet[index];
+        var isVisible = (yIndex >= 0 && yIndex < model.numBasemapTiles);
+        var { imageTileLevel } = model;
+        var props = { xIndex, yIndex, isVisible, imageTileLevel};
+        var tile = tileSet[index];
         var p = tile.updateAsync('update', props);
         promises.push(p);
         index+=1;
@@ -90,8 +107,17 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
     return Promise.all(promises);
   }
 
-  var toggleActiveTiles = function(){
-    activeNum = 1 - activeNum;
+  /*var updateTiles = function(tileSet){
+    var centerTileProps = getCenterTileIndices();
+    var promises = [];
+    for (var tile of tileSet){
+      var p = tile.updateAsync('update', centerTileProps);
+      promises.push(p);
+    }
+    return Promise.all(promises);
+  }  */
+
+  var setContainerRoles = function(){
     activeTileContainer = tileContainers[activeNum];
     activeTileContainer.setStyle('z-index', '1');
     activeTileContainer.setOpacity('1');
@@ -102,25 +128,35 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
     resetTileSet = tileSets[1 - activeNum];
   }
 
+  var toggleActiveTiles = function(){
+    activeNum = 1 - activeNum;
+    setContainerRoles();
+  }
+
   var onZoomEnd = async function(){
-    resetTileContainer.setStyle('transform', '');
     resetTileContainer.setOpacity('1');
-    await updateResetTiles();
+    await updateTiles(resetTileSet);
+    setContainerOffsets();
+    updateResetTranslate();
     await activeTileContainer.setOpacity('0', true);
     toggleActiveTiles();
   }
 
   var onPanEnd = async function(){
-    resetTileContainer.setStyle('transform', '');
-    await updateResetTiles();
+    resetTileContainer.setOpacity('1');
+    await updateTiles(resetTileSet);
+    setContainerOffsets();
+    updateResetTranslate();
+    activeTileContainer.setOpacity('0');
     toggleActiveTiles();
   };
 
-  var onConfigure = function(mapDimensions){
-    webMapDimensions = mapDimensions;
-    setLayerDimensions(mapDimensions);
+  var onConfigure = async function(){
+    setLayerDimensions();
     createTiles();
-    return onPanEnd();
+    setContainerOffsets();
+    updateActiveTranslate({x:0,y:0}, 1);
+    await updateTiles(activeTileSet);
   }
 
   var onFadeDown = function(){
@@ -133,8 +169,8 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
 
   //load state change reactions ------------------------------------------------
 
-  dispatcher.setListener('view', 'pan', updateRootTranslate);
-  dispatcher.setListener('view', 'zoom', updateRootTranslate);
+  dispatcher.setListener('view', 'pan', updateActiveTranslate);
+  dispatcher.setListener('view', 'zoom', updateActiveTranslate);
   dispatcher.setListener('view', 'zoomEnd', onZoomEnd);
   dispatcher.setListener('view', 'panEnd', onPanEnd);
   dispatcher.setListener('view', 'configure', onConfigure);
@@ -144,6 +180,6 @@ export default function BasemapLayerViewController(view, state, webMapModel, dis
 
   //init -----------------------------------------------------------------------
 
-  toggleActiveTiles();
+  setContainerRoles();
 
 }

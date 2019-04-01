@@ -9,6 +9,6 @@ export default function SelectMenuEmitter(){
 
   //public api -----------------------------------------------------------------
 
-  return new Emitter( ['eventStart', 'eventEnd', 'newSelectedOption'] );
+  return new Emitter( ['actionStart', 'actionEnd', 'newSelectedOption'] );
 
 }

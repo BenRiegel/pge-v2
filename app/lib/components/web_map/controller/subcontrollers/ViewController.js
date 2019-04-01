@@ -22,6 +22,13 @@ export default function WebMapViewController(view, model, dispatcher){
 
   //define state change reactions ----------------------------------------------
 
+  var onConfigure = function(){
+    var {width, height} = root.getDimensions();
+    view.dimensions.width = width;
+    view.dimensions.height = height;
+    return basemapLayer.configure();
+  }
+
   var calculateNumFramesPan = function(){
     var deltaXPx = Math.abs(model.coords.x.deltaValue / model.scale);
     var deltaYPx = Math.abs(model.coords.y.deltaValue / model.scale);
@@ -122,67 +129,165 @@ export default function WebMapViewController(view, model, dispatcher){
     }
   }
 
-  var onNewSelectedTag = function(selectedTag){
-    popup.close();
-    graphicsLayer.filterLocations(selectedTag);
+  var disableAll = function(){
+    //zoomControls.disable();
+  //  selectMenu.disable();
+  //  popup.disable();
+    //graphicsLayer.disable();
+    //basemapLayer.disable();
   }
 
+  var enableAll = function(){
+    //zoomControls.enable();
+  //  selectMenu.enable();
+    //graphicsLayer.enable();
+  //  popup.enable();
+    //basemapLayer.enable();
+  }
+
+
   var onPointGraphicSelected = async function( {id, attributes} ){
+    disableAll();
+    selectMenu.close();
     popup.close();
     graphicsLayer.selectGraphic(id);
     await doAnimation();
     await wait(100);
     popup.setContent(attributes);
     await popup.open();
+    enableAll();
   }
 
   var onClusterGraphicSelected = async function( {id} ){
+    disableAll();
+    selectMenu.close();
     popup.close();
     graphicsLayer.selectGraphic(id);
     await doAnimation();
+    enableAll();
   }
 
   var onZoomInRequest = async function(){
-    await doAnimation();
+    if (model.hasChanged){
+      disableAll();
+      popup.close();
+      selectMenu.close();
+      await doAnimation();
+      enableAll();
+    }
   }
 
   var onZoomOutRequest = async function(){
-    await doAnimation();
+    if (model.hasChanged){
+      disableAll();
+      popup.close();
+      selectMenu.close();
+      await doAnimation();
+      enableAll();
+    }
   }
 
   var onZoomHomeRequest = async function(){
-    await doZoomHome();
+    if (model.hasChanged){
+      disableAll();
+      popup.close();
+      selectMenu.close();
+      await doAnimation();
+      await doZoomHome();
+      enableAll();
+    }
   }
 
   var onPopupClosed = function(){
     graphicsLayer.unselectGraphic();
   }
 
+  var onPopupActionStart = function(){
+    disableAll();
+  }
+
+  var onPopupActionEnd = function(){
+    enableAll();
+  }
+
+  var onPopupHasExpanded = function(){
+    //selectMenu.disable();
+    //zoomControls.disable();
+    //graphicsLayer.disable();
+    //basemapLayer.disable();
+  }
+
+  var onPopupHasContracted = function(){
+    //selectMenu.enable();
+    //zoomControls.enable();
+    //graphicsLayer.enable();
+    //basemapLayer.enable();
+  }
+
   var onPan = function(cumulativePan){
-    graphicsLayer.updateOnPan(model, 1);
-    basemapLayer.updateOnPan(cumulativePan, 1);
+
+    graphicsLayer.updateOnPan(model);
+    basemapLayer.updateOnPan(cumulativePan);
   }
 
   var onPanEnd = function(){
     basemapLayer.updateOnPanEnd();
+    //  popup.enable();
+    //  selectMenu.enable();
+    //  graphicsLayer.enable();
+    //  zoomControls.enable();
   }
 
-  var onConfigure = function(){
-    var {width, height} = root.getDimensions();
-    view.subcomponents.graphicsLayer.configure( {width, height} );
-    return view.subcomponents.basemapLayer.configure( {width, height} );
+  var onPanStart = function(){
+    popup.close();
+    selectMenu.close();
+  //  popup.disable();
+  //  selectMenu.disable();
+  //  graphicsLayer.disable();
+  //  zoomControls.disable();
+  }
+
+  var onNewSelectedTag = function(selectedTag){
+    popup.close();
+    graphicsLayer.unselectGraphic();
+    graphicsLayer.filterLocations(selectedTag);
+  }
+
+  var onSelectMenuActionStart = function(){
+    disableAll();
+  }
+
+  var onSelectMenuActionEnd = function(){
+    enableAll();
   }
 
   //load reactions -------------------------------------------------------------
 
   dispatcher.setListener('view', 'configure', onConfigure);
+
+  //selectMenu
   dispatcher.setListener('view', 'newSelectedTag', onNewSelectedTag);
+  dispatcher.setListener('view', 'selectMenuActionStart', onSelectMenuActionStart);
+  dispatcher.setListener('view', 'selectMenuActionEnd', onSelectMenuActionEnd);
+
+  //graphicsLayer
   dispatcher.setListener('view', 'pointGraphicSelected', onPointGraphicSelected);
   dispatcher.setListener('view', 'clusterGraphicSelected', onClusterGraphicSelected);
+
+  //zoomControls
   dispatcher.setListener('view', 'zoomInRequest', onZoomInRequest);
   dispatcher.setListener('view', 'zoomHomeRequest', onZoomHomeRequest);
   dispatcher.setListener('view', 'zoomOutRequest', onZoomOutRequest);
+
+  //popup
   dispatcher.setListener('view', 'popupClosed', onPopupClosed);
+  dispatcher.setListener('view', 'popupActionStart', onPopupActionStart);
+  dispatcher.setListener('view', 'popupActionEnd', onPopupActionEnd);
+  dispatcher.setListener('view', 'popupIsContracted', onPopupHasContracted);
+  dispatcher.setListener('view', 'popupIsExpanded', onPopupHasExpanded);
+
+  //basemapLayer
+  dispatcher.setListener('view', 'panStart', onPanStart);
   dispatcher.setListener('view', 'pan', onPan);
   dispatcher.setListener('view', 'panEnd', onPanEnd);
 

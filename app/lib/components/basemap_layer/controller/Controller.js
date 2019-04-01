@@ -8,7 +8,7 @@ import EmitterController from './subcontrollers/EmitterController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayerController(dispatcher, emitter, model, view, webMapModel){
+export default function BasemapLayerController(dispatcher, emitter, model, view, webMapModel, webMapDimensions){
 
   //public api -----------------------------------------------------------------
 
@@ -16,7 +16,7 @@ export default function BasemapLayerController(dispatcher, emitter, model, view,
     dispatcher: new DispatcherController(dispatcher, view),
     emitter: new EmitterController(emitter, dispatcher),
     model: new ModelController(model, webMapModel, dispatcher),
-    view: new ViewController(view, model, webMapModel, dispatcher),
+    view: new ViewController(view, model, webMapModel, dispatcher, webMapDimensions),
   }
 
 }
