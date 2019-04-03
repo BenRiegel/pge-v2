@@ -1,4 +1,4 @@
-export default function ZoomControlsViewController(view){
+export default function ZoomControlsViewDomController(view){
 
   var { nodes} = view;
   var { root, homeButtonContainer, inOutButtonContainer} = nodes;

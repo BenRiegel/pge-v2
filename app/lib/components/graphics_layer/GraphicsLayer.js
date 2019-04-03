@@ -28,11 +28,11 @@ export default function GraphicsLayer(webMapModel, webMapDimensions){
   };
 
   this.enable = function(){
-    dispatcher.enable();
+    dispatcher.newAction('publicActionUpdate', false);
   };
 
   this.disable = function(){
-    dispatcher.disable();
+    dispatcher.newAction('publicActionUpdate', true);
   };
 
   this.setLocations = function(graphicPropsList){

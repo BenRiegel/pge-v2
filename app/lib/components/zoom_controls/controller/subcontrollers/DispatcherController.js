@@ -6,7 +6,7 @@ export default function ZoomControlsDispatcherController(dispatcher, view){
   //define reactions -----------------------------------------------------------
 
   var onClick = function(buttonId){
-    dispatcher.newAction('buttonClick', buttonId);
+    dispatcher.notify('emitter', 'buttonClick', buttonId);
   }
 
   //load reactions -------------------------------------------------------------

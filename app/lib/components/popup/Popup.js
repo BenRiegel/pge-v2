@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import Dispatcher from '../../utils/Dispatcher.js';
+import Dispatcher from './services/Dispatcher.js';
 import Emitter from './services/Emitter.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
@@ -28,23 +28,23 @@ export default function Popup(){
   };
 
   this.enable = function(){
-    dispatcher.enable();
+    dispatcher.doAction('enable');
   };
 
   this.disable = function(){
-    dispatcher.disable();
+    dispatcher.doAction('disable');
   };
 
   this.setContent = function(content){
-    dispatcher.newAction('setContent', content);
+    dispatcher.doAction('setContent', content);
   };
 
   this.open = function(){
-    return dispatcher.newAsyncAction('open');
+    return dispatcher.doAction('open');
   };
 
   this.close = function(){
-    dispatcher.newAction('forceClose');
+    dispatcher.doAction('forceClose');
   };
 
 }

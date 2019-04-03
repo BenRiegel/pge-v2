@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import Dispatcher from '../../utils/Dispatcher.js';
+import Dispatcher from './services/Dispatcher.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
 import Controller from './controller/Controller.js';
@@ -21,7 +21,7 @@ export default function WebMap(config){
 
   return {
     rootNode: view.nodes.root.node,
-    hasRendered: dispatcher.newAsyncAction('configure'),
+    hasRendered: dispatcher.doAction('configure'),
     get graphicsLayer(){
       return view.subcomponents.graphicsLayer;
     },

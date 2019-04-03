@@ -1,8 +1,8 @@
 //imports ----------------------------------------------------------------------
 
 import Controller from './controller/Controller.js';
-import Dispatcher from '../../utils/Dispatcher.js';
-import Emitter from './services/Emitter.js';
+import Dispatcher from '../../utils/Dispatcher2.js';
+import Emitter from '../../utils/Emitter.js';
 import View from './view/View.js';
 
 
@@ -26,11 +26,11 @@ export default function ZoomControls(){
   };
 
   this.enable = function(){
-    dispatcher.enable();
+    dispatcher.notify('viewInput', 'enable');
   };
 
   this.disable = function(){
-    dispatcher.disable();
+    dispatcher.notify('viewInput', 'disable');
   };
 
 }

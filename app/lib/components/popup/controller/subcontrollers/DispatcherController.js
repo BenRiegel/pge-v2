@@ -6,19 +6,19 @@ export default function PopupDispatcherController(dispatcher, view){
   //define event reactions -----------------------------------------------------
 
   var onReadMoreRequest = function(){
-    dispatcher.newAsyncAction('expand');
+    dispatcher.doAction('expand');
   }
 
   var onCloseRequest = function(){
-    dispatcher.newAction('close');
+    dispatcher.doAction('close');
   }
 
   var onContractRequest = function(){
-    dispatcher.newAsyncAction('contract');
+    dispatcher.doAction('contract');
   }
 
   var contractAndCloseRequest = function(){
-    dispatcher.newAction('contractAndClose');
+    dispatcher.doAction('contractAndClose');
   }
 
   //load event reactions -------------------------------------------------------

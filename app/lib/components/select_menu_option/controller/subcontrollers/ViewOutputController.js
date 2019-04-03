@@ -1,16 +1,7 @@
-export default function SelectMenuOptionViewController(view, config, model, menuModel, dispatcher){
+export default function SelectMenuOptionViewOutputController(view, config, model, menuModel, dispatcher){
 
   var { nodes } = view;
-  var { root, iconContainer, icon } = nodes;
-  var { labelContainer, labelName, labelCount } = nodes;
-
-  //configure dom --------------------------------------------------------------
-
-  root.appendChildNode(iconContainer.node);
-  root.appendChildNode(labelContainer.node);
-  iconContainer.appendChildNode(icon.node);
-  labelContainer.appendChildNode(labelName.node);
-  labelContainer.appendChildNode(labelCount.node);
+  var { root, iconContainer, icon, labelName } = nodes;
 
   //define view rections -------------------------------------------------------
 
@@ -92,14 +83,14 @@ export default function SelectMenuOptionViewController(view, config, model, menu
 
   //load reactions -------------------------------------------------------------
 
-  dispatcher.setListener('view', 'newSelectedOption', onNewSelectedOption);
-  dispatcher.setListener('view', 'labelIndent', updateLabelIndent);
-  dispatcher.setListener('view', 'iconChar', updateIconChar);
-  dispatcher.setListener('view', 'iconBorderVisibility', updateIconBorderVisibility);
-  dispatcher.setListener('view', 'rootBorderRadius', updateRootBorderRadius);
-  dispatcher.setListener('view', 'rootVisibility', updateRootVisibility);
-  dispatcher.setListener('view', 'rootHeight', updateRootHeight);
-  dispatcher.setListener('view', 'rootOpacity', updateRootOpacity);
+  dispatcher.setListener('viewOutput', 'newSelectedOption', onNewSelectedOption);
+  dispatcher.setListener('viewOutput', 'labelIndent', updateLabelIndent);
+  dispatcher.setListener('viewOutput', 'iconChar', updateIconChar);
+  dispatcher.setListener('viewOutput', 'iconBorderVisibility', updateIconBorderVisibility);
+  dispatcher.setListener('viewOutput', 'rootBorderRadius', updateRootBorderRadius);
+  dispatcher.setListener('viewOutput', 'rootVisibility', updateRootVisibility);
+  dispatcher.setListener('viewOutput', 'rootHeight', updateRootHeight);
+  dispatcher.setListener('viewOutput', 'rootOpacity', updateRootOpacity);
 
   //init -----------------------------------------------------------------------
 

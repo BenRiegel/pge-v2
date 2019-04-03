@@ -6,7 +6,7 @@ export default function SelectMenuDispatcherController(dispatcher, model, view){
   //define event reactions -----------------------------------------------------
 
   var onClick = function(selectedOptionKey){
-    return dispatcher.newAsyncAction('optionClick', selectedOptionKey);
+    dispatcher.doAction('optionClick', selectedOptionKey);
   }
 
   //load event reactions -------------------------------------------------------

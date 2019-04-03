@@ -4,11 +4,11 @@ export default function PopupSummaryDispatcherController(dispatcher, view){
   var { closeButton, readMore } = nodes;
 
   var onCloseButtonClick = function(){
-    dispatcher.newAction('closeRequest');
+    dispatcher.doAction('closeRequest');
   };
 
   var onReadMoreClick = function(){
-    dispatcher.newAction('readMoreRequest');
+    dispatcher.doAction('readMoreRequest');
   };
 
   //public api -----------------------------------------------------------------

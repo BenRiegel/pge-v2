@@ -14,6 +14,10 @@ export default function PopupReportView(){
 
   //public api -----------------------------------------------------------------
 
+  this.state = {
+    contentHasLoaded: false,
+  };
+
   this.nodes = {
     root: new RootNode(),
     content: new ContentNode(),

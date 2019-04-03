@@ -1,6 +1,6 @@
 //imports ----------------------------------------------------------------------
 
-import Dispatcher from '../../utils/Dispatcher.js';
+import Dispatcher from './services/Dispatcher.js';
 import Controller from './controller/Controller.js';
 import View from './view/View.js';
 import Model from './model/Model.js';
@@ -22,11 +22,7 @@ export default function SelectMenuOption(config, menuModel){
   this.rootNode = view.nodes.root.node;
 
   this.update = function(actionName, ...args){
-    dispatcher.newAction(actionName, ...args);
-  };
-
-  this.updateAsync = function(actionName, ...args){
-    return dispatcher.newAsyncAction(actionName, ...args);
+    return dispatcher.doAction(actionName, ...args);
   };
 
 }

@@ -3,7 +3,9 @@
 import DispatcherController from './subcontrollers/DispatcherController.js';
 import ModelController from './subcontrollers/ModelController.js';
 import EmitterController from './subcontrollers/EmitterController.js';
-import ViewController from './subcontrollers/ViewController.js';
+import ViewDomController from './subcontrollers/ViewDomController.js';
+import ViewInputController from './subcontrollers/ViewInputController.js';
+import ViewOutputController from './subcontrollers/ViewOutputController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -16,7 +18,9 @@ export default function PopupController(dispatcher, model, emitter, view){
     dispatcher: new DispatcherController(dispatcher, view),
     model: new ModelController(model, dispatcher),
     emitter: new EmitterController(emitter, dispatcher),
-    view: new ViewController(view, model, dispatcher),
+    viewDom: new ViewDomController(view),
+    viewInput: new ViewInputController(view, dispatcher),
+    viewOutput: new ViewOutputController(view, model, dispatcher),
   }
 
 }

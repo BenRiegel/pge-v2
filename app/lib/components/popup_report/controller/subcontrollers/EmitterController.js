@@ -12,7 +12,7 @@ export default function PopupReportEmitterController(emitter, dispatcher){
 
   //load reactions -------------------------------------------------------------
 
-  dispatcher.setListener('public', 'closeRequest', broadcastCloseRequest);
-  dispatcher.setListener('public', 'contractRequest', broadcastContractRequest);
+  dispatcher.setListener('emitter', 'closeRequest', broadcastCloseRequest);
+  dispatcher.setListener('emitter', 'contractRequest', broadcastContractRequest);
 
 }

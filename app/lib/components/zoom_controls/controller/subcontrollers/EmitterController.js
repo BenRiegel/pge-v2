@@ -9,6 +9,6 @@ export default function ZoomControlsEmitterController(emitter, dispatcher){
 
   //load reactions -------------------------------------------------------------
 
-  dispatcher.setListener('public', 'buttonClick', onButtonClick);
+  dispatcher.setListener('emitter', 'buttonClick', onButtonClick);
 
 }

@@ -17,7 +17,7 @@ export default function WebMapViewView(config, model){
   this.dimensions = {
     width: undefined,
     height: undefined,
-  }
+  };
 
   this.nodes = {
     root: new RootNode(config.rootNodeId),

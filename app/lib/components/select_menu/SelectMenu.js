@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import Controller from './controller/Controller.js';
-import Dispatcher from '../../utils/Dispatcher.js';
+import Dispatcher from './services/Dispatcher.js';
 import Emitter from './services/Emitter.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
@@ -28,19 +28,19 @@ export default function SelectMenu(){
   };
 
   this.enable = function(){
-    dispatcher.enable();
+    dispatcher.doAction('enable');
   };
 
   this.disable = function(){
-    dispatcher.disable();
+    dispatcher.doAction('disable');
   };
 
   this.loadOptions = function(optionsData, selectedOptionKey){
-    dispatcher.newAction('loadOptions', {optionsData, selectedOptionKey} );
+    dispatcher.doAction('loadOptions', {optionsData, selectedOptionKey} );
   };
 
   this.close = function(){
-    return dispatcher.newAsyncAction('close');
+    return dispatcher.doAction('forceClose');
   };
 
 }

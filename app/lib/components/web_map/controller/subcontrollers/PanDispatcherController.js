@@ -51,7 +51,7 @@ export default function WebMapPanDispatcherController(dispatcher, view){
         x: -(currentCoords.x - initCoords.x),
         y: -(currentCoords.y - initCoords.y),
       };
-      dispatcher.newAction('pan', changes);
+      dispatcher.doAction('pan', changes);
       cycle();
     });
   };
@@ -64,7 +64,7 @@ export default function WebMapPanDispatcherController(dispatcher, view){
       if (fadeFrameNum === TOTAL_FADE_FRAMES){
         panInProgress = false;
         fadeFrameNum = 0;
-        dispatcher.newAction('panEnd');
+        dispatcher.doAction('panEnd');
       } else {
         currentCoords.x += moveAve.x * percentFade;
         currentCoords.y += moveAve.y * percentFade;
@@ -72,7 +72,7 @@ export default function WebMapPanDispatcherController(dispatcher, view){
           x: -(currentCoords.x - initCoords.x),
           y: -(currentCoords.y - initCoords.y),
         };
-        dispatcher.newAction('pan', changes);
+        dispatcher.doAction('pan', changes);
         cycle();
       }
     });
@@ -93,7 +93,7 @@ export default function WebMapPanDispatcherController(dispatcher, view){
     mouseMoveList = [];
     if (!panInProgress){
       panInProgress = true;
-      dispatcher.newAction('panStart');
+      dispatcher.doAction('panStart');
       cycle();
     }
   };

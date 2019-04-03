@@ -6,11 +6,11 @@ export default function PopupReportDispatcherController(dispatcher, view){
   //define event reactions -------------------------------------------------------------
 
   var onCloseButtonClick = function(){
-    dispatcher.newAction('closeRequest');
+    dispatcher.doAction('closeRequest');
   };
 
   var onContractClick = function(){
-    dispatcher.newAction('contractRequest');
+    dispatcher.doAction('contractRequest');
   };
 
   //load reactions -------------------------------------------------------------

@@ -13,56 +13,37 @@ export default function Dispatcher(){
     public: new Emitter(),
   }
 
-  var isEnabled = true;
   var isDispatching = false;
-//  var isFrozen = false;
-
-/*  var updateFrozenStatus = function(){
-    var newValue = !isEnabled || isDispatching;
-    if (newValue !== isFrozen){
-      isFrozen = newValue;
-      //emitters.dispatcher.notify('isFrozen', isFrozen);
-    }
-  }*/
 
   var setIsDispatching = function(newValue){
     if (newValue !== isDispatching){
       isDispatching = newValue;
-      emitters.view.notify('actionInProgress', isDispatching);
-      emitters.public.notify('actionInProgress', isDispatching);
+      emitters.view.notify('privateActionUpdate', isDispatching);
+      emitters.public.notify('privateActionUpdate', isDispatching);
     }
   }
 
   //public api -----------------------------------------------------------------
 
   return {
-    isAsync: false,
-    setListener: function(target, eventName, listener){
-      emitters[target].setListener(eventName, listener);
+    setListener: function(target, actionName, listener){
+      emitters[target].setListener(actionName, listener);
     },
-    enable: function(){
-      isEnabled = true;
-    },
-    disable: function(){
-      isEnabled = false;
-    },
-    newAction(eventName, ...args){
-      this.isAsync = false;
-      if (isEnabled && !isDispatching){
-        emitters.model.notify(eventName, ...args);
-        emitters.view.notify(eventName, ...args);
-        emitters.public.notify(eventName, ...args);
+    newAction(actionName, ...args){
+      if (!isDispatching){
+        emitters.model.notify(actionName, ...args);
+        emitters.view.notify(actionName, ...args);
+        emitters.public.notify(actionName, ...args);
       } else {
-        console.log('error');
+        console.log('error', actionName, 'rejected');
       }
     },
-    async newAsyncAction(eventName, ...args){
-      this.isAsync = true;
-      if (isEnabled && !isDispatching){
+    async newAsyncAction(actionName, ...args){
+      if (!isDispatching){
         setIsDispatching(true);
-        emitters.model.notify(eventName, ...args);
-        await emitters.view.notify(eventName, ...args);
-        emitters.public.notify(eventName, ...args);
+        emitters.model.notify(actionName, ...args);
+        await emitters.view.notify(actionName, ...args);
+        emitters.public.notify(actionName, ...args);
         setIsDispatching(false);
       }
     }

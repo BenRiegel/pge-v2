@@ -28,11 +28,11 @@ export default function BasemapLayer(webMapModel, webMapDimensions){
   };
 
   this.enable = function(){
-    dispatcher.enable();
+    dispatcher.newAction('publicActionUpdate', false);
   };
 
   this.disable = function(){
-    dispatcher.disable();
+    dispatcher.newAction('publicActionUpdate', true);
   };
 
   this.configure = function(){

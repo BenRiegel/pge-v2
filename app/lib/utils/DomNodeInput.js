@@ -10,7 +10,7 @@ export default class DomNodeInput extends DomNodeTransitions{
     super(type, className);
     this.configureListeners();
     this.listeners = {};
-    this.isEnabled = true;
+    this.isListening = true;
   }
   setListener(eventName, listener){
     this.listeners[eventName] = listener;
@@ -24,7 +24,7 @@ export default class DomNodeInput extends DomNodeTransitions{
   configureListeners(){
     if (this.mouseClickHandler){
       this.node.addEventListener('click', evt => {
-        if (this.isEnabled){
+        if (this.isListening){
           this.mouseClickHandler(evt);
         }
       });

@@ -1,18 +1,18 @@
 //imports ----------------------------------------------------------------------
 
-import ModelController from './subcontrollers/ModelController.js';
-import ViewController from './subcontrollers/ViewController.js';
+import ViewDomController from './subcontrollers/ViewDomController.js';
+import ViewOutputController from './subcontrollers/ViewOutputController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function LoaderController(dispatcher, model, view){
+export default function LoaderController(dispatcher, view){
 
   //public api -----------------------------------------------------------------
 
   return {
-    model: new ModelController(model, dispatcher),
-    view: new ViewController(view, model, dispatcher),
+    viewDom: new ViewDomController(view),
+    viewOutput: new ViewOutputController(view, dispatcher),
   }
 
 }

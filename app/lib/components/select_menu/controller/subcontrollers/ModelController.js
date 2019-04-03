@@ -11,7 +11,7 @@ export default function SelectMenuModelController(model, dispatcher){
     model.set('isOpen', !model.isOpen);
   }
 
-  var onClose = function(){
+  var onForceClose = function(){
     model.set('isOpen', false);
   }
 
@@ -19,6 +19,6 @@ export default function SelectMenuModelController(model, dispatcher){
 
   dispatcher.setListener('model', 'loadOptions', onLoadOptions);
   dispatcher.setListener('model', 'optionClick', onOptionClick);
-  dispatcher.setListener('model', 'close', onClose);
+  dispatcher.setListener('model', 'forceClose', onForceClose);
 
 }

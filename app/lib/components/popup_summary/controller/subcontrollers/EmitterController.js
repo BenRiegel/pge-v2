@@ -12,7 +12,7 @@ export default function PopupSummaryEmitterController(emitter, dispatcher){
 
   //load reactions -------------------------------------------------------------
 
-  dispatcher.setListener('public', 'closeRequest', broadcastCloseRequest);
-  dispatcher.setListener('public', 'readMoreRequest', broadcastReadMoreRequest);
+  dispatcher.setListener('emitter', 'closeRequest', broadcastCloseRequest);
+  dispatcher.setListener('emitter', 'readMoreRequest', broadcastReadMoreRequest);
 
 }

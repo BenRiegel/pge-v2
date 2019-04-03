@@ -20,6 +20,10 @@ export default function PopupSummaryView(){
 
   //public api -----------------------------------------------------------------
 
+  this.state = {
+    contentHasLoaded: false,
+  };
+
   this.nodes = {
     root: new RootNode(),
     arrow: new ArrowNode(),

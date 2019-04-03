@@ -1,11 +1,4 @@
-//imports ----------------------------------------------------------------------
-
-import Option from '../../../select_menu_option/SelectMenuOption.js';
-
-
-//exports ----------------------------------------------------------------------
-
-export default function SelectMenuViewController(view, model, dispatcher){
+export default function SelectMenuViewOutputController(view, model, dispatcher){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
@@ -21,7 +14,7 @@ export default function SelectMenuViewController(view, model, dispatcher){
   var updateOptionsAsync = function(propName, ...args){
     var promises = [];
     for (var option of subcomponents){
-      var p = option.updateAsync(propName, ...args);
+      var p = option.update(propName, ...args);
       promises.push(p);
     }
     return Promise.all(promises);
@@ -65,14 +58,6 @@ export default function SelectMenuViewController(view, model, dispatcher){
 
   //define event reactions -----------------------------------------------------
 
-  var onLoadOptions = function( {optionsData} ){
-    for (var optionData of optionsData){
-      var option = new Option(optionData, model);
-      root.appendChildNode(option.rootNode);
-      subcomponents.push(option);
-    }
-  }
-
   var onOptionClick = async function(){
     if (model.props.selectedOptionKey.hasChanged){
       updateSelectedStyling();
@@ -82,7 +67,7 @@ export default function SelectMenuViewController(view, model, dispatcher){
     }
   }
 
-  var onClose = async function(){
+  var onForceClose = async function(){
     if (model.props.isOpen.hasChanged){
       await updateOpenStyling();
     }
@@ -90,9 +75,8 @@ export default function SelectMenuViewController(view, model, dispatcher){
 
   //load event reactions -------------------------------------------------------
 
-  dispatcher.setListener('view', 'loadOptions', onLoadOptions);
-  dispatcher.setListener('view', 'optionClick', onOptionClick);
-  dispatcher.setListener('view', 'close', onClose);
+  dispatcher.setListener('viewOutput', 'optionClick', onOptionClick);
+  dispatcher.setListener('viewOutput', 'forceClose', onForceClose);
 
   //init -----------------------------------------------------------------------
 

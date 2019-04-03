@@ -11,8 +11,6 @@ export default function PopupModel(){
 
   var model = new ComponentModel({
     content: null,
-    isOpen: false,
-    isExpanded: false,
   });
 
   //public api -----------------------------------------------------------------
