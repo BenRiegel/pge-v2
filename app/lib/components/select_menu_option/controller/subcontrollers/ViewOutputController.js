@@ -1,106 +1,103 @@
-export default function SelectMenuOptionViewOutputController(view, config, model, menuModel, dispatcher){
+export default function SelectMenuOptionViewOutputController(view){
 
   var { nodes } = view;
   var { root, iconContainer, icon, labelName } = nodes;
 
   //define view rections -------------------------------------------------------
 
-  var updateIconVisibility = function(){
-    if (model.isSelected){
-      icon.setVisibility('visible');
+  var updateIconVisibility = function(isSelected){
+    if (isSelected){
+      icon.setStyle('visibility', 'visible');
     } else {
-      icon.setVisibility('hidden');
+      icon.setStyle('visibility', 'hidden');
     }
   }
 
-  var updateLabelIndent = function(){
-    if (config.label.isIndented){
-      if (menuModel.isOpen){
-        labelName.setIndentStyle('visible');
-      } else {
-        labelName.setIndentStyle('hidden');
-      }
+  var updateLabelIndent = function(isOpen){
+    if (isOpen){
+      labelName.setIndentStyle('visible');
     } else {
-      labelName.setIndentStyle('none');
+      labelName.setIndentStyle('hidden');
     }
   }
 
-  var updateIconChar = function(){
-    if (menuModel.isOpen){
+  var updateIconChar = function(isOpen){
+    if (isOpen){
       icon.setChar('check');
     } else {
       icon.setChar('arrow');
     }
   }
 
-  var updateIconBorderVisibility = function(){
-    if (menuModel.isOpen){
+  var updateIconBorderVisibility = function(isOpen){
+    if (isOpen){
       iconContainer.setBorderVisibility('hidden');
     } else {
       iconContainer.setBorderVisibility('visible');
     }
   }
 
-  var updateRootBorderRadius = function(){
-    if (model.isSelected && !menuModel.isOpen){
+  var updateRootBorderRadius = function(isSelected, isOpen){
+    if (isSelected && !isOpen){
       root.setBorderRadius('rounded');
     } else {
       root.setBorderRadius('default');
     }
   }
 
-  var updateRootVisibility = function(){
-    if (model.isSelected || menuModel.isOpen){
-      root.setVisibility('visible');
+  var updateRootVisibility = function(isSelected, isOpen){
+    if (isSelected || isOpen){
+      root.setStyle('visibility', 'visible');
     } else {
-      root.setVisibility('hidden');
+      root.setStyle('visibility', 'hidden');
     }
   }
 
-  var updateRootHeight = function(isTransitioning = true){
-    if (model.isSelected || menuModel.isOpen){
-      return root.setHeight('expanded', isTransitioning && !model.isSelected);
+  var updateRootHeight = function(isSelected, isOpen, isTransitioning = true){
+    if (isSelected || isOpen){
+      return root.setHeight('expanded', isTransitioning);
     } else {
-      return root.setHeight('contracted', isTransitioning && !model.isSelected);
+      return root.setHeight('contracted', isTransitioning);
     }
   }
 
-  var updateRootOpacity = function(isTransitioning = true){
-    if (model.isSelected || menuModel.isOpen){
-      return root.setOpacity('1', isTransitioning && !model.isSelected);
+  var updateRootOpacity = function(isSelected, isOpen, isTransitioning = true){
+    if (isSelected || isOpen){
+      return root.setOpacity('1', isTransitioning);
     } else {
-      return root.setOpacity('0', isTransitioning && !model.isSelected);
+      return root.setOpacity('0', isTransitioning);
     }
   }
 
-  //define event rections ------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onNewSelectedOption = function(){
-    if (model.props.isSelected.hasChanged){
-      updateIconVisibility();
+  this.updateSelectedStyling = function(isSelected, isOpen){
+    updateIconVisibility(isSelected);
+    updateRootBorderRadius(isSelected, isOpen);
+    updateRootVisibility(isSelected, isOpen);
+    updateRootHeight(isSelected, isOpen, false);
+    updateRootOpacity(isSelected, isOpen, false);
+  };
+
+  this.updateLabelIndent = updateLabelIndent;
+
+  this.updateIconChar = updateIconChar;
+
+  this.updateIconBorderVisibility = updateIconBorderVisibility;
+
+  this.updateRootBorderRadius = updateRootBorderRadius;
+
+  this.updateRootVisibility = updateRootVisibility;
+
+  this.updateRootHeight = function(isSelected, isOpen){
+    if (!isSelected){
+      return updateRootHeight(isSelected, isOpen, true);
     }
-  }
+  };
 
-  //load reactions -------------------------------------------------------------
-
-  dispatcher.setListener('viewOutput', 'newSelectedOption', onNewSelectedOption);
-  dispatcher.setListener('viewOutput', 'labelIndent', updateLabelIndent);
-  dispatcher.setListener('viewOutput', 'iconChar', updateIconChar);
-  dispatcher.setListener('viewOutput', 'iconBorderVisibility', updateIconBorderVisibility);
-  dispatcher.setListener('viewOutput', 'rootBorderRadius', updateRootBorderRadius);
-  dispatcher.setListener('viewOutput', 'rootVisibility', updateRootVisibility);
-  dispatcher.setListener('viewOutput', 'rootHeight', updateRootHeight);
-  dispatcher.setListener('viewOutput', 'rootOpacity', updateRootOpacity);
-
-  //init -----------------------------------------------------------------------
-
-  updateIconVisibility();
-  updateLabelIndent();
-  updateIconChar();
-  updateIconBorderVisibility();
-  updateRootBorderRadius();
-  updateRootVisibility();
-  updateRootHeight(false);
-  updateRootOpacity(false);
-
+  this.updateRootOpacity = function(isSelected, isOpen){
+    if (!isSelected){
+      return updateRootOpacity(isSelected, isOpen, true);
+    };
+  };
 }

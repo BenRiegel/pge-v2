@@ -9,7 +9,7 @@ import '../stylesheets/icon_container.scss';
 export default class IconContainerNode extends DomNode{
 
   constructor(){
-    super('div', 'icon-container');
+    super('div', 'icon-container border');
   }
 
   setBorderVisibility(value){

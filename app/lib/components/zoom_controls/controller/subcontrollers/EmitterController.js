@@ -1,14 +1,10 @@
-export default function ZoomControlsEmitterController(emitter, dispatcher){
+export default function ZoomControlsEmitterController(emitter){
 
-  //define reactions -----------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onButtonClick = function(buttonId){
+  this.onButtonClick = function(buttonId){
     var eventName = `${buttonId}Request`;
     emitter.notify(eventName);
-  }
-
-  //load reactions -------------------------------------------------------------
-
-  dispatcher.setListener('emitter', 'buttonClick', onButtonClick);
+  };
 
 }

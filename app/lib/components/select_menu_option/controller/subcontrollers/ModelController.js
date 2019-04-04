@@ -1,17 +1,10 @@
-export default function SelectMenuOptionModelController(model, config, dispatcher, menuModel){
+export default function SelectMenuOptionModelController(model, config){
 
-  //define event reactions -----------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onNewSelectedOption = function(){
-    var isSelected = (menuModel.selectedOptionKey === config.key);
+  this.updateIsSelected = function(selectedOptionKey){
+    var isSelected = (selectedOptionKey === config.key);
     model.set('isSelected', isSelected);
-  }
+  };
 
-  //load event reactions -------------------------------------------------------
-
-  dispatcher.setListener('model', 'newSelectedOption', onNewSelectedOption);
-
-  //init -----------------------------------------------------------------------
-
-  onNewSelectedOption();
 }

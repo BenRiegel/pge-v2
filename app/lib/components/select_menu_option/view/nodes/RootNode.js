@@ -9,7 +9,7 @@ import '../stylesheets/root.scss';
 export default class RootNode extends DomNodeTransitions{
 
   constructor(key){
-    super('div', 'option');
+    super('div', 'option rounded-border-radius');
     this.setDatasetProp('key', key);
   }
 

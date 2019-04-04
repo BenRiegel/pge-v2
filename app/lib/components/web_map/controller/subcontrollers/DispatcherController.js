@@ -51,9 +51,9 @@ export default function WebMapDispatcherController(dispatcher, view){
 
   //load reactions -------------------------------------------------------------
 
-  zoomControls.setEventListener('zoomInRequest', onZoomInRequest);
-  zoomControls.setEventListener('zoomOutRequest', onZoomOutRequest);
-  zoomControls.setEventListener('zoomHomeRequest', onZoomHomeRequest);
+  zoomControls.setListener('zoomInRequest', onZoomInRequest);
+  zoomControls.setListener('zoomOutRequest', onZoomOutRequest);
+  zoomControls.setListener('zoomHomeRequest', onZoomHomeRequest);
   selectMenu.setEventListener('newSelectedOption', onNewSelectedOption);
   selectMenu.setEventListener('actionStart', onSelectMenuActionStart);
   selectMenu.setEventListener('actionEnd', onSelectMenuActionEnd);

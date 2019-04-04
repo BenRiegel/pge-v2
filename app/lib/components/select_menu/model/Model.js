@@ -10,8 +10,8 @@ export default function SelectMenuModel(){
   //create state var -----------------------------------------------------------
 
   var model = new ComponentModel({
+    optionKeys: [],
     selectedOptionKey: null,
-    isOpen: false,
   });
 
   //public api -----------------------------------------------------------------

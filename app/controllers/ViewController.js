@@ -22,7 +22,8 @@ root.appendChild(loader.rootNode);
 
 var initSelectMenu = async function(){
   var optionsData = await getOptionsData();
-  webMap.selectMenu.loadOptions(optionsData, INIT_SELECTED_TAG);
+  webMap.selectMenu.loadOptions(optionsData);
+  webMap.selectMenu.setSelectedOption(INIT_SELECTED_TAG);
 }
 
 var initWebMap = async function(){

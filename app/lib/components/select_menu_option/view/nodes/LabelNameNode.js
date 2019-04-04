@@ -8,18 +8,17 @@ import '../stylesheets/label_name.scss';
 
 export default class LabelNameNode extends DomNode{
 
-  constructor(name){
-    super('div', 'tag-name');
+  constructor(name, isIndented){
+    var indentedClass = isIndented ? 'indented' : '';
+    super('div', `tag-name ${indentedClass}`);
     this.innerHTML = name;
   }
 
   setIndentStyle(value){
-    if (value === 'none'){
-      this.className = 'tag-name';
-    } else if (value === 'visible'){
-      this.className = 'tag-name indent-visible';
+    if (value === 'visible'){
+      this.addClass('indent-visible');
     } else if (value === 'hidden'){
-      this.className = 'tag-name indent-hidden';
+      this.removeClass('indent-visible');
     }
   }
 

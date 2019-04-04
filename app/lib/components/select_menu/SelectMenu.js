@@ -1,8 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import Controller from './controller/Controller.js';
-import Dispatcher from './services/Dispatcher.js';
-import Emitter from './services/Emitter.js';
+import Emitter from '../../utils/Emitter2.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
 
@@ -13,11 +12,10 @@ export default function SelectMenu(){
 
   //private code block ---------------------------------------------------------
 
-  var dispatcher = new Dispatcher();
-  var emitter = new Emitter();
+  var emitter = new Emitter('actionStart', 'actionEnd', 'newSelectedOption');
   var model = new Model();
   var view = new View();
-  var controller = new Controller(dispatcher, emitter, model, view);
+  var controller = new Controller(emitter, model, view);
 
   //public api -----------------------------------------------------------------
 
@@ -28,19 +26,23 @@ export default function SelectMenu(){
   };
 
   this.enable = function(){
-    dispatcher.doAction('enable');
+    controller.enable();
   };
 
   this.disable = function(){
-    dispatcher.doAction('disable');
+    controller.disable();
   };
 
   this.loadOptions = function(optionsData, selectedOptionKey){
-    dispatcher.doAction('loadOptions', {optionsData, selectedOptionKey} );
+    controller.loadOptions(optionsData, selectedOptionKey);
+  };
+
+  this.setSelectedOption = function(selectedOptionKey){
+    controller.setSelectedOption(selectedOptionKey);
   };
 
   this.close = function(){
-    return dispatcher.doAction('forceClose');
+    controller.forceClose();
   };
 
 }

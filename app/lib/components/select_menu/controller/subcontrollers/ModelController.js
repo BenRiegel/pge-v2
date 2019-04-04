@@ -1,24 +1,16 @@
-export default function SelectMenuModelController(model, dispatcher){
+export default function SelectMenuModelController(model){
 
-  //define event reactions -----------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onLoadOptions = function( {selectedOptionKey} ){
-    model.set('selectedOptionKey', selectedOptionKey);
-  }
+  this.addOptionKey = function(optionKey){
+    model.optionKeys.push(optionKey);
+  };
 
-  var onOptionClick = function(selectedOptionKey){
-    model.set('selectedOptionKey', selectedOptionKey);
-    model.set('isOpen', !model.isOpen);
-  }
-
-  var onForceClose = function(){
-    model.set('isOpen', false);
-  }
-
-  //load event reactions -------------------------------------------------------
-
-  dispatcher.setListener('model', 'loadOptions', onLoadOptions);
-  dispatcher.setListener('model', 'optionClick', onOptionClick);
-  dispatcher.setListener('model', 'forceClose', onForceClose);
+  this.setSelectedOptionKey = function(selectedOptionKey){
+    var validOptionKey = model.optionKeys.includes(selectedOptionKey);
+    if (validOptionKey){
+      model.set('selectedOptionKey', selectedOptionKey);
+    }
+  };
 
 }

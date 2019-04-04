@@ -1,21 +1,16 @@
-export default function ZoomControlsViewInputController(view, dispatcher){
+export default function ZoomControlsViewInputController(view){
 
   var { nodes } = view;
   var { root } = nodes;
 
-  //define reactions -----------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onEnable = function(){
+  this.enable = function(){
     root.isListening = true;
-  }
+  };
 
-  var onDisable = function(){
+  this.disable = function(){
     root.isListening = false;
-  }
-
-  //load reactions -------------------------------------------------------------
-
-  dispatcher.setListener('viewInput', 'enable', onEnable);
-  dispatcher.setListener('viewInput', 'disable', onDisable);
+  };
 
 }

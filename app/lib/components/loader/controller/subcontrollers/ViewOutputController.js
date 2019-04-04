@@ -1,13 +1,9 @@
-export default function LoaderViewOutputController(view, dispatcher){
+export default function LoaderViewOutputController(view){
 
   var { nodes } = view;
   var { root, animation } = nodes;
 
-  //define event reactions -----------------------------------------------------
-
-  var onShow = function(){
-    root.setStyle('visibility', 'visible');
-  }
+  //helper functions -----------------------------------------------------------
 
   var fadeOutAndHide = async function(){
     animation.setStyle('visibility', 'hidden');
@@ -17,22 +13,18 @@ export default function LoaderViewOutputController(view, dispatcher){
     animation.setStyle('visibility', '');
   }
 
-  var onHide = function( {fadeOut} ){
+  //public api -----------------------------------------------------------------
+
+  this.show = function(){
+    root.setStyle('visibility', 'visible');
+  }
+
+  this.hide = function(fadeOut){
     if (fadeOut){
       return fadeOutAndHide();
     } else {
       root.setStyle('visibility', 'hidden');
     }
   }
-
-  //load event reactions -------------------------------------------------------
-
-  dispatcher.setListener('viewOutput', 'show', onShow);
-  dispatcher.setListener('viewOutput', 'hide', onHide);
-
-  //init -----------------------------------------------------------------------
-
-  //put in css?
-  root.setVisibility('hidden');
 
 }

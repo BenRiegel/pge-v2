@@ -6,13 +6,14 @@ import ViewOutputController from './subcontrollers/ViewOutputController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function LoaderController(dispatcher, view){
+export default function LoaderController(view){
+
+  var domController = new ViewDomController(view);
+  var outputController = new ViewOutputController(view);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    viewDom: new ViewDomController(view),
-    viewOutput: new ViewOutputController(view, dispatcher),
-  }
+  this.show = outputController.show;
+  this.hide = outputController.hide;
 
 }

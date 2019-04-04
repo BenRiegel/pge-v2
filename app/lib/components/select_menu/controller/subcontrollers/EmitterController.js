@@ -1,20 +1,17 @@
-export default function SelectMenuEmitterController(emitter, dispatcher, model){
+export default function SelectMenuEmitterController(emitter){
 
-  //define event reactions -----------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onOptionClick = function(status){
-    if (status === 'start'){
-      emitter.notify('actionStart');
-    } else if (status === 'end'){
-      emitter.notify('actionEnd');
-      if (model.props.selectedOptionKey.hasChanged){
-        emitter.notify('newSelectedOption', model.selectedOptionKey);
-      }
-    }
-  }
+  this.notifyActionStart = function(){
+    emitter.notify('actionStart');
+  };
 
-  //load event reactions -------------------------------------------------------
+  this.notifyActionEnd = function(){
+    emitter.notify('actionEnd');
+  };
 
-  dispatcher.setListener('emitter', 'optionClick', onOptionClick);
+  this.notifyNewSelectedOption = function(selectedOptionKey){
+    emitter.notify('newSelectedOption', selectedOptionKey);
+  };
 
 }

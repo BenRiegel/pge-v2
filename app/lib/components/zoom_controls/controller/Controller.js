@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import DispatcherController from './subcontrollers/DispatcherController.js';
 import EmitterController from './subcontrollers/EmitterController.js';
 import ViewDomController from './subcontrollers/ViewDomController.js';
 import ViewInputController from './subcontrollers/ViewInputController.js';
@@ -8,15 +7,24 @@ import ViewInputController from './subcontrollers/ViewInputController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function ZoomControlsController(dispatcher, emitter, view){
+export default function ZoomControlsController(emitter, view){
+
+  var { nodes } = view;
+  var { root } = nodes;
+
+  //define subcontrollers ------------------------------------------------------
+
+  var emitterController = new EmitterController(emitter);
+  var domController = new ViewDomController(view);
+  var inputController = new ViewInputController(view);
+
+  //load event listeners ------------------------------------------------------
+
+  root.setListener('click', emitterController.onButtonClick);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    dispatcher: new DispatcherController(dispatcher, view),
-    emitter: new EmitterController(emitter, dispatcher),
-    viewDom: new ViewDomController(view),
-    viewInput: new ViewInputController(view, dispatcher),
-  }
+  this.enable = inputController.enable;
+  this.disable = inputController.disable;
 
 }

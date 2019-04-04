@@ -19,7 +19,7 @@ export default function SelectMenuOptionView(config){
     iconContainer: new IconContainerNode(),
     icon: new IconNode(),
     labelContainer: new LabelContainerNode(),
-    labelName: new LabelNameNode(config.label.name),
+    labelName: new LabelNameNode(config.label.name, config.label.isIndented),
     labelCount: new LabelCountNode(config.label.count),
   }
 

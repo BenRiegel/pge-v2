@@ -5,10 +5,11 @@
   padding-right: 0px;
 }
 
-.tag-name.indent-visible{
-  padding-left: 18px;
+.tag-name.indented{
+  padding-right: 10px;
 }
 
-.tag-name.indent-hidden{
-  padding-right: 10px;
+.tag-name.indented.indent-visible{
+  padding-left: 18px;
+  padding-right: 0px;
 }

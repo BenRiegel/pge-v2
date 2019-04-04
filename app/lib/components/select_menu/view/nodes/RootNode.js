@@ -9,7 +9,7 @@ import '../stylesheets/root.scss';
 
 export default class RootNode extends DomNodeInput{
   constructor(){
-    super('div', 'select-menu');
+    super('div', 'select-menu rounded-border-radius');
   }
   mouseClickHandler(evt){
     var optionNode = getTargetNode(evt.target, 'option');

@@ -9,14 +9,14 @@ import '../stylesheets/icon.scss';
 export default class IconNode extends DomNode{
 
   constructor(){
-    super('span', 'fa');
+    super('span', 'fa fa-sort-desc');
   }
 
   setChar(value){
     if (value === 'check'){
-      this.className = `fa fa-check`;
+      this.className = 'fa fa-check';
     } else if (value === 'arrow'){
-      this.className = `fa fa-sort-desc`;
+      this.className = 'fa fa-sort-desc';
     }
   }
 
