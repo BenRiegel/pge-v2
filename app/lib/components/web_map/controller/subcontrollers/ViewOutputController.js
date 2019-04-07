@@ -10,7 +10,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
-  var { selectMenu, zoomControls, popup, graphicsLayer, basemapLayer} = subcomponents;
+  var { zoomControls, popup, graphicsLayer, basemapLayer} = subcomponents;
 
   //define state change reactions ----------------------------------------------
 
@@ -122,7 +122,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
   }
 
   var onPointGraphicSelected = async function( {id, attributes} ){
-    selectMenu.close();
+  //  selectMenu.close();
     popup.close();
     graphicsLayer.selectGraphic(id);
     await doAnimation();
@@ -132,7 +132,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
   }
 
   var onClusterGraphicSelected = async function( {id} ){
-    selectMenu.close();
+  //  selectMenu.close();
     popup.close();
     graphicsLayer.selectGraphic(id);
     await doAnimation();
@@ -141,7 +141,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
   var onZoomInRequest = async function(){
     if (model.hasChanged){
       popup.close();
-      selectMenu.close();
+  //    selectMenu.close();
       graphicsLayer.unselectGraphic();
       await doAnimation();
     }
@@ -150,7 +150,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
   var onZoomOutRequest = async function(){
     if (model.hasChanged){
       popup.close();
-      selectMenu.close();
+    //  selectMenu.close();
       graphicsLayer.unselectGraphic();
       await doAnimation();
     }
@@ -159,7 +159,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
   var onZoomHomeRequest = async function(){
     if (model.hasChanged){
       popup.close();
-      selectMenu.close();
+  //    selectMenu.close();
       graphicsLayer.unselectGraphic();
       await doZoomHome();
     }
@@ -171,7 +171,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
 
   var onPanStart = function(){
     popup.close();
-    selectMenu.close();
+  //  selectMenu.close();
     graphicsLayer.unselectGraphic();
   }
 

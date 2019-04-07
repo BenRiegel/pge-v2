@@ -16,6 +16,6 @@ export default function GraphicsLayerDispatcherController(dispatcher, model, vie
 
   //load event reactions -------------------------------------------------------
 
-  root.setListener('click', onClick);
+  root.setEventListener('click', onClick);
 
 }

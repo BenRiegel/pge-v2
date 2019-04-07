@@ -27,7 +27,7 @@ export default class DomNodeAnimations extends DomNode{
     });
   }
 
-  set isTransitioning(value){
+  set isTransitioning(value){  //this needs tobe changed along with transition complete
     this.node.style.transitionDuration = (value === true) ? '' : '0s';
   }
 
@@ -39,11 +39,15 @@ export default class DomNodeAnimations extends DomNode{
     }
   }
 
-  setStyle(styleName, value, isTransitioning = false){
-    this.isTransitioning = isTransitioning;
-    this.node.style[styleName] = value;
-    if (isTransitioning){
-      return this.transitionComplete(styleName);
+  setStyle(styleName, newValue, isTransitioning = false){
+    var currentValue = this.node.style[styleName];
+  //  console.log(styleName, currentValue, newValue);
+    if (newValue !== currentValue){
+      this.isTransitioning = isTransitioning;
+      this.node.style[styleName] = newValue;
+      if (isTransitioning){
+        return this.transitionComplete(styleName);
+      }
     }
   }
 };

@@ -9,7 +9,7 @@ import '../stylesheets/root.scss';
 export default class RootNode extends DomNodeTransitions{
 
   constructor(key){
-    super('div', 'option rounded-border-radius');
+    super('div', 'option');
     this.setDatasetProp('key', key);
   }
 
@@ -24,9 +24,11 @@ export default class RootNode extends DomNodeTransitions{
   setHeight(newValue, isTransitioning){
     this.isTransitioning = isTransitioning;
     if (newValue === 'expanded'){
+      this.removeClass('contracted');
       this.addClass('expanded');
     } else if (newValue === 'contracted'){
       this.removeClass('expanded');
+      this.addClass('contracted');
     }
     if (isTransitioning){
       return this.transitionComplete('height');

@@ -2,15 +2,20 @@ export default function SelectMenuModelController(model){
 
   //public api -----------------------------------------------------------------
 
-  this.addOptionKey = function(optionKey){
-    model.optionKeys.push(optionKey);
+  this.addOption = function(optionKey){
+    var optionKeys = model.optionKeys || [];
+    optionKeys.push(optionKey);
+    model.set('optionKeys', optionKeys);
   };
 
-  this.setSelectedOptionKey = function(selectedOptionKey){
-    var validOptionKey = model.optionKeys.includes(selectedOptionKey);
-    if (validOptionKey){
-      model.set('selectedOptionKey', selectedOptionKey);
+  this.updateSelectedOptionKey = function(optionKey){
+    if (model.optionKeys.includes(optionKey)){
+      model.set('selectedOptionKey', optionKey);
     }
+  };
+
+  this.toggleIsOpen = function(){
+    model.set('isOpen', !model.isOpen);
   };
 
 }

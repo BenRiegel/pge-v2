@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
-import '../stylesheets/label_name.scss';
+import DomNode from '../../../../../lib/utils/DomNode.js';
+import '../stylesheets/name.scss';
 
 
 //exports ----------------------------------------------------------------------
@@ -9,12 +9,14 @@ import '../stylesheets/label_name.scss';
 export default class LabelNameNode extends DomNode{
 
   constructor(name, isIndented){
-    var indentedClass = isIndented ? 'indented' : '';
-    super('div', `tag-name ${indentedClass}`);
+    super('div', 'label-name');
     this.innerHTML = name;
+    if (isIndented){
+      this.addClass('indented');
+    }
   }
 
-  setIndentStyle(value){
+  setIndentVisibility(value){
     if (value === 'visible'){
       this.addClass('indent-visible');
     } else if (value === 'hidden'){

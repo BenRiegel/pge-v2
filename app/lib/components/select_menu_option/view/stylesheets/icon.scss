@@ -1,11 +1,29 @@
-.fa.fa-sort-desc{
-  position: relative;
-  top: -2px;
-  font-size: 16px;
+@import '../../../select_menu/view/stylesheets/_select_menu_variables';
+
+.option-icon{
+  display: block;
+  box-sizing: border-box;
+  width: 30px;
+  padding: 0 5px 0 10px;
+  border:0;
+  line-height: $option-expanded-height;
+  text-align: center;
   visibility: hidden;
 }
 
-.fa.fa-check{
+.option-icon.border{
+  border-right: 1px solid black;
+}
+
+.option-icon.fa.fa-sort-desc{
+  font-size: 16px;
+}
+
+.fa.fa-sort-desc::before{
+  position: relative;
+  top: -3px;
+}
+
+.option-icon.fa.fa-check{
   font-size: 14px;
-  visibility: hidden;
 }

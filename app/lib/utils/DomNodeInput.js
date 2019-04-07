@@ -12,7 +12,7 @@ export default class DomNodeInput extends DomNodeTransitions{
     this.listeners = {};
     this.isListening = true;
   }
-  setListener(eventName, listener){
+  setEventListener(eventName, listener){
     this.listeners[eventName] = listener;
   }
   notify(eventName, ...args){

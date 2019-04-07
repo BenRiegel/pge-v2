@@ -22,6 +22,9 @@ export default function WebMap(config){
   return {
     rootNode: view.nodes.root.node,
     hasRendered: dispatcher.doAction('configure'),
+    get scale(){
+      return model.scale;
+    },
     get graphicsLayer(){
       return view.subcomponents.graphicsLayer;
     },

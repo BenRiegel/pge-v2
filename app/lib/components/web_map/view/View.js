@@ -5,7 +5,7 @@ import ZoomControls from '../../zoom_controls/ZoomControls.js';
 import Popup from '../../popup/Popup.js';
 import GraphicsLayer from '../../graphics_layer/GraphicsLayer.js';
 import BasemapLayer from '../../basemap_layer/BasemapLayer.js';
-import SelectMenu from '../../select_menu/SelectMenu.js';
+//import SelectMenu from '../../select_menu/SelectMenu.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -28,7 +28,7 @@ export default function WebMapViewView(config, model){
     popup: new Popup(),
     graphicsLayer: new GraphicsLayer(model, this.dimensions),
     basemapLayer: new BasemapLayer(model, this.dimensions),
-    selectMenu: new SelectMenu(),
+//    selectMenu: new SelectMenu(),
   };
 
 }

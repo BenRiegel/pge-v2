@@ -1,56 +1,65 @@
-export default function SelectMenuViewOutputController(view){
+//imports ----------------------------------------------------------------------
+
+import { doForAll, doForAllAsync } from '../../../../utils/Utils.js';
+
+
+//exports ----------------------------------------------------------------------
+
+export default function SelectMenuViewOutputController(view, model){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
+  var { options } = subcomponents;
 
   //helper functions -----------------------------------------------------------
 
-  var doForAllOptions = function(methodName, ...args){
-    for (var option of subcomponents){
-      option[methodName](...args);
+  var updateRootBorderRadius = function(){
+    if (model.isOpen){
+      root.setBorderRadius('default');
+    } else {
+      root.setBorderRadius('rounded');
     }
   };
 
-  var doForAllOptionsAsync = function(methodName, ...args){
-    var promises = [];
-    for (var option of subcomponents){
-      var p = option[methodName](...args);
-      promises.push(p);
-    }
-    return Promise.all(promises);
-  };
+  //init view props ------------------------------------------------------------
+
+  updateRootBorderRadius();
 
   //public api -----------------------------------------------------------------
 
-  this.addOption = function(option){
-    subcomponents.push(option);
+  this.renderOption = function(option){
+    option.updateView('iconVisibility');
+    option.updateView('iconChar', model.isOpen);
+    option.updateView('iconBorderVisibility', model.isOpen);
+    option.updateView('rootBorderRadius', model.isOpen);
+    option.updateView('rootVisibility', model.isOpen);
+    option.updateView('rootHeight', model.isOpen, false);
+    option.updateView('rootOpacity', model.isOpen, false);
   };
 
-  this.updateSelectedStyling = function(selectedOptionKey, isOpen){
-    for (var option of subcomponents){
-      option.updateIsSelected(selectedOptionKey, isOpen);
+  this.updateOnOptionSelect = function(){
+    if (model.props.selectedOptionKey.hasChanged){
+      doForAll(options, 'updateModel', model.selectedOptionKey, model.isOpen);
     }
   };
 
-  this.updateOpenStyling = async function(isOpen){
-    if (isOpen){
-      root.setBorderRadius('default');
-      doForAllOptions('updateLabelIndent', isOpen);
-      doForAllOptions('updateIconChar', isOpen);
-      doForAllOptions('updateIconBorderVisibility', isOpen);
-      doForAllOptions('updateRootBorderRadius', isOpen);
-      doForAllOptions('updateRootVisibility', isOpen);
-      await doForAllOptionsAsync('updateRootHeight', isOpen);
-      await doForAllOptionsAsync('updateRootOpacity', isOpen);
+  this.updateOnIsOpenChange = async function(){
+    if (model.isOpen){
+      updateRootBorderRadius();
+      doForAll(options, 'updateView', 'iconChar', model.isOpen);
+      doForAll(options, 'updateView', 'iconBorderVisibility', model.isOpen);
+      doForAll(options, 'updateView', 'rootBorderRadius', model.isOpen);
+      doForAll(options, 'updateView', 'rootVisibility', model.isOpen);
+      await doForAllAsync(options, 'updateView', 'rootHeight', model.isOpen);
+      await doForAllAsync(options, 'updateView', 'rootOpacity', model.isOpen);
     } else {
-      await doForAllOptionsAsync('updateRootOpacity', isOpen);
-      await doForAllOptionsAsync('updateRootHeight', isOpen);
-      doForAllOptions('updateRootVisibility', isOpen);
-      doForAllOptions('updateRootBorderRadius', isOpen);
-      doForAllOptions('updateIconBorderVisibility', isOpen);
-      doForAllOptions('updateIconChar', isOpen);
-      doForAllOptions('updateLabelIndent', isOpen);
-      root.setBorderRadius('rounded');
+      await doForAllAsync(options, 'updateView', 'rootOpacity', model.isOpen);
+      await doForAllAsync(options, 'updateView', 'rootHeight', model.isOpen);
+      doForAll(options, 'updateView', 'rootVisibility', model.isOpen);
+      doForAll(options, 'updateView', 'rootBorderRadius', model.isOpen);
+      doForAll(options, 'updateView', 'iconBorderVisibility', model.isOpen);
+      doForAll(options, 'updateView', 'iconChar', model.isOpen);
+      updateRootBorderRadius();
     }
   };
 

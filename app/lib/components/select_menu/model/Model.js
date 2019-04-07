@@ -7,15 +7,12 @@ import ComponentModel from '../../../utils/ComponentModel.js';
 
 export default function SelectMenuModel(){
 
-  //create state var -----------------------------------------------------------
-
-  var model = new ComponentModel({
-    optionKeys: [],
-    selectedOptionKey: null,
-  });
-
   //public api -----------------------------------------------------------------
 
-  return model;
+  return new ComponentModel({
+    optionKeys: null,
+    selectedOptionKey: null,
+    isOpen: false,
+  });
 
 }

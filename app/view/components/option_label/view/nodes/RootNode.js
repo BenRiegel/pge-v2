@@ -1,13 +1,13 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
-import '../stylesheets/label_container.scss';
+import DomNode from '../../../../../lib/utils/DomNode.js';
+import '../stylesheets/root.scss';
 
 
 //exports ----------------------------------------------------------------------
 
 export default class LabelContainerNode extends DomNode{
   constructor(){
-    super('div', 'label');
+    super('div', 'option-label');
   }
 }

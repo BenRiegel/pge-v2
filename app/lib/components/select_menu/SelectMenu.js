@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import Controller from './controller/Controller.js';
-import Emitter from '../../utils/Emitter2.js';
+import Emitter from './services/Emitter.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
 
@@ -12,7 +12,7 @@ export default function SelectMenu(){
 
   //private code block ---------------------------------------------------------
 
-  var emitter = new Emitter('actionStart', 'actionEnd', 'newSelectedOption');
+  var emitter = new Emitter();
   var model = new Model();
   var view = new View();
   var controller = new Controller(emitter, model, view);
@@ -21,7 +21,7 @@ export default function SelectMenu(){
 
   this.rootNode = view.nodes.root.node;
 
-  this.setEventListener = function(eventName, listener){
+  this.setListener = function(eventName, listener){
     emitter.setListener(eventName, listener);
   };
 
@@ -33,8 +33,8 @@ export default function SelectMenu(){
     controller.disable();
   };
 
-  this.loadOptions = function(optionsData, selectedOptionKey){
-    controller.loadOptions(optionsData, selectedOptionKey);
+  this.loadOption = function(key, option){
+    controller.loadOption(key, option);
   };
 
   this.setSelectedOption = function(selectedOptionKey){

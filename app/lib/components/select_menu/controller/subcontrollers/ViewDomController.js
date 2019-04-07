@@ -5,8 +5,8 @@ export default function SelectMenuViewDomController(view){
 
   //public api -----------------------------------------------------------------
 
-  this.addOptionNode = function(optionNode){
-    root.appendChildNode(optionNode);
+  this.addOption = function(option){
+    root.appendChildNode(option.rootNode);
   };
 
 }

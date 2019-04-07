@@ -1,17 +1,18 @@
-export default function SelectMenuEmitterController(emitter){
+export default function SelectMenuEmitterController(emitter, model){
 
   //public api -----------------------------------------------------------------
 
-  this.notifyActionStart = function(){
-    emitter.notify('actionStart');
+  this.notifyOnActionStart = function(){
+    var actionName = model.isOpen ? 'closingStart' : 'openingStart';
+    emitter.notify(actionName);
   };
 
-  this.notifyActionEnd = function(){
-    emitter.notify('actionEnd');
-  };
-
-  this.notifyNewSelectedOption = function(selectedOptionKey){
-    emitter.notify('newSelectedOption', selectedOptionKey);
+  this.notifyOnActionEnd = function(){
+    var actionName = model.isOpen ? 'openingEnd' : 'closingEnd';
+    emitter.notify(actionName);
+    if (model.props.selectedOptionKey.hasChanged){
+      emitter.notify('newSelectedOption', model.newSelectedOption);
+    }
   };
 
 }

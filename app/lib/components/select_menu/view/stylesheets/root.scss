@@ -1,5 +1,4 @@
 @import '../../../../stylesheets/mixins';
-@import '../../../web_map/view/stylesheets/_web_map_variables';
 @import './_select_menu_variables';
 
 .select-menu{
@@ -7,7 +6,6 @@
   position: absolute;
   background-color: white;
   min-height: $option-expanded-height;
-  z-index: $select-menu-z-index;
   cursor:default;
 }
 

@@ -1,26 +1,18 @@
 //imports ----------------------------------------------------------------------
 
 import RootNode from './nodes/RootNode.js';
-import IconContainerNode from './nodes/IconContainerNode.js';
 import IconNode from './nodes/IconNode.js';
-import LabelContainerNode from './nodes/LabelContainerNode.js';
-import LabelNameNode from './nodes/LabelNameNode.js';
-import LabelCountNode from './nodes/LabelCountNode.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function SelectMenuOptionView(config){
+export default function SelectMenuOptionView(props){
 
   //public api -----------------------------------------------------------------
 
   this.nodes = {
-    root: new RootNode(config.key),
-    iconContainer: new IconContainerNode(),
+    root: new RootNode(props.key),
     icon: new IconNode(),
-    labelContainer: new LabelContainerNode(),
-    labelName: new LabelNameNode(config.label.name, config.label.isIndented),
-    labelCount: new LabelCountNode(config.label.count),
-  }
+  };
 
 }

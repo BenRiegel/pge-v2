@@ -19,9 +19,9 @@ export default function BasemapLayerDispatcherController(dispatcher, view){
 
   //load event reactions -------------------------------------------------------
 
-  root.setListener('mousedown', onMouseDown);
-  root.setListener('mousemove', onMouseMove);
-  root.setListener('mouseup', onMouseUp);
-  //root.setListener('mouseout', onMouseUp);
+  root.setEventListener('mousedown', onMouseDown);
+  root.setEventListener('mousemove', onMouseMove);
+  root.setEventListener('mouseup', onMouseUp);
+  //root.setEventListener('mouseout', onMouseUp);
 
 }

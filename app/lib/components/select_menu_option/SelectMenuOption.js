@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import { capitalize } from '../../utils/Utils.js';
 import Controller from './controller/Controller.js';
 import View from './view/View.js';
 import Model from './model/Model.js';
@@ -7,48 +8,25 @@ import Model from './model/Model.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function SelectMenuOption(config){
+export default function SelectMenuOption(props){
 
   //private code block ---------------------------------------------------------
 
   var model = new Model();
-  var view = new View(config);
-  var controller = new Controller(config, model, view);
+  var view = new View(props);
+  var controller = new Controller(props, model, view);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
-  this.updateIsSelected = function(selectedOptionKey, isOpen){
-    controller.updateIsSelected(selectedOptionKey, isOpen);
+  this.updateModel = function(selectedOptionKey, isOpen){
+    controller.updateModel(selectedOptionKey, isOpen);
   };
 
-  this.updateLabelIndent = function(isOpen){
-    controller.updateLabelIndent(isOpen);
-  };
-
-  this.updateIconChar = function(isOpen){
-    controller.updateIconChar(isOpen);
-  };
-
-  this.updateIconBorderVisibility = function(isOpen){
-    controller.updateIconBorderVisibility(isOpen);
-  };
-
-  this.updateRootBorderRadius = function(isOpen){
-    controller.updateRootBorderRadius(isOpen);
-  };
-
-  this.updateRootVisibility = function(isOpen){
-    controller.updateRootVisibility(isOpen);
-  };
-
-  this.updateRootHeight = function(isOpen){
-    return controller.updateRootHeight(isOpen);
-  };
-
-  this.updateRootOpacity = function(isOpen){
-    return controller.updateRootOpacity(isOpen);
+  this.updateView = function(propName, ...args){
+    var methodName = 'update' + capitalize(propName);
+    return controller[methodName](...args);
   };
 
 }

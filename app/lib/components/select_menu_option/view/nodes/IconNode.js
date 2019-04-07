@@ -9,14 +9,24 @@ import '../stylesheets/icon.scss';
 export default class IconNode extends DomNode{
 
   constructor(){
-    super('span', 'fa fa-sort-desc');
+    super('span', 'option-icon fa');
   }
 
   setChar(value){
     if (value === 'check'){
-      this.className = 'fa fa-check';
+      this.removeClass('fa-sort-desc');
+      this.addClass('fa-check');
     } else if (value === 'arrow'){
-      this.className = 'fa fa-sort-desc';
+      this.removeClass('fa-check');
+      this.addClass('fa-sort-desc');
+    }
+  }
+
+  setBorderVisibility(value){
+    if (value === 'visible'){
+      this.addClass('border');
+    } else if (value === 'hidden'){
+      this.removeClass('border');
     }
   }
 

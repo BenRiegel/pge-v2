@@ -9,22 +9,6 @@
   z-index: 0;
 }
 
-#webmap .select-menu{
-  top: $web-map-widget-padding;
-  left: $web-map-widget-padding;
-  box-shadow: $outer-box-shadow;
-  font-size: $theme-font-size;
-  color: $theme-font-color;
-}
-
-#webmap .option:hover{
-  box-shadow: $inner-box-shadow;
-}
-
-#webmap .icon-container.border{
-  border-color: $theme-light-gray;
-}
-
 #webmap .zoom-controls{
   top: $web-map-widget-padding;
   right: $web-map-widget-padding;

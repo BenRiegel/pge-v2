@@ -13,7 +13,7 @@ export default function PopupSummaryDispatcherController(dispatcher, view){
 
   //public api -----------------------------------------------------------------
 
-  closeButton.setListener('click', onCloseButtonClick);
-  readMore.setListener('click', onReadMoreClick);
+  closeButton.setEventListener('click', onCloseButtonClick);
+  readMore.setEventListener('click', onReadMoreClick);
 
 }

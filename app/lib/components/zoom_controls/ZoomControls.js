@@ -1,7 +1,7 @@
 //imports ----------------------------------------------------------------------
 
 import Controller from './controller/Controller.js';
-import Emitter from '../../utils/Emitter2.js';
+import Emitter from './services/Emitter.js';
 import View from './view/View.js';
 
 
@@ -11,7 +11,7 @@ export default function ZoomControls(){
 
   //private code block ---------------------------------------------------------
 
-  var emitter = new Emitter('zoomInRequest', 'zoomOutRequest', 'zoomHomeRequest');
+  var emitter = new Emitter()
   var view = new View();
   var controller = new Controller(emitter, view);
 

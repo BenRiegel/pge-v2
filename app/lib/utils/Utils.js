@@ -33,3 +33,22 @@ export function getTargetNode(node, className){
   }
   return null;
 };
+
+export function doForAll(objs, methodName, ...args){
+  for (var obj of objs){
+    obj[methodName](...args);
+  }
+};
+
+export function doForAllAsync(objs, methodName, ...args){
+  var promises = [];
+  for (var obj of objs){
+    var p = obj[methodName](...args);
+    promises.push(p);
+  }
+  return Promise.all(promises);
+};
+
+export function capitalize(str){
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

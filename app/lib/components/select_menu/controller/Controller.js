@@ -1,12 +1,11 @@
 //imports ----------------------------------------------------------------------
 
-import Option from '../../select_menu_option/SelectMenuOption.js';
 import EmitterController from './subcontrollers/EmitterController.js';
 import ModelController from './subcontrollers/ModelController.js';
-import ViewStateController from './subcontrollers/ViewStateController.js';
+import ViewController from './subcontrollers/ViewController.js';
+import ViewDomController from './subcontrollers/ViewDomController.js';
 import ViewInputController from './subcontrollers/ViewInputController.js';
 import ViewOutputController from './subcontrollers/ViewOutputController.js';
-import ViewDomController from './subcontrollers/ViewDomController.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -15,33 +14,26 @@ export default function SelectMenuController(emitter, model, view){
 
   var { nodes } = view;
   var { root } = nodes;
-  var { props } = model;
-  var { selectedOptionKey } = props;
 
   //define subcontrollers ------------------------------------------------------
 
-  var emitterController = new EmitterController(emitter);
+  var emitterController = new EmitterController(emitter, model, view);
   var modelController = new ModelController(model);
-  var viewStateController = new ViewStateController(view);
+  var viewController = new ViewController(view);
   var domController = new ViewDomController(view);
   var inputController = new ViewInputController(view);
-  var outputController = new ViewOutputController(view);
+  var outputController = new ViewOutputController(view, model);
 
   //load event listeners -------------------------------------------------------
 
-  root.setListener('click', async optionKey => {
+  root.setEventListener('click', async function(selectedOptionKey){
     inputController.disable();
-    emitterController.notifyActionStart();
-    modelController.setSelectedOptionKey(optionKey);
-    if (selectedOptionKey.hasChanged){
-      outputController.updateSelectedStyling(model.selectedOptionKey, view.state.isOpen);
-    }
-    viewStateController.toggleOpenState();
-    await outputController.updateOpenStyling(view.state.isOpen);
-    if (selectedOptionKey.hasChanged){
-      emitterController.notifyNewSelectedOption(model.selectedOptionKey, view.state.isOpen);
-    }
-    emitterController.notifyActionEnd();
+    emitterController.notifyOnActionStart();
+    modelController.updateSelectedOptionKey(selectedOptionKey);
+    outputController.updateOnOptionSelect();
+    modelController.toggleIsOpen();
+    await outputController.updateOnIsOpenChange();
+    emitterController.notifyOnActionEnd();
     inputController.enable();
   });
 
@@ -51,27 +43,21 @@ export default function SelectMenuController(emitter, model, view){
 
   this.disable = inputController.disable;
 
-  this.loadOptions = function(optionsData){
-    for (var optionData of optionsData){
-      var option = new Option(optionData);
-      modelController.addOptionKey(optionData.key);
-      outputController.addOption(option);
-      domController.addOptionNode(option.rootNode);
-    }
+  this.loadOption = function(key, option){
+    modelController.addOption(key);
+    domController.addOption(option);
+    viewController.addOption(option);
+    outputController.renderOption(option);
   };
 
-  this.setSelectedOption = function(optionKey){
-    modelController.setSelectedOptionKey(optionKey);
-    if (selectedOptionKey.hasChanged){
-      outputController.updateSelectedStyling(model.selectedOptionKey, view.state.isOpen);
-    }
+  this.setSelectedOption = function(newKey){
+    modelController.updateSelectedOptionKey(newKey);
+    outputController.updateOnOptionSelect();
   };
 
   this.forceClose = function(){
-    modelController.setClosed();
-    if (view.state.props.isOpen.hasChanged){
-      outputController.onForceClose();
-    }
+    viewStateController.setClosed();
+    return outputController.updateViewStateChanges();
   };
 
 }

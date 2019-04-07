@@ -1,0 +1,19 @@
+@import './_variables';
+
+#root .select-menu{
+  top: $web-map-widget-padding;
+  left: $web-map-widget-padding;
+  box-shadow: $outer-box-shadow;
+  font-size: $theme-font-size;
+  font-family: $theme-font-family;
+  color: $theme-font-color;
+  z-index: 1;
+}
+
+#root .option:hover{
+  box-shadow: $inner-box-shadow;
+}
+
+#root .option-icon.border{
+  border-color: $theme-light-gray;
+}

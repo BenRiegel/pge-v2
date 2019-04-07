@@ -1,14 +1,14 @@
 //imports ----------------------------------------------------------------------
 
-import DomNode from '../../../../utils/DomNode.js';
-import '../stylesheets/label_count.scss';
+import DomNode from '../../../../../lib/utils/DomNode.js';
+import '../stylesheets/count.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class LabelCountNode extends DomNode{
+export default class CountNode extends DomNode{
   constructor(count){
-    super('div', 'tag-count');
+    super('div', 'label-count');
     this.innerHTML = count;
   }
 }

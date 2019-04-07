@@ -20,7 +20,7 @@ export default function ZoomControlsController(emitter, view){
 
   //load event listeners ------------------------------------------------------
 
-  root.setListener('click', emitterController.onButtonClick);
+  root.setEventListener('click', emitterController.onButtonClick);
 
   //public api -----------------------------------------------------------------
 

@@ -6,14 +6,15 @@ $transition-duration: 0.4s;
   display: flex;
   border-radius: 0;
   line-height: $option-expanded-height;
-  height: 0;
-  opacity: 0;
-  visibility: hidden;
   transition: opacity $transition-duration, height $transition-duration;
 }
 
 .option.expanded{
   height: $option-expanded-height;
+}
+
+.option.contracted{
+  height: 0;
 }
 
 .option.rounded-border-radius{

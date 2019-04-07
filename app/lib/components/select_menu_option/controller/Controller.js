@@ -7,43 +7,37 @@ import ViewOutputController from './subcontrollers/ViewOutputController.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function SelectMenuOptionController(config, model, view){
+export default function SelectMenuOptionController(props, model, view){
 
   //define subcontrollers ------------------------------------------------------
 
-  var modelController = new ModelController(model, config);
-  var domController = new ViewDomController(view);
-  var outputController = new ViewOutputController(view);
+  var modelController = new ModelController(model, props);
+  var domController = new ViewDomController(view, props);
+  var outputController = new ViewOutputController(view, model);
 
   //public api -----------------------------------------------------------------
 
-  this.updateIsSelected = function(selectedOptionKey, isOpen){
+  this.updateModel = function(selectedOptionKey, isOpen){
     modelController.updateIsSelected(selectedOptionKey);
-    if (model.props.isSelected.hasChanged){
-      outputController.updateSelectedStyling(model.isSelected, isOpen);
-    }
+    outputController.updateIconVisibility();
+    outputController.updateRootBorderRadius(isOpen);
+    outputController.updateRootVisibility(isOpen);
+    outputController.updateRootHeight(isOpen, false);
+    outputController.updateRootOpacity(isOpen, false);
   };
 
-  this.updateLabelIndent = outputController.updateLabelIndent;
+  this.updateIconVisibility = outputController.updateIconVisibility;
 
   this.updateIconChar = outputController.updateIconChar;
 
   this.updateIconBorderVisibility = outputController.updateIconBorderVisibility;
 
-  this.updateRootVisibility = function(isOpen){
-    outputController.updateRootVisibility(model.isSelected, isOpen);
-  };
+  this.updateRootVisibility = outputController.updateRootVisibility;
 
-  this.updateRootBorderRadius = function(isOpen){
-    outputController.updateRootBorderRadius(model.isSelected, isOpen);
-  };
+  this.updateRootBorderRadius = outputController.updateRootBorderRadius;
 
-  this.updateRootHeight = function(isOpen){
-    return outputController.updateRootHeight(model.isSelected, isOpen);
-  };
+  this.updateRootHeight = outputController.updateRootHeight;
 
-  this.updateRootOpacity = function(isOpen){
-    return outputController.updateRootOpacity(model.isSelected, isOpen);
-  };
+  this.updateRootOpacity = outputController.updateRootOpacity;
 
 }

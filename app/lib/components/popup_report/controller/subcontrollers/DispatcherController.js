@@ -15,7 +15,7 @@ export default function PopupReportDispatcherController(dispatcher, view){
 
   //load reactions -------------------------------------------------------------
 
-  closeButton.setListener('click', onCloseButtonClick);
-  contractButton.setListener('click', onContractClick);
+  closeButton.setEventListener('click', onCloseButtonClick);
+  contractButton.setEventListener('click', onContractClick);
 
 }

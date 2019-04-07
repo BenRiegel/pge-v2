@@ -1,7 +1,7 @@
 export default function WebMapDispatcherController(dispatcher, view){
 
   var { subcomponents } = view;
-  var { zoomControls, selectMenu, popup, graphicsLayer, basemapLayer} = subcomponents;
+  var { zoomControls, popup, graphicsLayer, basemapLayer} = subcomponents;
 
   //define user event reactions ------------------------------------------------
 
@@ -13,7 +13,7 @@ export default function WebMapDispatcherController(dispatcher, view){
     dispatcher.doAction('clusterGraphicSelected', {id, worldCoords} );
   }
 
-  var onSelectMenuActionStart = function(){
+  /*var onSelectMenuActionStart = function(){
     dispatcher.doAction('selectMenuActionStart');
   }
 
@@ -23,7 +23,7 @@ export default function WebMapDispatcherController(dispatcher, view){
 
   var onNewSelectedOption = function(selectedOptionKey){
     dispatcher.doAction('newSelectedTag', selectedOptionKey);
-  }
+  }*/
 
   var onZoomInRequest = function(){
     dispatcher.doAction('zoomInRequest');
@@ -54,9 +54,11 @@ export default function WebMapDispatcherController(dispatcher, view){
   zoomControls.setListener('zoomInRequest', onZoomInRequest);
   zoomControls.setListener('zoomOutRequest', onZoomOutRequest);
   zoomControls.setListener('zoomHomeRequest', onZoomHomeRequest);
-  selectMenu.setEventListener('newSelectedOption', onNewSelectedOption);
-  selectMenu.setEventListener('actionStart', onSelectMenuActionStart);
-  selectMenu.setEventListener('actionEnd', onSelectMenuActionEnd);
+//  selectMenu.setListener('newSelectedOption', onNewSelectedOption);
+//  selectMenu.setListener('openingStart', onSelectMenuActionStart);
+//  selectMenu.setListener('closingStart', onSelectMenuActionStart);
+//  selectMenu.setListener('openingEnd', onSelectMenuActionEnd);
+//  selectMenu.setListener('closingEnd', onSelectMenuActionEnd);
   popup.setEventListener('closed', onPopupClosed);
   popup.setEventListener('expansionStart', onPopupExpansionStart);
   popup.setEventListener('contractionEnd', onPopupContractionEnd);
