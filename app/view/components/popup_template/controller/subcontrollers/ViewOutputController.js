@@ -5,7 +5,7 @@ import { waitAtLeast } from '../../../../../lib/utils/Utils.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupTemplateViewOutputController(view, model){
+export default function PopupTemplateViewOutputController(view){
 
   var { nodes } = view;
   var { title, author, image, text, readMore } = nodes;
@@ -33,7 +33,20 @@ export default function PopupTemplateViewOutputController(view, model){
   };
 
   var updateImageSize = function(){
-    image.resize();
+    const MAX_IMAGE_WIDTH = 200;
+    const MAX_IMAGE_HEIGHT = 125;
+    var naturalWidth = image.getProp('naturalWidth');
+    var naturalHeight = image.getProp('naturalHeight');
+    var ratio = naturalWidth / naturalHeight;
+    if (ratio > (MAX_IMAGE_WIDTH / MAX_IMAGE_HEIGHT)){
+      var newWidth = MAX_IMAGE_WIDTH;
+      var newHeight = newWidth / ratio;
+    } else {
+      var newHeight = MAX_IMAGE_HEIGHT;
+      var newWidth = ratio * newHeight;
+    }
+    image.setStyle('width', `${newWidth}px`);
+    image.setStyle('height', `${newHeight}px`);
   };
 
   //public api -----------------------------------------------------------------
@@ -49,33 +62,3 @@ export default function PopupTemplateViewOutputController(view, model){
   };
 
 }
-
-/*  var adjustContentHeight = function(){
-    var offsetHeight = content.getProp('offsetHeight');
-    var scrollHeight = content.getProp('scrollHeight');
-    var deltaHeight = scrollHeight - offsetHeight;
-    if (deltaHeight){
-      var transitionTime = Math.abs(3 * deltaHeight);
-      return content.transitionHeight(scrollHeight, transitionTime);
-    }
-  };*/
-
-  /*  this.open = async function(){
-      root.setStyle('visibility', 'visible');
-
-      await adjustContentHeight();
-      await content.setStyle('opacity', '1', true);
-    };
-
-    this.close = function(){
-      root.setStyle('visibility', 'hidden');
-      content.setStyle('opacity', '0');
-      content.setStyle('height', '');
-    };*/
-
-  /*  this.getDimensions = function(){
-      var left = root.getProp('offsetLeft');
-      var top = root.getProp('offsetTop');
-      var { width, height } = content.getDimensions();
-      return { left, top, width, height };
-    };*/

@@ -3,7 +3,7 @@ export default function PopupViewInputController(view){
   var { subcomponents } = view;
   var { template } = subcomponents;
 
-  //define event reactions -----------------------------------------------------
+  //public api -----------------------------------------------------------------
 
   this.enable = template.enable;
 

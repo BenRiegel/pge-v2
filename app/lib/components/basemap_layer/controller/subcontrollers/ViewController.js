@@ -120,10 +120,10 @@ export default function BasemapLayerViewController(view, model, webMapModel, dis
   var setContainerRoles = function(){
     activeTileContainer = tileContainers[activeNum];
     activeTileContainer.setStyle('z-index', '1');
-    activeTileContainer.setOpacity('1');
+    activeTileContainer.setStyle('opacity', '1');
     resetTileContainer = tileContainers[1 - activeNum];
     resetTileContainer.setStyle('z-index', '0');
-    resetTileContainer.setOpacity('0');
+    resetTileContainer.setStyle('opacity', '0');
     activeTileSet = tileSets[activeNum];
     resetTileSet = tileSets[1 - activeNum];
   }
@@ -134,7 +134,7 @@ export default function BasemapLayerViewController(view, model, webMapModel, dis
   }
 
   var onZoomEnd = async function(){
-    resetTileContainer.setOpacity('1');
+    resetTileContainer.setStyle('opacity', '1');
     await updateTiles(resetTileSet);
     setContainerOffsets();
     updateResetTranslate();
@@ -143,11 +143,11 @@ export default function BasemapLayerViewController(view, model, webMapModel, dis
   }
 
   var onPanEnd = async function(){
-    resetTileContainer.setOpacity('1');
+    resetTileContainer.setStyle('opacity', '1');
     await updateTiles(resetTileSet);
     setContainerOffsets();
     updateResetTranslate();
-    activeTileContainer.setOpacity('0');
+    activeTileContainer.setStyle('opacity', '0');
     toggleActiveTiles();
   };
 

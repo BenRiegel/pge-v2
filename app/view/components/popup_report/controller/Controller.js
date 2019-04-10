@@ -22,7 +22,7 @@ export default function PopupReportController(emitter, model, view){
   //load event listeners -------------------------------------------------------
 
   view.nodes.closeButton.setEventListener('click', () => {
-    outputController.close();
+    outputController.contractAndClose();
     emitterController.broadcastClose();
   });
 
@@ -32,9 +32,11 @@ export default function PopupReportController(emitter, model, view){
 
   //public api -----------------------------------------------------------------
 
-  this.showAt = outputController.showAt;
+  this.setPosition = outputController.setPosition;
 
-  this.close = outputController.fadeAndClose;
+  this.open = outputController.open;
+
+  this.close = outputController.close;
 
   this.expand = outputController.expand;
 
@@ -42,7 +44,7 @@ export default function PopupReportController(emitter, model, view){
 
   this.load = function(content){
     modelController.updateContent(content);
-    return outputController.open();
+    return outputController.loadContent();
   };
 
 }

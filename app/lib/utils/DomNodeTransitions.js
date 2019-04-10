@@ -5,49 +5,44 @@ import DomNode from './DomNode.js';
 
 //exports ----------------------------------------------------------------------
 
-export default class DomNodeAnimations extends DomNode{
+export default class DomNodeTransitions extends DomNode{
 
   constructor(type, className = ''){
     super(type, className);
     this.transitionListeners = {};
-    this.node.addEventListener('transitionend', this.transitionEnded.bind(this) );
+    this.transitionPromises = {};
+    this.node.addEventListener('transitionend', this.handleTransitionEnd.bind(this) );
   }
 
-  transitionEnded(evt){
-    var styleName = evt.propertyName;
-    var listener = this.transitionListeners[styleName];
-    if (listener){
-      listener();
+  handleTransitionEnd(evt){
+    if (evt.target === this.node){
+      var styleName = evt.propertyName;
+      var listener = this.transitionListeners[styleName];
+      if (listener){
+        listener();
+      }
     }
   }
 
-  transitionComplete(styleName){
-    return new Promise(resolve => {
+  loadTransitionListener(styleName){
+    this.transitionPromises[styleName] = new Promise(resolve => {
       this.transitionListeners[styleName] = resolve;
     });
   }
 
-  set isTransitioning(value){  //this needs tobe changed along with transition complete
-    this.node.style.transitionDuration = (value === true) ? '' : '0s';
+  transitionComplete(styleName){
+    return this.transitionPromises[styleName];
   }
 
-  setOpacity(newValue, isTransitioning = false){
-    this.isTransitioning = isTransitioning;
-    this.node.style.opacity = newValue;
-    if (isTransitioning){
-      return this.transitionComplete('opacity');
-    }
-  }
-
-  setStyle(styleName, newValue, isTransitioning = false){
+  async transitionStyle(styleName, newValue){
     var currentValue = this.node.style[styleName];
-  //  console.log(styleName, currentValue, newValue);
     if (newValue !== currentValue){
-      this.isTransitioning = isTransitioning;
+      this.addClass(`transition-${styleName}`);
+      this.loadTransitionListener(styleName);
       this.node.style[styleName] = newValue;
-      if (isTransitioning){
-        return this.transitionComplete(styleName);
-      }
+      await this.transitionComplete(styleName);
+      this.removeClass(`transition-${styleName}`);
     }
   }
+
 };

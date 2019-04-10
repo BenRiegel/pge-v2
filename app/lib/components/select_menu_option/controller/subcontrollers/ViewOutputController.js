@@ -47,17 +47,36 @@ export default function SelectMenuOptionViewOutputController(view, model){
 
   this.updateRootHeight = function(isOpen, isTransitioning = true){
     if (model.isSelected || isOpen){
-      return root.setHeight('expanded', isTransitioning && !model.isSelected);
+      if (!isTransitioning || model.isSelected){
+        root.setHeight('expanded');
+      } else {
+        return root.transitionHeight('expanded');
+      }
+    //  return root.setHeight('expanded', isTransitioning && !model.isSelected);
     } else {
-      return root.setHeight('contracted', isTransitioning && !model.isSelected);
+      if (!isTransitioning || model.isSelected){
+        root.setHeight('contracted');
+      } else {
+        return root.transitionHeight('contracted');
+      }
+
+    //  return root.setHeight('contracted', isTransitioning && !model.isSelected);
     }
   };
 
   this.updateRootOpacity = function(isOpen, isTransitioning = true){
     if (model.isSelected || isOpen){
-      return root.setStyle('opacity', '1', isTransitioning && !model.isSelected);
+      if (!isTransitioning || model.isSelected){
+        root.setStyle('opacity', '1');
+      } else {
+        return root.transitionStyle('opacity', '1');
+      }
     } else {
-      return root.setStyle('opacity', '0', isTransitioning && !model.isSelected);
+      if (!isTransitioning || model.isSelected){
+        root.setStyle('opacity', '0');
+      } else {
+        return root.transitionStyle('opacity', '0');
+      }
     }
   };
 

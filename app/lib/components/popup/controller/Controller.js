@@ -21,6 +21,7 @@ export default function PopupController(emitter, model, view){
 
   view.nodes.closeButton.setEventListener('click', () => {
     outputController.close();
+    emitterController.notifyOnClose();
   });
 
   //public api -----------------------------------------------------------------
@@ -34,7 +35,10 @@ export default function PopupController(emitter, model, view){
     return outputController.open();
   };
 
-  this.close = outputController.close;
+  this.close = function(){
+    outputController.close();
+    emitterController.notifyOnClose();
+  };
 
   this.getDimensions = outputController.getDimensions;
 

@@ -11,6 +11,7 @@ export default function WebMapDispatcherController(dispatcher, view){
 
   var onGraphicClicked = function(graphicProps, attributes){
     var { id, x, y } = graphicProps;
+    id = Number(id);
     var worldCoords = { x, y };
     dispatcher.doAction('pointGraphicSelected', {id, worldCoords, attributes});
   }
@@ -66,9 +67,9 @@ export default function WebMapDispatcherController(dispatcher, view){
 //  selectMenu.setListener('openingEnd', onSelectMenuActionEnd);
 //  selectMenu.setListener('closingEnd', onSelectMenuActionEnd);
   popup.setListener('closed', onPopupClosed);
-  popup.setListener('expansionStart', onPopupExpansionStart);
-  popup.setListener('contractionEnd', onPopupContractionEnd);
-  graphicsLayer.setEventListener('graphicClicked', onGraphicClicked);
+//  popup.setListener('expansionStart', onPopupExpansionStart);
+//  popup.setListener('contractionEnd', onPopupContractionEnd);
+  graphicsLayer.setListener('graphicClicked', onGraphicClicked);
 //  graphicsLayer.setEventListener('clusterGraphicClicked', onClusterGraphicClicked);
 
 }

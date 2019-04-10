@@ -1,4 +1,4 @@
-$transition-duration: 0.75s;
+@import './_popup_report_variables';
 
 .report-window{
   position: absolute;
@@ -6,9 +6,15 @@ $transition-duration: 0.75s;
   background-color: white;
   visibility: visible;
   opacity: 0;
+}
+
+.report-window.transition-opacity{
+  transition: opacity $transition-duration;
+}
+
+.report-window.transition-dimensions{
   transition: left $transition-duration,
               top $transition-duration,
               width $transition-duration,
-              height $transition-duration,
-              opacity $transition-duration;
+              height $transition-duration;
 }

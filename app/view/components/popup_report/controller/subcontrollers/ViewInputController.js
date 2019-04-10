@@ -3,16 +3,16 @@ export default function PopupReportViewInputController(view){
   var { nodes } = view;
   var { closeButton, contractButton } = nodes;
 
-  //define reactions -----------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onEnable = function(){
+  this.onEnable = function(){
     closeButton.isListening = true;
     contractButton.isListening = true;
-  }
+  };
 
-  var onDisable = function(){
+  this.onDisable = function(){
     closeButton.isListening = false;
     contractButton.isListening = false;
-  }
+  };
 
 }

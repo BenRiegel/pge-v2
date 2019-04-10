@@ -9,6 +9,6 @@ export default function PopupEmitter(){
 
   //public api -----------------------------------------------------------------
 
-  return new Emitter( ['closed', 'expansionStart', 'contractionEnd'] );
+  return new Emitter( ['closed'] );
 
 }

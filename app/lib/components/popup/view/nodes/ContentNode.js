@@ -12,7 +12,8 @@ export default class ContentNode extends DomNodeTransitions{
   }
   async transitionHeight(newValue, transitionDuration){
     this.setStyle('transition', `height ${transitionDuration}ms`);
-    this.node.style.height = `${newValue}px`;
+    this.loadTransitionListener('height');
+    this.setStyle('height', `${newValue}px`);
     await this.transitionComplete('height');
     this.setStyle('transition', '');
   }

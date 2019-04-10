@@ -1,24 +1,9 @@
 export default function PopupEmitterController(emitter){
 
-  //define event reactions -----------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onClose = function(){
+  this.notifyOnClose = function(){
     emitter.notify('closed');
-  }
-
-  var onExpand = function(){
-    emitter.notify('expansionStart');
-  }
-
-  var onContract = function(){
-    emitter.notify('contractionEnd');
-  }
-
-  //load event reactions -------------------------------------------------------
-
-/*  dispatcher.setListener('emitter', 'close', onClose);
-  dispatcher.setListener('emitter', 'expand', onExpand);
-  dispatcher.setListener('emitter', 'contract', onContract);
-  dispatcher.setListener('emitter', 'contractAndClose', onClose);*/
+  };
 
 }

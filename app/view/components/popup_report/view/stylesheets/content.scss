@@ -1,4 +1,4 @@
-$transition-duration: 0.75s;
+@import './_popup_report_variables';
 
 .report-content{
   position: relative;
@@ -9,5 +9,8 @@ $transition-duration: 0.75s;
   opacity: 0;
   border-radius: inherit;
   overflow: auto;
+}
+
+.report-content.transition-opacity{
   transition: opacity $transition-duration;
 }

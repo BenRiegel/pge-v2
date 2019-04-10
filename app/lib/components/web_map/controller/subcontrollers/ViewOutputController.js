@@ -122,7 +122,6 @@ export default function WebMapViewOutputController(view, model, dispatcher){
   }
 
   var onPointGraphicSelected = async function( {id, attributes} ){
-  //  selectMenu.close();
     popup.close();
     graphicsLayer.selectGraphic(id);
     await doAnimation();
@@ -131,7 +130,6 @@ export default function WebMapViewOutputController(view, model, dispatcher){
   }
 
   var onClusterGraphicSelected = async function( {id} ){
-  //  selectMenu.close();
     popup.close();
     graphicsLayer.selectGraphic(id);
     await doAnimation();

@@ -10,4 +10,11 @@ export default class WindowNode extends DomNodeTransitions{
   constructor(){
     super('div', 'report-window');
   }
+  updateBoxShadowStyling(value){
+    if (value === 'visible'){
+      this.addClass('expanded');
+    } else if (value === 'hidden'){
+      this.removeClass('expanded');
+    }
+  }
 }

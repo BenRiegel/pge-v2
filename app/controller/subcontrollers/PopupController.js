@@ -8,12 +8,11 @@ import view from '../../view/View.js';
 var { components } = view;
 var { webMap, popupTemplate, popupReport } = components;
 
-
-
 popupTemplate.setListener('readMoreRequest', async () => {
   var dimensions = webMap.popup.getDimensions();
+  popupReport.setPosition(dimensions);
+  await popupReport.open();
   webMap.popup.hideArrow();
-  await popupReport.showAt(dimensions);
   await popupReport.expand();
   var content = webMap.popup.getContent();
   await popupReport.load(content.url);
@@ -30,5 +29,3 @@ popupReport.setListener('contractRequest', async () => {
   await popupReport.close();
   webMap.popup.showArrow();
 });
-
-//exports ----------------------------------------------------------------------

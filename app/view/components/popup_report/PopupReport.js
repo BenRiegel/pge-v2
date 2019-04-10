@@ -25,8 +25,20 @@ export default function PopupReport(popupModel){
     emitter.setListener(eventName, listener);
   };
 
-  this.showAt = function(location){
-    return controller.showAt(location);
+  this.setPosition = function(dimensions){
+    controller.setPosition(dimensions);
+  };
+
+  this.open = function(){
+    return controller.open();
+  };
+
+  this.close = function(){
+    return controller.close();
+  };
+
+  this.load = function(content){
+    return controller.load(content);
   };
 
   this.expand = function(){
@@ -35,14 +47,6 @@ export default function PopupReport(popupModel){
 
   this.contract = function(dimensions){
     return controller.contract(dimensions);
-  };
-
-  this.load = function(content){
-    return controller.load(content);
-  };
-
-  this.close = function(){
-    controller.close();
   };
 
 }

@@ -19,9 +19,9 @@ export default function BasemapTileViewController(props, view){
 
   var updateVisibility = function( {isVisible} ){
     if (isVisible){
-      root.setVisibility('visible');
+      root.setStyle('visibility', 'visible');
     } else {
-      root.setVisibility('hidden');
+      root.setStyle('visibility', 'hidden');
     }
   };
 

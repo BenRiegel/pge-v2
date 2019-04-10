@@ -21,14 +21,6 @@ export default class DomNode{
     this.node.style[styleName] = value;
   }
 
-  setVisibility(newValue){
-    this.node.style.visibility = newValue;
-  }
-
-  setOpacity(newValue){
-    this.node.style.opacity = newValue;
-  }
-
   addClass(className){
     this.node.classList.add(className);
   }

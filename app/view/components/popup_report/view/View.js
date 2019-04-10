@@ -3,7 +3,6 @@
 import Loader from '../../../../lib/components/loader/Loader.js';
 import RootNode from './nodes/RootNode.js';
 import WindowNode from './nodes/WindowNode.js';
-import ExpandedWindowNode from './nodes/ExpandedWindowNode.js';
 import ContentNode from './nodes/ContentNode.js';
 import CloseButtonNode from './nodes/CloseButtonNode.js';
 import ContractButtonNode from './nodes/ContractButtonNode.js';
@@ -23,7 +22,6 @@ export default function PopupReportView(){
   this.nodes = {
     root: new RootNode(),
     reportWindow: new WindowNode(),
-    expandedWindow: new ExpandedWindowNode(),
     content: new ContentNode(),
     closeButton: new CloseButtonNode(),
     contractButton: new ContractButtonNode(),

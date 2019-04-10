@@ -1,5 +1,5 @@
 $transition-duration: 0.75s;
 
-.template-container{
+.template-container.transition-opacity{
   transition: opacity $transition-duration;
 }

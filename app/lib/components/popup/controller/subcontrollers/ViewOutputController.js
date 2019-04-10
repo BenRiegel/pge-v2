@@ -1,7 +1,7 @@
 export default function PopupViewOutputController(view, model){
 
   var { nodes, subcomponents } = view;
-  var { root, arrow, templateContainer, closeButton, content } = nodes;
+  var { root, arrow, templateContainer, content } = nodes;
   var { template, loader } = subcomponents;
 
   //helper functions -----------------------------------------------------------
@@ -16,7 +16,7 @@ export default function PopupViewOutputController(view, model){
     }
   };
 
-  var loadContent = async function(){
+  var loadTemplate = async function(){
     if (model.props.content.hasChanged){
       loader.activate();
       await template.load(model.content);
@@ -33,9 +33,9 @@ export default function PopupViewOutputController(view, model){
 
   this.open = async function(){
     root.setStyle('visibility', 'visible');
-    await loadContent();
+    await loadTemplate();
     await adjustContentHeight();
-    await templateContainer.setStyle('opacity', '1', true);
+    await templateContainer.transitionStyle('opacity', '1');
   };
 
   this.close = function(){

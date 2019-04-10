@@ -21,7 +21,7 @@ export default function GraphicsLayer(webMapModel, webMapDimensions){
 
   this.rootNode = view.nodes.root.node;
 
-  this.setEventListener = function(eventName, listener){
+  this.setListener = function(eventName, listener){
     emitter.setListener(eventName, listener);
   };
 
@@ -43,11 +43,11 @@ export default function GraphicsLayer(webMapModel, webMapDimensions){
 
   this.selectGraphic = function(graphicId){
     controller.selectGraphic(graphicId);
-  }
+  };
 
   this.unselectGraphic = function(){
     controller.unselectGraphic();
-  }
+  };
 
   this.updateOnPan = function(viewpoint){
     controller.updateOnPan(viewpoint);

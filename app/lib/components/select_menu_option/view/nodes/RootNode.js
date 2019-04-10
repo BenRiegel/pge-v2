@@ -22,7 +22,6 @@ export default class RootNode extends DomNodeTransitions{
   }
 
   setHeight(newValue, isTransitioning){
-    this.isTransitioning = isTransitioning;
     if (newValue === 'expanded'){
       this.removeClass('contracted');
       this.addClass('expanded');
@@ -30,9 +29,20 @@ export default class RootNode extends DomNodeTransitions{
       this.removeClass('expanded');
       this.addClass('contracted');
     }
-    if (isTransitioning){
-      return this.transitionComplete('height');
+  }
+
+  async transitionHeight(newValue){
+    this.addClass('transition-height');
+    this.loadTransitionListener('height');
+    if (newValue === 'expanded'){
+      this.removeClass('contracted');
+      this.addClass('expanded');
+    } else if (newValue === 'contracted'){
+      this.removeClass('expanded');
+      this.addClass('contracted');
     }
+    await this.transitionComplete('height');
+    this.removeClass('transition-height');
   }
 
 }

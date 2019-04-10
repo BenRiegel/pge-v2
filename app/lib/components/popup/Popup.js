@@ -1,9 +1,9 @@
 //imports ----------------------------------------------------------------------
 
-import Emitter from './services/Emitter.js';
-import View from './view/View.js';
 import Controller from './controller/Controller.js';
+import Emitter from './services/Emitter.js';
 import Model from './model/Model.js';
+import View from './view/View.js';
 
 
 //exports ----------------------------------------------------------------------
@@ -53,7 +53,7 @@ export default function Popup(template){
     controller.showArrow();
   };
 
-  this.getContent = function(){
+  this.getContent = function(){  //don't really like this
     return model.content;
   };
 

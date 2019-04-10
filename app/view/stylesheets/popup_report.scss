@@ -6,5 +6,8 @@
 
 #root .report-window{
   border-radius: $theme-border-radius;
+}
+
+#root .report-window.expanded{
   box-shadow: $outer-box-shadow;
 }
