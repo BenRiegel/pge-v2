@@ -7,14 +7,10 @@ import ComponentModel from '../../../utils/ComponentModel.js';
 
 export default function GraphicModel(){
 
-  //public state variable ------------------------------------------------------
-
-  var model = new ComponentModel({
-    isSelected: undefined,
-  });
-
   //public api -----------------------------------------------------------------
 
-  return model;
+  return new ComponentModel({
+    isSelected: undefined,
+  });
 
 }

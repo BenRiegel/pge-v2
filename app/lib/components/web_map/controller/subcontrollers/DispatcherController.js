@@ -9,9 +9,15 @@ export default function WebMapDispatcherController(dispatcher, view){
     dispatcher.doAction('pointGraphicSelected', {id, worldCoords, attributes} );
   }
 
-  var onClusterGraphicClicked = function(id, worldCoords){
-    dispatcher.doAction('clusterGraphicSelected', {id, worldCoords} );
+  var onGraphicClicked = function(graphicProps, attributes){
+    var { id, x, y } = graphicProps;
+    var worldCoords = { x, y };
+    dispatcher.doAction('pointGraphicSelected', {id, worldCoords, attributes});
   }
+
+/*  var onClusterGraphicClicked = function(id, worldCoords){
+    dispatcher.doAction('clusterGraphicSelected', {id, worldCoords} );
+  }*/
 
   /*var onSelectMenuActionStart = function(){
     dispatcher.doAction('selectMenuActionStart');
@@ -59,10 +65,10 @@ export default function WebMapDispatcherController(dispatcher, view){
 //  selectMenu.setListener('closingStart', onSelectMenuActionStart);
 //  selectMenu.setListener('openingEnd', onSelectMenuActionEnd);
 //  selectMenu.setListener('closingEnd', onSelectMenuActionEnd);
-  popup.setEventListener('closed', onPopupClosed);
-  popup.setEventListener('expansionStart', onPopupExpansionStart);
-  popup.setEventListener('contractionEnd', onPopupContractionEnd);
-  graphicsLayer.setEventListener('pointGraphicClicked', onPointGraphicClicked);
-  graphicsLayer.setEventListener('clusterGraphicClicked', onClusterGraphicClicked);
+  popup.setListener('closed', onPopupClosed);
+  popup.setListener('expansionStart', onPopupExpansionStart);
+  popup.setListener('contractionEnd', onPopupContractionEnd);
+  graphicsLayer.setEventListener('graphicClicked', onGraphicClicked);
+//  graphicsLayer.setEventListener('clusterGraphicClicked', onClusterGraphicClicked);
 
 }

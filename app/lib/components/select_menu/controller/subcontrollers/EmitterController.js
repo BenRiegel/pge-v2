@@ -11,7 +11,7 @@ export default function SelectMenuEmitterController(emitter, model){
     var actionName = model.isOpen ? 'openingEnd' : 'closingEnd';
     emitter.notify(actionName);
     if (model.props.selectedOptionKey.hasChanged){
-      emitter.notify('newSelectedOption', model.newSelectedOption);
+      emitter.notify('newSelectedOption', model.selectedOptionKey);
     }
   };
 

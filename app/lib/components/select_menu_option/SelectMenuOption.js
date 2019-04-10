@@ -24,6 +24,10 @@ export default function SelectMenuOption(props){
     controller.updateModel(selectedOptionKey, isOpen);
   };
 
+  this.renderView = function(isOpen){
+    controller.renderView(isOpen);
+  };
+
   this.updateView = function(propName, ...args){
     var methodName = 'update' + capitalize(propName);
     return controller[methodName](...args);

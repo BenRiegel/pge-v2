@@ -1,23 +1,12 @@
-export default function PopupViewInputController(view, dispatcher){
+export default function PopupViewInputController(view){
 
   var { subcomponents } = view;
-  var { summary, report } = subcomponents;
+  var { template } = subcomponents;
 
   //define event reactions -----------------------------------------------------
 
-  var onEnable = function(){
-    summary.enable();
-    report.enable();
-  }
+  this.enable = template.enable;
 
-  var onDisable = function(){
-    summary.disable();
-    report.disable();
-  }
-
-  //load reactions -------------------------------------------------------------
-
-  dispatcher.setListener('viewInput', 'enable', onEnable);
-  dispatcher.setListener('viewInput', 'disable', onDisable);
+  this.disable = template.disable;
 
 }

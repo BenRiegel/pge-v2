@@ -11,8 +11,8 @@ export default function GraphicsLayerView(){
 
   this.nodes = {
     root: new RootNode(),
-  }
+  };
 
-  this.subcomponents = [];
+  this.subcomponents = {};
 
 }

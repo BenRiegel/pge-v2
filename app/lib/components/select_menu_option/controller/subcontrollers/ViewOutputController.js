@@ -61,4 +61,24 @@ export default function SelectMenuOptionViewOutputController(view, model){
     }
   };
 
+  this.updateSelectedStyling = function(isOpen){
+    if (model.props.isSelected.hasChanged){
+      this.updateIconVisibility();
+      this.updateRootBorderRadius(isOpen);
+      this.updateRootVisibility(isOpen);
+      this.updateRootHeight(isOpen, false);
+      this.updateRootOpacity(isOpen, false);
+    }
+  };
+
+  this.renderView = function(isOpen){
+    this.updateIconVisibility();
+    this.updateIconChar(isOpen);
+    this.updateIconBorderVisibility(isOpen);
+    this.updateRootVisibility(isOpen);
+    this.updateRootVisibility(isOpen);
+    this.updateRootHeight(isOpen, false);
+    this.updateRootOpacity(isOpen, false);
+  };
+
 }

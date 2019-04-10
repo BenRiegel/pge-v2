@@ -1,16 +1,18 @@
 //imports ----------------------------------------------------------------------
 
-import ViewController from './subcontrollers/ViewController.js';
+import ViewOutputController from './subcontrollers/ViewOutputController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTileController(props, dispatcher, view){
+export default function BasemapTileController(props, view){
+
+  var outputController = new ViewOutputController(props, view);
 
   //public api -----------------------------------------------------------------
 
-  return {
-    view: new ViewController(props, dispatcher, view),
-  }
+  this.renderView = function(info){
+    outputController.render(info);
+  };
 
 }

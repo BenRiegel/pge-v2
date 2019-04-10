@@ -11,6 +11,6 @@ export default function BasemapTileView(){
 
   this.nodes = {
     root: new RootNode(),
-  }
+  };
 
 }

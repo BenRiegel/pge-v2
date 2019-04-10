@@ -1,13 +1,9 @@
-export default function PopupModelController(model, dispatcher){
+export default function PopupTemplateModelController(model){
 
-  //define event reactions -----------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onSetContent = function(content){
+  this.updateContent = function(content){
     model.set('content', content);
-  }
-
-  //load event reactions -------------------------------------------------------
-
-  dispatcher.setListener('model', 'setContent', onSetContent);
-
+  };
+  
 }

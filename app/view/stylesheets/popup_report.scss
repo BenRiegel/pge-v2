@@ -1,0 +1,10 @@
+@import './_variables';
+
+#root .popup-report-container{
+  z-index: 2;
+}
+
+#root .report-window{
+  border-radius: $theme-border-radius;
+  box-shadow: $outer-box-shadow;
+}

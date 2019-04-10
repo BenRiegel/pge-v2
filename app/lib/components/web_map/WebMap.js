@@ -31,6 +31,9 @@ export default function WebMap(config){
     get selectMenu(){
       return view.subcomponents.selectMenu;
     },
+    get popup(){
+      return view.subcomponents.popup;
+    }
   };
 
 }

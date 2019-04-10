@@ -99,7 +99,7 @@ export default function BasemapLayerViewController(view, model, webMapModel, dis
         var { imageTileLevel } = model;
         var props = { xIndex, yIndex, isVisible, imageTileLevel};
         var tile = tileSet[index];
-        var p = tile.updateAsync('update', props);
+        var p = tile.renderView(props);
         promises.push(p);
         index+=1;
       }

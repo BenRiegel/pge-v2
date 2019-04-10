@@ -1,11 +1,9 @@
-$margin: 15px;
+@import '../../../web_map/view/stylesheets/_web_map_variables';
 
-.popup-container{
+.popup{
   display: flex;
   align-items: center;
   position: absolute;
-  top: $margin;
-  left: $margin;
-  right: $margin;
-  bottom: $margin;
+  right: 50%;
+  z-index: $popup-z-index;
 }

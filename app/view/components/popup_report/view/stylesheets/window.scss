@@ -1,0 +1,14 @@
+$transition-duration: 0.75s;
+
+.report-window{
+  position: absolute;
+  border-radius: inherit;
+  background-color: white;
+  visibility: visible;
+  opacity: 0;
+  transition: left $transition-duration,
+              top $transition-duration,
+              width $transition-duration,
+              height $transition-duration,
+              opacity $transition-duration;
+}

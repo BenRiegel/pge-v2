@@ -1,17 +1,9 @@
-export default function GraphicModelController(model, props, dispatcher, layerModel){
+export default function GraphicModelController(model, props){
 
-  //define event reactions -----------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var onUpdateIsSelected = function(){
-    model.set('isSelected', props.id === layerModel.selectedGraphicId);
-  }
-
-  //load event reactions -------------------------------------------------------
-
-  dispatcher.setListener('model', 'updateIsSelected', onUpdateIsSelected);
-
-  //init -----------------------------------------------------------------------
-
-  onUpdateIsSelected();
+  this.updateIsSelected = function(selectedGraphicId){
+    model.set('isSelected', props.id === selectedGraphicId);
+  };
 
 }

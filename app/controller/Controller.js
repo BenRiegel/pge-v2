@@ -6,6 +6,7 @@ import * as loaderController from './subcontrollers/LoaderController.js';
 import * as selectMenuController from './subcontrollers/SelectMenuController.js';
 import * as graphicsLayerController from './subcontrollers/GraphicsLayerController.js';
 import * as domController from './subcontrollers/ViewDomController.js';
+import * as popupController from './subcontrollers/PopupController.js';
 import { waitAtLeast } from '../lib/utils/Utils.js';
 
 

@@ -1,19 +1,19 @@
-export default function GraphicsLayerEmitterController(emitter, dispatcher){
+export default function GraphicsLayerEmitterController(emitter, view){
+
+  var { nodes } = view;
+  var { root } = nodes;
 
   //define reactions -----------------------------------------------------------
 
-  var onPointGraphicClicked = function(...args){
-    emitter.notify('pointGraphicClicked', ...args);
-  }
+  var onClick = function(graphicDataProps){
+    var { id } = graphicDataProps;
+    var graphic = view.subcomponents.graphics[id];
+    var attributes = graphic.attributes;
+    emitter.notify('graphicClicked', graphicDataProps, attributes);
+  };
 
-  var onClusterGraphicClicked = function(...args){
-    emitter.notify('clusterGraphicClicked', ...args);
-  }
+  //set event listeners --------------------------------------------------------
 
-  //load reactions -------------------------------------------------------------
-
-  dispatcher.setListener('public', 'pointGraphicClicked', onPointGraphicClicked);
-  dispatcher.setListener('public', 'clusterGraphicClicked', onClusterGraphicClicked);
-
+  root.setEventListener('click', onClick);
 
 }

@@ -1,7 +1,6 @@
 //imports ----------------------------------------------------------------------
 
 import Controller from './controller/Controller.js';
-import Dispatcher from '../../utils/Dispatcher.js';
 import Emitter from './services/Emitter.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
@@ -14,10 +13,9 @@ export default function GraphicsLayer(webMapModel, webMapDimensions){
   //private code block ---------------------------------------------------------
 
   var emitter = new Emitter();
-  var dispatcher = new Dispatcher();
   var model = new Model();
   var view = new View();
-  var controller = new Controller(dispatcher, emitter, model, view, webMapModel, webMapDimensions);
+  var controller = new Controller(emitter, model, view, webMapModel, webMapDimensions);
 
   //public api -----------------------------------------------------------------
 
@@ -28,50 +26,43 @@ export default function GraphicsLayer(webMapModel, webMapDimensions){
   };
 
   this.enable = function(){
-    dispatcher.newAction('publicActionUpdate', false);
+    controller.enable();
   };
 
   this.disable = function(){
-    dispatcher.newAction('publicActionUpdate', true);
+    controller.disable();
   };
 
-  this.setLocations = function(graphicPropsList){
-    dispatcher.newAction('setLocations', graphicPropsList);
-  }
+  this.addGraphics = function(graphics){
+    controller.addGraphics(graphics);
+  };
 
-  this.filterLocations = function(selectedTag){
-    dispatcher.newAction('selectLocations', selectedTag);
-  }
+  this.removeAllGraphics = function(){
+    controller.removeAllGraphics();
+  };
 
   this.selectGraphic = function(graphicId){
-    dispatcher.newAction('selectGraphic', graphicId);
+    controller.selectGraphic(graphicId);
   }
 
-  this.unselectGraphic = function(graphicId){
-    dispatcher.newAction('selectGraphic', null);
-  }
-
-  this.updateGraphics = function(){
-    dispatcher.newAction('updateGraphics');
+  this.unselectGraphic = function(){
+    controller.unselectGraphic();
   }
 
   this.updateOnPan = function(viewpoint){
-    dispatcher.newAction('pan', viewpoint);
-  }
+    controller.updateOnPan(viewpoint);
+  };
 
   this.updateOnZoom = function(viewpoint, zoomFactor){
-    dispatcher.newAction('zoom', viewpoint, zoomFactor);
-  }
-
-
-
+    controller.updateOnZoom(viewpoint, zoomFactor);
+  };
 
   this.fadeDown = function(){
-    return dispatcher.newAsyncAction('fadeDown');
-  }
+    return controller.fadeDown();
+  };
 
   this.fadeUp = function(){
-    return dispatcher.newAsyncAction('fadeUp');
-  }
+    return controller.fadeUp();
+  };
 
 }

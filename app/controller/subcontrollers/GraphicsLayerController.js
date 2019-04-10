@@ -1,5 +1,6 @@
 //imports ----------------------------------------------------------------------
 
+import Graphic from '../../lib/components/graphic/Graphic.js';
 import { getDistance } from '../../lib/utils/Utils.js';
 import { INIT_SELECTED_TAG } from '../../config/Config.js';
 import { latLonToWebMercatorXY } from '../../lib/web_mapping/WebMercator.js';
@@ -10,7 +11,7 @@ import model from '../../model/Model.js';
 //module code block ------------------------------------------------------------
 
 var { components } = view;
-var { webMap } = components;
+var { webMap, selectMenu } = components;
 
 const MIN_POINT_RADIUS = 10;
 const MAX_POINT_RADIUS = 20;
@@ -42,14 +43,15 @@ var filterLocations = function(selectedOptionKey){
   });
 };
 
-
 var createGraphics = function(scale){
   var graphics = [];
   var mappedLocations = [...filteredLocations];
   var location = mappedLocations.shift();
+  var graphicId = 0;
   while(location){
     var graphicProps = {
-      id: location.id,
+      attributes: location.attributes,
+      id: graphicId,
       type: 'point',
       worldCoords: {x:location.worldCoords.x, y:location.worldCoords.y},
       numLocations: 1,
@@ -71,6 +73,7 @@ var createGraphics = function(scale){
           clusterCreated = true;
           clusteredPoints.push(compareLocation.worldCoords);
           graphicProps.type = 'cluster';
+          graphicProps.attributes = null;
           graphicProps.numLocations += 1;
           sumX += compareLocation.worldCoords.x;
           sumY += compareLocation.worldCoords.y;
@@ -90,23 +93,27 @@ var createGraphics = function(scale){
       }
       done = !clusterFound;
     }
-    //var graphic = new Graphic(graphicProps, model, webMapModel, webMapDimensions);
-    graphics.push(graphicProps);
+    var graphic = new Graphic(graphicProps);
+    graphics.push(graphic);
     location = mappedLocations.shift();
+    graphicId += 1;
   }
   return graphics;
 }
 
-
+selectMenu.setListener('newSelectedOption', selectedOptionKey => {
+  webMap.graphicsLayer.removeAllGraphics();
+  filteredLocations = filterLocations(selectedOptionKey);
+  var graphics = createGraphics(webMap.scale);
+  webMap.graphicsLayer.addGraphics(graphics);
+});
 
 //exports ----------------------------------------------------------------------
 
 export async function load(){
   await webMap.hasRendered;
   locations = getLocations();
-  //filteredLocations = filterLocations(INIT_SELECTED_TAG);
-  //var graphics = createGraphics(webMap.scale);
-  //console.log(graphics);
-  webMap.graphicsLayer.setLocations(locations);
-  webMap.graphicsLayer.filterLocations(INIT_SELECTED_TAG);
+  filteredLocations = filterLocations(INIT_SELECTED_TAG);
+  var graphics = createGraphics(webMap.scale);
+  webMap.graphicsLayer.addGraphics(graphics);
 };

@@ -1,50 +1,60 @@
 //imports ----------------------------------------------------------------------
 
-import Dispatcher from './services/Dispatcher.js';
 import Emitter from './services/Emitter.js';
-import Model from './model/Model.js';
 import View from './view/View.js';
 import Controller from './controller/Controller.js';
+import Model from './model/Model.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function Popup(){
+export default function Popup(template){
 
   //private code block ---------------------------------------------------------
 
-  var dispatcher = new Dispatcher();
   var emitter = new Emitter();
   var model = new Model();
-  var view = new View(model);
-  var controller = new Controller(dispatcher, model, emitter, view);
+  var view = new View(template);
+  var controller = new Controller(emitter, model, view);
 
   //public api -----------------------------------------------------------------
 
   this.rootNode = view.nodes.root.node;
 
-  this.setEventListener = function(eventName, listener){
+  this.setListener = function(eventName, listener){
     emitter.setListener(eventName, listener);
   };
 
   this.enable = function(){
-    dispatcher.doAction('enable');
+    controller.enable();
   };
 
   this.disable = function(){
-    dispatcher.doAction('disable');
+    controller.disable();
   };
 
-  this.setContent = function(content){
-    dispatcher.doAction('setContent', content);
-  };
-
-  this.open = function(){
-    return dispatcher.doAction('open');
+  this.open = function(content){
+    return controller.open(content);
   };
 
   this.close = function(){
-    dispatcher.doAction('forceClose');
+    controller.close();
+  };
+
+  this.getDimensions = function(){
+    return controller.getDimensions();
+  };
+
+  this.hideArrow = function(){
+    controller.hideArrow();
+  };
+
+  this.showArrow = function(){
+    controller.showArrow();
+  };
+
+  this.getContent = function(){
+    return model.content;
   };
 
 }

@@ -1,4 +1,4 @@
-export default function PopupEmitterController(emitter, dispatcher){
+export default function PopupEmitterController(emitter){
 
   //define event reactions -----------------------------------------------------
 
@@ -16,9 +16,9 @@ export default function PopupEmitterController(emitter, dispatcher){
 
   //load event reactions -------------------------------------------------------
 
-  dispatcher.setListener('emitter', 'close', onClose);
+/*  dispatcher.setListener('emitter', 'close', onClose);
   dispatcher.setListener('emitter', 'expand', onExpand);
   dispatcher.setListener('emitter', 'contract', onContract);
-  dispatcher.setListener('emitter', 'contractAndClose', onClose);
+  dispatcher.setListener('emitter', 'contractAndClose', onClose);*/
 
 }

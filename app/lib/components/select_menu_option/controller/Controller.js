@@ -19,12 +19,10 @@ export default function SelectMenuOptionController(props, model, view){
 
   this.updateModel = function(selectedOptionKey, isOpen){
     modelController.updateIsSelected(selectedOptionKey);
-    outputController.updateIconVisibility();
-    outputController.updateRootBorderRadius(isOpen);
-    outputController.updateRootVisibility(isOpen);
-    outputController.updateRootHeight(isOpen, false);
-    outputController.updateRootOpacity(isOpen, false);
+    outputController.updateSelectedStyling(isOpen);
   };
+
+  this.renderView = outputController.renderView;
 
   this.updateIconVisibility = outputController.updateIconVisibility;
 

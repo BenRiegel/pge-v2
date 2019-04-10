@@ -31,37 +31,30 @@
   box-shadow: $inner-box-shadow;
 }
 
-#webmap .popup-container{
-  top: $web-map-widget-padding;
-  right: $web-map-widget-padding;
-  bottom: $web-map-widget-padding;
-  left: $web-map-widget-padding;
-}
-
-#webmap .content-container{
-  box-shadow: $outer-box-shadow;
-  border-radius: $theme-border-radius;
-}
-
-#webmap .summary-content{
-  color: $theme-font-color;
-}
-
 #webmap .arrow::after{
   box-shadow: $outer-box-shadow;
   background-color: $theme-background-color;
 }
 
-#webmap .project-title{
-  font-size: $theme-font-size;
+#webmap .popup-content{
+  box-shadow: $outer-box-shadow;
+  border-radius: $theme-border-radius;
 }
 
-#webmap .popup-report{
+
+/*#webmap .popup-report{
   box-shadow: $outer-box-shadow;
   border-radius: $theme-border-radius;
   color: $theme-font-color;
-}
+}*/
 
 #webmap .graphic-location{
   box-shadow: $outer-box-shadow;
 }
+
+/*#webmap .popup-container{
+  top: $web-map-widget-padding;
+  right: $web-map-widget-padding;
+  bottom: $web-map-widget-padding;
+  left: $web-map-widget-padding;
+}*/

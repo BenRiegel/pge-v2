@@ -1,26 +1,45 @@
 //imports ----------------------------------------------------------------------
 
-import DispatcherController from './subcontrollers/DispatcherController.js';
-import ModelController from './subcontrollers/ModelController.js';
 import EmitterController from './subcontrollers/EmitterController.js';
 import ViewDomController from './subcontrollers/ViewDomController.js';
 import ViewInputController from './subcontrollers/ViewInputController.js';
 import ViewOutputController from './subcontrollers/ViewOutputController.js';
+import ModelController from './subcontrollers/ModelController.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function PopupController(dispatcher, model, emitter, view){
+export default function PopupController(emitter, model, view){
+
+  var emitterController = new EmitterController(emitter, view);
+  var modelController = new ModelController(model);
+  var domController = new ViewDomController(view);
+  var inputController = new ViewInputController(view);
+  var outputController = new ViewOutputController(view, model);
+
+  //load event listeners -------------------------------------------------------
+
+  view.nodes.closeButton.setEventListener('click', () => {
+    outputController.close();
+  });
 
   //public api -----------------------------------------------------------------
 
-  return {
-    dispatcher: new DispatcherController(dispatcher, view),
-    model: new ModelController(model, dispatcher),
-    emitter: new EmitterController(emitter, dispatcher),
-    viewDom: new ViewDomController(view),
-    viewInput: new ViewInputController(view, dispatcher),
-    viewOutput: new ViewOutputController(view, model, dispatcher),
-  }
+  this.enable = inputController.enable;
+
+  this.disable = inputController.disable;
+
+  this.open = function(content){
+    modelController.updateContent(content);
+    return outputController.open();
+  };
+
+  this.close = outputController.close;
+
+  this.getDimensions = outputController.getDimensions;
+
+  this.hideArrow = outputController.hideArrow;
+
+  this.showArrow = outputController.showArrow;
 
 }

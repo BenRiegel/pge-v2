@@ -127,8 +127,7 @@ export default function WebMapViewOutputController(view, model, dispatcher){
     graphicsLayer.selectGraphic(id);
     await doAnimation();
     await wait(100);
-    popup.setContent(attributes);
-    await popup.open();
+    await popup.open(attributes);
   }
 
   var onClusterGraphicSelected = async function( {id} ){

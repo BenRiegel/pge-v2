@@ -1,65 +1,62 @@
-export default function PopupViewOutputController(view, model, dispatcher){
+export default function PopupViewOutputController(view, model){
 
   var { nodes, subcomponents } = view;
-  var { root, popup, arrow, content } = nodes;
-  var { summary, report } = subcomponents;
+  var { root, arrow, templateContainer, closeButton, content } = nodes;
+  var { template, loader } = subcomponents;
 
-  //define view reactions ------------------------------------------------------
+  //helper functions -----------------------------------------------------------
 
-  var getExpandedDimensions = function(){
-    var rootDimensions = root.getDimensions();
-    return {
-      top: 0,
-      left: 0,
-      width: rootDimensions.width,
-      height: rootDimensions.height,
+  var adjustContentHeight = function(){
+    var offsetHeight = content.getProp('offsetHeight');
+    var scrollHeight = content.getProp('scrollHeight');
+    var deltaHeight = scrollHeight - offsetHeight;
+    if (deltaHeight){
+      var transitionTime = Math.abs(3 * deltaHeight);
+      return content.transitionHeight(scrollHeight, transitionTime);
     }
-  }
+  };
 
-  //define event reactions -----------------------------------------------------
-
-  var onSetContent = function(){
+  var loadContent = async function(){
     if (model.props.content.hasChanged){
-      summary.do('resetLoadingStatus');
-      report.do('resetLoadingStatus');
+      loader.activate();
+      await template.load(model.content);
+      loader.terminate(false);
     }
-  }
+  };
 
-  var onOpen = function(){
-    return summary.do('open');
-  }
+  //init -----------------------------------------------------------------------
 
-  var onClose = function(){
-    summary.do('close');
-  }
+  root.setStyle('visibility', 'hidden');
+  templateContainer.setStyle('opacity', '0');
 
-  var onExpand = async function(){
-    var summaryDimensions = summary.do('getDimensions');
-    report.do('position', summaryDimensions);
-    await summary.do('updateOnExpand');
-    var expandedDimensions = getExpandedDimensions();
-    await report.do('open', expandedDimensions);
-  }
+  //public api -----------------------------------------------------------------
 
-  var onContract = async function(){
-    var summaryDimensions = summary.do('getDimensions');
-    await report.do('updateOnContract', summaryDimensions);
-    await summary.do('updateOnContract');
-  }
+  this.open = async function(){
+    root.setStyle('visibility', 'visible');
+    await loadContent();
+    await adjustContentHeight();
+    await templateContainer.setStyle('opacity', '1', true);
+  };
 
-  var onContractAndClose = function(){
-    summary.do('contractAndClose');
-    report.do('contractAndClose');
-  }
+  this.close = function(){
+    root.setStyle('visibility', 'hidden');
+    content.setStyle('height', '');
+    templateContainer.setStyle('opacity', '0');
+  };
 
-  //load event reactions -------------------------------------------------------
+  this.hideArrow = function(){
+    arrow.setStyle('visibility', 'hidden');
+  };
 
-  dispatcher.setListener('viewOutput', 'setContent', onSetContent);
-  dispatcher.setListener('viewOutput', 'open', onOpen);
-  dispatcher.setListener('viewOutput', 'close', onClose);
-  dispatcher.setListener('viewOutput', 'contract', onContract);
-  dispatcher.setListener('viewOutput', 'expand', onExpand);
-  dispatcher.setListener('viewOutput', 'contractAndClose', onContractAndClose);
-  dispatcher.setListener('viewOutput', 'forceClose', onClose);
+  this.showArrow = function(){
+    arrow.setStyle('visibility', '');
+  };
+
+  this.getDimensions = function(){
+    var left = root.getProp('offsetLeft');
+    var top = root.getProp('offsetTop');
+    var { width, height } = content.getDimensions();
+    return { left, top, width, height };
+  };
 
 }

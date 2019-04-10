@@ -7,12 +7,13 @@ import view from '../../view/View.js';
 
 var { nodes, components } = view;
 var { root } = nodes;
-var { loader, selectMenu } = components;
+var { loader, selectMenu, popupReport } = components;
 
 
 //exports ----------------------------------------------------------------------
 
 export function load(){
+  root.appendChild(popupReport.rootNode);
   root.appendChild(loader.rootNode);
   root.appendChild(selectMenu.rootNode);
 };

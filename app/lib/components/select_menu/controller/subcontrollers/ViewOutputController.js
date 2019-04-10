@@ -28,13 +28,7 @@ export default function SelectMenuViewOutputController(view, model){
   //public api -----------------------------------------------------------------
 
   this.renderOption = function(option){
-    option.updateView('iconVisibility');
-    option.updateView('iconChar', model.isOpen);
-    option.updateView('iconBorderVisibility', model.isOpen);
-    option.updateView('rootBorderRadius', model.isOpen);
-    option.updateView('rootVisibility', model.isOpen);
-    option.updateView('rootHeight', model.isOpen, false);
-    option.updateView('rootOpacity', model.isOpen, false);
+    option.renderView(model.isOpen);
   };
 
   this.updateOnOptionSelect = function(){

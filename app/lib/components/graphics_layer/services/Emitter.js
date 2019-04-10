@@ -9,6 +9,6 @@ export default function GraphicsLayerEmitter(){
 
   //public api -----------------------------------------------------------------
 
-  return new Emitter( ['pointGraphicClicked', 'clusterGraphicClicked'] );
+  return new Emitter( ['graphicClicked'] );
 
 }
