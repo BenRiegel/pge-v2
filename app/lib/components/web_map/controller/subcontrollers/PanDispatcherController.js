@@ -5,7 +5,7 @@ import { clamp } from '../../../../utils/Utils.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function WebMapPanDispatcherController(dispatcher, view){
+export default function WebMapPanDispatcherController(view){
 
   var { subcomponents } = view;
   var { zoomControls, selectMenu, popup, graphicsLayer, basemapLayer} = subcomponents;
@@ -119,8 +119,8 @@ export default function WebMapPanDispatcherController(dispatcher, view){
 
   //load reactions -------------------------------------------------------------
 
-  basemapLayer.setEventListener('panStartRequest', onPanStart);
-  basemapLayer.setEventListener('panRequest', onPan);
-  basemapLayer.setEventListener('panEndRequest', onPanEnd);
+//  basemapLayer.setEventListener('panStartRequest', onPanStart);
+//  basemapLayer.setEventListener('panRequest', onPan);
+//  basemapLayer.setEventListener('panEndRequest', onPanEnd);
 
 }

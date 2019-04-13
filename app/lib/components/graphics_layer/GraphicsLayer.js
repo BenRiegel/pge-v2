@@ -41,6 +41,10 @@ export default function GraphicsLayer(webMapModel, webMapDimensions){
     controller.removeAllGraphics();
   };
 
+  this.updateGraphics = function(){
+    controller.updateGraphics();
+  }
+
   this.selectGraphic = function(graphicId){
     controller.selectGraphic(graphicId);
   };

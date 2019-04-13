@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import Dispatcher from '../../utils/Dispatcher.js';
 import Emitter from './services/Emitter.js';
 import Model from './model/Model.js';
 import View from './view/View.js';
@@ -13,11 +12,10 @@ export default function BasemapLayer(webMapModel, webMapDimensions){
 
   //private code block ---------------------------------------------------------
 
-  var dispatcher = new Dispatcher();
   var emitter = new Emitter();
   var model = new Model;
   var view = new View();
-  var controller = new Controller(dispatcher, emitter, model, view, webMapModel, webMapDimensions)
+  var controller = new Controller(emitter, model, view, webMapModel, webMapDimensions)
 
   //public api -----------------------------------------------------------------
 
@@ -28,43 +26,43 @@ export default function BasemapLayer(webMapModel, webMapDimensions){
   };
 
   this.enable = function(){
-    dispatcher.newAction('publicActionUpdate', false);
+    controller.enable();
   };
 
   this.disable = function(){
-    dispatcher.newAction('publicActionUpdate', true);
+    controller.disable();
   };
 
   this.configure = function(){
-    return dispatcher.newAsyncAction('configure');
+    return controller.configure();
   }
 
   this.updateOnPan = function(cumulativePan){
-    dispatcher.newAction('pan', cumulativePan);
-  };
-
-  this.updateOnZoom = function(cumulativePan, scaleFactor){
-    dispatcher.newAction('zoom', cumulativePan, scaleFactor);
-  };
-
-  this.updateOnZoomEnd = function(){
-    return dispatcher.newAsyncAction('zoomEnd');
+    controller.updateOnPan(cumulativePan);
   };
 
   this.updateOnPanEnd = function(){
-    return dispatcher.newAsyncAction('panEnd');
-  }
+    controller.updateOnPanEnd();
+  };
 
-  this.fadeDown = function(){
-    return dispatcher.newAsyncAction('fadeDown');
-  }
+  this.updateOnZoom = function(cumulativePan, scaleFactor){
+    controller.updateOnZoom(cumulativePan, scaleFactor);
+  };
 
-  this.fadeUp = function(){
-    return dispatcher.newAsyncAction('fadeUp');
-  }
+  this.updateOnZoomEnd = function(){
+    return controller.updateOnZoomEnd();
+  };
 
   this.updateOnZoomHome = function(){
-    return dispatcher.newAsyncAction('zoomHome');
-  }
+    return controller.updateOnZoomHome();
+  };
+
+  this.fadeDown = function(){
+    return controller.fadeDown();
+  };
+
+  this.fadeUp = function(){
+    return controller.fadeUp();
+  };
 
 }

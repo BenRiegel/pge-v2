@@ -1,4 +1,4 @@
-export default function BasempLayerEmitterController(emitter, dispatcher){
+export default function BasempLayerEmitterController(emitter){
 
   //define reactions -----------------------------------------------------------
 
@@ -13,11 +13,5 @@ export default function BasempLayerEmitterController(emitter, dispatcher){
   var onMouseMove = function(...args){
     emitter.notify('panRequest', ...args);
   };
-
-  //load reactions -------------------------------------------------------------
-
-  dispatcher.setListener('public', 'mouseDown', onMouseDown);
-  dispatcher.setListener('public', 'mouseUp', onMouseUp);
-  dispatcher.setListener('public', 'mouseMove', onMouseMove);
 
 }

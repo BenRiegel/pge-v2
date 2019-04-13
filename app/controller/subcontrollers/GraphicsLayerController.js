@@ -108,6 +108,13 @@ selectMenu.setListener('newSelectedOption', selectedOptionKey => {
   webMap.graphicsLayer.addGraphics(graphics);
 });
 
+webMap.graphicsLayer.setListener('graphicsUpdateRequest', () => {
+  webMap.graphicsLayer.unselectGraphic();
+  webMap.graphicsLayer.removeAllGraphics();
+  var graphics = createGraphics(webMap.scale);
+  webMap.graphicsLayer.addGraphics(graphics);
+});
+
 //exports ----------------------------------------------------------------------
 
 export async function load(){

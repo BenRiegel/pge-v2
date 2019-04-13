@@ -1,16 +1,14 @@
 //imports ----------------------------------------------------------------------
 
-import ViewOutputController from './subcontrollers/ViewOutputController.js';
+import Emitter from '../../../utils/Emitter.js';
 
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapTileController(props, view){
-
-  var outputController = new ViewOutputController(props, view);
+export default function WebMapEmitter(){
 
   //public api -----------------------------------------------------------------
 
-  this.renderView = outputController.render;
+  return new Emitter( ['panEnd', 'zoomEnd'] );
 
 }

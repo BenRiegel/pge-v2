@@ -32,11 +32,11 @@ export default function GraphicsLayerViewOutputController(view, model, webMapMod
   };
 
   this.fadeDown = function(){
-    return root.setOpacity('0', true);
+    return root.transitionStyle('opacity', '0');
   };
 
   this.fadeUp = function(){
-    return root.setOpacity('1', true);
+    return root.transitionStyle('opacity', '1');
   };
 
 }

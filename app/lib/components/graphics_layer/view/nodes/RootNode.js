@@ -14,7 +14,11 @@ export default class RootNode extends DomNodeInput{
   mouseClickHandler(evt){
     var graphicContainer = getTargetNode(evt.target, 'graphic');
     if (graphicContainer){
-      this.notify('click', graphicContainer.dataset);
+      var type = graphicContainer.dataset.type;
+      var id = Number(graphicContainer.dataset.id);
+      var x = Number(graphicContainer.dataset.x);
+      var y = Number(graphicContainer.dataset.y);
+      this.notify('click', type, id, {x,y} );
     }
   }
 }

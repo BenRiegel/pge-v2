@@ -7,16 +7,13 @@ import ComponentModel from '../../../utils/ComponentModel.js';
 
 export default function BasemapLayerModel(){
 
-  //create model var -----------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  //get rid of this eventually
-  var model = new ComponentModel({
+  return new ComponentModel({
+    numTilesWidth: undefined,
+    numTilesHeight: undefined,
     imageTileLevel: undefined,
     numBasemapTiles: undefined,
   });
-
-  //public api -----------------------------------------------------------------
-
-  return model;
 
 }

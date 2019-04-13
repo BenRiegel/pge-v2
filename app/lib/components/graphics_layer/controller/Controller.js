@@ -48,6 +48,8 @@ export default function GraphicsLayerController(emitter, model, view, webMapMode
     domController.removeAllGraphics();
   };
 
+  this.updateGraphics = emitterController.notifyUpdateRequest;
+
   this.fadeDown = outputController.fadeDown;
 
   this.fadeUp = outputController.fadeUp;

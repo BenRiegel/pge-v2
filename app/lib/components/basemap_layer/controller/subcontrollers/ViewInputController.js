@@ -1,23 +1,16 @@
-export default function BasemapLayerViewInputController(view, dispatcher){
+export default function BasemapLayerViewInputController(view){
 
   var { nodes } = view;
   var { root } = nodes;
 
-  //define reactions -----------------------------------------------------------
+  //public api -----------------------------------------------------------------
 
-  var publicActionInProgress = false;
+  this.enable = function(){
+    root.isListening = true;
+  };
 
-  var updateListeners = function(){
-    root.isListening = !publicActionInProgress;
-  }
-
-  var onPublicActionUpdate = function(newValue){
-    publicActionInProgress = newValue;
-    updateListeners();
-  }
-
-  //load reactions -------------------------------------------------------------
-
-  dispatcher.setListener('view', 'publicActionUpdate', onPublicActionUpdate);
+  this.disable = function(){
+    root.isListening = false;
+  };
 
 }
