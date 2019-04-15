@@ -93,7 +93,6 @@ export default function WebMapViewOutputController(view, model){
       }
       addNewFrame();
     });
-  //  await basemapLayer.updateOnZoomEnd();
     var p = basemapLayer.updateOnZoomEnd();
     await wait(200);
     graphicsLayer.updateGraphics();
@@ -122,19 +121,19 @@ export default function WebMapViewOutputController(view, model){
   };
 
   this.onPointGraphicSelected = async function(id, attributes){
+    popup.close();
+    graphicsLayer.selectGraphic(id);
     if (model.hasChanged){
-      popup.close();
-      graphicsLayer.selectGraphic(id);
       await doPanAnimation();
-      await wait(100);
-      await popup.open(attributes);
     }
+    await wait(100);
+    await popup.open(attributes);
   };
 
   this.onClusterGraphicSelected = function(id){
+    popup.close();
+    graphicsLayer.selectGraphic(id);
     if (model.hasChanged){
-      popup.close();
-      graphicsLayer.selectGraphic(id);
       return doZoomAnimation();
     }
   };
@@ -167,34 +166,18 @@ export default function WebMapViewOutputController(view, model){
     graphicsLayer.unselectGraphic();
   };
 
-  /*var onPanStart = function(){
+  this.onPanStart = function(){
     popup.close();
     graphicsLayer.unselectGraphic();
-  }
+  };
 
-  var onPan = function(cumulativePan){
+  this.onPan = function(cumulativePan){
     graphicsLayer.updateOnPan(model);
     basemapLayer.updateOnPan(cumulativePan);
   };
 
-  var onPanEnd = function(){
+  this.onPanEnd = function(){
     basemapLayer.updateOnPanEnd();
-  };*/
+  };
 
 }
-
-
-/*  var doPanAnimation = async function(){
-    var numFrames = calculateNumFramesPan();
-    await animate(numFrames, 'pan');
-  //  await basemapLayer.updateOnPanEnd();
-  }
-
-  var doZoomAnimation = async function(){
-    var numFrames = 40;
-    await animate(numFrames, 'zoom');
-//    var p = basemapLayer.updateOnZoomEnd();
-//    await wait(200);
- //  graphicsLayer.updateGraphics();
-//    await p;
-}*/

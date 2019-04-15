@@ -2,12 +2,24 @@ export default function WebMapEmitterController(emitter, model){
 
   //public api -----------------------------------------------------------------
 
-  this.notifyOnAnimateEnd = function(){
-    if (model.coords.scale.hasChanged){
-      return emitter.notify('zoomEnd');
-    } else if (model.coords.x.hasChanged || model.coords.y.hasChanged){
-      return emitter.notify('panEnd');
+  this.onZoomStart = function(){
+    if (model.hasChanged){
+      emitter.notify('actionStart');
     }
+  };
+
+  this.onZoomEnd = function(){
+    if (model.hasChanged){
+      emitter.notify('actionEnd');
+    }
+  };
+
+  this.notifyActionStart = function(){
+    emitter.notify('actionStart');
+  };
+
+  this.notifyActionEnd = function(){
+    emitter.notify('actionEnd');
   };
 
 }

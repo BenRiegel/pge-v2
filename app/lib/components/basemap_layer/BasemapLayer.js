@@ -21,7 +21,7 @@ export default function BasemapLayer(webMapModel, webMapDimensions){
 
   this.rootNode = view.nodes.root.node;
 
-  this.setEventListener = function(eventName, listener){
+  this.setListener = function(eventName, listener){
     emitter.setListener(eventName, listener);
   };
 

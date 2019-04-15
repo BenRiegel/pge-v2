@@ -6,9 +6,16 @@ import view from '../../view/View.js';
 //module code block ------------------------------------------------------------
 
 var { components } = view;
-var { webMap, popupTemplate, popupReport } = components;
+var { webMap, popupTemplate, popupReport, selectMenu } = components;
 
-popupTemplate.setListener('readMoreRequest', async () => {
+
+//exports ----------------------------------------------------------------------
+
+export function onNewSelectedOption(){
+  webMap.popup.close();
+};
+
+export async function onReadMoreRequest(){
   var dimensions = webMap.popup.getDimensions();
   popupReport.setPosition(dimensions);
   await popupReport.open();
@@ -16,16 +23,16 @@ popupTemplate.setListener('readMoreRequest', async () => {
   await popupReport.expand();
   var content = webMap.popup.getContent();
   await popupReport.load(content.url);
-});
+};
 
-popupReport.setListener('closeRequest', () => {
+export function onCloseRequest(){
   webMap.popup.showArrow();
   webMap.popup.close();
-});
+};
 
-popupReport.setListener('contractRequest', async () => {
+export async function onContractRequest(){
   var dimensions = webMap.popup.getDimensions();
   await popupReport.contract(dimensions);
   await popupReport.close();
   webMap.popup.showArrow();
-});
+};

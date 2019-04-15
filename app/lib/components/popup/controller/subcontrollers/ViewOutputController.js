@@ -56,6 +56,7 @@ export default function PopupViewOutputController(view, model){
     var left = root.getProp('offsetLeft');
     var top = root.getProp('offsetTop');
     var { width, height } = content.getDimensions();
+    top = top - height / 2;
     return { left, top, width, height };
   };
 

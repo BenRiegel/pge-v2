@@ -22,20 +22,15 @@ export default function WebMap(config){
   return {
     rootNode: view.nodes.root.node,
     hasRendered: controller.configure,
-
     setListener: function(eventName, listener){
       emitter.setListener(eventName, listener);
     },
-
-
     enable: function(){
       controller.enable();
     },
-
     disable: function(){
       controller.disable();
     },
-
     get scale(){
       return model.scale;
     },

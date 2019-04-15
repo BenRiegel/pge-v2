@@ -5,19 +5,7 @@ export default function WebMapModelController(model, config){
   const ZOOM_IN_SCALER = 0.5;
   const ZOOM_OUT_SCALER = 2;
 
-  var initPanViewpoint;
-
-  var onPanStart = function(){
-    initPanViewpoint = {x:model.x, y:model.y};
-  }
-
-  var onPan = function(cumulativePan){
-    var deltaX = cumulativePan.x * model.scale;
-    var deltaY = cumulativePan.y * model.scale;
-    var newX = initPanViewpoint.x + deltaX;
-    var newY = initPanViewpoint.y + deltaY;
-    model.set(newX, newY, model.scale);
-  }
+  var initPanViewpoint;   //no super happy about this
 
   //init -----------------------------------------------------------------------
 
@@ -43,6 +31,18 @@ export default function WebMapModelController(model, config){
 
   this.zoomHome = function(){
     model.set(config.initCoords.x, config.initCoords.y, config.initScale);
+  };
+
+  this.onPanStart = function(){
+    initPanViewpoint = {x:model.x, y:model.y};
+  }
+
+  this.pan = function(cumulativePan){
+    var deltaX = cumulativePan.x * model.scale;
+    var deltaY = cumulativePan.y * model.scale;
+    var newX = initPanViewpoint.x + deltaX;
+    var newY = initPanViewpoint.y + deltaY;
+    model.set(newX, newY, model.scale);
   };
 
 }

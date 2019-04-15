@@ -5,7 +5,7 @@ import BasemapTile from '../../../basemap_tile/BasemapTile.js';
 
 //exports ----------------------------------------------------------------------
 
-export default function BasemapLayerViewDomController(view){
+export default function BasemapLayerViewDomController(view, model){
 
   var { nodes, subcomponents } = view;
   var { root, tileContainer1, tileContainer2 } = nodes;
@@ -19,10 +19,14 @@ export default function BasemapLayerViewDomController(view){
   //public api -----------------------------------------------------------------
 
   this.loadTiles = function(){
-    var tileSet1Nodes = tileSet1.map(tile => tile.rootNode);
-    tileContainer1.appendChildNodes(tileSet1Nodes);
-    var tileSet2Nodes = tileSet2.map(tile => tile.rootNode);
-    tileContainer2.appendChildNodes(tileSet2Nodes);
+    for (var i = 0; i < model.numTilesWidth; i++){
+      for (var j = 0; j < model.numTilesHeight; j++){
+        var tile = tileSet1[i][j];
+        var tile2 = tileSet2[i][j];
+        tileContainer1.appendChildNode(tile.rootNode);
+        tileContainer2.appendChildNode(tile2.rootNode);
+      }
+    }
   };
 
 }

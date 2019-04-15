@@ -18,4 +18,8 @@ export default function SelectMenuModelController(model){
     model.set('isOpen', !model.isOpen);
   };
 
+  this.setClosed = function(){
+    model.set('isOpen', false);
+  };
+
 }

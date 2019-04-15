@@ -56,8 +56,8 @@ export default function SelectMenuController(emitter, model, view){
   };
 
   this.forceClose = function(){
-    viewStateController.setClosed();
-    return outputController.updateViewStateChanges();
+    modelController.setClosed();
+    return outputController.updateOnIsOpenChange();
   };
 
 }

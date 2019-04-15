@@ -15,6 +15,7 @@ var { webMap, selectMenu } = components;
 
 const MIN_POINT_RADIUS = 10;
 const MAX_POINT_RADIUS = 20;
+
 var locations;
 var filteredLocations;
 
@@ -101,13 +102,6 @@ var createGraphics = function(scale){
   return graphics;
 }
 
-selectMenu.setListener('newSelectedOption', selectedOptionKey => {
-  webMap.graphicsLayer.removeAllGraphics();
-  filteredLocations = filterLocations(selectedOptionKey);
-  var graphics = createGraphics(webMap.scale);
-  webMap.graphicsLayer.addGraphics(graphics);
-});
-
 webMap.graphicsLayer.setListener('graphicsUpdateRequest', () => {
   webMap.graphicsLayer.unselectGraphic();
   webMap.graphicsLayer.removeAllGraphics();
@@ -121,6 +115,13 @@ export async function load(){
   await webMap.hasRendered;
   locations = getLocations();
   filteredLocations = filterLocations(INIT_SELECTED_TAG);
+  var graphics = createGraphics(webMap.scale);
+  webMap.graphicsLayer.addGraphics(graphics);
+};
+
+export function onNewSelectedOption(selectedOptionKey){
+  webMap.graphicsLayer.removeAllGraphics();
+  filteredLocations = filterLocations(selectedOptionKey);
   var graphics = createGraphics(webMap.scale);
   webMap.graphicsLayer.addGraphics(graphics);
 };

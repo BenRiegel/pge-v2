@@ -9,6 +9,6 @@ export default function WebMapEmitter(){
 
   //public api -----------------------------------------------------------------
 
-  return new Emitter( ['panEnd', 'zoomEnd'] );
+  return new Emitter( ['actionStart', 'actionEnd'] );
 
 }

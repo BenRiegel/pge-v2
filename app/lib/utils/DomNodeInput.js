@@ -30,10 +30,18 @@ export default class DomNodeInput extends DomNodeTransitions{
       });
     }
     if (this.mouseDownHandler){
-      this.node.addEventListener('mousedown', this.mouseDownHandler.bind(this));
+      this.node.addEventListener('mousedown', evt => {
+        if (this.isListening){
+          this.mouseDownHandler(evt);
+        }
+      });
     }
     if (this.mouseUpHandler){
-      this.node.addEventListener('mouseup', this.mouseUpHandler.bind(this));
+      this.node.addEventListener('mouseup', evt => {
+        if (this.isListening){
+          this.mouseUpHandler(evt);
+        }
+      });
     }
     if (this.mouseOutHandler){
       this.node.addEventListener('mouseout', this.mouseOutHandler.bind(this));

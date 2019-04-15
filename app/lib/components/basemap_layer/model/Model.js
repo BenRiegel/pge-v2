@@ -14,6 +14,12 @@ export default function BasemapLayerModel(){
     numTilesHeight: undefined,
     imageTileLevel: undefined,
     numBasemapTiles: undefined,
+
+    tileIndices: undefined,
+    macroOffset: undefined,
+    microOffset: undefined,
+    panOffset: {x:0, y:0},
+    scaleFactor: 1,
   });
 
 }

@@ -3,34 +3,32 @@ export default function WebMapViewInputController(view, model){
   var { subcomponents } = view;
   var { zoomControls, popup, graphicsLayer, basemapLayer} = subcomponents;
 
-  //define state change reactions ----------------------------------------------
-
-  var onPanEnd = function(){
-    popup.enable();
-    graphicsLayer.enable();
-    zoomControls.enable();
-  }
-
-  var onPanStart = function(){
-    popup.disable();
-    graphicsLayer.disable();
-    zoomControls.disable();
-  }
-
   //public api -----------------------------------------------------------------
 
   this.enableAll = function(){
-    zoomControls.enable();
+    basemapLayer.enable();
     graphicsLayer.enable();
     popup.enable();
-    basemapLayer.enable();
+    zoomControls.enable();
   };
 
   this.disableAll = function(){
+    basemapLayer.disable();
+    graphicsLayer.disable();
+    popup.disable();
     zoomControls.disable();
+  };
+
+  this.onPanEnd = function(){
+    popup.enable();
+    graphicsLayer.enable();
+    zoomControls.enable();
+  };
+
+  this.onPanStart = function(){
     popup.disable();
     graphicsLayer.disable();
-    basemapLayer.disable();
+    zoomControls.disable();
   };
 
 }
