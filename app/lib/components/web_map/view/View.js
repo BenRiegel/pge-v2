@@ -13,7 +13,7 @@ export default function WebMapViewView(config, model){
 
   //public api -----------------------------------------------------------------
 
-  this.dimensions = {   //get rid of this eventually
+  this.dimensions = {
     width: undefined,
     height: undefined,
   };

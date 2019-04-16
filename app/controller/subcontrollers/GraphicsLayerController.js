@@ -12,6 +12,7 @@ import model from '../../model/Model.js';
 
 var { components } = view;
 var { webMap, selectMenu } = components;
+var { graphicsLayer } = webMap;
 
 const MIN_POINT_RADIUS = 10;
 const MAX_POINT_RADIUS = 20;
@@ -109,17 +110,17 @@ export async function load(){
   await webMap.hasRendered;
   locations = getLocations();
   filteredLocations = filterLocations(INIT_SELECTED_TAG);
-  webMap.graphicsLayer.updateGraphics();
+  graphicsLayer.updateGraphics();
 };
 
 export function onNewSelectedOption(selectedOptionKey){
   filteredLocations = filterLocations(selectedOptionKey);
-  webMap.graphicsLayer.updateGraphics();
+  graphicsLayer.updateGraphics();
 };
 
 export function onGraphicsUpdateRequest(scale){
-  webMap.graphicsLayer.unselectGraphic();
-  webMap.graphicsLayer.removeAllGraphics();
+  graphicsLayer.unselectGraphic();
+  graphicsLayer.removeAllGraphics();
   var graphics = createGraphics(scale);
-  webMap.graphicsLayer.addGraphics(graphics);
+  graphicsLayer.addGraphics(graphics);
 };

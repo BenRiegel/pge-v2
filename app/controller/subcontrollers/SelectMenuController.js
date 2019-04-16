@@ -8,7 +8,7 @@ import Option from '../../lib/components/select_menu_option/SelectMenuOption.js'
 //module code block ------------------------------------------------------------
 
 var { components } = view;
-var { selectMenu, labels, webMap } = components;
+var { selectMenu, labels } = components;
 
 var loadOptions = function(){
   var keys = Object.keys(labels);
