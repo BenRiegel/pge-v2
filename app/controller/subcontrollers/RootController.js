@@ -5,14 +5,20 @@ import view from '../../view/View.js';
 
 //module code block ------------------------------------------------------------
 
-var { nodes, components } = view;
+var { nodes } = view;
 var { root } = nodes;
-var { loader, selectMenu } = components;
 
 
 //exports ----------------------------------------------------------------------
 
-export function load(){
-  root.appendChild(loader.rootNode);
-  root.appendChild(selectMenu.rootNode);
+export function onActionStart(actionName){
+  if (actionName !== 'pan'){
+    root.classList.add('active');
+  }
+};
+
+export function onActionEnd(actionName){
+  if (actionName !== 'pan'){
+    root.classList.remove('active');
+  }
 };

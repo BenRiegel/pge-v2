@@ -15,18 +15,19 @@ export default function BasempLayerEmitterController(emitter, view){
   const TOTAL_FADE_FRAMES = 30;
   const MAX_VELOCITY = 20;
 
-  var initCoords;
   var currentCoords;
+  var prevCoords;
+  var cumulativePan;
   var mouseMoveList = [];
+  var moveAve;
   var panInProgress = false;
   var buttonIsDown = false;
   var fadeFrameNum = 0;
-  var moveAve;
 
   var getMoveAve = function(){
     const numFrames = 6;
     var currentEntry = mouseMoveList.pop();
-    var thresholdTime = currentEntry.time - 1000/60*numFrames;
+    var thresholdTime = currentEntry.time - 1000/60 * numFrames;
     var sumDeltaX = currentEntry.deltaX;
     var sumDeltaY = currentEntry.deltaY;
     var done = false;
@@ -46,11 +47,15 @@ export default function BasempLayerEmitterController(emitter, view){
 
   var pan = function(){
     requestAnimationFrame( () => {
-      var changes = {
-        x: -(currentCoords.x - initCoords.x),   //get clear about this negative
-        y: -(currentCoords.y - initCoords.y),
-      };
-      emitter.notify('pan', changes);
+      var deltaX = currentCoords.x - prevCoords.x;
+      var deltaY = currentCoords.y - prevCoords.y;
+      deltaX = clamp(deltaX, -MAX_VELOCITY, MAX_VELOCITY);
+      deltaY = clamp(deltaY, -MAX_VELOCITY, MAX_VELOCITY);
+      cumulativePan.x += deltaX;
+      cumulativePan.y += deltaY;
+      emitter.notify('pan', cumulativePan);
+      prevCoords.x = currentCoords.x;
+      prevCoords.y = currentCoords.y;
       cycle();
     });
   };
@@ -65,13 +70,9 @@ export default function BasempLayerEmitterController(emitter, view){
         fadeFrameNum = 0;
         emitter.notify('panEnd');
       } else {
-        currentCoords.x += moveAve.x * percentFade;
-        currentCoords.y += moveAve.y * percentFade;
-        var changes = {
-          x: -(currentCoords.x - initCoords.x),     //get clear about this negative
-          y: -(currentCoords.y - initCoords.y),
-        };
-        emitter.notify('pan', changes);
+        cumulativePan.x += moveAve.x * percentFade;
+        cumulativePan.y += moveAve.y * percentFade;
+        emitter.notify('pan', cumulativePan);
         cycle();
       }
     });
@@ -87,8 +88,9 @@ export default function BasempLayerEmitterController(emitter, view){
 
   var onPanStart = function(x, y){
     buttonIsDown = true;
-    initCoords = {x, y};
     currentCoords = {x, y};
+    prevCoords = {x, y};
+    cumulativePan = {x:0, y:0};
     mouseMoveList = [];
     if (!panInProgress){
       panInProgress = true;

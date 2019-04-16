@@ -25,21 +25,21 @@ export default function WebMapController(config, emitter, model, view){
   //load event listeners -------------------------------------------------------
 
   graphicsLayer.setListener('pointGraphicClicked', async (id, worldCoords, attributes) => {
-    emitterController.notifyActionStart();
+    emitterController.notifyActionStart('graphicSelected');
     inputController.disableAll();
     modelController.panTo(worldCoords);
     await outputController.onPointGraphicSelected(id, attributes);
     inputController.enableAll();
-    emitterController.notifyActionEnd();
+    emitterController.notifyActionEnd('graphicSelected');
   });
 
   graphicsLayer.setListener('clusterGraphicClicked', async (id, worldCoords) => {
-    emitterController.notifyActionStart();
+    emitterController.notifyActionStart('graphicSelected');
     inputController.disableAll();
     modelController.zoomTo(worldCoords);
     await outputController.onClusterGraphicSelected(id);
     inputController.enableAll();
-    emitterController.notifyActionEnd();
+    emitterController.notifyActionEnd('graphicSelected');
   });
 
   zoomControls.setListener('zoomInRequest', async () => {
@@ -76,14 +76,14 @@ export default function WebMapController(config, emitter, model, view){
   basemapLayer.setListener('panStart', () => {
     inputController.onPanStart();
     modelController.onPanStart();
-    emitterController.notifyActionStart();
+    emitterController.notifyActionStart('pan');
     outputController.onPanStart();
   });
 
   basemapLayer.setListener('panEnd', () => {
     inputController.onPanEnd();
     outputController.onPanEnd();
-    emitterController.notifyActionEnd();
+    emitterController.notifyActionEnd('pan');
   });
 
   basemapLayer.setListener('pan', changes => {

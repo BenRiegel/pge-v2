@@ -33,7 +33,9 @@ export default function BasemapTileViewController(props, view){
 
   this.render = function(info){
     updateVisibility(info);
-    return updateIndices(info);
+    if (info.isVisible){
+      return updateIndices(info);
+    }
   };
 
 }

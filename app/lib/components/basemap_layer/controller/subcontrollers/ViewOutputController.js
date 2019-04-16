@@ -14,8 +14,8 @@ export default function BasemapLayerOutputViewController(view, model){
 
   var updateTileContainer = function(tileContainer){
     var scaleFactor = model.scaleFactor;
-    var x = Math.floor(model.macroOffset.x + model.microOffset.x + model.panOffset.x);
-    var y = Math.floor(model.macroOffset.y + model.microOffset.y + model.panOffset.y);
+    var x = Math.floor(model.containerOffset.x);
+    var y = Math.floor(model.containerOffset.y);
     var translateStr = `scale(${scaleFactor},${scaleFactor}) translate(${x}px, ${y}px)`;
     tileContainer.setStyle('transform', translateStr);
   }

@@ -19,30 +19,24 @@ export default function WebMap(config){
 
   //public api -----------------------------------------------------------------
 
-  return {
-    rootNode: view.nodes.root.node,
-    hasRendered: controller.configure,
-    setListener: function(eventName, listener){
-      emitter.setListener(eventName, listener);
-    },
-    enable: function(){
-      controller.enable();
-    },
-    disable: function(){
-      controller.disable();
-    },
-    get scale(){
-      return model.scale;
-    },
-    get graphicsLayer(){
-      return view.subcomponents.graphicsLayer;
-    },
-    get selectMenu(){
-      return view.subcomponents.selectMenu;
-    },
-    get popup(){
-      return view.subcomponents.popup;
-    }
+  this.rootNode = view.nodes.root.node;
+
+  this.hasRendered = controller.configure;
+
+  this.graphicsLayer = view.subcomponents.graphicsLayer;
+
+  this.popup = view.subcomponents.popup;
+
+  this.setListener = function(eventName, listener){
+    emitter.setListener(eventName, listener);
+  };
+
+  this.enable = function(){
+    controller.enable();
+  };
+
+  this.disable = function(){
+    controller.disable();
   };
 
 }

@@ -5,7 +5,6 @@ import selectMenu from './components/SelectMenu.js';
 import loader from './components/Loader.js';
 import webMap from './components/WebMap.js';
 import popupTemplate from './components/PopupTemplate.js';
-import popupReport from './components/PopupReport.js';
 
 
 //module code block ------------------------------------------------------------
@@ -17,7 +16,6 @@ var components = {
   webMap,
   selectMenu,
   popupTemplate,
-  popupReport,
   labels: {},
 };
 

@@ -13,6 +13,10 @@ export default class DomNode{
     this.node.innerHTML = innerHTML;
   }
 
+  set href(url){
+    this.node.href = url;
+  }
+
   setDatasetProp(propName, value){
     this.node.dataset[propName] = value;
   }
@@ -48,23 +52,29 @@ export default class DomNode{
   }
 
   setSrc(src){
-    return new Promise(resolve => {
-      var contentLoaded = evt => {
-        this.node.removeEventListener('load', contentLoaded);
-        resolve();
-      };
-      this.node.addEventListener('load', contentLoaded);
-      this.node.src = src;
-    });
+    if (this.node.src !== src){
+      return new Promise(resolve => {
+        var contentLoaded = evt => {
+          this.node.removeEventListener('load', contentLoaded);
+          resolve();
+        };
+        this.node.addEventListener('load', contentLoaded);
+        this.node.src = src;
+      });
+    }
+  }
+
+  setProp(propName, value){
+    this.node[propName] = value;
   }
 
   getProp(propName){
     return this.node[propName];
   }
 
-  getComputedStyle(styleName){
+  /*getComputedStyle(styleName){
     return window.getComputedStyle(this.node, null).getPropertyValue(styleName);
-  }
+  }*/
 
   getDimensions(){
     return this.node.getBoundingClientRect();

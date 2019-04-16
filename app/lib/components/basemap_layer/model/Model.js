@@ -12,13 +12,8 @@ export default function BasemapLayerModel(){
   return new ComponentModel({
     numTilesWidth: undefined,
     numTilesHeight: undefined,
-    imageTileLevel: undefined,
-    numBasemapTiles: undefined,
-
     tileIndices: undefined,
-    macroOffset: undefined,
-    microOffset: undefined,
-    panOffset: {x:0, y:0},
+    containerOffset: undefined,
     scaleFactor: 1,
   });
 

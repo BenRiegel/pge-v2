@@ -4,22 +4,22 @@ export default function WebMapEmitterController(emitter, model){
 
   this.onZoomStart = function(){
     if (model.hasChanged){
-      emitter.notify('actionStart');
+      emitter.notify('actionStart', 'zoom');
     }
   };
 
   this.onZoomEnd = function(){
     if (model.hasChanged){
-      emitter.notify('actionEnd');
+      emitter.notify('actionEnd', 'zoom');
     }
   };
 
-  this.notifyActionStart = function(){
-    emitter.notify('actionStart');
+  this.notifyActionStart = function(actionName){
+    emitter.notify('actionStart', actionName);
   };
 
-  this.notifyActionEnd = function(){
-    emitter.notify('actionEnd');
+  this.notifyActionEnd = function(actionName){
+    emitter.notify('actionEnd', actionName);
   };
 
 }

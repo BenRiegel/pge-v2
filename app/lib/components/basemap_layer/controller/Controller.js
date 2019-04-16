@@ -28,53 +28,34 @@ export default function BasemapLayerController(emitter, model, view, webMapModel
   this.disable = inputController.disable;
 
   this.configure = function(){
-    modelController.updateImageTileLevel();
-    modelController.updateBasemapDimensions();
-    modelController.setLayerDimensions(webMapDimensions);
-    modelController.setMacroOffset(webMapDimensions);
-    modelController.updateMicroOffset();
-    modelController.updateTileIndices();
-    modelController.resetPanOffset();
+    modelController.updateOnConfigure(webMapDimensions);
     viewController.createTiles();
     domController.loadTiles();
     return outputController.onConfigure();
   };
 
   this.updateOnPan = function(cumulativePan){
-    modelController.updatePanOffset(cumulativePan);
+    modelController.updateOnPan(cumulativePan);
     outputController.updateOnPan();
   };
 
   this.updateOnPanEnd = function(){
-    modelController.updateMicroOffset();
-    modelController.updateTileIndices();
-    modelController.resetPanOffset();
+    modelController.updateOnPanEnd();
     return outputController.updateOnPanEnd();
   };
 
   this.updateOnZoom = function(cumulativePan, zoomScaleFactor){
-    modelController.updateScaleFactor(zoomScaleFactor);
-    modelController.updatePanOffset(cumulativePan);
+    modelController.updateOnZoom(cumulativePan, zoomScaleFactor);
     outputController.updateOnZoom();
   };
 
   this.updateOnZoomEnd = function(){
-    modelController.updateImageTileLevel();
-    modelController.updateBasemapDimensions();
-    modelController.updateMicroOffset();
-    modelController.updateTileIndices();
-    modelController.updateScaleFactor(1);
-    modelController.resetPanOffset();
+    modelController.updateOnZoomEnd();
     return outputController.updateOnZoomEnd();
   };
 
   this.updateOnZoomHome = function(){
-    modelController.updateImageTileLevel();
-    modelController.updateBasemapDimensions();
-    modelController.updateMicroOffset();
-    modelController.updateTileIndices();
-    modelController.updateScaleFactor(1);
-    modelController.resetPanOffset();
+    modelController.updateOnZoomHome();
     return outputController.updateOnZoomHome();
   };
 

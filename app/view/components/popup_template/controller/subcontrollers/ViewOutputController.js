@@ -10,7 +10,7 @@ export default function PopupTemplateViewOutputController(view){
   var { nodes } = view;
   var { title, author, image, text, readMore } = nodes;
 
-  //define state change reactions ----------------------------------------------
+  //helper functions -----------------------------------------------------------
 
   var updateTitle = function(titleName){
     title.innerHTML = titleName;
@@ -30,6 +30,10 @@ export default function PopupTemplateViewOutputController(view){
 
   var updateImageSrc = function(src){
     return image.setSrc(src);
+  };
+
+  var updateReadMore = function(url){
+    readMore.href = url;
   };
 
   var updateImageSize = function(){
@@ -56,6 +60,7 @@ export default function PopupTemplateViewOutputController(view){
       updateTitle(content.projectName);
       updateAuthor(content.author, content.university, content.year);
       updateText(content.introText);
+      updateReadMore(content.url);
       await updateImageSrc(content.introImageUrl);
       updateImageSize();
     });

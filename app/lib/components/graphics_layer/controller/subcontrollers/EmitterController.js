@@ -1,4 +1,4 @@
-export default function GraphicsLayerEmitterController(emitter, view){
+export default function GraphicsLayerEmitterController(emitter, view, webMapModel){
 
   var { nodes } = view;
   var { root } = nodes;
@@ -22,7 +22,7 @@ export default function GraphicsLayerEmitterController(emitter, view){
   //public api -----------------------------------------------------------------
 
   this.notifyUpdateRequest = function(){
-    emitter.notify('graphicsUpdateRequest');
+    emitter.notify('graphicsUpdateRequest', webMapModel.scale);
   };
 
 }

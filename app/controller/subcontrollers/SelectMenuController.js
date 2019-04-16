@@ -20,18 +20,18 @@ var loadOptions = function(){
   }
 };
 
-webMap.setListener('actionStart', () => {
-  selectMenu.close();
-  selectMenu.disable();
-});
-
-webMap.setListener('actionEnd', () => {
-  selectMenu.enable();
-});
-
 //exports ----------------------------------------------------------------------
 
 export function load(){
   loadOptions();
   selectMenu.setSelectedOption(INIT_SELECTED_TAG);
+};
+
+export function onActionStart(){
+  selectMenu.close();
+  selectMenu.disable();
+};
+
+export function onActionEnd(){
+  selectMenu.enable();
 };

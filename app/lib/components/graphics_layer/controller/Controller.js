@@ -14,7 +14,7 @@ export default function GraphicsLayerController(emitter, model, view, webMapMode
 
   //declare subcontrollers -----------------------------------------------------
 
-  var emitterController = new EmitterController(emitter, view);
+  var emitterController = new EmitterController(emitter, view, webMapModel);
   var modelController = new ModelController(model);
   var viewController = new ViewController(view);
   var outputController = new ViewOutputController(view, model, webMapModel, webMapDimensions);
@@ -48,7 +48,9 @@ export default function GraphicsLayerController(emitter, model, view, webMapMode
     domController.removeAllGraphics();
   };
 
-  this.updateGraphics = emitterController.notifyUpdateRequest;
+  this.updateGraphics = function(){
+    emitterController.notifyUpdateRequest();
+  };
 
   this.fadeDown = outputController.fadeDown;
 

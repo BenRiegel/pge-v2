@@ -1,17 +1,15 @@
 //imports ----------------------------------------------------------------------
 
-import DomNodeInput from '../../../../../lib/utils/DomNodeInput.js';
+import DomNode from '../../../../../lib/utils/DomNode.js';
 import '../stylesheets/read_more.scss';
 
 
 //exports ----------------------------------------------------------------------
 
-export default class ReadMoreNode extends DomNodeInput{
+export default class ReadMoreNode extends DomNode{
   constructor(){
-    super('span', 'read-more-text');
+    super('a', 'read-more-text');
     this.innerHTML = 'Read more';
-  }
-  mouseClickHandler(){
-    this.notify('click');
+    this.setProp('target', '_blank');
   }
 }

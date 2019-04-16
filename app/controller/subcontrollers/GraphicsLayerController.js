@@ -102,12 +102,6 @@ var createGraphics = function(scale){
   return graphics;
 }
 
-webMap.graphicsLayer.setListener('graphicsUpdateRequest', () => {
-  webMap.graphicsLayer.unselectGraphic();
-  webMap.graphicsLayer.removeAllGraphics();
-  var graphics = createGraphics(webMap.scale);
-  webMap.graphicsLayer.addGraphics(graphics);
-});
 
 //exports ----------------------------------------------------------------------
 
@@ -115,13 +109,17 @@ export async function load(){
   await webMap.hasRendered;
   locations = getLocations();
   filteredLocations = filterLocations(INIT_SELECTED_TAG);
-  var graphics = createGraphics(webMap.scale);
-  webMap.graphicsLayer.addGraphics(graphics);
+  webMap.graphicsLayer.updateGraphics();
 };
 
 export function onNewSelectedOption(selectedOptionKey){
-  webMap.graphicsLayer.removeAllGraphics();
   filteredLocations = filterLocations(selectedOptionKey);
-  var graphics = createGraphics(webMap.scale);
+  webMap.graphicsLayer.updateGraphics();
+};
+
+export function onGraphicsUpdateRequest(scale){
+  webMap.graphicsLayer.unselectGraphic();
+  webMap.graphicsLayer.removeAllGraphics();
+  var graphics = createGraphics(scale);
   webMap.graphicsLayer.addGraphics(graphics);
 };

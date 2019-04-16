@@ -1,12 +1,16 @@
 export default function PopupViewInputController(view){
 
-  var { subcomponents } = view;
-  var { template } = subcomponents;
+  var { nodes } = view;
+  var { closeButton } = nodes;
 
   //public api -----------------------------------------------------------------
 
-  this.enable = template.enable;
+  this.enable = function(){
+    closeButton.isListening = true;
+  };
 
-  this.disable = template.disable;
+  this.disable = function(){
+    closeButton.isListening = false;
+  };
 
 }

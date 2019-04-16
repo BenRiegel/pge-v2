@@ -10,24 +10,6 @@ import model from '../../model/Model.js';
 var { components } = view;
 var { selectMenu, labels } = components;
 
-var showLabelIndents = function(){
-  var labelList = Object.values(labels);
-  for (var label of labelList){
-    label.showIndent();
-  }
-};
-
-var hideLabelIndents = function(){
-  var labelList = Object.values(labels);
-  for (var label of labelList){
-    label.hideIndent();
-  }
-};
-
-selectMenu.setListener('openingStart', showLabelIndents);
-
-selectMenu.setListener('closingEnd', hideLabelIndents);
-
 
 //exports ----------------------------------------------------------------------
 
@@ -41,3 +23,17 @@ export function load(){
     labels[key] = newLabel;
   }
 }
+
+export function showLabelIndents(){
+  var labelList = Object.values(labels);
+  for (var label of labelList){
+    label.showIndent();
+  }
+};
+
+export function hideLabelIndents(){
+  var labelList = Object.values(labels);
+  for (var label of labelList){
+    label.hideIndent();
+  }
+};

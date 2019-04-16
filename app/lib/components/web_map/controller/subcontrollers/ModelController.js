@@ -40,8 +40,8 @@ export default function WebMapModelController(model, config){
   this.pan = function(cumulativePan){
     var deltaX = cumulativePan.x * model.scale;
     var deltaY = cumulativePan.y * model.scale;
-    var newX = initPanViewpoint.x + deltaX;
-    var newY = initPanViewpoint.y + deltaY;
+    var newX = initPanViewpoint.x - deltaX;
+    var newY = initPanViewpoint.y - deltaY;
     model.set(newX, newY, model.scale);
   };
 

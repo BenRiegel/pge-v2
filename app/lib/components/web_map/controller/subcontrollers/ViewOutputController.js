@@ -39,9 +39,9 @@ export default function WebMapViewOutputController(view, model){
           var percentDone = Math.min(elapsedTime / duration, 1);
           var percent = easeInOut(percentDone, 1);
           var newX = model.coords.x.previousValue + percent * model.coords.x.deltaValue;
-          var deltaXPx = (newX - model.coords.x.previousValue) / model.coords.scale.previousValue;
+          var deltaXPx = (model.coords.x.previousValue - newX) / model.coords.scale.previousValue;
           var newY = model.coords.y.previousValue + percent * model.coords.y.deltaValue;
-          var deltaYPx = (newY - model.coords.y.previousValue) / model.coords.scale.previousValue;
+          var deltaYPx = (model.coords.y.previousValue - newY) / model.coords.scale.previousValue;
           graphicsLayer.updateOnPan( {x:newX, y:newY, scale:model.scale} );
           basemapLayer.updateOnPan( {x:deltaXPx, y:deltaYPx} );
           var newTime = new Date().getTime();
@@ -74,9 +74,9 @@ export default function WebMapViewOutputController(view, model){
           var percentDone = Math.min(elapsedTime / duration, 1);
           var percent = easeInOut(percentDone, 1);
           var newX = model.coords.x.previousValue + percent * model.coords.x.deltaValue;
-          var deltaXPx = (newX - model.coords.x.previousValue) / model.coords.scale.previousValue;
+          var deltaXPx = (model.coords.x.previousValue - newX) / model.coords.scale.previousValue;
           var newY = model.coords.y.previousValue + percent * model.coords.y.deltaValue;
-          var deltaYPx = (newY - model.coords.y.previousValue) / model.coords.scale.previousValue;
+          var deltaYPx = (model.coords.y.previousValue - newY) / model.coords.scale.previousValue;
           var newScale = model.coords.scale.previousValue + percent * model.coords.scale.deltaValue;
           var zoomFactor = baselineScale / newScale;
           graphicsLayer.updateOnZoom( {x:newX, y:newY, scale:newScale}, zoomFactor);
@@ -146,7 +146,7 @@ export default function WebMapViewOutputController(view, model){
     }
   };
 
-  this.onZoomHomeRequest = async function(){
+  this.onZoomHomeRequest = function(){
     if (model.hasChanged){
       popup.close();
       graphicsLayer.unselectGraphic();
