@@ -15,7 +15,7 @@ export default function BasemapLayer(webMapModel, webMapDimensions){
   var emitter = new Emitter();
   var model = new Model;
   var view = new View();
-  var controller = new Controller(emitter, model, view, webMapModel, webMapDimensions)
+  var controller = new Controller(emitter, model, view, webMapModel, webMapDimensions);
 
   //public api -----------------------------------------------------------------
 
@@ -35,7 +35,7 @@ export default function BasemapLayer(webMapModel, webMapDimensions){
 
   this.configure = function(){
     return controller.configure();
-  }
+  };
 
   this.updateOnPan = function(cumulativePan){
     controller.updateOnPan(cumulativePan);

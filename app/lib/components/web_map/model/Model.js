@@ -34,7 +34,7 @@ export default function WebMapModel(){
     get scale(){
       return coords.scale.value;
     },
-  }
+  };
 
   //public api -----------------------------------------------------------------
 

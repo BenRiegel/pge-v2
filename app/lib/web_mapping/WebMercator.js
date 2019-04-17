@@ -20,8 +20,8 @@ var normalizeCoords = function(xCoord, yCoord){
   return {
     x: xCoord - EXTENT.min,
     y: EXTENT.max - yCoord,
-  }
-}
+  };
+};
 
 
 //exports ----------------------------------------------------------------------

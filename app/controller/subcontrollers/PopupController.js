@@ -6,7 +6,7 @@ import view from '../../view/View.js';
 //module code block ------------------------------------------------------------
 
 var { components } = view;
-var { webMap, selectMenu } = components;
+var { webMap} = components;
 var { popup } = webMap;
 
 
@@ -14,4 +14,4 @@ var { popup } = webMap;
 
 export function onNewSelectedOption(){
   popup.close();
-};
+}

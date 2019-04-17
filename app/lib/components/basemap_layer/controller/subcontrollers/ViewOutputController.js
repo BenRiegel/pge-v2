@@ -18,7 +18,7 @@ export default function BasemapLayerOutputViewController(view, model){
     var y = Math.floor(model.containerOffset.y);
     var translateStr = `scale(${scaleFactor},${scaleFactor}) translate(${x}px, ${y}px)`;
     tileContainer.setStyle('transform', translateStr);
-  }
+  };
 
   var updateTiles = function(tileSet){
     var promises = [];

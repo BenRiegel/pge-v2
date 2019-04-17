@@ -9,16 +9,16 @@ import { calculateDeltaX } from '../../../../web_mapping/WebMercator.js';
 export default function GraphicViewOutputController(view, props, model){
 
   var { nodes } = view;
-  var { root, location, label } = nodes;
+  var { root, location } = nodes;
 
   //define view reactions ------------------------------------------------------
 
-  var updateScaleFactor = function(scaleFactor){
-    var newDiameter = props.diameter * scaleFactor;
+  var updateScaleFactor = function(zoomScaleFactor){
+    var newDiameter = props.diameter * zoomScaleFactor;
     newDiameter = Math.max(newDiameter, MIN_POINT_RADIUS * 2);
     var scaleFactor = newDiameter / (props.renderedRadius * 2);
     location.setScale(scaleFactor);
-  }
+  };
 
   var updateScreenCoords = function(viewpoint, webMapDimensions){
     var deltaX = calculateDeltaX(props.worldCoords.x, viewpoint.x);
@@ -56,6 +56,6 @@ export default function GraphicViewOutputController(view, props, model){
 
   this.renderView = function(viewpoint, webMapDimensions){
     updateScreenCoords(viewpoint, webMapDimensions);
-  }
+  };
 
 }

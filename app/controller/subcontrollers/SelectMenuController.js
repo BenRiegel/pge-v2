@@ -25,13 +25,13 @@ var loadOptions = function(){
 export function load(){
   loadOptions();
   selectMenu.setSelectedOption(INIT_SELECTED_TAG);
-};
+}
 
 export function onActionStart(){
   selectMenu.close();
   selectMenu.disable();
-};
+}
 
 export function onActionEnd(){
   selectMenu.enable();
-};
+}

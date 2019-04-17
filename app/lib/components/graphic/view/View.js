@@ -15,6 +15,6 @@ export default function GraphicView(props){
     root: new RootNode(props),
     location: new LocationNode(props),
     label: new LabelNode(props.numLocations),
-  }
+  };
 
 }

@@ -13,6 +13,6 @@ export default function LoaderView(){
   this.nodes = {
     root: new RootNode(),
     animation: new SpinnerNode(),
-  }
+  };
 
 }

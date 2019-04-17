@@ -41,20 +41,4 @@ export default function Popup(template){
     controller.close();
   };
 
-  this.getDimensions = function(){
-    return controller.getDimensions();
-  };
-
-  this.hideArrow = function(){
-    controller.hideArrow();
-  };
-
-  this.showArrow = function(){
-    controller.showArrow();
-  };
-
-  this.getContent = function(){  //don't really like this
-    return model.content;
-  };
-
 }

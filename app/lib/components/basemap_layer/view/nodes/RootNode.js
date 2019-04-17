@@ -19,12 +19,11 @@ export default class RootNode extends DomNodeInput{
     this.node.addEventListener('mousemove', this.mouseMoveHandler);
     this.notify('mousedown', evt.clientX, evt.clientY);
   }
-  /*mouseOutHandler(evt){
-    console.log('mouse out');
+  mouseOutHandler(evt){
     this.setStyle('cursor', 'default');
     this.node.removeEventListener('mousemove', this.mouseMoveHandler);
     this.notify('mouseout', evt.clientX, evt.clientY);
-  }*/
+  }
   mouseUpHandler(evt){
     this.setStyle('cursor', 'default');
     this.node.removeEventListener('mousemove', this.mouseMoveHandler);

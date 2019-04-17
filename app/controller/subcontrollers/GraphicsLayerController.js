@@ -11,7 +11,7 @@ import model from '../../model/Model.js';
 //module code block ------------------------------------------------------------
 
 var { components } = view;
-var { webMap, selectMenu } = components;
+var { webMap } = components;
 var { graphicsLayer } = webMap;
 
 const MIN_POINT_RADIUS = 10;
@@ -33,7 +33,7 @@ var getLocations = function(){
       tags: project.tags,
       hasSelectedTag: undefined,
       attributes,
-    }
+    };
     locationsList.push(location);
   }
   return locationsList;
@@ -63,7 +63,6 @@ var createGraphics = function(scale){
     var sumX = location.worldCoords.x;
     var sumY = location.worldCoords.y;
     var clusteredPoints = [location.worldCoords];
-    var clusterCreated = false;
     var done = false;
     while (!done){
       var clusterFound = false;
@@ -72,7 +71,6 @@ var createGraphics = function(scale){
         var distance = getDistance(graphicProps.worldCoords, compareLocation.worldCoords);
         if (distance < thresholdDistance){
           clusterFound = true;
-          clusterCreated = true;
           clusteredPoints.push(compareLocation.worldCoords);
           graphicProps.type = 'cluster';
           graphicProps.attributes = null;
@@ -101,7 +99,7 @@ var createGraphics = function(scale){
     graphicId += 1;
   }
   return graphics;
-}
+};
 
 
 //exports ----------------------------------------------------------------------
@@ -111,16 +109,16 @@ export async function load(){
   locations = getLocations();
   filteredLocations = filterLocations(INIT_SELECTED_TAG);
   graphicsLayer.updateGraphics();
-};
+}
 
 export function onNewSelectedOption(selectedOptionKey){
   filteredLocations = filterLocations(selectedOptionKey);
   graphicsLayer.updateGraphics();
-};
+}
 
 export function onGraphicsUpdateRequest(scale){
   graphicsLayer.unselectGraphic();
   graphicsLayer.removeAllGraphics();
   var graphics = createGraphics(scale);
   graphicsLayer.addGraphics(graphics);
-};
+}

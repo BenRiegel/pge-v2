@@ -6,7 +6,7 @@ import '../stylesheets/root.scss';
 
 //module code block ------------------------------------------------------------
 
-const BASEMAP_URL_STRING = "https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile";
+const BASEMAP_URL_STRING = 'https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile';
 
 
 //exports ----------------------------------------------------------------------

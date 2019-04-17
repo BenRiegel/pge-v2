@@ -43,7 +43,7 @@ export default function BasempLayerEmitterController(emitter, view){
     var aveDeltaX = clamp(sumDeltaX / numFrames, -MAX_VELOCITY, MAX_VELOCITY);
     var aveDeltaY = clamp(sumDeltaY / numFrames, -MAX_VELOCITY, MAX_VELOCITY);
     return {x: aveDeltaX, y:aveDeltaY};
-  }
+  };
 
   var pan = function(){
     requestAnimationFrame( () => {
@@ -123,5 +123,6 @@ export default function BasempLayerEmitterController(emitter, view){
   root.setEventListener('mousedown', onPanStart);
   root.setEventListener('mousemove', onPan);
   root.setEventListener('mouseup', onPanEnd);
+  root.setEventListener('mouseout', onPanEnd);
 
 }

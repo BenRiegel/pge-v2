@@ -13,8 +13,8 @@ var { loader } = components;
 
 export function startLoader(){
   loader.activate();
-};
+}
 
 export function terminateLoader(){
   return loader.terminate(true);
-};
+}

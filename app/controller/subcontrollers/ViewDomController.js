@@ -15,4 +15,4 @@ var { loader, selectMenu } = components;
 export function load(){
   root.appendChild(loader.rootNode);
   root.appendChild(selectMenu.rootNode);
-};
+}

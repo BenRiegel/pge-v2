@@ -8,7 +8,7 @@ import model from '../../model/Model.js';
 //module code block ------------------------------------------------------------
 
 var { components } = view;
-var { selectMenu, labels } = components;
+var { labels } = components;
 
 
 //exports ----------------------------------------------------------------------
@@ -29,11 +29,11 @@ export function showLabelIndents(){
   for (var label of labelList){
     label.showIndent();
   }
-};
+}
 
 export function hideLabelIndents(){
   var labelList = Object.values(labels);
   for (var label of labelList){
     label.hideIndent();
   }
-};
+}

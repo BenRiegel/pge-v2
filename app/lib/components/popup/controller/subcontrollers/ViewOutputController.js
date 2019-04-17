@@ -44,20 +44,4 @@ export default function PopupViewOutputController(view, model){
     templateContainer.setStyle('opacity', '0');
   };
 
-  this.hideArrow = function(){
-    arrow.setStyle('visibility', 'hidden');
-  };
-
-  this.showArrow = function(){
-    arrow.setStyle('visibility', '');
-  };
-
-  this.getDimensions = function(){
-    var left = root.getProp('offsetLeft');
-    var top = root.getProp('offsetTop');
-    var { width, height } = content.getDimensions();
-    top = top - height / 2;
-    return { left, top, width, height };
-  };
-
 }

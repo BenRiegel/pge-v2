@@ -46,8 +46,8 @@ export default function PopupTemplateViewOutputController(view){
       var newWidth = MAX_IMAGE_WIDTH;
       var newHeight = newWidth / ratio;
     } else {
-      var newHeight = MAX_IMAGE_HEIGHT;
-      var newWidth = ratio * newHeight;
+      newHeight = MAX_IMAGE_HEIGHT;
+      newWidth = ratio * newHeight;
     }
     image.setStyle('width', `${newWidth}px`);
     image.setStyle('height', `${newHeight}px`);

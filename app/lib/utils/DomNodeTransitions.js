@@ -45,4 +45,4 @@ export default class DomNodeTransitions extends DomNode{
     }
   }
 
-};
+}

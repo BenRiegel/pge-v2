@@ -40,10 +40,4 @@ export default function PopupController(emitter, model, view){
     emitterController.notifyOnClose();
   };
 
-  this.getDimensions = outputController.getDimensions;
-
-  this.hideArrow = outputController.hideArrow;
-
-  this.showArrow = outputController.showArrow;
-
 }

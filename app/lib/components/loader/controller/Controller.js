@@ -8,12 +8,15 @@ import ViewOutputController from './subcontrollers/ViewOutputController.js';
 
 export default function LoaderController(view){
 
+  //declare subcontrollers -----------------------------------------------------
+
   var domController = new ViewDomController(view);
   var outputController = new ViewOutputController(view);
 
   //public api -----------------------------------------------------------------
 
   this.show = outputController.show;
+
   this.hide = outputController.hide;
 
 }

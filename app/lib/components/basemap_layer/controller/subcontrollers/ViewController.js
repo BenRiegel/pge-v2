@@ -7,8 +7,7 @@ import BasemapTile from '../../../basemap_tile/BasemapTile.js';
 
 export default function BasemapLayerViewDomController(view, model){
 
-  var { nodes, subcomponents } = view;
-  var { tileContainer1, tileContainer2 } = nodes;
+  var { subcomponents } = view;
   var { tileSet1, tileSet2 } = subcomponents;
 
   //helper functions -----------------------------------------------------------
@@ -23,7 +22,7 @@ export default function BasemapLayerViewDomController(view, model){
       }
       tileSet.push(newColumn);
     }
-  }
+  };
 
   //public api -----------------------------------------------------------------
 

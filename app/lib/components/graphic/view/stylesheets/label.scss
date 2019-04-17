@@ -1,4 +1,7 @@
+@import '../../../../stylesheets/mixins';
+
 .graphic-label{
+  @include user-select(none);
   position: absolute;
   color: white;
   font-size: 12px;

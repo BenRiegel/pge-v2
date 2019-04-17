@@ -43,7 +43,7 @@ export default function GraphicsLayer(webMapModel, webMapDimensions){
 
   this.updateGraphics = function(){
     controller.updateGraphics();
-  }
+  };
 
   this.selectGraphic = function(graphicId){
     controller.selectGraphic(graphicId);

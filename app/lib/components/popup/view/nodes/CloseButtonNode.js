@@ -8,7 +8,7 @@ import '../stylesheets/close_button.scss';
 
 export default class CloseButtonNode extends DomNodeInput{
   constructor(){
-    super('span', `popup-close-button fa fa-times`);
+    super('span', 'popup-close-button fa fa-times');
   }
   mouseClickHandler(){
     this.notify('click');

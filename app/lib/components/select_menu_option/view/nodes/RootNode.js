@@ -21,7 +21,7 @@ export default class RootNode extends DomNodeTransitions{
     }
   }
 
-  setHeight(newValue, isTransitioning){
+  setHeight(newValue){
     if (newValue === 'expanded'){
       this.removeClass('contracted');
       this.addClass('expanded');

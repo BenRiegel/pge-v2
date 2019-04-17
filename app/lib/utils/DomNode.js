@@ -54,7 +54,7 @@ export default class DomNode{
   setSrc(src){
     if (this.node.src !== src){
       return new Promise(resolve => {
-        var contentLoaded = evt => {
+        var contentLoaded = () => {
           this.node.removeEventListener('load', contentLoaded);
           resolve();
         };
@@ -72,12 +72,8 @@ export default class DomNode{
     return this.node[propName];
   }
 
-  /*getComputedStyle(styleName){
-    return window.getComputedStyle(this.node, null).getPropertyValue(styleName);
-  }*/
-
   getDimensions(){
     return this.node.getBoundingClientRect();
   }
 
-};
+}

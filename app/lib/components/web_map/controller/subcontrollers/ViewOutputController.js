@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import { levelToValue } from '../../../../web_mapping/WebMapScale.js';
 import { easeInOut, wait } from '../../../../utils/Utils.js';
 
 
@@ -10,7 +9,7 @@ export default function WebMapViewOutputController(view, model){
 
   var { nodes, subcomponents } = view;
   var { root } = nodes;
-  var { zoomControls, popup, graphicsLayer, basemapLayer} = subcomponents;
+  var { popup, graphicsLayer, basemapLayer} = subcomponents;
 
   //define state change reactions ----------------------------------------------
 
@@ -53,7 +52,7 @@ export default function WebMapViewOutputController(view, model){
             resolve();
           }
         });
-      }
+      };
       addNewFrame();
     });
     basemapLayer.updateOnPanEnd();   //don't await here
@@ -90,7 +89,7 @@ export default function WebMapViewOutputController(view, model){
             resolve();
           }
         });
-      }
+      };
       addNewFrame();
     });
     var p = basemapLayer.updateOnZoomEnd();

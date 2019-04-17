@@ -1,4 +1,4 @@
-export default function WebMapViewInputController(view, model){
+export default function WebMapViewInputController(view){
 
   var { subcomponents } = view;
   var { zoomControls, popup, graphicsLayer, basemapLayer} = subcomponents;

@@ -28,7 +28,7 @@ export default function BasemapLayerModelController(model, webMapModel){
     var containerOffset = {
       x: macroOffset.x + microOffset.x + panOffset.x,
       y: macroOffset.y + microOffset.y + panOffset.y,
-    }
+    };
     model.set('containerOffset', containerOffset);
   };
 
@@ -103,7 +103,7 @@ export default function BasemapLayerModelController(model, webMapModel){
 
   this.updateOnPan = function(cumulativePan){
     updatePanOffset(cumulativePan);
-  }
+  };
 
   this.updateOnPanEnd = function(){
     updateMicroOffset();

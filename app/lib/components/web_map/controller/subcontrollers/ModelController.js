@@ -5,7 +5,7 @@ export default function WebMapModelController(model, config){
   const ZOOM_IN_SCALER = 0.5;
   const ZOOM_OUT_SCALER = 2;
 
-  var initPanViewpoint;   //no super happy about this
+  var initPanViewpoint;
 
   //init -----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ export default function WebMapModelController(model, config){
 
   this.onPanStart = function(){
     initPanViewpoint = {x:model.x, y:model.y};
-  }
+  };
 
   this.pan = function(cumulativePan){
     var deltaX = cumulativePan.x * model.scale;

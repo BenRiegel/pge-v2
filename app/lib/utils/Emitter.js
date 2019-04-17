@@ -20,7 +20,7 @@ export default function Emitter(eventNames){
         if (listener){
           return listener(...args);
         }
-      };
+      }
     },
   };
 }

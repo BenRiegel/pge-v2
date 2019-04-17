@@ -1,8 +1,5 @@
 export default function GraphicsLayerViewController(view){
 
-  var { nodes } = view;
-  var { root } = nodes;
-
   //public api -----------------------------------------------------------------
 
   this.addGraphics = function(graphics){

@@ -15,10 +15,10 @@ export function onActionStart(actionName){
   if (actionName !== 'pan'){
     root.classList.add('active');
   }
-};
+}
 
 export function onActionEnd(actionName){
   if (actionName !== 'pan'){
     root.classList.remove('active');
   }
-};
+}

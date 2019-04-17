@@ -13,8 +13,8 @@ var config = {
   rootNodeId: 'webmap',
   initCoords: latLonToWebMercatorXY({lon:-5, lat:28}),
   initScale: levelToValue(2),
-  popupTemplate, 
-}
+  popupTemplate,
+};
 
 var webMap = new WebMap(config);
 

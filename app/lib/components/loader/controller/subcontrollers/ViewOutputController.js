@@ -11,13 +11,13 @@ export default function LoaderViewOutputController(view){
     root.setStyle('visibility', 'hidden');
     root.setStyle('opacity', '1');
     animation.setStyle('visibility', '');
-  }
+  };
 
   //public api -----------------------------------------------------------------
 
   this.show = function(){
     root.setStyle('visibility', 'visible');
-  }
+  };
 
   this.hide = function(fadeOut){
     if (fadeOut){
@@ -25,6 +25,6 @@ export default function LoaderViewOutputController(view){
     } else {
       root.setStyle('visibility', 'hidden');
     }
-  }
+  };
 
 }

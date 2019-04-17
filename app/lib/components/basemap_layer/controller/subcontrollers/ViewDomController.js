@@ -1,10 +1,3 @@
-//imports ----------------------------------------------------------------------
-
-import BasemapTile from '../../../basemap_tile/BasemapTile.js';
-
-
-//exports ----------------------------------------------------------------------
-
 export default function BasemapLayerViewDomController(view, model){
 
   var { nodes, subcomponents } = view;

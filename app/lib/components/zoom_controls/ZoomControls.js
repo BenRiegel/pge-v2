@@ -11,7 +11,7 @@ export default function ZoomControls(){
 
   //private code block ---------------------------------------------------------
 
-  var emitter = new Emitter()
+  var emitter = new Emitter();
   var view = new View();
   var controller = new Controller(emitter, view);
 

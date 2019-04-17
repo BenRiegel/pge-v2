@@ -19,7 +19,7 @@ export default function WebMapController(config, emitter, model, view){
   var emitterController = new EmitterController(emitter, model);
   var modelController = new ModelController(model, config);
   var domController = new ViewDomController(view);
-  var inputController = new ViewInputController(view, model);
+  var inputController = new ViewInputController(view);
   var outputController = new ViewOutputController(view, model);
 
   //load event listeners -------------------------------------------------------

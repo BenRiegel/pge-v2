@@ -2,5 +2,6 @@
 
 .graphic{
   @include user-select(none);
+  cursor: default;
   position: absolute;
 }

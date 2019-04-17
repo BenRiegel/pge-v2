@@ -8,7 +8,7 @@ import '../stylesheets/root.scss';
 //exports ----------------------------------------------------------------------
 
 export default class RootNode extends DomNodeInput{
-  constructor(className){
+  constructor(){
     super('div', 'zoom-controls');
   }
   mouseClickHandler(evt){

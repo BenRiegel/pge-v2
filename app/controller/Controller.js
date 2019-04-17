@@ -15,7 +15,7 @@ import { waitAtLeast } from '../lib/utils/Utils.js';
 //module code block ------------------------------------------------------------
 
 var { components } = view;
-var { selectMenu, webMap, popupTemplate } = components;
+var { selectMenu, webMap } = components;
 
 selectMenu.setListener('newSelectedOption', newSelectedOption => {
   popupController.onNewSelectedOption();
