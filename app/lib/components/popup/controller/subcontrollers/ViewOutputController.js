@@ -1,7 +1,7 @@
 export default function PopupViewOutputController(view, model){
 
   var { nodes, subcomponents } = view;
-  var { root, arrow, templateContainer, content } = nodes;
+  var { root, templateContainer, content } = nodes;
   var { template, loader } = subcomponents;
 
   //helper functions -----------------------------------------------------------

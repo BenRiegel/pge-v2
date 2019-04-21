@@ -1,10 +1,9 @@
-var path = require('path');
-var webpath = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
-  devtool: 'eval-source-map',
+  mode: 'production',
+  devtool: 'source-map',
   entry: './app/index.js',
   output: {
     path: path.join(__dirname, 'build'),
@@ -15,18 +14,9 @@ module.exports = {
     rules: [
       {
         test:/\.(s*)css$/,
-        use: [
-          require.resolve('style-loader'),
-          {
-            loader: require.resolve('css-loader'),
-          },
-          require.resolve('sass-loader'),
-        ]
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
-  },
-  resolve: {
-    extensions: ['*', '.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
