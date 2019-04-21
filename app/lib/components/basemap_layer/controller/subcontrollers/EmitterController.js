@@ -10,7 +10,7 @@ export default function BasempLayerEmitterController(emitter, view){
   var { nodes } = view;
   var { root } = nodes;
 
-  //define reactions -----------------------------------------------------------
+  //helper functions -----------------------------------------------------------
 
   const TOTAL_FADE_FRAMES = 30;
   const MAX_VELOCITY = 20;
@@ -118,7 +118,7 @@ export default function BasempLayerEmitterController(emitter, view){
     }
   };
 
-  //load event reactions -------------------------------------------------------
+  //load event listeners -------------------------------------------------------
 
   root.setEventListener('mousedown', onPanStart);
   root.setEventListener('mousemove', onPan);

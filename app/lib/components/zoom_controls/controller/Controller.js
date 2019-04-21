@@ -25,6 +25,7 @@ export default function ZoomControlsController(emitter, view){
   //public api -----------------------------------------------------------------
 
   this.enable = inputController.enable;
+  
   this.disable = inputController.disable;
 
 }

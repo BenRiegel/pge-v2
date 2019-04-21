@@ -59,6 +59,7 @@ var createGraphics = function(scale){
       numLocations: 1,
       diameter: 0,
       renderedRadius: MIN_POINT_RADIUS,
+      minDiameter: MIN_POINT_RADIUS * 2,
     };
     var sumX = location.worldCoords.x;
     var sumY = location.worldCoords.y;

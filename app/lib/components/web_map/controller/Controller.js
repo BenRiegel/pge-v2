@@ -86,9 +86,9 @@ export default function WebMapController(config, emitter, model, view){
     emitterController.notifyActionEnd('pan');
   });
 
-  basemapLayer.setListener('pan', changes => {
-    modelController.pan(changes);
-    outputController.onPan(changes);
+  basemapLayer.setListener('pan', cumulativePan => {
+    modelController.pan(cumulativePan);
+    outputController.onPan();
   });
 
   //public api -----------------------------------------------------------------

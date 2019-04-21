@@ -54,6 +54,7 @@ webMap.graphicsLayer.setListener('graphicsUpdateRequest', scale => {
   graphicsLayerController.onGraphicsUpdateRequest(scale);
 });
 
+
 //exports ----------------------------------------------------------------------
 
 export async function initApp(){

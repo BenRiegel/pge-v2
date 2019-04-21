@@ -3,7 +3,7 @@ export default function GraphicsLayerEmitterController(emitter, view, webMapMode
   var { nodes } = view;
   var { root } = nodes;
 
-  //define reactions -----------------------------------------------------------
+  //helper functions -----------------------------------------------------------
 
   var onClick = function(type, id, worldCoords){
     var graphic = view.subcomponents.graphics[id];
@@ -15,7 +15,7 @@ export default function GraphicsLayerEmitterController(emitter, view, webMapMode
     }
   };
 
-  //set event listeners --------------------------------------------------------
+  //load event listeners -------------------------------------------------------
 
   root.setEventListener('click', onClick);
 

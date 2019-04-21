@@ -1,6 +1,5 @@
 //imports ----------------------------------------------------------------------
 
-import { MIN_POINT_RADIUS } from '../../../graphics_layer/config/GraphicsLayerConfig.js';
 import { calculateDeltaX } from '../../../../web_mapping/WebMercator.js';
 
 
@@ -11,11 +10,11 @@ export default function GraphicViewOutputController(view, props, model){
   var { nodes } = view;
   var { root, location } = nodes;
 
-  //define view reactions ------------------------------------------------------
+  //helper functions -----------------------------------------------------------
 
   var updateScaleFactor = function(zoomScaleFactor){
     var newDiameter = props.diameter * zoomScaleFactor;
-    newDiameter = Math.max(newDiameter, MIN_POINT_RADIUS * 2);
+    newDiameter = Math.max(newDiameter, props.minDiameter);
     var scaleFactor = newDiameter / (props.renderedRadius * 2);
     location.setScale(scaleFactor);
   };

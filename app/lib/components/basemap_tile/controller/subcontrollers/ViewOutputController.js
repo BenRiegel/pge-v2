@@ -3,7 +3,7 @@ export default function BasemapTileViewController(props, view){
   var { nodes } = view;
   var { root } = nodes;
 
-  //define state change reactions ----------------------------------------------
+  //helper functions -----------------------------------------------------------
 
   const TILE_SIZE_PX = 256;
 
