@@ -1,6 +1,8 @@
 //imports ----------------------------------------------------------------------
 
 import model from '../../model/Model.js';
+import tags from '../../data/tags.json';
+import projects from '../../data/projects.json';
 
 
 //module code block ------------------------------------------------------------
@@ -25,7 +27,9 @@ var loadProjects = function(){
 //exports ----------------------------------------------------------------------
 
 export function load(){
-  var tagsLoaded = loadTags();
-  var projectsLoaded = loadProjects();
-  return Promise.all( [tagsLoaded, projectsLoaded] );
+  //var tagsLoaded = loadTags();
+  //var projectsLoaded = loadProjects();
+  model.tags = tags;
+  model.projects = projects;
+  //return Promise.all( [tagsLoaded, projectsLoaded] );
 }

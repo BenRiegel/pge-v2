@@ -61,7 +61,7 @@ export async function initApp(){
   loaderController.startLoader();
   await waitAtLeast(1000, async () => {
     domController.load();
-    await modelController.load();
+    modelController.load();
     labelsController.load();
     selectMenuController.load();
     await graphicsLayerController.load();
