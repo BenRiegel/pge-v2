@@ -338,7 +338,6 @@
     "url": "https://pgeproject.wordpress.com/2017/06/21/nchanga-copper-mine-zambia/"
   },
 
-
   {
     "id": 26,
     "projectName": "Three Gorges Dam, China",
@@ -818,6 +817,344 @@
     "introText": "The Jaduguda Mines provide 25% of material that fuel India’s nuclear reactors. However, 28% of the uranium mined are waste and are then dumped into ponds. This is an environmental issue due to the uranium radiation emitting from the ponds and the mines. Villagers reported many health issues such as fertility loss and deformities. Another issue is the loss of land due to the mines which made farmers jobless. I will show that the energy injustices at this site arose due to the resource curse.",
     "introImageUrl": "https://pgeproject.files.wordpress.com/2017/12/mine-621x414.jpg",
     "url": "https://pgeproject.wordpress.com/2017/12/05/jaduguda-uranium-mines/"
+  },
+
+  {
+    "id": 63,
+    "projectName": "Vaca Muerte, Argentine Province of Neuquen: Loma Campana Oil Refiniery",
+    "author": "Cecilia Oritz Aguilar",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": -38.318800, "lon": -68.792800},
+    "tags": ["All Sites", "New 2021 Sites", "Energy Poverty", "Fossil Fuels", "Oil", "Refining"],
+    "introText": "For hundreds of years many indigenous communities have faced detrimental environmental injustices. The Mapuche Indigenous people are one of the marginalized communities that has had to bear the brunt of energy injustice for many years. Occupying the land known as Vaca Muerte, in the Argentine province of Neuquen, they have first handedly seen oil refineries takeover their sacred land. While Argentina’s state-owned oil and gas company, Yacimientos Petroliferos Fiscals Sociedad Anonima (YPF) first began extracting shale oil through fracking, a handful of other companies, such as Chevron and Shell, have partnered with them to help further extract more oil. To further examine energy injustice, lets look at the Loma Campana oil refinery in Vaca Muerte as the extract oil from the shale basin through fracking, leaving this indigenous community with many environmental and human health impacts.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/05/pge-image-.jpeg",
+    "url": "https://pgeproject.wordpress.com/2021/05/20/vaca-muerte-argentine-province-of-neuquen-loma-campana-oil-refiniery/"
+  },
+
+  {
+    "id": 64,
+    "projectName": "Oil and natural gas drilling off coast of Guyana",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 7.966921, "lon":  -57.016691},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Natural Gas", "Oil"],
+    "introText": "Oil and natural gas found far beneath the waters off the coast of Guyana in South America have become big oil companies next power and money grab. This article will concentrate on the Liza Phase 1 well, located in the Stabroek block off the coast of Georgetown, Guyana, exploited by Exxon.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/05/image.png?w=484",
+    "url": "https://pgeproject.wordpress.com/2021/05/19/oil-and-natural-gas-drilling-off-coast-of-guyana/"
+  },
+
+  {
+    "id": 65,
+    "projectName": "The Resource Curse of the José López Portillo Plant, Coahuila",
+    "author": "Tyra Norbye",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 28.48619, "lon": -100.69278},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Coal", "Power Plants"],
+    "introText": "In the Cuenca de Sabinas region there lies a group of coal plants that benefit from their proximity to Mexico’s huge coal reserves. The José López Portillo plant is a coal-based thermoelectric plant which provides energy to many people in Mexico. The energy injustice occurring at this site is that of a resource curse, in which the residents of the neighboring cities do not benefit from the wealth created for/by the state of Mexico and yet they face all of the consequences.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/joselopezportillo.jpeg",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/the-resource-curse-of-the-jose-lopez-portillo-plant-coahuila/"
+  },
+
+  {
+    "id": 66,
+    "projectName": "Hollyfrontier Navajo – Artesia, New Mexico’s Oil Refinery and its Affect on the Nearby Community of Color",
+    "author": "Yahna Williamson",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 32.8429908, "lon": -104.3907852},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Natural Gas", "Oil", "Refining"],
+    "introText": "Many communities that live near oil refineries suffer from health effects caused by their pollution emissions. In this article, I will pinpoint the ways in which the Hollyfrontier Navajo refinery has negatively impacted the surrounding community in order to highlight major environmental classism/racism issues, as well as the resource curse the residents face, caused by lack of local control over decisions made by the refinery.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/image_asset_77959.jpg",
+    "url": "https://pgeproject.wordpress.com/2021/04/29/hollyfrontier-navajo-artesia-new-mexicos-oil-refinery-and-its-affect-on-the-nearby-community-of-color/"
+  },
+
+  {
+    "id": 67,
+    "projectName": "Messaure hydroelectric dam and displacement of the Sámi people of Sweden",
+    "author": "Elisabeth Aukee",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 66.520528, "lon": 20.19225},
+    "tags": ["All Sites", "New 2021 Sites", "Renewables", "Hydroelectricity"],
+    "introText": "The Messaure dam on the Lule River near Jokkmokk, Sweden is a hydro-electric power station.  The town of Messaure was built during construction of the dam, but the neighboring town of Jokkmokk is home to numerous Sámi families. Areas in northern Sweden are commonly known to have extremely cold temperatures and is part of a diverse and species rich ecosystem.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/26f9bc1d983cce7f0a594e135f5c5ddd.jpg?w=1024",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/messaure-hydroelectric-dam-and-displacement-of-the-sami-people-of-sweden/"
+  },
+
+  {
+    "id": 68,
+    "projectName": "Garzweiler II: Sacrifice Zone in Western Germany",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 51.08418084960125, "lon": 6.461059911643115},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Coal", "Mining"],
+    "introText": "Garzweiler II is a new open cast lignite mine located in the North Rhine-Westphalia state in Western Germany that began its operations in 2006, following its predecessor Garzweiler I  that opened in 1940. Open pit surface mines are devastating to the surrounding areas as the mining process strips all biological life on the surface.  Energy injustices take place at this site due to the mine creating a sacrifice zone and a resource curse caused by the lack of local control over the mine.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/sta02-tagebau-garzweiler.jpg?w=1024",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/garzweiler-ii-surface-lignite-mine/"
+  },
+
+  {
+    "id": 69,
+    "projectName": "Gas Pipeline Running Through Indigenous Territory in Loma de Bacum, Mexico",
+    "author": "Julisa Lopez",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 27.551207, "lon": -110.084059},
+    "tags": ["All Sites", "New 2021 Sites", "Consumption", "Energy Poverty", "Fossil Fuels", "Natural Gas"],
+    "introText": "While only making about 20% of the Mexican population, Indigenous communities are one of the most marginalized groups in the entire country. Loma de Bacum, Mexico, houses one of these Indigenous communities, the Yaqui. The Loma de Bacum community has been pitted against other Yaqui communities due to the imminent construction of a gas pipeline that would go through their territory. The Yaqui nation is made up of 8 communities located throughout northwestern Mexico. One of these being the Loma de Bacum community, who has been made a victim of an energy injustice.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/gettyimages-96884893.jpg",
+    "url": "https://pgeproject.wordpress.com/2021/04/12/gas-pipeline-running-through-indigenous-land-in-loma-de-bacum-mexico/"
+  },
+
+  {
+    "id": 70,
+    "projectName": "Cerrejon Open-Pit Coal Mine in La Guajira, Colombia",
+    "author": "Kevin Harwood",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 11.132967, "lon": -72.624468},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels ", "Coal"],
+    "introText": "Cerrejon open pit coal mine is located in La Guajira, Columbia. La Guajira is home to 900,000 people and it is reported that about 45% of the population is indigenous. The open pit coal mine is run by BHP (Australia), Anglo American PLC (United Kingdom) and Glencore (Switzerland), all of which are much wealthier countries than Columbia. This is an energy sacrifice zone and a site of energy colonialism and indigenous people are suffering which will be explained below.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/cerrejocc81n_mine.jpeg?w=1024",
+    "url": "https://pgeproject.wordpress.com/2021/04/12/cerrejon-open-pit-coal-mine-in-la-guajira-colombia/"
+  },
+
+  {
+    "id": 71,
+    "projectName": "Dan River Ash Spill (Duke Energy Company, North Carolina, U.S)",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 36.464600, "lon":  -79.762500},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Coal"],
+    "introText": "In the early year of 2014, a major environmental resource was struck by disaster causing damage that would last for years. This location would end up being the Dan River, which is located in Eden, North Carolina. The Dan River was filled with all the remaining ash that have been left from the burning of coal for energy. It was about 39,000 tons of ash that was spilled into the river, causing taxation and contamination to a major water source.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/pollute-superjumbo.jpg?w=1024",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/dan-river-ash-spill-duke-energy-company-north-carolina-u-s/"
+  },
+
+  {
+    "id": 72,
+    "projectName": "Exxon Valdez Oil Spill",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 60.6090, "lon": -147.1675},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Oil"],
+    "introText": "Exxon Mobil infamous oil tanker known as the Exxon Valdez located in Prince William Sound, AK. It was bound to Long Beach, CA during the incident.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/screenshot-2021-04-25-at-3.45.22-pm.png",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/exxon-valdez-oil-spill/"
+  },
+
+  {
+    "id": 73,
+    "projectName": "Coastal Gaslink Pipeline- British Columbia, Canada",
+    "author": "Sarah Mosher",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 54.193425, "lon": -127.368951},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Natural Gas"],
+    "introText": "The newly proposed Coastal Gaslink Pipeline is currently being built in British Columbia, Canada. This pipeline will be carrying liquified natural gas from Dawson Creek to the port of Kitimat where it will then be exported to global markets. There are environmental and social concerns about this pipeline given the fact that it will be running through hundreds of miles of Indigenous Wet’suwet’en unceded territory, putting them and the environment at risk. It is clear that this is a case of ‘energy colonialism’.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/wetsuweten-protest.jpg",
+    "url": "https://pgeproject.wordpress.com/2021/04/25/coastal-gaslink-pipeline-british-columbia-canada/"
+  },
+
+  {
+    "id": 74,
+    "projectName": "Marathon Oil Refinery (Detroit, Michigan)",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 42.281404772823464, "lon": -83.15371245337798},
+    "tags": ["All Sites", "New 2021 Sites", "Energy Poverty", "Fossil Fuels", "Oil", "Refining"],
+    "introText": "Marathon Oil refinery is located in Boynton, a community in southwest Detroit, Michigan.  It has grown to become a 250-acre facility that refines 140,000 barrels of oil per day (BPD) and is the only oil refinery in Michigan.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/marathon-legal-picture-snappygoat.jpeg?w=628",
+    "url": "https://pgeproject.wordpress.com/2021/04/20/marathon-oil-refinery-detroit-michigan/"
+  },
+
+  {
+    "id": 75,
+    "projectName": "Sasol Chemical & Natural Gas Plant Threatens Black Resilience in Mossville, Louisiana",
+    "author": "Zoria Temple",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 30.245783540898888, "lon": -93.27519263403923},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Natural Gas", "Refining"],
+    "introText": "The Sasol Lake Charles Chemical Complex and R&D is located in Mossville, Louisiana, at 2201 Old Spanish Trail, Westlake, LA 70669. The neighborhood of Mossville was founded by freed slaves in 1790; it was established as one of the first communities of free Blacks in the south. Sasol bought out refineries within the Mossville community, to expand its industrialized processes beginning in the 1990s. Sasol uses natural gas and chemicals to create products like paraffin and diesel fuel.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/screenshot-2019-04-26-00-53-28_orig-1.png?w=1024",
+    "url": "https://pgeproject.wordpress.com/2021/04/25/__trashed/"
+  },
+
+  {
+    "id": 76,
+    "projectName": "Pollution of the Obangue River",
+    "author": "Abby Manzano",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": -1.243972, "lon": 10.249944},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Oil"],
+    "introText": "In southwest Mandji, in the Department of Ndolou in Gabon, Addax Petroleum Company has been polluting the Obangue River for over 20 years. The river supplies drinking water and supports a thriving ecosystem to nearly 100,000 people. As Gabon relies heavily on the extraction and exportation of crude oil for its national economy, the Gabonese government has allowed Addax to dump its hazardous waste into nearby lakes that seep pollutants into the Obangue River.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/gabondepartments.svg_.png?w=630",
+    "url": "https://pgeproject.wordpress.com/2021/04/25/pollution-of-the-obangue-river/"
+  },
+
+  {
+    "id": 77,
+    "projectName": "Inglewood Oil Field in Los Angeles, CA",
+    "author": "Alyssa Hum",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 34.0066054, "lon": -118.3862025},
+    "tags": ["All Sites", "New 2021 Sites", " Fossil Fuels", "Oil", "Consumption", "Mining", "Power Plants"],
+    "introText": "The Inglewood Oil Field, owned by Sentinel Peak Resources, is a site of resource extraction located in the Baldwin Hills of Culver City; the land used for this field is unincorporated, occupying about 1,000 acres, in the LA County. Established in 1924, it remains a profitable figure in the fossil fuel industry. An average of 2.5-3.1 million barrels of oil are extracted annually, awarding it both state-wide prominence and recognition as the largest urban oil field nationally.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/1200px-inglewooddetail.jpg",
+    "url": "https://pgeproject.wordpress.com/2021/04/25/inglewood-oil-field-in-los-angeles-ca/"
+  },
+
+  {
+    "id": 78,
+    "projectName": "Teshekpuk Lake: Threatened Source of Life- Alaska, US",
+    "author": "Amanda Bancroft",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 70.599337, "lon": -153.682626},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Oil"],
+    "introText": "Teshekpuk Lake, Alaska recently opened for oil exploration and development. This lake is a main source of sustenance for the indigenous North Slope communities and is one of the most important animal habitats in the Arctic. ConocoPhillips, a Texas based oil company, was granted the green light to expand development into this sensitive site. The surrounding community is being hit with what is deemed as energy colonialism, the theft of indigenous land and resources by a foreign entity.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/06/31379534010_a8f126242b_c-1.jpg?w=768",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/teshekpuk-lake-threatened-source-of-life-alaska-us/"
+  },
+
+  {
+    "id": 79,
+    "projectName": "Wuxi Huaguang (Tigyit) Coal-fired Power Plant in Shan State, Myanmar",
+    "author": "Nichole Dodson",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 20.432035986848014, "lon": 96.70248866727555},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Coal", "Power Plants"],
+    "introText": "In 2001, Chinese-owned company, Wuxi Huaguang, received permits to build a coal-fired power plant in Tigyit, an agricultural village located in Shan State, Myanmar. This village is home to several ethnic groups such as the Shan and Pa-Oh. Myanmar’s military regime ordered the Shan State local military to force Tigyit villagers off their land for construction. Since then, the Wuxi Huaguang power plant has perpetuated environmental harm and injustice onto the villagers of Tigyit.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/tigyit-wiki.jpg",
+    "url": "https://pgeproject.wordpress.com/2021/04/25/wuxi-huaguang-tigyit-coal-fired-power-plant-in-shan-state-myanmar/"
+  },
+
+  {
+    "id": 80,
+    "projectName": "Environmental Racism Embedded in Union Hill Compressor Station",
+    "author": "Samantha Montell",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 37.596517, "lon": -78.660128},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Natural Gas"],
+    "introText": "In 2019, the Virginia State Air Pollution Control Board unanimously granted a permit for a natural gas compressor station in the community of Union Hill that would connect to the Atlantic Coast Natural Gas Pipeline. This decision went against the community petition for a renewable energy source to be implemented in place of the station. Choosing Union Hill as the site for the compressor station is an example of environmental racism because of both the neglect of the city’s history and the demographic of who was allowed in the decision-making process. Compressor stations have been proven to have harmful environmental and human health effects.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/47087028072_dac4d3d8dc_b.jpg?w=658",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/environmental-racism-embedded-in-union-hill-compressor-station-proposal/"
+  },
+
+  {
+    "id": 81,
+    "projectName": "Hanford Nuclear Power Plant in Benton County, Washington",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 46.550802, "lon": -119.488996},
+    "tags": ["All Sites", "New 2021 Sites", "Nuclear Energy", "Power Plants"],
+    "introText": "The Hanford site, located along the Columbia River in Washington, is an ex-nuclear production site, first established in 1943 in response to World War 2. Besides once producing nuclear weapons, the Hanford site currently hosts a commercial nuclear power plant. The Hanford site was first built as part of the Manhattan Project, which was in response to World War 2 and the pursuit of creating both uranium and plutonium based atomic bombs.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/hanford.jpg?w=1024",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/hanford-nuclear-power-plant-in-benton-county-washington/"
+  },
+
+  {
+    "id": 82,
+    "projectName": "The Dakota Access Oil Pipeline at the Standing Rock Reservation",
+    "author": "Lily Burke",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 46.086274, "lon": -100.628963},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Oil"],
+    "introText": "The Dakota Access Pipeline is a 1,712 mile oil pipeline that passes through multiple states, including North Dakota, South Dakota, Iowa, and Illinois. This pipeline cuts through unceded territory of the 1868 Fort Laramie Treaty and crosses under the Missouri River, immediately upstream from the Standing Rock Reservation, where the Oceti Sakowin peoples, commonly known as the Great Sioux Nation, live. The pipeline, proposed and built by Energy Transfer Partners, was designed to transport more than 500,000 barrels of crude oil daily from North Dakota to Illinois.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/29357938502_1e13392764_b.jpg",
+    "url": "https://pgeproject.wordpress.com/2021/04/12/dakota-access-oil-pipeline-at-standing-rock-reservation/"
+  },
+
+  {
+    "id": 83,
+    "projectName": "Oil spills on Block 192/1-AB affecting indigenous communities in Peru",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": -2.359778, "lon": -76.234944},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Oil", "Refining"],
+    "introText": "The term “block” refers to an area or field where oil is refined or extracted. Block 192 (Block 1-AB) which is located in the Loreto provinces of Peru, has been polluting the land and waters of several nearby communities for many years. Thus destroying the ecological security that they have had before the arrival of this crude oil facility., I’ll be looking at the injustice that is occurring in Peru and how it is impacting the community as a result of the country’s lack of local control.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/screen-shot-2021-04-25-at-10.27.50-pm.png",
+    "url": "https://pgeproject.wordpress.com/2021/04/26/oil-spills-on-block-192-1-ab-affecting-indigenous-communities-in-peru/"
+  },
+
+  {
+    "id": 84,
+    "projectName": "The Impacts of BLCP Power Plant on Map Ta Phut Community",
+    "author": "",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 12.64749164206864, "lon": 101.16010376906712},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Coal", "Power Plants"],
+    "introText": "The BLCP Power Plant in Map Ta Phut, Thailand is the first large-scale bituminous coal-fired power plant in Thailand and is one of many power plants and factories in the Map Ta Phut Industrial Estate. This industrial development has negatively impacted the physical and sociological health of the surrounding communities due to poor infrastructure. This energy site demonstrates environmental classism and the inequality faced by low-income communities across Thailand.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/9f1f3092d6952ef22485552bf81b1449fdb52470.jpeg",
+    "url": "https://pgeproject.wordpress.com/2021/04/25/the-impacts-of-blcp-power-plant-on-map-ta-phut-community/"
+  },
+
+  {
+    "id": 85,
+    "projectName": "The Chixoy Hydro Electric Dam, Guatemala",
+    "author": "Oliver Valenzuela-Nettell",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 15.281359, "lon": -90.491172},
+    "tags": ["All Sites", "New 2021 Sites", "Renewables", "Hydroelectricity", "Power Plants"],
+    "introText": "The Chixoy Dam is a hydroelectric dam in Guatemala on its Chixoy River, between the Departments of El Quiche, Alta Verapaz and Baja Verapaz. The dam is 100 meters high and floods approximately 1,400 hectares in the Chixoy Basin. Construction on the project began in 1976, completed in 1982 and was initially funded by a series of loans from the World Bank and Inter-American Development Bank. The Chixoy Basin was fertile farmland before the flooding and 3,400 people were killed or displaced by its creation.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/memorial_rio_negro.jpg?w=768",
+    "url": "https://pgeproject.wordpress.com/2021/04/29/the-chixoy-hydro-electric-dam-guatemala/"
+  },
+
+  {
+    "id": 86,
+    "projectName": "Fracking in Counselor, NM",
+    "author": "Dan Brantley",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 36.21534950300894, "lon": -107.45704983432069},
+    "tags": ["All Sites", "New 2021 Sites", "Fossil Fuels", "Oil"],
+    "introText": "The state of New Mexico has become a key player to U.S. oil production in recent years, surpassing the states of Alaska, California, and Oklahoma in crude barrels produced per year since 2018, and is on its way to surpass North Dakota. Counselor, situated on New Mexico’s largest oil reserve, the San Juan Basin, is one of many indigenous communities facing the brunt of the oil industry’s consequences.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/05/30933421041_b8d6e5be36_c.jpg?w=768",
+    "url": "https://pgeproject.wordpress.com/2021/05/17/fracking-in-counselor-nm/"
+  },
+
+  {
+    "id": 87,
+    "projectName": "Metsamor Nuclear Power Plant: The World’s Most Dangerous Plant",
+    "author": "Saahel Alimagham",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 40.181750, "lon": 44.139639},
+    "tags": ["All Sites", "New 2021 Sites", "Nuclear Energy", "Power Plants"],
+    "introText": "The Metsamor Nuclear Power Plant is located in Metsamor, Armenia and is considered to be the world’s most dangerous power plant. This plant is one of the only remaining plants in the world that was built without containment, a critical safety feature. Metsamor was built upon some of the world’s most earthquake vulnerable zones, creating a constant threat to the safety of the surrounding cities and individuals. It is considered to be so dangerous because in the event of a natural disaster, the lack of containment would allow harmful gasses and pollution to pour out directly into the environment. The European Union has urged Armenia to close down the site for years, and offered $289 million to finance shutting down the plant, which Armenia declined.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/04/metsamor-power-plant-armenia.jpg",
+    "url": "https://pgeproject.wordpress.com/2021/05/04/metsamor-nuclear-power-plant-the-worlds-most-dangerous-plant/"
+  },
+
+  {
+    "id": 88,
+    "projectName": "The Future Dewey-Murdock Uranium Mine and the Energy Racism it Exhibits",
+    "author": "Bailey Brown",
+    "university": "San Francisco State",
+    "year": 2021,
+    "geoCoords": {"lat": 43.529870, "lon": -104.038380},
+    "tags": ["All Sites", "New 2021 Sites", "Mining"],
+    "introText": "This PGE site is at the Pine Ridge Reservation in South Dakota, specifically in the Black Hills. The site is a future uranium mine called the Dewey-Burdock mine that would span 10,600 acres across the Black Hills. Uranium mines have been intruding these lands and negatively affecting the Lakota Native Americans of the Pine Ridge Reservation since the 1940’s so the building of this new site is being heavily fought by the locals.",
+    "introImageUrl": "https://pgeproject.files.wordpress.com/2021/05/lakota-tribe-citizen-1.jpg?w=1024",
+    "url": "https://pgeproject.wordpress.com/2021/05/19/the-future-dewey-murdock-uranium-mine-and-the-energy-racism-it-exhibits/"
   }
 
 ]

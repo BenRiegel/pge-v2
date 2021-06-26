@@ -11,7 +11,7 @@ import '../stylesheets/web_map.scss';
 
 var config = {
   rootNodeId: 'webmap',
-  initCoords: latLonToWebMercatorXY({lon:-5, lat:28}),
+  initCoords: latLonToWebMercatorXY({lon:-5, lat:29}),
   initScale: levelToValue(2),
   popupTemplate,
 };
